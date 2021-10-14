@@ -2,23 +2,28 @@
 
 namespace IDAL
 {
-    
+ 
     namespace DO
     {
-        enum WeightCategories    { light, medium, heavy };
-        enum DroneStatus         { available, work_in_progress, sent};
-        enum Priorities          { regular, fast, urgent};
+        public enum WeightCategories    { light, medium, heavy };
+        public enum DroneStatus         { available, work_in_progress, sent};
+        public enum Priorities          { regular, fast, urgent};
 
 
         public struct Drone
         {
             int id;
             string model;
-            WeightCategories MaxWeight;
+            WeightCategories maxWeight;
             DroneStatus status;
             double battery;
 
             public int Id { get; set; }
+            public string Model { get; set; }
+            public WeightCategories MaxWeight { get; set; }
+            public DroneStatus Status { get; set; }
+            public double Battery { get; set; }
+        
         }
         public struct Customer
         {
@@ -27,7 +32,15 @@ namespace IDAL
             string phone;
             double longitude;
             double latitude;
+
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public string Phone { get; set; }
+            public double Longitude { get; set; }
+            public double Latitude { get; set; }
         }
+
+    
         public struct Parcel
         {
             int id;
@@ -44,7 +57,11 @@ namespace IDAL
             DateTime scheduled;
             DateTime pickup;
             DateTime delivered;
-        }
+
+            //public int  { get; set; }
+
+
+    }
         public struct DroneCharge
         {
             int droneId;
@@ -63,3 +80,6 @@ namespace IDAL
 
     }
 }
+
+
+
