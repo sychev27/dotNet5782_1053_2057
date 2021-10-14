@@ -8,11 +8,14 @@ namespace IDAL
 {
     namespace DO
     {
-        class MyClass
+        struct Station
         {
-
+            int id;
+            int name;
+            double longitude;
+            double lattitude;
+            int chargeslots;
         }
-
 
 
     }
