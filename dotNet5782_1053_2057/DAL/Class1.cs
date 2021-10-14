@@ -2,7 +2,18 @@
 
 namespace DAL
 {
-    public class Class1
+    
+}
+namespace IDAL
+{
+    namespace DO
     {
+        class MyClass
+        {
+
+        }
+
+
+
     }
 }
