@@ -12,6 +12,7 @@ namespace ConsoleUI
 
             Console.WriteLine(mrDrone.Id);
 
+            //DalObject.DataSource a = new  DalObject.DataSource
 
 
 
