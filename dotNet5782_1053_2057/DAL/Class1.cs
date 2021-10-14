@@ -63,3 +63,15 @@ namespace IDAL
 
     }
 }
+
+namespace DalObject
+{
+    class DataSource
+    {
+        internal IDAL.DO.Station[] arrStation = new IDAL.DO.Station[5];
+        // internal IDAL.DO.DroneCharge[] arrDroneCharge = new IDAL.DO.DroneCharge[];
+        internal IDAL.DO.Drone[] arrDrone = new IDAL.DO.Drone[10];
+        internal IDAL.DO.Parcel[] arrParcel = new IDAL.DO.Parcel[1000];
+        internal IDAL.DO.Customer[] arrCustomer = new IDAL.DO.Customer[100];
+    }
+}
