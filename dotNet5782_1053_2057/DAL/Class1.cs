@@ -3,12 +3,6 @@
 namespace IDAL
 {
     
-}
-namespace IDAL
-{
-    namespace DO
-    {
-        struct Station
     namespace DO
     {
         enum WeightCategories    { light, medium, heavy };
@@ -39,7 +33,6 @@ namespace IDAL
             double longitude;
             double lattitude;
             int chargeslots;
-            int id;
             int senderId;
             int targetId;
             WeightCategories weight;
@@ -56,7 +49,14 @@ namespace IDAL
             int droneId;
             int stationId;
         }
-
+        struct Station
+        {
+            int id;
+            int name;
+            double longitude;
+            double latitude;
+            int chargeSlots;
+        }
 
        
 
