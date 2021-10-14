@@ -10,15 +10,17 @@ namespace IDAL
         enum Priorities          { regular, fast, urgent};
 
 
-        struct Drone
+        public struct Drone
         {
             int id;
             string model;
             WeightCategories MaxWeight;
             DroneStatus status;
             double battery;
+
+            public int Id { get; set; }
         }
-        struct Customer
+        public struct Customer
         {
             int id;
             string name;
@@ -26,7 +28,7 @@ namespace IDAL
             double longitude;
             double latitude;
         }
-        struct Parcel
+        public struct Parcel
         {
             int id;
             int name;
@@ -43,12 +45,12 @@ namespace IDAL
             DateTime pickup;
             DateTime delivered;
         }
-        struct DroneCharge
+        public struct DroneCharge
         {
             int droneId;
             int stationId;
         }
-        struct Station
+        public struct Station
         {
             int id;
             int name;
