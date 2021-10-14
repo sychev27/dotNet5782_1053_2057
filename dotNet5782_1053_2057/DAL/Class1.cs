@@ -2,19 +2,9 @@
 
 namespace IDAL
 {
+    
     namespace DO
     {
-
-        struct Station
-        {
-            int id;
-            int name;
-            double longitude;
-            double lattitude;
-            int chargeslots;
-
-        }
-
         enum WeightCategories    { light, medium, heavy };
         enum DroneStatus         { available, work_in_progress, sent};
         enum Priorities          { regular, fast, urgent};
@@ -39,6 +29,10 @@ namespace IDAL
         struct Parcel
         {
             int id;
+            int name;
+            double longitude;
+            double lattitude;
+            int chargeslots;
             int senderId;
             int targetId;
             WeightCategories weight;
@@ -54,6 +48,16 @@ namespace IDAL
             int droneId;
             int stationId;
         }
-      
+        struct Station
+        {
+            int id;
+            int name;
+            double longitude;
+            double latitude;
+            int chargeSlots;
+        }
+
+       
+
     }
 }
