@@ -85,10 +85,32 @@ namespace DalObject
 {
     class DataSource
     {
+
+        static void Initialize()
+        {
+
+
+        }
+        internal class Config
+        {
+            //indexes of next available item in each array
+            internal int indexAvailDrone = 0;
+            internal int indexAvailParcel = 0;
+            internal int indexAvailStation = 0;
+            internal int indexAvailCustomer = 0;
+
+            internal int parcelSerialNumber = 0; //??
+        }
+        
+        
         internal IDAL.DO.Station[] arrStation = new IDAL.DO.Station[5];
         // internal IDAL.DO.DroneCharge[] arrDroneCharge = new IDAL.DO.DroneCharge[];
         internal IDAL.DO.Drone[] arrDrone = new IDAL.DO.Drone[10];
         internal IDAL.DO.Parcel[] arrParcel = new IDAL.DO.Parcel[1000];
         internal IDAL.DO.Customer[] arrCustomer = new IDAL.DO.Customer[100];
+
+        
+
+
     }
 }
