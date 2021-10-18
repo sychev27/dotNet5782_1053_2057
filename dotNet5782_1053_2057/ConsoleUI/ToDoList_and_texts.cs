@@ -17,17 +17,6 @@ using System.Threading.Tasks;
 
 
 
-////diff for update!!!
-//What would you like to ____ ? (add, print, print a list of) 
-//1: Drone
-//2: Customer
-//3: Charging Station
-//4: Package
-
-////for print_list: 
-//5: Packages not yet assigned to Drone
-//6: Available Charging Stations
-
 ////UPDATE:
 //What would you like to update?
 //1: Assign a package to a Drone

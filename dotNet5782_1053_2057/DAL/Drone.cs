@@ -22,6 +22,11 @@ namespace IDAL
             public IDAL.DO.DroneStatus Status { get; set; }
             public double Battery { get; set; }
 
+            public void print()
+            {
+                Console.WriteLine("test? drone..");
+            }
+
         }
 
     }

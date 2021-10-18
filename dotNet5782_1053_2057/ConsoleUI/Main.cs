@@ -7,7 +7,8 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-          //IDAL.DO.Drone mrDrone = new IDAL.DO.Drone();
+          IDAL.DO.Drone mrDrone = new IDAL.DO.Drone();
+            mrDrone.print();
           //  mrDrone.Id = 34;
           //  Console.WriteLine(mrDrone.Id);
             //DalObject.DataSource a = new  DalObject.DataSource
@@ -16,7 +17,7 @@ namespace ConsoleUI
 
 
             Menu m = new Menu();
-            m.beginMenu();
+            //m.beginMenu();
 
 
 

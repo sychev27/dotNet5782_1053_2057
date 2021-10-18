@@ -11,10 +11,10 @@ namespace IDAL
         public enum DroneStatus         { available, work_in_progress, sent};
         public enum Priorities          { regular, fast, urgent};
 
-        public void addItem(string item_to_add)
-        {
-            //code... 
-        }
+        //public void addItem(string item_to_add)
+        //{
+        //    //code... 
+        //}
 
 
     }
