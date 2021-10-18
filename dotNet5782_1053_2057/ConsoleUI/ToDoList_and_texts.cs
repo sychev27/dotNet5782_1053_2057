@@ -26,7 +26,7 @@ using System.Threading.Tasks;
 
 ////for print_list: 
 //5: Packages not yet assigned to Drone
-//6: Available Chargning Stations
+//6: Available Charging Stations
 
 ////UPDATE:
 //What would you like to update?
