@@ -9,13 +9,11 @@ namespace ConsoleUI
         {
           IDAL.DO.Drone mrDrone = new IDAL.DO.Drone();
             mrDrone.print();
-          //  mrDrone.Id = 34;
-          //  Console.WriteLine(mrDrone.Id);
+            //  mrDrone.Id = 34;
+            //  Console.WriteLine(mrDrone.Id);
             //DalObject.DataSource a = new  DalObject.DataSource
 
             
-
-
             Menu m = new Menu();
             //m.beginMenu();
 

@@ -21,6 +21,12 @@ namespace IDAL
             public string Phone { get; set; }
             public double Longitude { get; set; }
             public double Latitude { get; set; }
+
+            public void print()
+            {
+                Console.WriteLine("Customer " + Id + " " + Name + "\n");
+            }
+
         }
 
     }

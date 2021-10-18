@@ -32,6 +32,12 @@ namespace IDAL
             public DateTime Scheduled { get; set; }
             public DateTime Pickup { get; set; }
             public DateTime Delivered { get; set; }
+
+            public void print()
+            {
+                Console.WriteLine("Parcel " + Id + "\n");
+            }
+
         }
 
 

@@ -21,6 +21,12 @@ namespace IDAL
             public double Longitude { get; set; }
             public double Latitude { get; set; }
             public int ChargeSlots { get; set; }
+
+            public void print()
+            {
+                Console.WriteLine("Station " + Name + "\n");
+            }
+
         }
 
 

@@ -24,7 +24,7 @@ namespace IDAL
 
             public void print()
             {
-                Console.WriteLine("test? drone..");
+                Console.WriteLine("Drone " + Id + "\n");
             }
 
         }
