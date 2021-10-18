@@ -15,11 +15,7 @@ using System.Threading.Tasks;
 
 
 
-//What would you like to do? 
-//1: Add an Item
-//2: Update an Item
-//3: Print an Item
-//4: Print the total list of an item
+
 
 ////diff for update!!!
 //What would you like to ____ ? (add, print, print a list of) 
