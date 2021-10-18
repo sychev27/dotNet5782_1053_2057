@@ -1,5 +1,7 @@
 ﻿using System;
 
+
+
 namespace ConsoleUI
 {
  
@@ -8,12 +10,13 @@ namespace ConsoleUI
         static void Main(string[] args)
         {
           IDAL.DO.Drone mrDrone = new IDAL.DO.Drone();
+            
+            mrDrone.Id = 34;
             mrDrone.print();
-            //  mrDrone.Id = 34;
             //  Console.WriteLine(mrDrone.Id);
             //DalObject.DataSource a = new  DalObject.DataSource
 
-            
+
             Menu m = new Menu();
             //m.beginMenu();
 
@@ -27,8 +30,14 @@ namespace ConsoleUI
 
 
 
+
     public class Menu
     {
+        const string DRONE = "drone";
+        const string CUSTOMER = "customer";
+        const string PARCEL = "parcel";
+        const string STATION = "station";
+
         //prints options, returns item chosen..
         private string chooseItem(string action)
         {
@@ -52,10 +61,10 @@ namespace ConsoleUI
                 string ans = Console.ReadLine();
                 switch (ans)
                 {
-                    case "1": return "drone";
-                    case "2": return "customer";
-                    case "3": return "station";
-                    case "4": return "parcel";
+                    case "1": return DRONE;
+                    case "2": return CUSTOMER;
+                    case "3": return STATION;
+                    case "4": return PARCEL;
                     case "5": return "PackagesNotYetAssigned";
                     case "6": return "availChargingStations";
                     default:
@@ -106,19 +115,36 @@ namespace ConsoleUI
         }
 
 
-
-
-
-
-
-
-
-
-
-
+        public void printItem(string _item)
+        {
+            if(_item == "")
+            switch (_item)
+            {
+                case DRONE:
+                        Console.WriteLine("Enter ID of the drone");
+                        //find(aarDrone, ID).print();
+                        break;
+                default:
+                    break;
+            }
+        }
 
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
