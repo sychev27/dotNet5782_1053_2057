@@ -11,63 +11,6 @@ namespace IDAL
         public enum DroneStatus         { available, work_in_progress, sent};
         public enum Priorities          { regular, fast, urgent};
 
-
-        public struct Drone
-        {
-            int id;
-            string model;
-            WeightCategories maxWeight;
-            DroneStatus status;
-            double battery;
-
-            public int Id { get; set; }
-            public string Model { get; set; }
-            public WeightCategories MaxWeight { get; set; }
-            public DroneStatus Status { get; set; }
-            public double Battery { get; set; }
-        
-        }
-        public struct Customer
-        {
-            int id;
-            string name;
-            string phone;
-            double longitude;
-            double latitude;
-
-            public int Id { get; set; }
-            public string Name { get; set; }
-            public string Phone { get; set; }
-            public double Longitude { get; set; }
-            public double Latitude { get; set; }
-        }
-
-    
-        public struct Parcel
-        {
-            int id;
-            int senderId;
-            int targetId;
-            WeightCategories weight;
-            Priorities priority;
-            DateTime requested;
-            int droneId;
-            DateTime scheduled;
-            DateTime pickup;
-            DateTime delivered;
-
-            public int Id{ get; set; }
-            public int SenderId{ get; set; }
-            public int  TargetId{ get; set; }
-            public WeightCategories Weight  { get; set; }
-            public Priorities Priority { get; set; }
-            public DateTime Requested  { get; set; }
-            public int DroneId { get; set; }
-            public DateTime Scheduled { get; set; }
-            public DateTime Pickup{ get; set; }
-            public DateTime Delivered { get; set; }
-              }
-
         public struct DroneCharge
         {
             int droneId;
@@ -75,23 +18,9 @@ namespace IDAL
             public int DroneId { get; set; }
             public int StationId { get; set; }
         }
-        public struct Station
-        {
-            int id;
-            int name;
-            double longitude;
-            double latitude;
-            int chargeSlots;
-            public int DroneId { get; set; }
-            public int Name { get; set; }
-            public double Longitude { get; set; }
-            public double Latitude { get; set; }
-            public int ChargeSlots { get; set; }
-        }
 
 
-
-}
+    }
 }
 
 
