@@ -46,6 +46,9 @@ namespace DalObject
         {
         Random r = new Random();
 
+            //CREATE A CONFIGURE !!! 
+
+
             //initialize customer
 
             string[] customerNames = new string[12] { "Reuven", "Shimon", "Levi", 
@@ -121,7 +124,7 @@ namespace DalObject
 
             switch (_item)
             {
-                case ACTIONS.Menu.DRONE:
+                case ACTIONS.Menu.DRONE: arrDrone[findDrone(_id)]
                     {
                         for (int i = 0; i < arrDrone.Length; i++)
                         {
@@ -187,7 +190,10 @@ namespace DalObject
         { 
 
         }
+        public void freeDrone(int droneId) //frees drone from station.. 
+        {
 
+        }
 
 
     }

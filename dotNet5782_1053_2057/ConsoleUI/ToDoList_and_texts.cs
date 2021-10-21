@@ -6,7 +6,31 @@ using System.Threading.Tasks;
 
 /*
  
- 
+1 FOR ALL THE STRUCTS. --> ADD THIS FUNCTION
+        public int findDrone(int _id)
+        return index... 
+        if(notFound) return -1
+
+2 FINISH "ADD" FUNCTIONS
+
+3 DEAL WITH THE INDEXES IN "CONFIGURE" CLASS
+
+4 FINISH "INITIALIZE" function.
+
+5 FINISH FUNCTIONS (ALREADY EXIST IN DataLibrary):
+assignParcel(), לשייך חבילה
+collectParcel()
+deliverParcel()
+chargeDrone()
+
+6 FIX ALL THE INTEGER - INPUTS
+
+int choice = 0;
+  Int32.TryParse(Console.ReadLine(), out choice);
+7  DEBUGGING.... 
+
+
+
 
  
  
@@ -16,10 +40,6 @@ using System.Threading.Tasks;
 
 
 
-
-////UPDATE:
-
-//5:
 
 
 

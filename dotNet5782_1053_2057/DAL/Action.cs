@@ -8,10 +8,6 @@ namespace ACTIONS
 {
 
 
-
-
-
-
     public class Menu
     {
         public const string DRONE = "drone";
@@ -114,7 +110,8 @@ namespace ACTIONS
                 "1: Assign a parcel to a drone\n" +
                 "2: Collect a parcel with a drone\n" +
                 "3: Deliver a parcel to a customer\n" +
-                "4: Send a drone to a charging station\n");
+                "4: Send a drone to a charging station\n" +
+                "5: Free a drone from a charging station\n");
 
             int choice = 0;
             Int32.TryParse(Console.ReadLine(), out choice);
@@ -142,6 +139,11 @@ namespace ACTIONS
                     Console.WriteLine("Enter the ID of the drone you would like to charge:\n ");
                     Int32.TryParse(Console.ReadLine(), out choice);
                     library.chargeDrone(choice);
+                    break;
+                case 5:
+                    Console.WriteLine("Enter the ID of the drone you would like to free:\n ");
+                    Int32.TryParse(Console.ReadLine(), out choice);
+                    library.freeDrone(choice);
                     break;
                 default:
                     break;
