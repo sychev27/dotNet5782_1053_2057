@@ -21,7 +21,10 @@ namespace ConsoleUI
             //m.beginMenu();
 
 
+            DalObject.DataSource dummy = new DalObject.DataSource();
+            //dummy.Initialize();
 
+            DalObject.DataSource.Initialize();
 
             //end of program..
            Console.ReadLine();

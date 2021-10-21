@@ -38,14 +38,14 @@ namespace DalObject
         }
 
 
-        internal IDAL.DO.Station[] arrStation = new IDAL.DO.Station[5];
+        internal static IDAL.DO.Station[] arrStation = new IDAL.DO.Station[5];
         // internal IDAL.DO.DroneCharge[] arrDroneCharge = new IDAL.DO.DroneCharge[];
-        internal IDAL.DO.Drone[] arrDrone = new IDAL.DO.Drone[10];
-        internal IDAL.DO.Parcel[] arrParcel = new IDAL.DO.Parcel[1000];
-        internal IDAL.DO.Customer[] arrCustomer = new IDAL.DO.Customer[100];
+        internal static IDAL.DO.Drone[] arrDrone = new IDAL.DO.Drone[10];
+        internal static IDAL.DO.Parcel[] arrParcel = new IDAL.DO.Parcel[1000];
+        internal static IDAL.DO.Customer[] arrCustomer = new IDAL.DO.Customer[100];
 
 
-        static void Initialize() 
+        public static void Initialize()  //do we need static here?? 
         {
         Random r = new Random();
             
@@ -64,7 +64,8 @@ namespace DalObject
             exampleC.Name = customerNames[i];
             exampleC.Phone = customerPhones[i];
 
-            //arrCustomer[i] = exampleC; // ???? why does this not work?
+            arrCustomer[i] = exampleC; 
+
             }
 
 
