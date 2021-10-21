@@ -82,7 +82,9 @@ namespace DalObject
             {
                 exampleD.Id = i + 1;
                 exampleD.Battery = r.Next(20, 100);
-                exampleD.MaxWeight = IDAL.DO.WeightCategories.
+                exampleD.MaxWeight = IDAL.DO.WeightCategories.heavy;
+                exampleD.Model =
+
                 
                     
                     
