@@ -10,11 +10,21 @@ namespace IDAL
     {
         public struct Customer
         {
-            int id;
-            string name;
-            string phone;
-            double longitude;
-            double latitude;
+            // int id;
+            // string name;
+            // string phone;
+            // double longitude;
+            // double latitude;
+
+            public Customer(int _id, string _name, string _phone, double _longitude,
+                double _latitude)
+            {
+                Id = _id;
+                Name = _name;
+                Phone = _phone;
+                Longitude = _longitude;
+                Latitude = _latitude;
+            }
 
             public int Id { get; set; }
             public string Name { get; set; }
@@ -24,7 +34,9 @@ namespace IDAL
 
             public void print()
             {
-                Console.WriteLine("Customer " + Id + " " + Name + "\n");
+                Console.WriteLine("Customer " + Id + " " + Name + "\n"+
+                    "Phone: " + Phone + "\n"+
+                    "(" + Longitude + "," + Longitude + ")" + "\n");
             }
 
         }

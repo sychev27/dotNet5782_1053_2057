@@ -34,7 +34,10 @@ namespace IDAL
 
             public void print()
             {
-                Console.WriteLine("Drone " + Id + "\n");
+                Console.WriteLine("Drone " + Id + " " + Model + "\n"+
+                   "MaxWeight: " + MaxWeight + "\n" +
+                   Status + "\n" +
+                   "Battery: " + Battery + "\n");
             }
 
         }

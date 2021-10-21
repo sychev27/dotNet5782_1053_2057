@@ -11,16 +11,32 @@ namespace IDAL
 
         public struct Parcel
         {
-            int id;
-            int senderId;
-            int targetId;
-            IDAL.DO.WeightCategories weight;
-            IDAL.DO.Priorities priority;
-            DateTime requested;
-            int droneId;
-            DateTime scheduled;
-            DateTime pickup;
-            DateTime delivered;
+            //int id;
+            //int senderId;
+            //int targetId;
+            //IDAL.DO.WeightCategories weight;
+            //IDAL.DO.Priorities priority;
+            //DateTime requested;
+            //int droneId;
+            //DateTime scheduled;
+            //DateTime pickup;
+            //DateTime delivered;
+
+            public Parcel(int _id,int _senderId,int _targetId,IDAL.DO.WeightCategories _weight,
+                          IDAL.DO.Priorities _priority,DateTime _requested,int _droneId,
+                          DateTime _scheduled,DateTime _pickup,DateTime _delivered)
+            {
+                Id = _id;
+                SenderId = _senderId;
+                TargetId = _targetId;
+                Weight = _weight;
+                Priority =_priority;
+                Requested = _requested;
+                DroneId = _droneId;
+                Scheduled = _scheduled;
+                Pickup = _pickup;
+                Delivered = _delivered;
+            }
 
             public int Id { get; set; }
             public int SenderId { get; set; }
@@ -35,7 +51,17 @@ namespace IDAL
 
             public void print()
             {
-                Console.WriteLine("Parcel " + Id + "\n");
+                Console.WriteLine("Parcel: " + Id + "\n" +
+                    "SenderId: " + SenderId + "\n" +
+                    "TargetId: " + TargetId + "\n" +
+                    "Weight: " + Weight + "\n" +
+                    "Priority: " + Priority + "\n" +
+                    "Requested: " + Requested + "\n" +
+                    "DroneId: " + DroneId + "\n" +
+                    "Scheduled: " + Scheduled + "\n" +
+                    "Pickup: " + Pickup + "\n" +
+                    "Delivered: " + Delivered + "\n"
+                    );
             }
 
         }
