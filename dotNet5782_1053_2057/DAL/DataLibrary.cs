@@ -97,7 +97,10 @@ namespace DalObject
         {
             switch (itemToAdd)
             {
-                case ACTIONS.Menu.DRONE: //add drone
+                case ACTIONS.Menu.DRONE:
+
+                   // arrDrone[next_available_index] = drone.add();
+
                 break;
                 case ACTIONS.Menu.CUSTOMER: // add drone
                     break;
@@ -112,17 +115,30 @@ namespace DalObject
             }
         }
 
-        public void printItem(string _item)
+        public void printItem(string _item, int _id)
         {
+            bool found = false;
+
             switch (_item)
             {
-                case ACTIONS.Menu.DRONE: //print drone
+                case ACTIONS.Menu.DRONE:
+                    {
+                        for (int i = 0; i < arrDrone.Length; i++)
+                        {
+                            if (arrDrone[i].Id == _id)
+                            {
+                                arrDrone[i].print();
+                                found = true;
+                            }
+                        }
+                        if (!found) Console.WriteLine("not found...\n");
+                        break;
+                    }
+                case ACTIONS.Menu.CUSTOMER: arrCustomer[_id].print();
                     break;
-                case ACTIONS.Menu.CUSTOMER: // print drone
+                case ACTIONS.Menu.PARCEL: arrParcel[_id].print();
                     break;
-                case ACTIONS.Menu.PARCEL: //printparcel
-                    break;
-                case ACTIONS.Menu.STATION: //print station
+                case ACTIONS.Menu.STATION: arrParcel[_id].print();
                     break;
 
                 default:
@@ -132,7 +148,7 @@ namespace DalObject
         }
 
 
-        public void printList(string _item)
+        public void printList(string _item) //write for_each functions.. 
         {
             switch (_item)
             {
@@ -167,8 +183,8 @@ namespace DalObject
         {
 
         }
-        public void chargeDrone(int droneId)
-        {
+        public void chargeDrone(int droneId) //sends drone to available station.. 
+        { 
 
         }
 

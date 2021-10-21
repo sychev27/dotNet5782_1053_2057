@@ -44,17 +44,22 @@ namespace ACTIONS
                         break;
                     case "2": updateOptions();
                         break;
-                    case "3": library.printItem(chooseItem("print"));
+                    case "3": //print...
+                        string item = chooseItem("print");
+                        Console.WriteLine("Please enter the id number of the " + item + ":");
+                        int id = 0;
+                        Int32.TryParse(Console.ReadLine(), out id);
+                        library.printItem(item, id);
                         break;
-                    case "4": library.printList(chooseItem("print a list of");
+                    case "4": library.printList(chooseItem("print a list of"));
                         break;
-                    case "5": Console.WriteLine("exiting....\n";
+                    case "5": Console.WriteLine("exiting....\n");
                         return;
-                   
                     default:
+                        Console.WriteLine("invalid choice.. pls try again:\n");
                         break;
                 }
-                Console.WriteLine("invalid choice.. pls try again:\n");
+                
             }
         }
 
@@ -111,23 +116,33 @@ namespace ACTIONS
                 "3: Deliver a parcel to a customer\n" +
                 "4: Send a drone to a charging station\n");
 
-            int choice = Console.Read();
+            int choice = 0;
+            Int32.TryParse(Console.ReadLine(), out choice);
+            
             DalObject.DataSource library = new DalObject.DataSource();
+           
             switch (choice)
             {
                 case 1:
-                    Console.WriteLine("Which parcel would you like to assign?\n");
-                    choice = Console.Read();
+                    Console.WriteLine("Enter the ID of the parcel you would like to assign:\n");
+                    Int32.TryParse(Console.ReadLine(), out choice);
                     library.assignParcel(choice);
                     break;
                 case 2:
-                    Console.WriteLine("Which parcel would you like to collect?\n");
-                    choice = Console.Read();
-                    library.assignParcel(choice);
+                    Console.WriteLine("Enter the ID of the parcel you would like to collect:\n");
+                    Int32.TryParse(Console.ReadLine(), out choice);
+                    library.collectParcel(choice);
                     break;
-
-                // other cases.. 
-
+                case 3:
+                    Console.WriteLine("Enter the ID of the parcel you would like to deliver:\n ");
+                    Int32.TryParse(Console.ReadLine(), out choice);
+                    library.deliverParcel(choice);
+                    break;
+                case 4:
+                    Console.WriteLine("Enter the ID of the drone you would like to charge:\n ");
+                    Int32.TryParse(Console.ReadLine(), out choice);
+                    library.chargeDrone(choice);
+                    break;
                 default:
                     break;
             }
