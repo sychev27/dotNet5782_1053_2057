@@ -21,7 +21,6 @@ namespace ConsoleUI
             DalObject.DataSource.Initialize();
 
 
-            //DalObject.DataSource.arrDrone[1].print(); can't access bec not public... 
 
 
             //end of program..
