@@ -26,6 +26,7 @@ namespace DalObject
     public class DataSource
     {
    
+
     internal class Config
         {
             //indexes of next available item in each array
@@ -45,13 +46,16 @@ namespace DalObject
         internal static IDAL.DO.Customer[] arrCustomer = new IDAL.DO.Customer[100];
 
 
-        public static void Initialize()  //do we need static here?? 
+        public static void Initialize()   
         {
         Random r = new Random();
-            
-            //INITIAIZE CUSTOMER
-            string[] customerNames = { "Reuven", "Shimon", "Levi", "Yehuda", "Yissachar", "Zevulun", "Asher", "Gad", "Dan", "Naftali", "Yosef", "Binyamin" };
-            string[] customerPhones = { "+972-552-2555-18", "+972-525-5534-55", "+972-552-3555-77", "+972-557-1555-80", "+972-557-1555-48", "+972-559-5557-55", "+972-556-5551-37", "+972-545-5586-84", "+972-556-5557-31", "+972-552-2555-13" };
+
+            string[] customerNames = new string[12] { "Reuven", "Shimon", "Levi", 
+                "Yehuda", "Yissachar", "Zevulun", "Asher", "Gad", "Dan", "Naftali", 
+                "Yosef", "Binyamin" };
+            string[] customerPhones = new string [10] { "+972-552-2555-18", "+972-525-5534-55", 
+                "+972-552-3555-77", "+972-557-1555-80", "+972-557-1555-48", "+972-559-5557-55",
+                "+972-556-5551-37", "+972-545-5586-84", "+972-556-5557-31", "+972-552-2555-13" };
 
              for (int i = 0; i < 10; i++)
             {
