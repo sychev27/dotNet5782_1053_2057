@@ -50,6 +50,8 @@ namespace DalObject
         {
         Random r = new Random();
 
+            //initialize customer
+
             string[] customerNames = new string[12] { "Reuven", "Shimon", "Levi", 
                 "Yehuda", "Yissachar", "Zevulun", "Asher", "Gad", "Dan", "Naftali", 
                 "Yosef", "Binyamin" };
@@ -69,21 +71,23 @@ namespace DalObject
             exampleC.Phone = customerPhones[i];
 
             arrCustomer[i] = exampleC; 
-
             }
 
 
             //INITIALIZE DRONE
             IDAL.DO.Drone exampleD = new IDAL.DO.Drone(); 
-
-            string[] droneModels = { "Mercedes", "BMW" };
+            string[] droneModels = { "Merkava", "Namer" };
 
             for (int i = 0; i < 5; i++)
             {
-                //exampleD.Id = i;
-                //
-                //exampleD.Model = droneModels[r.Next(0, 1)];
-
+                exampleD.Id = i + 1;
+                exampleD.Battery = r.Next(20, 100);
+                exampleD.MaxWeight = IDAL.DO.WeightCategories.
+                
+                    
+                    
+                    
+                    r.Next(1, 3);
             }
 
         }
