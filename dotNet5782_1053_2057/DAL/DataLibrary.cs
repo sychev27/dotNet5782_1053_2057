@@ -11,12 +11,7 @@ namespace IDAL
         public enum DroneStatus         { available, work_in_progress, sent};
         public enum Priorities          { regular, fast, urgent};
 
-        //public void addItem(string item_to_add)
-        //{
-        //    //code... 
-        //}
-
-
+        
     }
 }
 
@@ -44,6 +39,7 @@ namespace DalObject
         internal static IDAL.DO.Drone[] arrDrone = new IDAL.DO.Drone[10];
         internal static IDAL.DO.Parcel[] arrParcel = new IDAL.DO.Parcel[1000];
         internal static IDAL.DO.Customer[] arrCustomer = new IDAL.DO.Customer[100];
+
 
 
         public static void Initialize()   
@@ -94,8 +90,85 @@ namespace DalObject
             //INITIALIZE PARCELS
 
             //INITIALIZE STATION
+        }
 
 
+        public void addItem(string itemToAdd)
+        {
+            switch (itemToAdd)
+            {
+                case ACTIONS.Menu.DRONE: //add drone
+                break;
+                case ACTIONS.Menu.CUSTOMER: // add drone
+                    break;
+                case ACTIONS.Menu.PARCEL: //add parcel
+                    break;
+                case ACTIONS.Menu.STATION: //add station
+                    break;
+                
+                default:
+                    break;
+
+            }
+        }
+
+        public void printItem(string _item)
+        {
+            switch (_item)
+            {
+                case ACTIONS.Menu.DRONE: //print drone
+                    break;
+                case ACTIONS.Menu.CUSTOMER: // print drone
+                    break;
+                case ACTIONS.Menu.PARCEL: //printparcel
+                    break;
+                case ACTIONS.Menu.STATION: //print station
+                    break;
+
+                default:
+                    break;
+
+            }
+        }
+
+
+        public void printList(string _item)
+        {
+            switch (_item)
+            {
+                case ACTIONS.Menu.DRONE: //print list drone
+                    break;
+                case ACTIONS.Menu.CUSTOMER: // print customer
+                    break;
+                case ACTIONS.Menu.PARCEL: //printparcel
+                    break;
+                case ACTIONS.Menu.STATION: //print station
+                    break;
+                case ACTIONS.Menu.CHARGING_STATIONS: // 
+                    break;
+                case ACTIONS.Menu.PRCL_TO_ASSIGN: //
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+
+        public void assignParcel(int parcelId) //assigns parcels to next available drone
+        {
+            Console.WriteLine("update parcel droneId");
+        }
+        public void collectParcel(int parcelId) //finds Drone (acc to Parcel::droneId), updates parcel
+        {
+
+        }
+        public void deliverParcel(int pareclId)
+        {
+
+        }
+        public void chargeDrone(int droneId)
+        {
 
         }
 

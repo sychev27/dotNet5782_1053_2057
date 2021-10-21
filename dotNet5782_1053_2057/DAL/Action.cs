@@ -7,16 +7,62 @@ using System.Threading.Tasks;
 namespace ACTIONS
 {
 
+
+
+
+
+
     public class Menu
     {
-        const string DRONE = "drone";
-        const string CUSTOMER = "customer";
-        const string PARCEL = "parcel";
-        const string STATION = "station";
-
-        //prints options, returns item chosen..
-        private string chooseItem(string action)
+        public const string DRONE = "drone";
+        public const string CUSTOMER = "customer";
+        public const string PARCEL = "parcel";
+        public const string STATION = "station";
+        public const string PRCL_TO_ASSIGN = "ParcelsNotYetAssigned";
+        public const string CHARGING_STATIONS = "availChargingStations";
+       
+        public void beginMenu() //uses function "chooseItem"...
         {
+            DalObject.DataSource library = new DalObject.DataSource();
+
+            bool repeat = true;
+            while (repeat)
+            {
+                Console.WriteLine(
+                "What would you like to do?\n" +
+                "1 : Add an Item\n" +
+                "2: Update an Item\n" +
+                "3: Print an Item\n" +
+                "4: Print the total list of an item\n" +
+                "5: Exit\n"
+                ) ;
+
+                string ans = Console.ReadLine();
+                switch (ans)
+                {
+                    case "1":  library.addItem(chooseItem("add"));
+                        break;
+                    case "2": updateOptions();
+                        break;
+                    case "3": library.printItem(chooseItem("print"));
+                        break;
+                    case "4": library.printList(chooseItem("print a list of");
+                        break;
+                    case "5": Console.WriteLine("exiting....\n";
+                        return;
+                   
+                    default:
+                        break;
+                }
+                Console.WriteLine("invalid choice.. pls try again:\n");
+            }
+        }
+
+       
+       
+        private string chooseItem(string action)
+        {  //prints options, returns item chosen..
+
             bool repeat = true;
             while (repeat)
             {
@@ -41,8 +87,8 @@ namespace ACTIONS
                     case "2": return CUSTOMER;
                     case "3": return STATION;
                     case "4": return PARCEL;
-                    case "5": return "PackagesNotYetAssigned";
-                    case "6": return "availChargingStations";
+                    case "5": return PRCL_TO_ASSIGN;
+                    case "6": return CHARGING_STATIONS;
                     default:
                         Console.WriteLine("error!\n");
                         break;
@@ -55,57 +101,40 @@ namespace ACTIONS
             return null;
         }
 
+        
 
-        public void beginMenu() //uses function "chooseItem"...
+        void updateOptions()
         {
-            bool repeat = true;
-            while (repeat)
+            Console.WriteLine("What would you like to update ?\n" +
+                "1: Assign a parcel to a drone\n" +
+                "2: Collect a parcel with a drone\n" +
+                "3: Deliver a parcel to a customer\n" +
+                "4: Send a drone to a charging station\n");
+
+            int choice = Console.Read();
+            DalObject.DataSource library = new DalObject.DataSource();
+            switch (choice)
             {
-                Console.WriteLine(
-                "What would you like to do?\n" +
-                "1 : Add an Item\n" +
-                "2: Update an Item\n" +
-                "3: Print an Item\n" +
-                "4: Print the total list of an item\n");
+                case 1:
+                    Console.WriteLine("Which parcel would you like to assign?\n");
+                    choice = Console.Read();
+                    library.assignParcel(choice);
+                    break;
+                case 2:
+                    Console.WriteLine("Which parcel would you like to collect?\n");
+                    choice = Console.Read();
+                    library.assignParcel(choice);
+                    break;
 
-                string ans = Console.ReadLine();
-                switch (ans)
-                {
-                    case "1": //chooseItem("add");
-                        add_item(chooseItem("add"));
-                        break;
-                    case "2": //update..
-                        break;
-                    case "3":
-                        chooseItem("print");
-                        //printItem(chooseItem("print"));
-                        break;
-                    case "4":
-                        chooseItem("print a list of");
-                        //printList(chooseItem("print a list of");
-                        break;
-                    default:
-                        Console.WriteLine("error!\n");
-                        break;
-                }
-                Console.WriteLine("invalid choice.. pls try again:\n");
+                // other cases.. 
+
+                default:
+                    break;
             }
-        }
 
 
-        public void printItem(string _item)
-        {
-            if (_item == "")
-                switch (_item)
-                {
-                    case DRONE:
-                        Console.WriteLine("Enter ID of the drone");
-                        //find(aarDrone, ID).print();
-                        break;
-                    default:
-                        break;
-                }
         }
+        
 
 
     }

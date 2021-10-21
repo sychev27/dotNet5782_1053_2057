@@ -13,9 +13,8 @@ namespace ConsoleUI
             
             //mrDrone.print();
           
-            ACTIONS.Action m = new ACTIONS.Action();
+            ACTIONS.Menu m = new ACTIONS.Menu();
             m.beginMenu();
-
 
             //DalObject.DataSource dummy = new DalObject.DataSource();
            
