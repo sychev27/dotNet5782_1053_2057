@@ -82,14 +82,9 @@ namespace DalObject
             {
                 exampleD.Id = i + 1;
                 exampleD.Battery = r.Next(20, 100);
-                exampleD.MaxWeight = IDAL.DO.WeightCategories.heavy;
-                exampleD.Model =
-
-                
-                    
-                    
-                    
-                    r.Next(1, 3);
+                exampleD.MaxWeight = (IDAL.DO.WeightCategories) r.Next(1, 3);
+                exampleD.Model = droneModels[r.Next(1, 2)];
+                exampleD.Status = (IDAL.DO.DroneStatus)r.Next(1, 3);
             }
 
         }
