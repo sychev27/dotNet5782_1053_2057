@@ -70,7 +70,7 @@ namespace DalObject
 
 
             //INITIALIZE DRONE
-            IDAL.DO.Drone exampleD; 
+            IDAL.DO.Drone exampleD = new IDAL.DO.Drone(); 
 
             string[] droneModels = { "Mercedes", "BMW" };
 
