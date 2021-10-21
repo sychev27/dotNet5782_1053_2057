@@ -39,6 +39,18 @@ namespace IDAL
                     "(" + Longitude + "," + Longitude + ")" + "\n");
             }
 
+            public Customer add() {
+                Console.WriteLine("Please enter the customer's info:" + "\n" +
+                    "id, name, phone, longitude, latitude " + "/n");
+                int id = Console.Read();
+                string name = Console.ReadLine();
+                string phone = Console.ReadLine();
+                double longitude = Console.Read();
+                double latitude = Console.Read();
+                Customer cust = new Customer(id, name, phone, longitude, latitude);
+                return cust;
+            }
+
         }
 
     }
