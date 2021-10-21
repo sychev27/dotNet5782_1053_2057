@@ -14,14 +14,17 @@ namespace ConsoleUI
             //mrDrone.print();
           
             Menu m = new Menu();
-            //m.beginMenu();
+            m.beginMenu();
 
 
             //DalObject.DataSource dummy = new DalObject.DataSource();
            
             DalObject.DataSource.Initialize();
 
-            
+
+            //DalObject.DataSource.arrDrone[1].print(); can't access bec not public... 
+
+
             //end of program..
            Console.ReadLine();
         }
@@ -94,8 +97,8 @@ namespace ConsoleUI
                 string ans = Console.ReadLine();
                 switch (ans)
                 {
-                    case "1": chooseItem("add");
-                        //add_item(chooseItem("add");
+                    case "1": //chooseItem("add");
+                        add_item(chooseItem("add"));
                         break;
                     case "2": //update..
                         break;

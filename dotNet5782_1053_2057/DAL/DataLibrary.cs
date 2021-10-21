@@ -75,17 +75,27 @@ namespace DalObject
 
 
             //INITIALIZE DRONE
-            IDAL.DO.Drone exampleD = new IDAL.DO.Drone(); 
+            
             string[] droneModels = { "Merkava", "Namer" };
 
             for (int i = 0; i < 5; i++)
             {
+                IDAL.DO.Drone exampleD = new IDAL.DO.Drone();
+                
                 exampleD.Id = i + 1;
                 exampleD.Battery = r.Next(20, 100);
                 exampleD.MaxWeight = (IDAL.DO.WeightCategories) r.Next(1, 3);
                 exampleD.Model = droneModels[r.Next(1, 2)];
                 exampleD.Status = (IDAL.DO.DroneStatus)r.Next(1, 3);
+
+                arrDrone[i] = exampleD;
             }
+
+            //INITIALIZE PARCELS
+
+            //INITIALIZE STATION
+
+
 
         }
 
