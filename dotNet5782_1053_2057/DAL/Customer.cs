@@ -42,11 +42,14 @@ namespace IDAL
             public Customer add() {
                 Console.WriteLine("Please enter the customer's info:" + "\n" +
                     "id, name, phone, longitude, latitude " + "/n");
-                int id = Console.Read();
+                int id = 0;
+                int.TryParse(Console.ReadLine(), out id);
                 string name = Console.ReadLine();
                 string phone = Console.ReadLine();
-                double longitude = Console.Read();
-                double latitude = Console.Read();
+                double longitude = 0;
+                double.TryParse(Console.ReadLine(), out longitude);
+                double latitude = 0;
+                double.TryParse(Console.ReadLine(), out latitude);
                 Customer cust = new Customer(id, name, phone, longitude, latitude);
                 return cust;
             }

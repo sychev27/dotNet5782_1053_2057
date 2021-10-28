@@ -38,6 +38,27 @@ namespace IDAL
                     "ChargeSlots: " + ChargeSlots + "\n");
             }
 
+            public Station add() 
+            {
+                Console.WriteLine("Please enter the station's info:" + "\n" +
+                   "id, name, longitude, latitude, chargeSlots " + "/n");
+                int id = 0;
+                int.TryParse(Console.ReadLine(), out id);
+                int name = 0;
+                int.TryParse(Console.ReadLine(), out name);
+                double longitude = 0;
+                double.TryParse(Console.ReadLine(), out longitude);
+                double latitude = 0;
+                double.TryParse(Console.ReadLine(), out latitude);
+                int chargeSlots = 0;
+                int.TryParse(Console.ReadLine(), out chargeSlots);
+                Station stat = new Station(id, name, longitude, latitude, chargeSlots);
+                return stat;
+            }
+                
+
+            
+
         }
 
 

@@ -11,11 +11,11 @@ using System.Threading.Tasks;
         return index... 
         if(notFound) return -1
 
-2 FINISH "ADD" FUNCTIONS
+2 FINISH "ADD" FUNCTIONS <yes>
 
 3 DEAL WITH THE INDEXES IN "CONFIGURE" CLASS
 
-4 FINISH "INITIALIZE" function.
+4 FINISH "INITIALIZE" function. <yes>
 
 5 FINISH FUNCTIONS (ALREADY EXIST IN DataLibrary):
 assignParcel(), לשייך חבילה
@@ -26,7 +26,7 @@ chargeDrone()
 6 FIX ALL THE INTEGER - INPUTS
 
 int choice = 0;
-  Int32.TryParse(Console.ReadLine(), out choice);
+  Int32.TryParse(Console.ReadLine(), out choice); <yes>
 7  DEBUGGING.... 
 
 

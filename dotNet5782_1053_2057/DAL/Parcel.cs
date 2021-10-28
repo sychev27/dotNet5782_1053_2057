@@ -67,23 +67,38 @@ namespace IDAL
             public Parcel add()
             {
                 Console.WriteLine("Please enter the parcel's info:" + "\n" +
-                    "id , senderId , targetId, requested, droneId, scheduled, pickup, delivered " + "\n");
-                int id = Console.Read();
-                int senderId = Console.Read();
-                int targetId = Console.Read();
-                DateTime requested =
-                Console.WriteLine("Please enter the drone's max weight:" + "\n" +
+                    "id , senderId , targetId, droneId" + "\n");
+                int id = 0;
+                int.TryParse(Console.ReadLine(), out id);
+                int senderId = 0;
+                int.TryParse(Console.ReadLine(), out senderId);
+                int targetId = 0;
+                int.TryParse(Console.ReadLine(), out targetId);
+                int droneId = 0;
+                int.TryParse(Console.ReadLine(), out droneId);
+                Console.WriteLine("Enter a date (e.g. 10/22/1987) for requested");
+                DateTime requested = DateTime.Parse(Console.ReadLine());
+                Console.WriteLine("Enter a date (e.g. 10/22/1987) for scheduled");
+                DateTime scheduled = DateTime.Parse(Console.ReadLine());
+                Console.WriteLine("Enter a date (e.g. 10/22/1987) for pickup");
+                DateTime pickup = DateTime.Parse(Console.ReadLine());
+                Console.WriteLine("Enter a date (e.g. 10/22/1987) for delivered");
+                DateTime delivered = DateTime.Parse(Console.ReadLine());
+
+                Console.WriteLine("Please enter the parcel's weight:" + "\n" +
                     "1: light" + "/n" +
                     "2: medium" + "/n" +
                     "3: heavy" + "/n");
-                int num = Console.Read();
-                Console.WriteLine("Please enter the drone's status:" + "\n" +
-                    "1: available" + "/n" +
-                    "2: work_in_progress" + "/n" +
-                    "3: sent" + "/n");
-                int num1 = Console.Read();
-                Drone _drone = new Drone(id, model, (WeightCategories)num, (DroneStatus)num1, battery);
-                return _drone;
+                int num = 1;
+                int.TryParse(Console.ReadLine(), out num);
+                Console.WriteLine("Please enter the parcel's prioriti:" + "\n" +
+                    "1: regular" + "/n" +
+                    "2: fast" + "/n" +
+                    "3: urgent" + "/n");
+                int num1 = 1;
+                int.TryParse(Console.ReadLine(), out num1);
+                Parcel _parcel = new Parcel(id, senderId, targetId, (WeightCategories)num,(Priorities)num1, requested, droneId, scheduled, pickup, delivered);
+                return _parcel;
             }
 
         }

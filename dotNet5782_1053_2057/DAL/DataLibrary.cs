@@ -91,8 +91,92 @@ namespace DalObject
             }
 
             //INITIALIZE PARCELS
+            for (int i = 0; i < 10; i++)
+            {
+                IDAL.DO.Parcel exampleP = new IDAL.DO.Parcel();
+                exampleP.Id = i + 1;
+                exampleP.SenderId = i + 10;
+                exampleP.TargetId = i + 20;
+                exampleP.Weight = (IDAL.DO.WeightCategories)r.Next(1, 3);
+                exampleP.Priority = (IDAL.DO.Priorities)r.Next(1, 3);
+                int month = r.Next(1,12);
+                int day = r.Next(1,30);
+                int year = r.Next(2020,2021);
+                exampleP.Requested = new DateTime(year,month,day);
+                exampleP.DroneId = r.Next(1, 5);
+                if (day < 30)
+                    day += 1;
+                else
+                {
+
+                    if (month < 12)
+                    {
+                        month += 1;
+                        day = r.Next(1, 30);
+                    }
+                    else
+                    {
+                        year += 1;
+                        month = 1;
+                        day = r.Next(1, 30);
+                    }
+                }
+                exampleP.Scheduled = new DateTime(year, month, day);
+                if (day < 30)
+                    day += 1;
+                else
+                {
+
+                    if (month < 12)
+                    {
+                        month += 1;
+                        day = r.Next(1, 30);
+                    }
+                    else
+                    {
+                        year += 1;
+                        month = 1;
+                        day = r.Next(1, 30);
+                    }
+                }
+                exampleP.Pickup = new DateTime(year, month, day);
+                if (day < 30)
+                    day += 1;
+                else
+                {
+
+                    if (month < 12)
+                    {
+                        month += 1;
+                        day = r.Next(1, 30);
+                    }
+                    else
+                    {
+                        year += 1;
+                        month = 1;
+                        day = r.Next(1, 30);
+                    }
+                }
+                exampleP.Delivered = new DateTime(year, month, day);
+
+                arrParcel[i] = exampleP;
+            }
+
 
             //INITIALIZE STATION
+            for (int i = 0; i < 2; i++)
+            {
+                IDAL.DO.Station exampleS = new IDAL.DO.Station();
+
+                exampleS.Id = i + 1;
+                exampleS.Name = r.Next(20, 100);
+                exampleS.Longitude = r.Next(34, 45) + r.NextDouble();
+                exampleS.Latitude = r.Next(30, 31) + r.NextDouble();
+                exampleS.ChargeSlots = r.Next(7,13);
+
+                arrStation[i] = exampleS;
+            }
+
         }
 
 
