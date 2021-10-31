@@ -49,9 +49,10 @@ namespace DalObject
         {
             Random r = new Random();
 
-            
+
 
             //initialize customer
+
             string[] customerNames = new string[12] { "Reuven", "Shimon", "Levi", 
                 "Yehuda", "Yissachar", "Zevulun", "Asher", "Gad", "Dan", "Naftali", 
                 "Yosef", "Binyamin" };
@@ -70,7 +71,8 @@ namespace DalObject
             exampleC.Name = customerNames[i];
             exampleC.Phone = customerPhones[i];
 
-            arrCustomer[i] = exampleC; 
+            arrCustomer[i] = exampleC;
+            thisConfig.indexAvailCustomer++;
             }
 
 
@@ -89,6 +91,8 @@ namespace DalObject
                 exampleD.Status = (IDAL.DO.DroneStatus)r.Next(1, 3);
 
                 arrDrone[i] = exampleD;
+                thisConfig.indexAvailDrone++;
+
             }
 
             //INITIALIZE PARCELS
@@ -111,6 +115,8 @@ namespace DalObject
                 exampleP.Delivered = exampleP.Pickup.AddDays(r.Next(1, 3));
 
                 arrParcel[i] = exampleP;
+                thisConfig.indexAvailParcel++;
+
             }
 
 
@@ -126,6 +132,7 @@ namespace DalObject
                 exampleS.ChargeSlots = r.Next(7,13);
 
                 arrStation[i] = exampleS;
+                thisConfig.indexAvailStation++;
             }
 
         }
@@ -135,53 +142,38 @@ namespace DalObject
         {
             switch (itemToAdd)
             {
-                case ACTIONS.Menu.DRONE:
-
-                   // arrDrone[next_available_index] = drone.add();
-
+                case ACTIONS.Menu.DRONE: arrDrone[thisConfig.indexAvailDrone++].add();
+                    //thisConfig.indexAvailDrone += 1;
                 break;
-                case ACTIONS.Menu.CUSTOMER: // add drone
+                case ACTIONS.Menu.CUSTOMER: arrCustomer[thisConfig.indexAvailCustomer++].add();
                     break;
-                case ACTIONS.Menu.PARCEL: //add parcel
+                case ACTIONS.Menu.PARCEL: arrParcel[thisConfig.indexAvailParcel++].add();
                     break;
-                case ACTIONS.Menu.STATION: //add station
+                case ACTIONS.Menu.STATION: arrStation[thisConfig.indexAvailStation++].add();
                     break;
-                
                 default:
                     break;
-
             }
         }
 
         public void printItem(string _item, int _id)
         {
-            bool found = false;
+            int index = findItem(_id, _item);
+            if (index == -1)
+                Console.WriteLine(_item + " not found!\n");
 
             switch (_item)
             {
-                case ACTIONS.Menu.DRONE: arrDrone[findDrone(_id)]
-                    {
-                        for (int i = 0; i < arrDrone.Length; i++)
-                        {
-                            if (arrDrone[i].Id == _id)
-                            {
-                                arrDrone[i].print();
-                                found = true;
-                            }
-                        }
-                        if (!found) Console.WriteLine("not found...\n");
-                        break;
-                    }
-                case ACTIONS.Menu.CUSTOMER: arrCustomer[_id].print();
+                case ACTIONS.Menu.DRONE: arrDrone[index].print();
                     break;
-                case ACTIONS.Menu.PARCEL: arrParcel[_id].print();
+                case ACTIONS.Menu.CUSTOMER: arrCustomer[index].print();
                     break;
-                case ACTIONS.Menu.STATION: arrParcel[_id].print();
+                case ACTIONS.Menu.PARCEL: arrParcel[index].print();
                     break;
-
+                case ACTIONS.Menu.STATION: arrParcel[index].print();
+                    break;
                 default:
                     break;
-
             }
         }
 
@@ -190,11 +182,11 @@ namespace DalObject
         {
             switch (_item)
             {
-                case ACTIONS.Menu.DRONE: //print list drone
+                case ACTIONS.Menu.DRONE: 
                     break;
                 case ACTIONS.Menu.CUSTOMER: // print customer
                     break;
-                case ACTIONS.Menu.PARCEL: //printparcel
+                case ACTIONS.Menu.PARCEL: //print parcel
                     break;
                 case ACTIONS.Menu.STATION: //print station
                     break;
