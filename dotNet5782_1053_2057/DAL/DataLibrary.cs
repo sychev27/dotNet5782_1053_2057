@@ -222,7 +222,12 @@ namespace DalObject
         {
             switch (_item)
             {
-                case ACTIONS.Menu.DRONE: 
+                case ACTIONS.Menu.DRONE:
+                    foreach (IDAL.DO.Drone element in arrDrone)
+                    {
+                        if(element.Id != -1)
+                        element.print();
+                    }
                     break;
                 case ACTIONS.Menu.CUSTOMER: // print customer
                     break;
