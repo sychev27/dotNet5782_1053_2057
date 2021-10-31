@@ -104,6 +104,7 @@ namespace DalObject
                 int year = r.Next(2020,2021);
                 exampleP.Requested = new DateTime(year,month,day);
                 exampleP.DroneId = r.Next(1, 5);
+                
                 if (day < 30)
                     day += 1;
                 else
