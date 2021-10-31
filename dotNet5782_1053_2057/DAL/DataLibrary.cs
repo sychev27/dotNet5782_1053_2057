@@ -41,9 +41,55 @@ namespace DalObject
         internal static IDAL.DO.Customer[] arrCustomer = new IDAL.DO.Customer[100];
 
         internal static Config thisConfig = new Config();
-        
 
-        //4 "FIND" FUNCTIONS... 
+
+        //4 "FIND" FUNCTIONS...
+        int findDrone(int _id) {
+            for (int i = 0; i < arrDrone.Length; i++)
+            {
+                if (arrDrone[i].Id == _id)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        int findCustomer(int _id)
+        {
+            for (int i = 0; i < arrCustomer.Length; i++)
+            {
+                if (arrCustomer[i].Id == _id)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        int findParcel(int _id)
+        {
+            for (int i = 0; i < arrParcel.Length; i++)
+            {
+                if (arrParcel[i].Id == _id)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        int findStation(int _id)
+        {
+            for (int i = 0; i < arrStation.Length; i++)
+            {
+                if (arrStation[i].Id == _id)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
 
         public static void Initialize()   
         {
