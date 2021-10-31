@@ -33,7 +33,7 @@ namespace IDAL
 
             public void print()
             {
-                Console.WriteLine("Station " + Name + " " + Id + "\n" +
+                Console.WriteLine("Station " + Name + " id: " + Id + "\n" +
                     "(" + Longitude + "," + Latitude + ")" + "\n" +
                     "ChargeSlots: " + ChargeSlots + "\n");
             }

@@ -6,10 +6,6 @@ using System.Threading.Tasks;
 
 /*
  
-1 "find" functions
-
-2 config.. 
-3 DEAL WITH THE INDEXES IN "CONFIGURE" CLASS  !!
 
 4 FINISH "INITIALIZE" function. 
 

@@ -49,8 +49,7 @@ namespace DalObject
             return -1;
         }
 
-        int findCustomer(int _id)
-        {
+        int findCustomer(int _id) {
             for (int i = 0; i < arrCustomer.Length; i++)
                 if (arrCustomer[i].Id == _id)  return i;
             return -1;
@@ -71,17 +70,19 @@ namespace DalObject
         }
 
         int findItem(int id, string itemToFind) {
+
+            int ans = -1;
             switch (itemToFind) {
-                case ACTIONS.Menu.DRONE:findDrone(id);
+                case ACTIONS.Menu.DRONE: ans = findDrone(id);
                     break;
-                case ACTIONS.Menu.CUSTOMER: findCustomer(id);
+                case ACTIONS.Menu.CUSTOMER: ans =findCustomer(id);
                     break;
-                case ACTIONS.Menu.PARCEL: findParcel(id);
+                case ACTIONS.Menu.PARCEL: ans = findParcel(id);
                     break;
-                case ACTIONS.Menu.STATION: findStation(id);
+                case ACTIONS.Menu.STATION: ans = findStation(id);
                     break;
             }
-            return -1;
+            return ans;
         }
         public static void Initialize()   
         {
@@ -124,9 +125,9 @@ namespace DalObject
                 
                 exampleD.Id = i + 1;
                 exampleD.Battery = r.Next(20, 100);
-                exampleD.MaxWeight = (IDAL.DO.WeightCategories) r.Next(1, 3);
-                exampleD.Model = droneModels[r.Next(1, 2)];
-                exampleD.Status = (IDAL.DO.DroneStatus)r.Next(1, 3);
+                exampleD.MaxWeight = (IDAL.DO.WeightCategories) r.Next(1, 4);
+                exampleD.Model = droneModels[r.Next(0, 2)];
+                exampleD.Status = (IDAL.DO.DroneStatus)r.Next(1, 4);
 
                 arrDrone[i] = exampleD;
                 thisConfig.indexAvailDrone++;
@@ -138,15 +139,19 @@ namespace DalObject
             {
                 IDAL.DO.Parcel exampleP = new IDAL.DO.Parcel();
                 exampleP.Id = i + 1;
-                exampleP.SenderId = i + 10; //צריכים לתאם...
-                exampleP.TargetId = i + 20;
-                exampleP.Weight = (IDAL.DO.WeightCategories)r.Next(1, 3);
-                exampleP.Priority = (IDAL.DO.Priorities)r.Next(1, 3);
-                int month = r.Next(1,12);
-                int day = r.Next(1,30);
-                int year = r.Next(2020,2021);
+                exampleP.SenderId = arrCustomer[r.Next(0, 10)].Id; 
+                do
+                {
+                    exampleP.TargetId = arrCustomer[r.Next(0, 10)].Id;
+                } while (exampleP.TargetId == exampleP.SenderId); 
+
+                exampleP.Weight = (IDAL.DO.WeightCategories)r.Next(1, 4);
+                exampleP.Priority = (IDAL.DO.Priorities)r.Next(1, 4);
+                int month = r.Next(1,13);
+                int day = r.Next(1,29);
+                int year = r.Next(2020,2022);
                 exampleP.Requested = new DateTime(year,month,day);
-                exampleP.DroneId = r.Next(1, 5);
+                exampleP.DroneId = r.Next(1, 6);
 
                 exampleP.Scheduled = exampleP.Requested.AddDays(r.Next(1,7));
                 exampleP.Pickup = exampleP.Requested.AddDays(r.Next(1, 7));
@@ -165,8 +170,8 @@ namespace DalObject
 
                 exampleS.Id = i + 1;
                 exampleS.Name = r.Next(20, 100);
-                exampleS.Longitude = r.Next(34, 45) + r.NextDouble();
-                exampleS.Latitude = r.Next(30, 31) + r.NextDouble();
+                exampleS.Longitude = r.Next(34, 46) + r.NextDouble();
+                exampleS.Latitude = r.Next(30, 32) + r.NextDouble();
                 exampleS.ChargeSlots = r.Next(7,13);
 
                 arrStation[i] = exampleS;
@@ -180,14 +185,17 @@ namespace DalObject
         {
             switch (itemToAdd)
             {
-                case ACTIONS.Menu.DRONE: arrDrone[thisConfig.indexAvailDrone++].add();
-                    //thisConfig.indexAvailDrone += 1;
-                break;
-                case ACTIONS.Menu.CUSTOMER: arrCustomer[thisConfig.indexAvailCustomer++].add();
+                case ACTIONS.Menu.DRONE: 
+                    arrDrone[thisConfig.indexAvailDrone++] = arrDrone[thisConfig.indexAvailDrone].add();
                     break;
-                case ACTIONS.Menu.PARCEL: arrParcel[thisConfig.indexAvailParcel++].add();
+                case ACTIONS.Menu.CUSTOMER:
+                    arrCustomer[thisConfig.indexAvailCustomer++] = arrCustomer[thisConfig.indexAvailCustomer].add();
                     break;
-                case ACTIONS.Menu.STATION: arrStation[thisConfig.indexAvailStation++].add();
+                case ACTIONS.Menu.PARCEL: 
+                    arrParcel[thisConfig.indexAvailParcel++] = arrParcel[thisConfig.indexAvailParcel].add();
+                    break;
+                case ACTIONS.Menu.STATION: 
+                    arrStation[thisConfig.indexAvailStation++] = arrStation[thisConfig.indexAvailStation].add();
                     break;
                 default:
                     break;
@@ -198,7 +206,10 @@ namespace DalObject
         {
             int index = findItem(_id, _item);
             if (index == -1)
+            {
                 Console.WriteLine(_item + " not found!\n");
+                return;
+            }
 
             switch (_item)
             {
@@ -223,15 +234,30 @@ namespace DalObject
                 case ACTIONS.Menu.DRONE:
                     foreach (IDAL.DO.Drone element in arrDrone)
                     {
-                        if(element.Id != -1)
+                        if(element.Id != 0)
                         element.print();
                     }
                     break;
-                case ACTIONS.Menu.CUSTOMER: // print customer
+                case ACTIONS.Menu.CUSTOMER:
+                    foreach (IDAL.DO.Customer element in arrCustomer)
+                    {
+                        if (element.Id != 0)
+                            element.print();
+                    }
                     break;
-                case ACTIONS.Menu.PARCEL: //print parcel
+                case ACTIONS.Menu.PARCEL:
+                    foreach (IDAL.DO.Parcel element in arrParcel)
+                    {
+                        if (element.Id != 0)
+                            element.print();
+                    }
                     break;
-                case ACTIONS.Menu.STATION: //print station
+                case ACTIONS.Menu.STATION:
+                    foreach (IDAL.DO.Station element in arrStation)
+                    {
+                        if (element.Id != 0)
+                            element.print();
+                    }
                     break;
                 case ACTIONS.Menu.CHARGING_STATIONS: // 
                     break;
