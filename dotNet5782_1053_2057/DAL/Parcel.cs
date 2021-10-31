@@ -31,7 +31,7 @@ namespace IDAL
                 TargetId = _targetId;
                 Weight = _weight;
                 Priority =_priority;
-                Requested = _requested;
+                Requested = _requested; //when we receive request for the parcel
                 DroneId = _droneId;
                 Scheduled = _scheduled;
                 Pickup = _pickup;
@@ -43,7 +43,7 @@ namespace IDAL
             public int TargetId { get; set; }
             public IDAL.DO.WeightCategories Weight { get; set; }
             public IDAL.DO.Priorities Priority { get; set; }
-            public DateTime Requested { get; set; }
+            public DateTime Requested { get; set; } //when we receive request for the parcel
             public int DroneId { get; set; }
             public DateTime Scheduled { get; set; }
             public DateTime Pickup { get; set; }

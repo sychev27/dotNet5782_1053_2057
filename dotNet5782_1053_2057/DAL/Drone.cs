@@ -65,10 +65,7 @@ namespace IDAL
                 return _drone;
             }
 
-            public int findDrone(int _id) 
-            {
-               
-            }
+           
 
         }
 
