@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 2 FINISH "ADD" FUNCTIONS <yes>
 
-3 DEAL WITH THE INDEXES IN "CONFIGURE" CLASS
+3 DEAL WITH THE INDEXES IN "CONFIGURE" CLASS 
 
 4 FINISH "INITIALIZE" function. <yes>
 
@@ -23,7 +23,7 @@ collectParcel()
 deliverParcel()
 chargeDrone()
 
-6 FIX ALL THE INTEGER - INPUTS
+6 FIX ALL THE INTEGER - INPUTS yes....
 
 int choice = 0;
   Int32.TryParse(Console.ReadLine(), out choice); <yes>
