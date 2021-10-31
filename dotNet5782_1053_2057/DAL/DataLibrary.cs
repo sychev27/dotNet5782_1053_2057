@@ -138,7 +138,7 @@ namespace DalObject
             for (int i = 0; i < 10; i++)
             {
                 IDAL.DO.Parcel exampleP = new IDAL.DO.Parcel();
-                exampleP.Id = i + 1;
+                exampleP.Id = thisConfig.parcelSerialNumber++;
                 exampleP.SenderId = arrCustomer[r.Next(0, 10)].Id; 
                 do
                 {
@@ -193,6 +193,7 @@ namespace DalObject
                     break;
                 case ACTIONS.Menu.PARCEL: 
                     arrParcel[thisConfig.indexAvailParcel++] = arrParcel[thisConfig.indexAvailParcel].add();
+                    thisConfig.parcelSerialNumber++;
                     break;
                 case ACTIONS.Menu.STATION: 
                     arrStation[thisConfig.indexAvailStation++] = arrStation[thisConfig.indexAvailStation].add();
@@ -234,7 +235,7 @@ namespace DalObject
                 case ACTIONS.Menu.DRONE:
                     foreach (IDAL.DO.Drone element in arrDrone)
                     {
-                        if(element.Id != 0)
+                        if (element.Id != 0)
                         element.print();
                     }
                     break;
@@ -272,19 +273,51 @@ namespace DalObject
 
         public void assignParcel(int parcelId) //assigns parcels to next available drone
         {
-            Console.WriteLine("update parcel droneId");
-        }
+            int parcIndex = findParcel(parcelId);
+            int droneIndex = -1; 
+            for (int i = 0; i < arrDrone.Length; i++)
+                if (arrDrone[i].Status == IDAL.DO.DroneStatus.available)
+                {
+                    droneIndex = i;
+                    break;
+                }
+
+            if(droneIndex == -1)
+            {
+                Console.WriteLine("No available drones!\n");
+                return;
+            }
+            //else - assign parcel to drone
+            arrParcel[parcIndex].DroneId = arrDrone[droneIndex].Id;
+         }
         public void collectParcel(int parcelId) //finds Drone (acc to Parcel::droneId), updates parcel
         {
-
+            int parcelIndex = findParcel(parcelId);
+            arrParcel[parcelIndex].Pickup = DateTime.Now;
+            arrDrone[findDrone(arrParcel[parcelIndex].DroneId)].Status = IDAL.DO.DroneStatus.sent;
+              
         }
-        public void deliverParcel(int pareclId)
+        public void deliverParcel(int parcelId)
         {
+            int parcelIndex = findParcel(parcelId);
+            arrParcel[parcelIndex].Delivered = DateTime.Now;
+            arrDrone[findDrone(arrParcel[parcelIndex].DroneId)].Status = IDAL.DO.DroneStatus.available;
 
         }
         public void chargeDrone(int droneId) //sends drone to available station.. 
-        { 
+        {
+            arrDrone[findDrone(droneId)].Status = IDAL.DO.DroneStatus.work_in_progress;
+            //find available spot at station:
+            for (int i = 0; i < arrStation.Length; i++)
+            {
+                int numSpots = arrStation[i].ChargeSlots;
+                //while (numSpots > 0)
+                //{
+                //    //check with drone Charge!
+                //}
 
+            }
+           
         }
         public void freeDrone(int droneId) //frees drone from station.. 
         {
