@@ -43,7 +43,6 @@ namespace DalObject
         internal static Config thisConfig = new Config();
 
 
-        //4 "FIND" FUNCTIONS...
         int findDrone(int _id) {
             for (int i = 0; i < arrDrone.Length; i++)
             {
@@ -58,12 +57,7 @@ namespace DalObject
         int findCustomer(int _id)
         {
             for (int i = 0; i < arrCustomer.Length; i++)
-            {
-                if (arrCustomer[i].Id == _id)
-                {
-                    return i;
-                }
-            }
+                if (arrCustomer[i].Id == _id)  return i;
             return -1;
         }
 
