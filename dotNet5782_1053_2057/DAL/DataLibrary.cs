@@ -45,12 +45,7 @@ namespace DalObject
 
         int findDrone(int _id) {
             for (int i = 0; i < arrDrone.Length; i++)
-            {
-                if (arrDrone[i].Id == _id)
-                {
-                    return i;
-                }
-            }
+                if (arrDrone[i].Id == _id) return i;
             return -1;
         }
 
@@ -64,27 +59,30 @@ namespace DalObject
         int findParcel(int _id)
         {
             for (int i = 0; i < arrParcel.Length; i++)
-            {
-                if (arrParcel[i].Id == _id)
-                {
-                    return i;
-                }
-            }
+                if (arrParcel[i].Id == _id) return i;
             return -1;
         }
 
         int findStation(int _id)
         {
             for (int i = 0; i < arrStation.Length; i++)
-            {
-                if (arrStation[i].Id == _id)
-                {
-                    return i;
-                }
-            }
+                if (arrStation[i].Id == _id) return i;
             return -1;
         }
 
+        int findItem(int id, string itemToFind) {
+            switch (itemToFind) {
+                case ACTIONS.Menu.DRONE:findDrone(id);
+                    break;
+                case ACTIONS.Menu.CUSTOMER: findCustomer(id);
+                    break;
+                case ACTIONS.Menu.PARCEL: findParcel(id);
+                    break;
+                case ACTIONS.Menu.STATION: findStation(id);
+                    break;
+            }
+            return -1;
+        }
         public static void Initialize()   
         {
             Random r = new Random();
