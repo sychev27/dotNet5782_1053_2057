@@ -108,7 +108,7 @@ namespace ACTIONS
         {
             Console.WriteLine("What would you like to update ?\n" +
                 "1: Assign a parcel to a drone\n" +
-                "2: Collect a parcel with a drone\n" +
+                "2: Collect a parcel with its assigned drone\n" +
                 "3: Deliver a parcel to a customer\n" +
                 "4: Send a drone to a charging station\n" +
                 "5: Free a drone from a charging station\n");

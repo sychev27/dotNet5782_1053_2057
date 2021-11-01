@@ -22,20 +22,20 @@ namespace IDAL
             //DateTime pickup;
             //DateTime delivered;
 
-            public Parcel(int _id,int _senderId,int _targetId,IDAL.DO.WeightCategories _weight,
-                          IDAL.DO.Priorities _priority,DateTime _requested,int _droneId,
-                          DateTime _scheduled,DateTime _pickup,DateTime _delivered)
+            public Parcel(/*int _id, */int _senderId,int _targetId,IDAL.DO.WeightCategories _weight,
+                          IDAL.DO.Priorities _priority,DateTime _requested,
+                          DateTime _scheduled)// DateTime _pickup, DateTime _delivered)
             {
-                Id = _id;
+                Id = DalObject.DataSource.thisConfig.parcelSerialNumber++; 
                 SenderId = _senderId;
                 TargetId = _targetId;
                 Weight = _weight;
                 Priority =_priority;
                 Requested = _requested; //when we receive request for the parcel
-                DroneId = _droneId;
+                DroneId = -1;             //null...
                 Scheduled = _scheduled;
-                Pickup = _pickup;
-                Delivered = _delivered;
+                Pickup = DateTime.MinValue;     //null...
+                Delivered = DateTime.MinValue; //null...
             }
 
             public int Id { get; set; }
@@ -67,15 +67,15 @@ namespace IDAL
             public Parcel add()
             {
                 Console.WriteLine("Please enter the parcel's info:" + "\n" +
-                    "id , senderId , targetId, droneId" + "\n");
-                int id = 0;
-                int.TryParse(Console.ReadLine(), out id);
+                    /*"id ,*/ "senderId , targetId"/*, droneId*/ + "\n");
+                //int id = 0;
+                //int.TryParse(Console.ReadLine(), out id);
                 int senderId = 0;
                 int.TryParse(Console.ReadLine(), out senderId);
                 int targetId = 0;
                 int.TryParse(Console.ReadLine(), out targetId);
-                int droneId = 0;
-                int.TryParse(Console.ReadLine(), out droneId);
+                //int droneId = 0;
+                //int.TryParse(Console.ReadLine(), out droneId);
                 Console.WriteLine("Enter a date (e.g. 10/22/1987) for requested");
                 DateTime requested = DateTime.Parse(Console.ReadLine());
                 Console.WriteLine("Enter a date (e.g. 10/22/1987) for scheduled");
@@ -97,7 +97,8 @@ namespace IDAL
                     "3: urgent" + "\n");
                 int num1 = 1;
                 int.TryParse(Console.ReadLine(), out num1);
-                Parcel _parcel = new Parcel(id, senderId, targetId, (WeightCategories)num,(Priorities)num1, requested, droneId, scheduled, pickup, delivered);
+                Parcel _parcel = new Parcel(/*id, */senderId, targetId, 
+                    (WeightCategories)num, (Priorities)num1, requested, scheduled);//, pickup, delivered);
                 return _parcel;
             }
 

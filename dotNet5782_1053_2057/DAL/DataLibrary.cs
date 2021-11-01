@@ -9,6 +9,7 @@ namespace IDAL
     {
         public enum WeightCategories    { light, medium, heavy };
         public enum DroneStatus         { available, work_in_progress, sent};
+        //work_in_progress - this Drone is charging...
         public enum Priorities          { regular, fast, urgent};
 
         
@@ -29,13 +30,13 @@ namespace DalObject
             internal int indexAvailParcel = 0;
             internal int indexAvailStation = 0;
             internal int indexAvailCustomer = 0;
-
-            internal int parcelSerialNumber = 0; //??
+            internal int indexAvailDroneCharge = 0;
+            internal int parcelSerialNumber = 1;
         }
 
 
         internal static IDAL.DO.Station[] arrStation = new IDAL.DO.Station[5];
-        // internal IDAL.DO.DroneCharge[] arrDroneCharge = new IDAL.DO.DroneCharge[];
+        internal static IDAL.DO.DroneCharge[] arrDroneCharge = new IDAL.DO.DroneCharge[10];
         internal static IDAL.DO.Drone[] arrDrone = new IDAL.DO.Drone[10];
         internal static IDAL.DO.Parcel[] arrParcel = new IDAL.DO.Parcel[1000];
         internal static IDAL.DO.Customer[] arrCustomer = new IDAL.DO.Customer[100];
@@ -87,11 +88,7 @@ namespace DalObject
         public static void Initialize()   
         {
             Random r = new Random();
-
-
-
             //initialize customer
-
             string[] customerNames = new string[12] { "Reuven", "Shimon", "Levi", 
                 "Yehuda", "Yissachar", "Zevulun", "Asher", "Gad", "Dan", "Naftali", 
                 "Yosef", "Binyamin" };
@@ -127,12 +124,27 @@ namespace DalObject
                 exampleD.Battery = r.Next(20, 100);
                 exampleD.MaxWeight = (IDAL.DO.WeightCategories) r.Next(1, 4);
                 exampleD.Model = droneModels[r.Next(0, 2)];
-                exampleD.Status = (IDAL.DO.DroneStatus)r.Next(1, 4);
+                exampleD.Status = (IDAL.DO.DroneStatus)r.Next(0, 3);
 
                 arrDrone[i] = exampleD;
                 thisConfig.indexAvailDrone++;
 
             }
+            //INITIALIZE STATION
+            for (int i = 0; i < 2; i++)
+            {
+                IDAL.DO.Station exampleS = new IDAL.DO.Station();
+
+                exampleS.Id = i + 1;
+                exampleS.Name = r.Next(20, 100);
+                exampleS.Longitude = r.Next(34, 46) + r.NextDouble();
+                exampleS.Latitude = r.Next(30, 32) + r.NextDouble();
+                exampleS.ChargeSlots = r.Next(7, 13);
+
+                arrStation[i] = exampleS;
+                thisConfig.indexAvailStation++;
+            }
+
 
             //INITIALIZE PARCELS
             for (int i = 0; i < 10; i++)
@@ -151,32 +163,25 @@ namespace DalObject
                 int day = r.Next(1,29);
                 int year = r.Next(2020,2022);
                 exampleP.Requested = new DateTime(year,month,day);
-                exampleP.DroneId = r.Next(1, 6);
+                //exampleP.DroneId = r.Next(1, 6);
+                //exampleP.Pickup = exampleP.Requested.AddDays(r.Next(1, 7));
+                //exampleP.Delivered = exampleP.Pickup.AddDays(r.Next(1, 3));
 
                 exampleP.Scheduled = exampleP.Requested.AddDays(r.Next(1,7));
-                exampleP.Pickup = exampleP.Requested.AddDays(r.Next(1, 7));
-                exampleP.Delivered = exampleP.Pickup.AddDays(r.Next(1, 3));
-
+                
                 arrParcel[i] = exampleP;
                 thisConfig.indexAvailParcel++;
-
             }
 
+            //for all parcels: assign drone???
+            //DalObject.DataSource example = new DalObject.DataSource();
+            //for (int i = 0; i < arrParcel.Length; i++)
+            //    if(arrParcel[i].Id != 0)
+            //        example.assignParcel(arrParcel[i].Id);
 
-            //INITIALIZE STATION
-            for (int i = 0; i < 2; i++)
-            {
-                IDAL.DO.Station exampleS = new IDAL.DO.Station();
 
-                exampleS.Id = i + 1;
-                exampleS.Name = r.Next(20, 100);
-                exampleS.Longitude = r.Next(34, 46) + r.NextDouble();
-                exampleS.Latitude = r.Next(30, 32) + r.NextDouble();
-                exampleS.ChargeSlots = r.Next(7,13);
+            //for all drones: assign drone Charge?
 
-                arrStation[i] = exampleS;
-                thisConfig.indexAvailStation++;
-            }
 
         }
 
@@ -260,9 +265,19 @@ namespace DalObject
                             element.print();
                     }
                     break;
-                case ACTIONS.Menu.CHARGING_STATIONS: // 
+                case ACTIONS.Menu.CHARGING_STATIONS:
+                    foreach (IDAL.DO.Station element in arrStation)
+                    {
+                        if (element.Id != 0 && element.freeSpots() > 0)
+                           element.print();
+                    }
                     break;
-                case ACTIONS.Menu.PRCL_TO_ASSIGN: //
+                case ACTIONS.Menu.PRCL_TO_ASSIGN:
+                    foreach (IDAL.DO.Parcel item in arrParcel)
+                    {
+                        if (item.Id != 0 && item.DroneId == 0)
+                            item.print();
+                    }
                     break;
 
                 default:
@@ -281,18 +296,24 @@ namespace DalObject
                     droneIndex = i;
                     break;
                 }
-
-            if(droneIndex == -1)
+            
+            if(droneIndex == -1) //if we did not find any drones..
             {
                 Console.WriteLine("No available drones!\n");
                 return;
             }
-            //else - assign parcel to drone
+            //else - assign parcel to drone...
             arrParcel[parcIndex].DroneId = arrDrone[droneIndex].Id;
+            
          }
-        public void collectParcel(int parcelId) //finds Drone (acc to Parcel::droneId), updates parcel
+        public void collectParcel(int parcelId)
         {
             int parcelIndex = findParcel(parcelId);
+            if (arrParcel[parcelIndex].DroneId == -1)
+            {
+                Console.WriteLine("Parcel is not yet assigned a drone! pls assign a drone, and then collect...\n");
+                return;
+            }
             arrParcel[parcelIndex].Pickup = DateTime.Now;
             arrDrone[findDrone(arrParcel[parcelIndex].DroneId)].Status = IDAL.DO.DroneStatus.sent;
               
@@ -300,28 +321,64 @@ namespace DalObject
         public void deliverParcel(int parcelId)
         {
             int parcelIndex = findParcel(parcelId);
+            if (arrParcel[parcelIndex].DroneId == -1)
+            {
+                Console.WriteLine("Parcel is not yet assigned a drone! pls assign a drone, and then collect...\n");
+                return;
+            }
+            //deal with not collected...
             arrParcel[parcelIndex].Delivered = DateTime.Now;
             arrDrone[findDrone(arrParcel[parcelIndex].DroneId)].Status = IDAL.DO.DroneStatus.available;
 
         }
-        public void chargeDrone(int droneId) //sends drone to available station.. 
+        public void chargeDrone(int droneId) //sends drone to available station, chosen by user 
         {
-            arrDrone[findDrone(droneId)].Status = IDAL.DO.DroneStatus.work_in_progress;
-            //find available spot at station:
-            for (int i = 0; i < arrStation.Length; i++)
-            {
-                int numSpots = arrStation[i].ChargeSlots;
-                //while (numSpots > 0)
-                //{
-                //    //check with drone Charge!
-                //}
+            Console.WriteLine("Here are the stations with available slots:\n");
+            printList(ACTIONS.Menu.CHARGING_STATIONS);
+            Console.WriteLine("Pls enter the Id of the station at which you want drone " + droneId + " to charge:\n");
 
+            int idStation = -1;
+            int indexStation = -1;
+            do
+            {
+                Int32.TryParse(Console.ReadLine(), out idStation);
+                indexStation = findStation(idStation);
+                if (indexStation == -1)
+                    Console.WriteLine("Station not found, pls enter a valid Station\n");
+            } while (indexStation == -1);
+
+            if (arrStation[indexStation].freeSpots() <= 0)
+            {
+                Console.WriteLine("No available spots at that station! pls start over...\n");
+                return;
             }
-           
+
+            IDAL.DO.DroneCharge ex = new IDAL.DO.DroneCharge(droneId, arrStation[indexStation].Id);
+            arrDroneCharge[DalObject.DataSource.thisConfig.indexAvailDroneCharge++] = ex;
+            arrDrone[findDrone(droneId)].Status = IDAL.DO.DroneStatus.work_in_progress;
+
+
+            //if no available spots..
+            Console.WriteLine("no available charging slots...\n");
+
         }
         public void freeDrone(int droneId) //frees drone from station.. 
         {
-
+            int index = -1 ;
+            for (int i = 0; i < arrDroneCharge.Length; i++) //find drone within "droneCharge"
+                if (arrDroneCharge[i].DroneId == arrDrone[droneId].Id)
+                {
+                    index = i; break;
+                }
+            if (index < 0)
+            { 
+                Console.WriteLine("This drone was not charging....\n"); 
+                return;
+            }
+            arrDroneCharge[index].DroneId = -1; // "-1" means that the item was erased..
+            arrDroneCharge[index].StationId = -1;
+            arrDrone[droneId].Status = IDAL.DO.DroneStatus.available;
+           
         }
 
 

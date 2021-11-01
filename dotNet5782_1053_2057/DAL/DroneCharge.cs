@@ -10,8 +10,13 @@ namespace IDAL
     {
         public struct DroneCharge
         {
-            int droneId;
-            int stationId;
+            //int droneId;
+            //int stationId;
+            public DroneCharge(int _droneId, int _stationId)
+            {
+                DroneId = _droneId;
+                StationId = _stationId;
+            }
             public int DroneId { get; set; }
             public int StationId { get; set; }
         }
