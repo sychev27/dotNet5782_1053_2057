@@ -38,27 +38,27 @@ namespace DalObject
             return -1;
         }
 
-        int findCustomer(int _id) {
+        public int findCustomer(int _id) {
             for (int i = 0; i < listCustomer.Count; i++)
                 if (listCustomer[i].Id == _id)  return i;
             return -1;
         }
 
-        int findParcel(int _id)
+        public int findParcel(int _id)
         {
             for (int i = 0; i < listParcel.Count; i++)
                 if (listParcel[i].Id == _id) return i;
             return -1;
         }
 
-        int findStation(int _id)
+        public int findStation(int _id)
         {
             for (int i = 0; i < listStation.Count; i++)
                 if (listStation[i].Id == _id) return i;
             return -1;
         }
 
-        int findItem(int id, string itemToFind) {
+        public int findItem(int id, string itemToFind) {
 
             int ans = -1;
             switch (itemToFind) {
