@@ -352,7 +352,7 @@ namespace DalObject
         {
             int index = -1 ;
             for (int i = 0; i < listDroneCharge.Count; i++) //find drone within "droneCharge"
-                if (listDroneCharge[i].DroneId == listDrone[droneId].Id)
+                if (listDroneCharge[i].DroneId == droneId)
                 {
                     index = i; break;
                 }
@@ -361,9 +361,11 @@ namespace DalObject
                 Console.WriteLine("This drone was not charging....\n"); 
                 return;
             }
-            listDroneCharge[index].DroneId = -1; // "-1" means that the item was erased..
-            listDroneCharge[index].StationId = -1;
-            listDrone[droneId].Status = IDAL.DO.DroneStatus.available;
+            IDAL.DO.DroneCharge drChCopy = listDroneCharge[index];
+            drChCopy.DroneId = -1;
+            drChCopy.StationId = -1;
+            listDroneCharge[index] = drChCopy;
+            // "-1" means that the item was erased..
            
         }
 
