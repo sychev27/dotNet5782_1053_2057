@@ -24,13 +24,12 @@ namespace DalObject
 
     internal class Config
         {
-            //indexes of next available item in each array
-            //internal int indexAvailDrone = 0;
-            //internal int indexAvailParcel = 0;
-            //internal int indexAvailStation = 0;
-            //internal int indexAvailCustomer = 0;
-            //internal int indexAvailDroneCharge = 0;
-            internal int parcelSerialNumber = 1;
+           internal static double empty = 0;
+            internal static double light = 0;
+            internal static double mediuim = 0;
+            internal static double heavy = 0;
+            internal static double chargeRate = 0; // per hour
+           internal int parcelSerialNumber = 1;
         }
 
 
@@ -384,6 +383,7 @@ namespace DalObject
         {
             double[] arr = { 0 };
             Console.WriteLine("request Electrtiy...\n");
+
             return arr;
         }
     }
