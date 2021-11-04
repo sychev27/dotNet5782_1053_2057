@@ -114,6 +114,7 @@ namespace ACTIONS //
                 "5: Free a drone from a charging station\n");
 
             int choice = 0;
+            int id = 0;
             Int32.TryParse(Console.ReadLine(), out choice);
             
             DalObject.DataSource library = new DalObject.DataSource();
@@ -122,28 +123,28 @@ namespace ACTIONS //
             {
                 case 1:
                     Console.WriteLine("Enter the ID of the parcel you would like to assign:\n");
-                    Int32.TryParse(Console.ReadLine(), out choice);
-                    library.assignParcel(choice);
+                    Int32.TryParse(Console.ReadLine(), out id);
+                    library.assignParcel(id);
                     break;
                 case 2:
                     Console.WriteLine("Enter the ID of the parcel you would like to collect:\n");
-                    Int32.TryParse(Console.ReadLine(), out choice);
-                    library.collectParcel(choice);
+                    Int32.TryParse(Console.ReadLine(), out id);
+                    library.collectParcel(id);
                     break;
                 case 3:
                     Console.WriteLine("Enter the ID of the parcel you would like to deliver:\n ");
-                    Int32.TryParse(Console.ReadLine(), out choice);
-                    library.deliverParcel(choice);
+                    Int32.TryParse(Console.ReadLine(), out id);
+                    library.deliverParcel(id);
                     break;
                 case 4:
                     Console.WriteLine("Enter the ID of the drone you would like to charge:\n ");
-                    Int32.TryParse(Console.ReadLine(), out choice);
-                    library.chargeDrone(choice);
+                    Int32.TryParse(Console.ReadLine(), out id);
+                    library.chargeDrone(id);
                     break;
                 case 5:
                     Console.WriteLine("Enter the ID of the drone you would like to free:\n ");
-                    Int32.TryParse(Console.ReadLine(), out choice);
-                    library.freeDrone(choice);
+                    Int32.TryParse(Console.ReadLine(), out id);
+                    library.freeDrone(id);
                     break;
                 default:
                     break;
