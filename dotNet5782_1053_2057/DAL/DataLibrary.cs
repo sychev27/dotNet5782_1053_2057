@@ -2,24 +2,12 @@
 using System.Collections.Generic;
 
 
-namespace IDAL
-{
- 
-    namespace DO
-    {
-        public enum WeightCategories    { light, medium, heavy };
-       // public enum DroneStatus         { available, work_in_progress, sent};
-        //work_in_progress - this Drone is charging...
-        public enum Priorities          { regular, fast, urgent};
 
-        
-    }
-}
 
 
 namespace DalObject
 { 
-    public class DataSource
+    public class DataSource : IDAL
     {
    
 
