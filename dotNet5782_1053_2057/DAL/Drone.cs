@@ -29,8 +29,8 @@ namespace IDAL
 
             public void print()
             {
-                Console.WriteLine("Drone " + Id + " " + Model + "\n"+
-                   "MaxWeight: " + MaxWeight + "\n" +
+                Console.WriteLine("Drone " + Id + " " + Model + "\n" +
+                   "MaxWeight: " + MaxWeight + "\n" );
                    //Status + "\n" +
                    //"Battery: " + Battery + "\n");
             }
@@ -56,7 +56,7 @@ namespace IDAL
                     "3: sent" + "/n");
                 int num1 = 1;
                 int.TryParse(Console.ReadLine(), out num1);
-                Drone _drone = new Drone(id, model, (WeightCategories)num)//, (DroneStatus)num1 , battery);
+                Drone _drone = new Drone(id, model, (WeightCategories)num);//, (DroneStatus)num1 , battery);
                 return _drone;
             }
 

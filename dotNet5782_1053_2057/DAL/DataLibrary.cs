@@ -2,12 +2,23 @@
 using System.Collections.Generic;
 
 
+namespace IDAL
+{
 
+    namespace DO
+    {
+        public enum WeightCategories { light, medium, heavy };
+        // public enum DroneStatus         { available, work_in_progress, sent};
+        //work_in_progress - this Drone is charging...
+        public enum Priorities { regular, fast, urgent };
+    }
+
+}
 
 
 namespace DalObject
 { 
-    public class DataSource : IDAL.IDal
+    public class DataSource : Idal.IDal
     {
    
 
@@ -19,7 +30,7 @@ namespace DalObject
             //internal int indexAvailStation = 0;
             //internal int indexAvailCustomer = 0;
             //internal int indexAvailDroneCharge = 0;
-            //internal int parcelSerialNumber = 1;
+            internal int parcelSerialNumber = 1;
         }
 
 
@@ -138,7 +149,7 @@ namespace DalObject
             for (int i = 0; i < 10; i++)
             {
                 IDAL.DO.Parcel exampleP = new IDAL.DO.Parcel();
-                //exampleP.Id = thisConfig.parcelSerialNumber++;
+                exampleP.Id = thisConfig.parcelSerialNumber++;
                 exampleP.SenderId = listCustomer[r.Next(0, 10)].Id; 
                 do
                 {
@@ -369,7 +380,12 @@ namespace DalObject
            
         }
 
-        
+        public double[] requestElec()
+        {
+            double[] arr = { 0 };
+            Console.WriteLine("dummy\n");
+            return arr;
+        }
     }
 
 }
