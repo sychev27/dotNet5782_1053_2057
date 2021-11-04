@@ -106,7 +106,7 @@ namespace DalObject
             exampleC.Name = customerNames[i];
             exampleC.Phone = customerPhones[i];
 
-            listCustomer[i] = exampleC;
+            listCustomer.Add(exampleC);
             //thisConfig.indexAvailCustomer++;
             }
 
@@ -125,7 +125,7 @@ namespace DalObject
                 exampleD.Model = droneModels[r.Next(0, 2)];
                 //exampleD.Status = (IDAL.DO.DroneStatus)r.Next(0, 3);
 
-                listDrone[i] = exampleD;
+                listDrone.Add(exampleD);
                 //thisConfig.indexAvailDrone++;
 
             }
@@ -140,7 +140,7 @@ namespace DalObject
                 exampleS.Latitude = r.Next(30, 32) + r.NextDouble();
                 exampleS.ChargeSlots = r.Next(7, 13);
 
-                listStation[i] = exampleS;
+                listStation.Add(exampleS);
                 //thisConfig.indexAvailStation++;
             }
 
@@ -168,7 +168,7 @@ namespace DalObject
 
                 exampleP.Scheduled = exampleP.Requested.AddDays(r.Next(1,7));
                 
-                listParcel[i] = exampleP;
+                listParcel.Add(exampleP);
                 //thisConfig.indexAvailParcel++;
             }
 
@@ -383,7 +383,7 @@ namespace DalObject
         public double[] requestElec()
         {
             double[] arr = { 0 };
-            Console.WriteLine("dummy\n");
+            Console.WriteLine("request Electrtiy...\n");
             return arr;
         }
     }
