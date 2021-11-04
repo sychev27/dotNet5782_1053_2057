@@ -173,15 +173,7 @@ namespace DalObject
                 thisConfig.indexAvailParcel++;
             }
 
-            //for all parcels: assign drone???
-            //DalObject.DataSource example = new DalObject.DataSource();
-            //for (int i = 0; i < arrParcel.Length; i++)
-            //    if(arrParcel[i].Id != 0)
-            //        example.assignParcel(arrParcel[i].Id);
-
-
-            //for all drones: assign drone Charge?
-
+            
 
         }
 
