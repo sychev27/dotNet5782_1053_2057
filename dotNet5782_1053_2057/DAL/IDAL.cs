@@ -22,16 +22,17 @@ namespace IDAL
         int findParcel(int _id);
         int findStation(int _id);
         int findItem(int id, string itemToFind);
-        public void addItem(string itemToAdd);
-        public void printItem(string _item, int _id);
-        public void printList(string _item);
-        public void assignParcel(int parcelId);
-        public void collectParcel(int parcelId);
-        public void deliverParcel(int parcelId);
-        public void chargeDrone(int droneId);
-        public void freeDrone(int droneId);
-        
+        void addItem(string itemToAdd);
+        void printItem(string _item, int _id);
+        void printList(string _item);
+        void assignParcel(int parcelId);
+        void collectParcel(int parcelId);
+        void deliverParcel(int parcelId);
+        void chargeDrone(int droneId);
+        void freeDrone(int droneId);
 
+        double[] requestElec();
+        
 
 
 
