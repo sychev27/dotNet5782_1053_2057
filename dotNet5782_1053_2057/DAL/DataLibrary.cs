@@ -299,10 +299,11 @@ namespace DalObject
             copy.Pickup = DateTime.Now;
             listParcel[parcelIndex] = copy;
             
-            int droneIndex =  findDrone(listParcel[parcelIndex].DroneId);
-            IDAL.DO.Drone droneCopy = listDrone[droneIndex];
-            droneCopy.Stat
-            listDrone[findDrone(listParcel[parcelIndex].DroneId)].Status = IDAL.DO.DroneStatus.sent;
+            //int droneIndex =  findDrone(listParcel[parcelIndex].DroneId);
+            //IDAL.DO.Drone droneCopy = listDrone[droneIndex];
+
+            //droneCopy.Statu
+            //listDrone[findDrone(listParcel[parcelIndex].DroneId)].Status = IDAL.DO.DroneStatus.sent;
               
         }
         public void deliverParcel(int parcelId)
@@ -314,8 +315,10 @@ namespace DalObject
                 return;
             }
             //deal with not collected...
-            listParcel[parcelIndex].Delivered = DateTime.Now;
-            listDrone[findDrone(listParcel[parcelIndex].DroneId)].Status = IDAL.DO.DroneStatus.available;
+            IDAL.DO.Parcel parselCopy = listParcel[parcelIndex];
+            parselCopy.Delivered = DateTime.Now;
+            listParcel[parcelIndex] = parselCopy;
+           // listDrone[findDrone(listParcel[parcelIndex].DroneId)].Status = IDAL.DO.DroneStatus.available;
 
         }
         public void chargeDrone(int droneId) //sends drone to available station, chosen by user 
@@ -341,12 +344,8 @@ namespace DalObject
             }
 
             IDAL.DO.DroneCharge ex = new IDAL.DO.DroneCharge(droneId, listStation[indexStation].Id);
-            listDroneCharge[DalObject.DataSource.thisConfig.indexAvailDroneCharge++] = ex;
-            listDrone[findDrone(droneId)].Status = IDAL.DO.DroneStatus.work_in_progress;
-
-
-            //if no available spots..
-            Console.WriteLine("no available charging slots...\n");
+            listDroneCharge.Add(ex);
+            //listDrone[findDrone(droneId)].Status = IDAL.DO.DroneStatus.work_in_progress;
 
         }
         public void freeDrone(int droneId) //frees drone from station.. 
