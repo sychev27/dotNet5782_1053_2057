@@ -35,7 +35,7 @@ namespace IDAL
                    //"Battery: " + Battery + "\n");
             }
 
-            public Drone add()
+            public static Drone Create()
             {
                 Console.WriteLine("Please enter the drone's info:" + "\n" +
                     "id , battery , model" + "\n");
@@ -56,7 +56,7 @@ namespace IDAL
                     "3: sent" + "/n");
                 int num1 = 1;
                 int.TryParse(Console.ReadLine(), out num1);
-                Drone _drone = new Drone(id, model, (WeightCategories)num);//, (DroneStatus)num1 , battery);
+                Drone _drone = new Drone(id, model, (WeightCategories)num)//, (DroneStatus)num1 , battery);
                 return _drone;
             }
 

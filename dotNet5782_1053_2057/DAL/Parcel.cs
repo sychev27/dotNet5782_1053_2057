@@ -64,7 +64,7 @@ namespace IDAL
                     );
             }
 
-            public Parcel add()
+            public static Parcel Create()
             {
                 Console.WriteLine("Please enter the parcel's info:" + "\n" +
                      "senderId , targetId" + "\n");

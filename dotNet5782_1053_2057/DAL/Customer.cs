@@ -39,7 +39,7 @@ namespace IDAL
                     "(" + Longitude + "," + Longitude + ")" + "\n");
             }
 
-            public Customer add() {
+            public static Customer Create() {
                 Console.WriteLine("Please enter the customer's info:" + "\n" +
                     "id, name, phone, longitude, latitude " + "/n");
                 int id = 0;

@@ -38,7 +38,7 @@ namespace IDAL
                     "ChargeSlots: " + ChargeSlots + "\n");
             }
 
-            public Station add() 
+            public static Station Create() 
             {
                 Console.WriteLine("Please enter the station's info:" + "\n" +
                    "id, name, longitude, latitude, chargeSlots " + "/n");

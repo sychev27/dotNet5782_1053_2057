@@ -180,20 +180,20 @@ namespace DalObject
 
         public void addItem(string itemToAdd)
         {
+            
             switch (itemToAdd)
             {
                 case ACTIONS.Menu.DRONE: 
-                    listDrone.add();
+                    listDrone.Add(IDAL.DO.Drone.Create());
                     break;
                 case ACTIONS.Menu.CUSTOMER:
-                    listCustomer.add();
+                    listCustomer.Add(IDAL.DO.Customer.Create());
                     break;
                 case ACTIONS.Menu.PARCEL: 
-                    listParcel[thisConfig.indexAvailParcel++] = listParcel[thisConfig.indexAvailParcel].add();
-                    thisConfig.parcelSerialNumber++;
+                    listParcel.Add(IDAL.DO.Parcel.Create());
                     break;
-                case ACTIONS.Menu.STATION: 
-                    listStation[thisConfig.indexAvailStation++] = listStation[thisConfig.indexAvailStation].add();
+                case ACTIONS.Menu.STATION:
+                    listStation.Add(IDAL.DO.Station.Create());
                     break;
                 default:
                     break;
@@ -280,22 +280,23 @@ namespace DalObject
 
         public void assignParcel(int parcelId) //assigns parcels to next available drone
         {
-            int parcIndex = findParcel(parcelId);
-            int droneIndex = -1; 
-            for (int i = 0; i < listDrone.Count; i++)
-                if (listDrone[i].Status == IDAL.DO.DroneStatus.available)
-                {
-                    droneIndex = i;
-                    break;
-                }
+            Console.WriteLine("under construction\n");
+            //int parcIndex = findParcel(parcelId);
+            //int droneIndex = -1; 
+            //for (int i = 0; i < listDrone.Count; i++)
+            //    if (listDrone[i].Status == IDAL.DO.DroneStatus.available)
+            //    {
+            //        droneIndex = i;
+            //        break;
+            //    }
             
-            if(droneIndex == -1) //if we did not find any drones..
-            {
-                Console.WriteLine("No available drones!\n");
-                return;
-            }
-            //else - assign parcel to drone...
-            listParcel[parcIndex].DroneId = listDrone[droneIndex].Id;
+            //if(droneIndex == -1) //if we did not find any drones..
+            //{
+            //    Console.WriteLine("No available drones!\n");
+            //    return;
+            //}
+            ////else - assign parcel to drone...
+            //listParcel[parcIndex].DroneId = listDrone[droneIndex].Id;
             
          }
         public void collectParcel(int parcelId)
@@ -306,7 +307,13 @@ namespace DalObject
                 Console.WriteLine("Parcel is not yet assigned a drone! pls assign a drone, and then collect...\n");
                 return;
             }
-            listParcel[parcelIndex].Pickup = DateTime.Now;
+            IDAL.DO.Parcel copy = listParcel[parcelIndex];
+            copy.Pickup = DateTime.Now;
+            listParcel[parcelIndex] = copy;
+            
+            int droneIndex =  findDrone(listParcel[parcelIndex].DroneId);
+            IDAL.DO.Drone droneCopy = listDrone[droneIndex];
+            droneCopy.Stat
             listDrone[findDrone(listParcel[parcelIndex].DroneId)].Status = IDAL.DO.DroneStatus.sent;
               
         }
