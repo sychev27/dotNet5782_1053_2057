@@ -15,7 +15,7 @@ namespace IDAL
         public enum Priorities { regular, fast, urgent };
     }
 
-    interface IDAL
+    interface IDal
     {
         int findDrone(int _id);
 

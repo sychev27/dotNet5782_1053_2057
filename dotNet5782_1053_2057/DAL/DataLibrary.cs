@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace DalObject
 { 
-    public class DataSource : IDAL
+    public class DataSource : IDAL.IDal
     {
    
 
@@ -32,7 +32,7 @@ namespace DalObject
         internal static Config thisConfig = new Config();
 
 
-        int findDrone(int _id) {
+        public int findDrone(int _id) {
             for (int i = 0; i < listDrone.Count; i++)
                 if (listDrone[i].Id == _id) return i;
             return -1;
