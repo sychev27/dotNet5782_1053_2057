@@ -4,8 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ACTIONS //
+namespace CONSOLE //
 {
+
+    //input , output
+    //IDAL.DO.Drone() motek= ; <<-- WRONG!!
+    //IDAL.IDal.addDrone(motek);
+
+    //input , output
+    //IDAL.IDal.addDrone(input...);
+
+
+    
 
 
     public class Menu
@@ -19,7 +29,7 @@ namespace ACTIONS //
        
         public void beginMenu() //uses function "chooseItem"...
         {
-            DalObject.DataSource library = new DalObject.DataSource();
+            IDAL.IDal library = new DalObject.DataSource();
 
             bool repeat = true;
             while (repeat)
@@ -117,7 +127,7 @@ namespace ACTIONS //
             int id = 0;
             Int32.TryParse(Console.ReadLine(), out choice);
             
-            DalObject.DataSource library = new DalObject.DataSource();
+            IDAL.IDal library = new DalObject.DataSource();
            
             switch (choice)
             {

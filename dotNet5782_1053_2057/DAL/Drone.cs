@@ -37,6 +37,7 @@ namespace IDAL
 
             public static Drone Create()
             {
+
                 Console.WriteLine("Please enter the drone's info:" + "\n" +
                     "id , battery , model" + "\n");
                 int id = 0;

@@ -18,18 +18,18 @@ namespace IDAL
 
 namespace DalObject
 { 
-    public class DataSource : Idal.IDal
+    public class DataSource : IDAL.IDal
     {
    
 
     internal class Config
         {
-           internal static double empty = 0;
+            internal static double empty = 0;
             internal static double light = 0;
             internal static double mediuim = 0;
             internal static double heavy = 0;
             internal static double chargeRate = 0; // per hour
-           internal int parcelSerialNumber = 1;
+            internal int parcelSerialNumber = 1;
         }
 
 
@@ -72,13 +72,13 @@ namespace DalObject
 
             int ans = -1;
             switch (itemToFind) {
-                case ACTIONS.Menu.DRONE: ans = findDrone(id);
+                case CONSOLE.Menu.DRONE: ans = findDrone(id);
                     break;
-                case ACTIONS.Menu.CUSTOMER: ans =findCustomer(id);
+                case CONSOLE.Menu.CUSTOMER: ans =findCustomer(id);
                     break;
-                case ACTIONS.Menu.PARCEL: ans = findParcel(id);
+                case CONSOLE.Menu.PARCEL: ans = findParcel(id);
                     break;
-                case ACTIONS.Menu.STATION: ans = findStation(id);
+                case CONSOLE.Menu.STATION: ans = findStation(id);
                     break;
             }
             return ans;
@@ -133,6 +133,7 @@ namespace DalObject
             {
                 IDAL.DO.Station exampleS = new IDAL.DO.Station();
 
+
                 exampleS.Id = i + 1;
                 exampleS.Name = r.Next(20, 100);
                 exampleS.Longitude = r.Next(34, 46) + r.NextDouble();
@@ -181,16 +182,16 @@ namespace DalObject
             
             switch (itemToAdd)
             {
-                case ACTIONS.Menu.DRONE: 
+                case CONSOLE.Menu.DRONE: 
                     listDrone.Add(IDAL.DO.Drone.Create());
                     break;
-                case ACTIONS.Menu.CUSTOMER:
+                case CONSOLE.Menu.CUSTOMER:
                     listCustomer.Add(IDAL.DO.Customer.Create());
                     break;
-                case ACTIONS.Menu.PARCEL: 
+                case CONSOLE.Menu.PARCEL: 
                     listParcel.Add(IDAL.DO.Parcel.Create());
                     break;
-                case ACTIONS.Menu.STATION:
+                case CONSOLE.Menu.STATION:
                     listStation.Add(IDAL.DO.Station.Create());
                     break;
                 default:
@@ -209,13 +210,13 @@ namespace DalObject
 
             switch (_item)
             {
-                case ACTIONS.Menu.DRONE: listDrone[index].print();
+                case CONSOLE.Menu.DRONE: listDrone[index].print();
                     break;
-                case ACTIONS.Menu.CUSTOMER: listCustomer[index].print();
+                case CONSOLE.Menu.CUSTOMER: listCustomer[index].print();
                     break;
-                case ACTIONS.Menu.PARCEL: listParcel[index].print();
+                case CONSOLE.Menu.PARCEL: listParcel[index].print();
                     break;
-                case ACTIONS.Menu.STATION: listParcel[index].print();
+                case CONSOLE.Menu.STATION: listParcel[index].print();
                     break;
                 default:
                     break;
@@ -227,42 +228,42 @@ namespace DalObject
         {
             switch (_item)
             {
-                case ACTIONS.Menu.DRONE:
+                case CONSOLE.Menu.DRONE:
                     foreach (IDAL.DO.Drone element in listDrone)
                     {
                         if (element.Id != 0)
                         element.print();
                     }
                     break;
-                case ACTIONS.Menu.CUSTOMER:
+                case CONSOLE.Menu.CUSTOMER:
                     foreach (IDAL.DO.Customer element in listCustomer)
                     {
                         if (element.Id != 0)
                             element.print();
                     }
                     break;
-                case ACTIONS.Menu.PARCEL:
+                case CONSOLE.Menu.PARCEL:
                     foreach (IDAL.DO.Parcel element in listParcel)
                     {
                         if (element.Id != 0)
                             element.print();
                     }
                     break;
-                case ACTIONS.Menu.STATION:
+                case CONSOLE.Menu.STATION:
                     foreach (IDAL.DO.Station element in listStation)
                     {
                         if (element.Id != 0)
                             element.print();
                     }
                     break;
-                case ACTIONS.Menu.CHARGING_STATIONS:
+                case CONSOLE.Menu.CHARGING_STATIONS:
                     foreach (IDAL.DO.Station element in listStation)
                     {
                         if (element.Id != 0 && element.freeSpots() > 0)
                            element.print();
                     }
                     break;
-                case ACTIONS.Menu.PRCL_TO_ASSIGN:
+                case CONSOLE.Menu.PRCL_TO_ASSIGN:
                     foreach (IDAL.DO.Parcel item in listParcel)
                     {
                         if (item.Id != 0 && item.DroneId == 0)
@@ -334,7 +335,7 @@ namespace DalObject
         public void chargeDrone(int droneId) //sends drone to available station, chosen by user 
         {
             Console.WriteLine("Here are the stations with available slots:\n");
-            printList(ACTIONS.Menu.CHARGING_STATIONS);
+            printList(CONSOLE.Menu.CHARGING_STATIONS);
             Console.WriteLine("Pls enter the Id of the station at which you want drone " + droneId + " to charge:\n");
 
             int idStation = -1;
