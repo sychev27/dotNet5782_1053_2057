@@ -4,18 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CONSOLE //
+namespace ACTIONS //
 {
-
-    //input , output
-    //IDAL.DO.Drone() motek= ; <<-- WRONG!!
-    //IDAL.IDal.addDrone(motek);
-
-    //input , output
-    //IDAL.IDal.addDrone(input...);
-
-
-    
 
 
     public class Menu

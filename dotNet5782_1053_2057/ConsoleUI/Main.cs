@@ -11,7 +11,7 @@ namespace ConsoleUI
         static void Main(string[] args)
         {
             DalObject.DataSource.Initialize();
-            CONSOLE.Menu m = new CONSOLE.Menu();
+            ACTIONS.Menu m = new ACTIONS.Menu();
             m.beginMenu();
 
 
