@@ -6,22 +6,11 @@ using System.Threading.Tasks;
 
 /*
  
+(DAL):
+1 create functions that return Clones 
 
-4 FINISH "INITIALIZE" function. 
-
-5 FINISH FUNCTIONS (ALREADY EXIST IN DataLibrary):
-assignParcel(), לשייך חבילה
-collectParcel()
-deliverParcel()
-chargeDrone()
-
-
-7  DEBUGGING.... 
-
-
-
-
- 
+(ACTIONS):
+1 create "print" functions (that receive clones...)
  
  
  */
