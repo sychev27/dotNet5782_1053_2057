@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IDAL
 { 
-    interface IDal
+    public interface IDal
     {
         int findDrone(int _id);
         int findCustomer(int _id);
