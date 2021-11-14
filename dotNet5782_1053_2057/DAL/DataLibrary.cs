@@ -18,7 +18,7 @@ namespace IDAL
 
 namespace DalObject
 { 
-    public class DataSource : IDAL.IDal
+    public class DataSource :IDAL.IDal
     {
    
 
