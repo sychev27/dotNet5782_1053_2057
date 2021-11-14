@@ -16,11 +16,12 @@ namespace ConsoleUI //
         public const string STATION = "station";
         public const string PRCL_TO_ASSIGN = "ParcelsNotYetAssigned";
         public const string CHARGING_STATIONS = "availChargingStations";
+
+        
        
         public void beginMenu() //uses function "chooseItem"...
         {
             IDAL.IDal library = new DalObject.DataSource();
-
 
             bool repeat = true;
             while (repeat)

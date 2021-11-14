@@ -8,6 +8,6 @@ namespace IBL
 {
     public interface Ibl
     {
-        void addDrone();
+        void addDrone(int _id, string _model, IDAL.DO.WeightCategories _maxWeight);
     }
 }
