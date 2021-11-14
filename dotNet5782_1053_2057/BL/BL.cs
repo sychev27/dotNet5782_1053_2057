@@ -22,9 +22,22 @@ namespace IB
         }
         public void addDroneCharge(int _droneId, int _stationId)
         {
-            IDAL.DO.DroneCharge(_droneId, _stationId);
-            
+            IDAL.DO.DroneCharge dummy = new IDAL.DO.DroneCharge(_droneId, _stationId);
+            dataAccess.addDroneCharge(dummy);  
         }
+        public void addParcel(int _senderId, int _targetId, IDAL.DO.WeightCategories _weight,
+                         IDAL.DO.Priorities _priority, DateTime _requested, DateTime _scheduled)
+        {
+            IDAL.DO.Parcel dummy = new IDAL.DO.Parcel(_senderId, _targetId, _weight, _priority, _requested, _scheduled);
+            dataAccess.addParcel(dummy);
+        }
+        public void addStation(int _id, int _name, double _longitude, double _latitude, int _chargeSlots)
+        {
+            IDAL.DO.Station dummy = new IDAL.DO.Station(_id, _name, _longitude, _latitude, _chargeSlots);
+            dataAccess.addStation(dummy);
+        }
+
+
         //end of class
     }
 }
