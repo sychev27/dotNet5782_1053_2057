@@ -28,7 +28,7 @@ namespace IDAL
        // void chargeDrone(int droneId);
        // void freeDrone(int droneId);
 
-        // double[] requestElec();
+         IEnumerable<double> requestElec();
 
 
 

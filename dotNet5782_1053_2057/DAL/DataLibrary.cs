@@ -25,11 +25,11 @@ namespace DalObject
 
     internal class Config
         {
-            internal static double empty = 0;
-            internal static double light = 0;
-            internal static double mediuim = 0;
-            internal static double heavy = 0;
-            internal static double chargeRate = 0; // per hour
+            internal static double empty = 100;
+            internal static double light = 120;
+            internal static double mediuim =140;
+            internal static double heavy = 160;
+            internal static double chargeRate = 5.5; // per hour
             internal int parcelSerialNumber = 1;
         }
 
@@ -96,6 +96,11 @@ namespace DalObject
         public void addDroneCharge(IDAL.DO.DroneCharge droneCharge)
         {
             listDroneCharge.Add(droneCharge);
+        }
+
+       public IEnumerable<double> requestElec() {
+            List<double> lst = new List<double> {Config.empty, Config.light, Config.mediuim, Config.heavy ,Config.chargeRate};
+            return lst;
         }
 
         //public int findItem(int id, string itemToFind) {
