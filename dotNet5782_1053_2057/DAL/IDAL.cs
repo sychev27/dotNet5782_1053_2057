@@ -16,6 +16,8 @@ namespace IDAL
         void addDrone(IDAL.DO.Drone drone);
         void addParcel(IDAL.DO.Parcel parcel);
         void addStation(IDAL.DO.Station st);
+        void addDroneCharge(IDAL.DO.DroneCharge droneCharge);
+
        // int findItem(int id, string itemToFind);
        // void addItem(string itemToAdd);
        // void printItem(string _item, int _id);

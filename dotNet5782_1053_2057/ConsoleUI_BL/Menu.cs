@@ -64,9 +64,6 @@ namespace ConsoleUI_BL
 
             }
         }
-
-
-
         private string chooseItem(string action)
         {  //prints options, returns item chosen..
 
@@ -107,8 +104,6 @@ namespace ConsoleUI_BL
 
             return null;
         }
-
-
         void updateOptions()
         {
             Console.WriteLine("What would you like to update ?\n" +
@@ -157,9 +152,70 @@ namespace ConsoleUI_BL
         }
 
 
+        public void addItem(string itemToAdd)
+        {
+
+            switch (itemToAdd)
+            {
+                case DRONE:
+                    inputDrone();
+                    break;
+                case CUSTOMER:
+                    inputCustomer();
+                    break;
+                case PARCEL:
+                    listParcel.Add(IDAL.DO.Parcel.Create());
+                    break;
+                case STATION:
+                    listStation.Add(IDAL.DO.Station.Create());
+                    break;
+                default:
+                    break;
+            }
+        }
 
 
+       
+        public void inputDrone() //receives drone from user and adds to database
+        { 
 
+            Console.WriteLine("Please enter the drone's info:" + "\n" +
+                "id , battery , model" + "\n");
+            int id = 0;
+            int.TryParse(Console.ReadLine(), out id);
+            //double battery = 0;
+            //double.TryParse(Console.ReadLine(), out battery);
+            string model = Console.ReadLine();
+            Console.WriteLine("Please enter the drone's max weight:" + "\n" +
+                "1: light" + "/n" +
+                "2: medium" + "/n" +
+                "3: heavy" + "/n");
+            int num = 1;
+            int.TryParse(Console.ReadLine(), out num);
+            Console.WriteLine("Please enter the drone's status:" + "\n" +
+                "1: available" + "/n" +
+                "2: work_in_progress" + "/n" +
+                "3: sent" + "/n");
+            int num1 = 1;
+            int.TryParse(Console.ReadLine(), out num1);
+
+            busiAccess.addDrone(id, model, (IDAL.DO.WeightCategories)num);
+        }
+        public void inputCustomer() //receives drone from user and adds to database
+        {
+            Console.WriteLine("Please enter the customer's info:" + "\n" +
+                "id, name, phone, longitude, latitude " + "/n");
+            int id = 0;
+            int.TryParse(Console.ReadLine(), out id);
+            string name = Console.ReadLine();
+            string phone = Console.ReadLine();
+            double longitude = 0;
+            double.TryParse(Console.ReadLine(), out longitude);
+            double latitude = 0;
+            double.TryParse(Console.ReadLine(), out latitude);
+            busiAccess.addCustomer(id, name, phone, longitude, latitude);
+   
+        }
 
 
 

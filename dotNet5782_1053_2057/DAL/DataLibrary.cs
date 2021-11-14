@@ -16,6 +16,7 @@ namespace IDAL
 }
 
 
+
 namespace DalObject
 { 
     public class DataSource :IDAL.IDal
@@ -91,6 +92,10 @@ namespace DalObject
         public void addStation(IDAL.DO.Station st)
         {
             listStation.Add(st);
+        }
+        public void addDroneCharge(IDAL.DO.DroneCharge droneCharge)
+        {
+            listDroneCharge.Add(droneCharge);
         }
 
         //public int findItem(int id, string itemToFind) {

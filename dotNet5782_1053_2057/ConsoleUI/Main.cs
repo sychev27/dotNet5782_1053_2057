@@ -10,9 +10,9 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            DalObject.DataSource.Initialize();
-            ConsoleUI.Menu m = new ConsoleUI.Menu();
-            m.beginMenu();
+            //DalObject.DataSource.Initialize();
+            //ConsoleUI.Menu m = new ConsoleUI.Menu();
+            //m.beginMenu();
 
 
 

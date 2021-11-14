@@ -35,31 +35,7 @@ namespace IDAL
             //       //"Battery: " + Battery + "\n");
             //}
 
-            //public static Drone Create()
-            //{
-
-            //    Console.WriteLine("Please enter the drone's info:" + "\n" +
-            //        "id , battery , model" + "\n");
-            //    int id = 0;
-            //    int.TryParse(Console.ReadLine(), out id);
-            //    //double battery = 0;
-            //    //double.TryParse(Console.ReadLine(), out battery);
-            //    string model = Console.ReadLine();
-            //    Console.WriteLine("Please enter the drone's max weight:" + "\n" +
-            //        "1: light" + "/n" +
-            //        "2: medium" + "/n" +
-            //        "3: heavy" + "/n");
-            //    int num = 1;
-            //    int.TryParse(Console.ReadLine(), out num);
-            //    Console.WriteLine("Please enter the drone's status:" + "\n" +
-            //        "1: available" + "/n" +
-            //        "2: work_in_progress" + "/n" +
-            //        "3: sent" + "/n");
-            //    int num1 = 1;
-            //    int.TryParse(Console.ReadLine(), out num1);
-            //    Drone _drone = new Drone(id, model, (WeightCategories)num);//, (DroneStatus)num1 , battery);
-            //    return _drone;
-            //}
+            
 
            
 
