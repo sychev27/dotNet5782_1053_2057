@@ -109,6 +109,62 @@ namespace ConsoleUI_BL
         }
 
 
+        void updateOptions()
+        {
+            Console.WriteLine("What would you like to update ?\n" +
+                "1: Assign a parcel to a drone\n" +
+                "2: Collect a parcel with its assigned drone\n" +
+                "3: Deliver a parcel to a customer\n" +
+                "4: Send a drone to a charging station\n" +
+                "5: Free a drone from a charging station\n");
 
+            int choice = 0;
+            int id = 0;
+            Int32.TryParse(Console.ReadLine(), out choice);
+
+            switch (choice)
+            {
+                case 1:
+                    Console.WriteLine("Enter the ID of the parcel you would like to assign:\n");
+                    Int32.TryParse(Console.ReadLine(), out id);
+                    busiAccess.assignParcel(id);
+                    break;
+                case 2:
+                    Console.WriteLine("Enter the ID of the parcel you would like to collect:\n");
+                    Int32.TryParse(Console.ReadLine(), out id);
+                    busiAccess.collectParcel(id);
+                    break;
+                case 3:
+                    Console.WriteLine("Enter the ID of the parcel you would like to deliver:\n ");
+                    Int32.TryParse(Console.ReadLine(), out id);
+                    busiAccess.deliverParcel(id);
+                    break;
+                case 4:
+                    Console.WriteLine("Enter the ID of the drone you would like to charge:\n ");
+                    Int32.TryParse(Console.ReadLine(), out id);
+                    busiAccess.chargeDrone(id);
+                    break;
+                case 5:
+                    Console.WriteLine("Enter the ID of the drone you would like to free:\n ");
+                    Int32.TryParse(Console.ReadLine(), out id);
+                    busiAccess.freeDrone(id);
+                    break;
+                default:
+                    break;
+            }
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+        //end of class
     }
 }
