@@ -10,9 +10,8 @@ namespace ConsoleUI
     {
         static void Main(string[] args)
         {
-            //DalObject.DataSource.Initialize();
-            //ConsoleUI.Menu m = new ConsoleUI.Menu();
-            //m.beginMenu();
+            Console.WriteLine("WRONG STARTUP PROJECT!\n");
+            
 
 
 

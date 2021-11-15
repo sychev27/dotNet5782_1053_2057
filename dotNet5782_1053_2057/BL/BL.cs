@@ -6,6 +6,16 @@ using System.Threading.Tasks;
 
 namespace IB
 {
+    public class stringCodes
+    {
+        public const string DRONE = "drone";
+        public const string CUSTOMER = "customer";
+        public const string PARCEL = "parcel";
+        public const string STATION = "station";
+        public const string PRCL_TO_ASSIGN = "ParcelsNotYetAssigned";
+        public const string CHARGING_STATIONS = "availChargingStations";
+    }
+
     public class BL : IBL.Ibl
     {
         IDAL.IDal dataAccess = new DalObject.DataSource(); 
@@ -36,6 +46,124 @@ namespace IB
             IDAL.DO.Station dummy = new IDAL.DO.Station(_id, _name, _longitude, _latitude, _chargeSlots);
             dataAccess.addStation(dummy);
         }
+
+
+        public void assignParcel(int droneId)  //drone determines its parcel based on algorithm
+        {
+
+        }
+        public void collectParcel(int droneId) //drone collects its pre-determined parcel 
+        {
+
+        }
+        public void deliverParcel(int droneId) //drone delivers its pre-determined parcel
+        { 
+
+        }
+        public void chargeDrone(int droneId) //sends drone to available station
+        { 
+
+        }
+        public void freeDrone(int droneId, double hrsInCharge) //frees drone from station.. 
+        {
+
+        }
+
+
+        
+        public void printItem(string _item, int _id)
+        {
+           
+            switch (_item)
+            {
+                case stringCodes.DRONE:
+                    printDrone(_id);
+                    break;
+                case stringCodes.CUSTOMER:
+                    printDrone(_id);
+                    break;
+                case stringCodes.PARCEL:
+                    printDrone(_id);
+                    break;
+                case stringCodes.STATION:
+                    printDrone(_id);
+                    break;
+                default:
+                    break;
+            }
+        }
+        public void printDrone(int _id)
+        {
+
+        }
+        public void printCustomer(int _id)
+        {
+
+        }
+        public void printStation(int _id)
+        {
+
+        }
+        public void printParcel(int _id)
+        {
+
+        }
+
+
+
+        public void printList(string _item) //write for_each functions.. 
+        {
+            switch (_item)
+            {
+                case stringCodes.DRONE:
+                    //get list
+                    //foreach (IDAL.DO.Drone element in listDrone)
+                    //{
+                    //    if (element.Id != 0)
+                    //        element.print();
+                    //}
+                    break;
+                case stringCodes.CUSTOMER:
+                    //foreach (IDAL.DO.Customer element in listCustomer)
+                    //{
+                    //    if (element.Id != 0)
+                    //        element.print();
+                    //}
+                    break;
+                case stringCodes.PARCEL:
+                    //foreach (IDAL.DO.Parcel element in listParcel)
+                    //{
+                    //    if (element.Id != 0)
+                    //        element.print();
+                    //}
+                    break;
+                case stringCodes.STATION:
+                    //foreach (IDAL.DO.Station element in listStation)
+                    //{
+                    //    if (element.Id != 0)
+                    //        element.print();
+                    //}
+                    break;
+                case stringCodes.CHARGING_STATIONS:
+                    //foreach (IDAL.DO.Station element in listStation)
+                    //{
+                    //    if (element.Id != 0 && element.freeSpots() > 0)
+                    //        element.print();
+                    //}
+                    break;
+                case stringCodes.PRCL_TO_ASSIGN:
+                    //foreach (IDAL.DO.Parcel item in listParcel)
+                    //{
+                    //    if (item.Id != 0 && item.DroneId == 0)
+                    //        item.print();
+                    //}
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
 
 
         //end of class

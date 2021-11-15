@@ -16,8 +16,24 @@ namespace IBL
                           IDAL.DO.Priorities _priority, DateTime _requested,
                           DateTime _scheduled);
         void addStation(int _id, int _name, double _longitude, double _latitude, int _chargeSlots);
-   
 
+
+
+        void assignParcel(int droneId);  //drone determines its parcel based on algorithm
+        void collectParcel(int droneId); //drone collects its pre-determined parcel
+        void deliverParcel(int droneId); //drone delivers its pre-determined parcel
+        void chargeDrone(int droneId); //sends drone to available station
+        void freeDrone(int droneId, double hrsInCharge); //frees drone from station.. 
+
+
+        void printItem(string _item, int _id);
+        void printDrone(int _id);
+        void printCustomer(int _id);
+        void printStation(int _id);
+        void printParcel(int _id);
+
+
+        void printList(string _item);
 
 
 

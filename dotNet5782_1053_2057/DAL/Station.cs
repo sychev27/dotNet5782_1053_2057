@@ -11,11 +11,6 @@ namespace IDAL
 
         public struct Station
         {
-            //int id;
-            //int name;
-            //double longitude;
-            //double latitude;
-            //int chargeSlots; //available charging slots...
 
             public Station(int _id,int _name,double _longitude,double _latitude, int _chargeSlots)
             {
@@ -38,23 +33,7 @@ namespace IDAL
             //        "ChargeSlots: " + ChargeSlots + "\n");
             //}
 
-            //public static Station Create() 
-            //{
-            //    Console.WriteLine("Please enter the station's info:" + "\n" +
-            //       "id, name, longitude, latitude, chargeSlots " + "/n");
-            //    int id = 0;
-            //    int.TryParse(Console.ReadLine(), out id);
-            //    int name = 0;
-            //    int.TryParse(Console.ReadLine(), out name);
-            //    double longitude = 0;
-            //    double.TryParse(Console.ReadLine(), out longitude);
-            //    double latitude = 0;
-            //    double.TryParse(Console.ReadLine(), out latitude);
-            //    int chargeSlots = 0;
-            //    int.TryParse(Console.ReadLine(), out chargeSlots);
-            //    Station stat = new Station(id, name, longitude, latitude, chargeSlots);
-            //    return stat;
-            //}
+       
                 
             //public int freeSpots()
             //{//returns 0 (or less) if not spots are free...

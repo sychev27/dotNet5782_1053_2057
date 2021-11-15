@@ -64,35 +64,7 @@ namespace IDAL
             //        );
             //}
 
-            //public static Parcel Create()
-            //{
-            //    Console.WriteLine("Please enter the parcel's info:" + "\n" +
-            //         "senderId , targetId" + "\n");
-            //      int senderId = 0;
-            //    int.TryParse(Console.ReadLine(), out senderId);
-            //    int targetId = 0;
-            //    int.TryParse(Console.ReadLine(), out targetId);
-            //    Console.WriteLine("Enter a date (e.g. 10/22/1987) for requested");
-            //    DateTime requested = DateTime.Parse(Console.ReadLine());
-            //    Console.WriteLine("Enter a date (e.g. 10/22/1987) for scheduled");
-            //    DateTime scheduled = DateTime.Parse(Console.ReadLine());
-                
-            //    Console.WriteLine("Please enter the parcel's weight:" + "\n" +
-            //        "1: light" + "\n" +
-            //        "2: medium" + "\n" +
-            //        "3: heavy" + "\n");
-            //    int num = 1;
-            //    int.TryParse(Console.ReadLine(), out num);
-            //    Console.WriteLine("Please enter the parcel's priority:" + "\n" +
-            //        "1: regular" + "\n" +
-            //        "2: fast" + "\n" +
-            //        "3: urgent" + "\n");
-            //    int num1 = 1;
-            //    int.TryParse(Console.ReadLine(), out num1);
-            //    Parcel _parcel = new Parcel(/*id, */senderId, targetId, 
-            //        (WeightCategories)num, (Priorities)num1, requested, scheduled);
-            //    return _parcel;
-            //}
+
 
         }
 

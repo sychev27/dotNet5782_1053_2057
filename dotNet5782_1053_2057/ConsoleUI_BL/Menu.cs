@@ -19,7 +19,6 @@ namespace ConsoleUI_BL
 
 
 
-
         public void beginMenu() //uses function "chooseItem"...
         {
             
@@ -39,7 +38,7 @@ namespace ConsoleUI_BL
                 switch (ans)
                 {
                     case "1":
-                        busiAccess.addItem(chooseItem("add"));
+                        addItem(chooseItem("add"));
                         break;
                     case "2":
                         updateOptions();
@@ -120,29 +119,32 @@ namespace ConsoleUI_BL
             switch (choice)
             {
                 case 1:
-                    Console.WriteLine("Enter the ID of the parcel you would like to assign:\n");
+                    Console.WriteLine("Enter the ID of the drone you would like to assign:\n");
                     Int32.TryParse(Console.ReadLine(), out id);
                     busiAccess.assignParcel(id);
                     break;
                 case 2:
-                    Console.WriteLine("Enter the ID of the parcel you would like to collect:\n");
+                    Console.WriteLine("Enter the ID of the drone you want to collect:\n");
                     Int32.TryParse(Console.ReadLine(), out id);
                     busiAccess.collectParcel(id);
                     break;
                 case 3:
-                    Console.WriteLine("Enter the ID of the parcel you would like to deliver:\n ");
+                    Console.WriteLine("Enter the ID of the drone you want to deliver:\n ");
                     Int32.TryParse(Console.ReadLine(), out id);
                     busiAccess.deliverParcel(id);
                     break;
                 case 4:
-                    Console.WriteLine("Enter the ID of the drone you would like to charge:\n ");
+                    Console.WriteLine("Enter the ID of the drone you want to charge:\n ");
                     Int32.TryParse(Console.ReadLine(), out id);
                     busiAccess.chargeDrone(id);
                     break;
                 case 5:
-                    Console.WriteLine("Enter the ID of the drone you would like to free:\n ");
+                    Console.WriteLine("Enter the ID of the drone you want to free:\n ");
                     Int32.TryParse(Console.ReadLine(), out id);
-                    busiAccess.freeDrone(id);
+                    double hrsCharged = 0;
+                    Console.WriteLine("Enter the num of hrs the drone charged:\n ");
+                    Double.TryParse(Console.ReadLine(), out hrsCharged);
+                    busiAccess.freeDrone(id, hrsCharged);
                     break;
                 default:
                     break;
@@ -150,8 +152,6 @@ namespace ConsoleUI_BL
 
 
         }
-
-
         public void addItem(string itemToAdd)
         {
 
@@ -164,10 +164,10 @@ namespace ConsoleUI_BL
                     inputCustomer();
                     break;
                 case PARCEL:
-                    listParcel.Add(IDAL.DO.Parcel.Create());
+                    inputParcel();
                     break;
                 case STATION:
-                    listStation.Add(IDAL.DO.Station.Create());
+                    inputStation();
                     break;
                 default:
                     break;
@@ -176,6 +176,7 @@ namespace ConsoleUI_BL
 
 
        
+        //functions to add individual items
         public void inputDrone() //receives drone from user and adds to database
         { 
 
@@ -201,7 +202,7 @@ namespace ConsoleUI_BL
 
             busiAccess.addDrone(id, model, (IDAL.DO.WeightCategories)num);
         }
-        public void inputCustomer() //receives drone from user and adds to database
+        public void inputCustomer() //receives customer from user and adds to database
         {
             Console.WriteLine("Please enter the customer's info:" + "\n" +
                 "id, name, phone, longitude, latitude " + "/n");
@@ -215,6 +216,53 @@ namespace ConsoleUI_BL
             double.TryParse(Console.ReadLine(), out latitude);
             busiAccess.addCustomer(id, name, phone, longitude, latitude);
    
+        }
+        public void inputParcel() //receives parcel from user and adds to database
+        {
+                Console.WriteLine("Please enter the parcel's info:" + "\n" +
+                     "senderId , targetId" + "\n");
+                int senderId = 0;
+                int.TryParse(Console.ReadLine(), out senderId);
+                int targetId = 0;
+                int.TryParse(Console.ReadLine(), out targetId);
+                Console.WriteLine("Enter a date (e.g. 10/22/1987) for requested");
+                DateTime requested = DateTime.Parse(Console.ReadLine());
+                Console.WriteLine("Enter a date (e.g. 10/22/1987) for scheduled");
+                DateTime scheduled = DateTime.Parse(Console.ReadLine());
+
+                Console.WriteLine("Please enter the parcel's weight:" + "\n" +
+                    "1: light" + "\n" +
+                    "2: medium" + "\n" +
+                    "3: heavy" + "\n");
+                int num = 1;
+                int.TryParse(Console.ReadLine(), out num);
+                Console.WriteLine("Please enter the parcel's priority:" + "\n" +
+                    "1: regular" + "\n" +
+                    "2: fast" + "\n" +
+                    "3: urgent" + "\n");
+                int num1 = 1;
+                int.TryParse(Console.ReadLine(), out num1);
+
+            busiAccess.addParcel(senderId, targetId, (IDAL.DO.WeightCategories)num,
+            (IDAL.DO.Priorities)num1, requested, scheduled);
+            
+        }
+        public void inputStation() //receives station from user and adds to database
+        {
+
+            Console.WriteLine("Please enter the station's info:" + "\n" +
+               "id, name, longitude, latitude, chargeSlots " + "/n");
+            int id = 0;
+            int.TryParse(Console.ReadLine(), out id);
+            int name = 0;
+            int.TryParse(Console.ReadLine(), out name);
+            double longitude = 0;
+            double.TryParse(Console.ReadLine(), out longitude);
+            double latitude = 0;
+            double.TryParse(Console.ReadLine(), out latitude);
+            int chargeSlots = 0;
+            int.TryParse(Console.ReadLine(), out chargeSlots);
+            busiAccess.addStation(id, name, longitude, latitude, chargeSlots);
         }
 
 

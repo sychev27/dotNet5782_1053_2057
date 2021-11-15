@@ -6,7 +6,8 @@ namespace ConsoleUI_BL
     {
         static void Main(string[] args)
         {
-           
+            Menu ex = new Menu();
+            ex.beginMenu();
         }
 
     }

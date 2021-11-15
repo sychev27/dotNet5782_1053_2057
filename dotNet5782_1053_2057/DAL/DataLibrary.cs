@@ -103,21 +103,7 @@ namespace DalObject
             return lst;
         }
 
-        //public int findItem(int id, string itemToFind) {
-
-        //    int ans = -1;
-        //    switch (itemToFind) {
-        //        case ConsoleUI.Menu.DRONE: ans = findDrone(id);
-        //            break;
-        //        case ConsoleUI.Menu.CUSTOMER: ans =findCustomer(id);
-        //            break;
-        //        case ConsoleUI.Menu.PARCEL: ans = findParcel(id);
-        //            break;
-        //        case ConsoleUI.Menu.STATION: ans = findStation(id);
-        //            break;
-        //    }
-        //    return ans;
-        //}
+        
         public static void Initialize()   
         {
             Random r = new Random();
@@ -214,7 +200,7 @@ namespace DalObject
 
         //public void addItem(string itemToAdd)
         //{
-            
+
         //    switch (itemToAdd)
         //    {
         //        case ConsoleUI.Menu.DRONE: 
@@ -234,186 +220,12 @@ namespace DalObject
         //    }
         //}
 
-        //public void printItem(string _item, int _id)
-        //{
-        //    int index = findItem(_id, _item);
-        //    if (index == -1)
-        //    {
-        //        Console.WriteLine(_item + " not found!\n");
-        //        return;
-        //    }
-
-        //    switch (_item)
-        //    {
-        //        case ConsoleUI.Menu.DRONE: listDrone[index].print();
-        //            break;
-        //        case ConsoleUI.Menu.CUSTOMER: listCustomer[index].print();
-        //            break;
-        //        case ConsoleUI.Menu.PARCEL: listParcel[index].print();
-        //            break;
-        //        case ConsoleUI.Menu.STATION: listParcel[index].print();
-        //            break;
-        //        default:
-        //            break;
-        //    }
-        //}
+        
 
 
-        //public void printList(string _item) //write for_each functions.. 
-        //{
-        //    switch (_item)
-        //    {
-        //        case ConsoleUI.Menu.DRONE:
-        //            foreach (IDAL.DO.Drone element in listDrone)
-        //            {
-        //                if (element.Id != 0)
-        //                element.print();
-        //            }
-        //            break;
-        //        case ConsoleUI.Menu.CUSTOMER:
-        //            foreach (IDAL.DO.Customer element in listCustomer)
-        //            {
-        //                if (element.Id != 0)
-        //                    element.print();
-        //            }
-        //            break;
-        //        case ConsoleUI.Menu.PARCEL:
-        //            foreach (IDAL.DO.Parcel element in listParcel)
-        //            {
-        //                if (element.Id != 0)
-        //                    element.print();
-        //            }
-        //            break;
-        //        case ConsoleUI.Menu.STATION:
-        //            foreach (IDAL.DO.Station element in listStation)
-        //            {
-        //                if (element.Id != 0)
-        //                    element.print();
-        //            }
-        //            break;
-        //        case ConsoleUI.Menu.CHARGING_STATIONS:
-        //            foreach (IDAL.DO.Station element in listStation)
-        //            {
-        //                if (element.Id != 0 && element.freeSpots() > 0)
-        //                   element.print();
-        //            }
-        //            break;
-        //        case ConsoleUI.Menu.PRCL_TO_ASSIGN:
-        //            foreach (IDAL.DO.Parcel item in listParcel)
-        //            {
-        //                if (item.Id != 0 && item.DroneId == 0)
-        //                    item.print();
-        //            }
-        //            break;
+        
 
-        //        default:
-        //            break;
-        //    }
-        //}
-
-
-        //public void assignParcel(int parcelId) //assigns parcels to next available drone
-        //{
-        //    Console.WriteLine("under construction\n");
-        //    //int parcIndex = findParcel(parcelId);
-        //    //int droneIndex = -1; 
-        //    //for (int i = 0; i < listDrone.Count; i++)
-        //    //    if (listDrone[i].Status == IDAL.DO.DroneStatus.available)
-        //    //    {
-        //    //        droneIndex = i;
-        //    //        break;
-        //    //    }
-            
-        //    //if(droneIndex == -1) //if we did not find any drones..
-        //    //{
-        //    //    Console.WriteLine("No available drones!\n");
-        //    //    return;
-        //    //}
-        //    ////else - assign parcel to drone...
-        //    //listParcel[parcIndex].DroneId = listDrone[droneIndex].Id;
-            
-        // }
-        //public void collectParcel(int parcelId)
-        //{
-        //    int parcelIndex = findParcel(parcelId);
-        //    if (listParcel[parcelIndex].DroneId == -1)
-        //    {
-        //        Console.WriteLine("Parcel is not yet assigned a drone! pls assign a drone, and then collect...\n");
-        //        return;
-        //    }
-        //    IDAL.DO.Parcel copy = listParcel[parcelIndex];
-        //    copy.Pickup = DateTime.Now;
-        //    listParcel[parcelIndex] = copy;
-            
-        //    //int droneIndex =  findDrone(listParcel[parcelIndex].DroneId);
-        //    //IDAL.DO.Drone droneCopy = listDrone[droneIndex];
-
-        //    //droneCopy.Statu
-        //    //listDrone[findDrone(listParcel[parcelIndex].DroneId)].Status = IDAL.DO.DroneStatus.sent;
-              
-        //}
-        //public void deliverParcel(int parcelId)
-        //{
-        //    int parcelIndex = findParcel(parcelId);
-        //    if (listParcel[parcelIndex].DroneId == -1)
-        //    {
-        //        Console.WriteLine("Parcel is not yet assigned a drone! pls assign a drone, and then collect...\n");
-        //        return;
-        //    }
-        //    //deal with not collected...
-        //    IDAL.DO.Parcel parselCopy = listParcel[parcelIndex];
-        //    parselCopy.Delivered = DateTime.Now;
-        //    listParcel[parcelIndex] = parselCopy;
-        //   // listDrone[findDrone(listParcel[parcelIndex].DroneId)].Status = IDAL.DO.DroneStatus.available;
-
-        //}
-        //public void chargeDrone(int droneId) //sends drone to available station, chosen by user 
-        //{
-        //    Console.WriteLine("Here are the stations with available slots:\n");
-        //    printList(ConsoleUI.Menu.CHARGING_STATIONS);
-        //    Console.WriteLine("Pls enter the Id of the station at which you want drone " + droneId + " to charge:\n");
-
-        //    int idStation = -1;
-        //    int indexStation = -1;
-        //    do
-        //    {
-        //        Int32.TryParse(Console.ReadLine(), out idStation);
-        //        indexStation = findStation(idStation);
-        //        if (indexStation == -1)
-        //            Console.WriteLine("Station not found, pls enter a valid Station\n");
-        //    } while (indexStation == -1);
-
-        //    if (listStation[indexStation].freeSpots() <= 0)
-        //    {
-        //        Console.WriteLine("No available spots at that station! pls start over...\n");
-        //        return;
-        //    }
-
-        //    IDAL.DO.DroneCharge ex = new IDAL.DO.DroneCharge(droneId, listStation[indexStation].Id);
-        //    listDroneCharge.Add(ex);
-        //    //listDrone[findDrone(droneId)].Status = IDAL.DO.DroneStatus.work_in_progress;
-
-        //}
-        //public void freeDrone(int droneId) //frees drone from station.. 
-        //{
-        //    int index = -1 ;
-        //    for (int i = 0; i < listDroneCharge.Count; i++) //find drone within "droneCharge"
-        //        if (listDroneCharge[i].DroneId == droneId)
-        //        {
-        //            index = i; break;
-        //        }
-        //    if (index < 0)
-        //    { 
-        //        Console.WriteLine("This drone was not charging....\n"); 
-        //        return;
-        //    }
-        //    IDAL.DO.DroneCharge drChCopy = listDroneCharge[index];
-        //    drChCopy.DroneId = -1;
-        //    drChCopy.StationId = -1;
-        //    listDroneCharge[index] = drChCopy;
-        //    // "-1" means that the item was erased..
-           
-        //}
+       
 
         //public double[] requestElec()
         //{
