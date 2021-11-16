@@ -38,13 +38,6 @@ namespace IB
 
 
 
-
-
-
-
-
-
-
             //dont go beyond this line
             listDrone = dataAccess.GetDrones();
 
