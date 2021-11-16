@@ -18,7 +18,36 @@ namespace IB
 
     public class BL : IBL.Ibl
     {
-        IDAL.IDal dataAccess = new DalObject.DataSource(); 
+        IDAL.IDal dataAccess = new DalObject.DataSource();
+
+        internal double empty;
+        internal double light;
+        internal double mediuim;
+        internal double heavy;
+        internal double chargeRate; // per hour 
+        public BL()
+        {
+           IEnumerable<double> elecInfo = dataAccess.requestElec();
+            empty = elecInfo.First();
+            
+           
+
+
+
+
+
+
+
+
+
+
+
+
+            //dont go beyond this line
+
+
+        }
+
         public void addDrone(int _id, string _model, IDAL.DO.WeightCategories _maxWeight)
         {
             IDAL.DO.Drone dummy = new IDAL.DO.Drone(_id, _model, _maxWeight);
@@ -48,6 +77,8 @@ namespace IB
         }
 
 
+
+
         public void assignParcel(int droneId)  //drone determines its parcel based on algorithm
         {
 
@@ -68,6 +99,8 @@ namespace IB
         {
 
         }
+
+
 
 
         
@@ -108,7 +141,6 @@ namespace IB
         {
 
         }
-
 
 
         public void printList(string _item) //write for_each functions.. 
@@ -163,6 +195,13 @@ namespace IB
                     break;
             }
         }
+
+
+
+
+     
+
+
 
 
 
