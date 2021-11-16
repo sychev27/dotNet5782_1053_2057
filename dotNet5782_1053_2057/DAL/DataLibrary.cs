@@ -50,7 +50,6 @@ namespace DalObject
                     drone = listDrone[i];
             return drone;
         }
-
         public IDAL.DO.Customer findCustomer(int _id) {
             IDAL.DO.Customer cust = new IDAL.DO.Customer(0, "", "", 0, 0);
             for (int i = 0; i < listCustomer.Count; i++)
@@ -58,7 +57,6 @@ namespace DalObject
                     cust = listCustomer[i];
             return cust;
         }
-
         public IDAL.DO.Parcel findParcel(int _id)
         {
             IDAL.DO.Parcel parcel = new IDAL.DO.Parcel(0, 0, 0, 0,DateTime.MinValue,DateTime.MinValue);
@@ -67,7 +65,6 @@ namespace DalObject
                     parcel = listParcel[i];
             return parcel;
         }
-
         public IDAL.DO.Station findStation(int _id)
         {
             IDAL.DO.Station st = new IDAL.DO.Station(0, 0, 0, 0, 0);
@@ -76,6 +73,10 @@ namespace DalObject
                     st = listStation[i];
             return st;
         }
+
+
+
+
 
         public void addDrone(IDAL.DO.Drone drone)
         {
@@ -98,10 +99,17 @@ namespace DalObject
             listDroneCharge.Add(droneCharge);
         }
 
+
        public IEnumerable<double> requestElec() {
             List<double> lst = new List<double> {Config.empty, Config.light, Config.mediuim, Config.heavy ,Config.chargeRate};
             return lst;
         }
+
+        public IEnumerable<IDAL.DO.Drone> GetDrones()
+        {
+            return listDrone;
+        }
+
 
         
         public static void Initialize()   

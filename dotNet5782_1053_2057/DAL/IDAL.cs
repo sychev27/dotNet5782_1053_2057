@@ -29,7 +29,7 @@ namespace IDAL
        // void freeDrone(int droneId);
 
          IEnumerable<double> requestElec();
-
+        IEnumerable<IDAL.DO.Drone> GetDrones();
 
 
 
