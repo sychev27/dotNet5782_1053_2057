@@ -25,12 +25,14 @@ namespace IB
         internal double mediuim;
         internal double heavy;
         internal double chargeRate; // per hour 
+
+        IEnumerable<IDAL.DO.Drone> listDrone;
         public BL()
         {
            IEnumerable<double> elecInfo = dataAccess.requestElec();
             empty = elecInfo.First();
-            
-           
+
+
 
 
 
@@ -44,6 +46,11 @@ namespace IB
 
 
             //dont go beyond this line
+            listDrone = dataAccess.GetDrones();
+
+
+
+
 
 
         }
