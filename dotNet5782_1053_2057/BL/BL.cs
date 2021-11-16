@@ -29,9 +29,10 @@ namespace IB
         {
            IEnumerable<double> elecInfo = dataAccess.requestElec();
             empty = elecInfo.First();
-            
-           
-
+            light = elecInfo.ElementAt(1);
+            mediuim = elecInfo.ElementAt(2);
+            heavy = elecInfo.ElementAt(3);
+            chargeRate = elecInfo.ElementAt(4);
 
 
 
@@ -195,12 +196,6 @@ namespace IB
                     break;
             }
         }
-
-
-
-
-     
-
 
 
 
