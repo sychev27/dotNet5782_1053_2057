@@ -8,11 +8,16 @@ namespace IBL
 {
     namespace BO
     {
-        class CustomerInParcel
+        class BOCustomer
         {
             public int Id { get; set; }
             public string Name { get; set; }
+            public int Phone { get; set; }
+            public BOLocation Location { get; set; }
+            List<BOParcelAtCustomer> sent { get; set; }
+            List<BOParcelAtCustomer> received { get; set; }
 
         }
     }
+    
 }

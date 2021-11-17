@@ -10,5 +10,7 @@ namespace IB
     {
         public enum WeightCategories { light, medium, heavy };
         public enum DroneStatus         { available, work_in_progress, sent};
+        public enum PackageStatus {  created, assigned, collected, delivered};
+        public enum Priorities { regular, fast, urgent };
     }
 }

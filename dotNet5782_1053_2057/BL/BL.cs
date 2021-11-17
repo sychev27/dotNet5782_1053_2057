@@ -26,7 +26,7 @@ namespace IB
         internal double heavy;
         internal double chargeRate; // per hour 
 
-        IEnumerable<IBL.BO.BLDrone> listDrone;
+        IEnumerable<IBL.BO.BODrone> listDrone;
 
         public BL()
         {
