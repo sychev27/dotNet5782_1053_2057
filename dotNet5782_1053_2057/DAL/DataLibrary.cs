@@ -11,6 +11,7 @@ namespace IDAL
         // public enum DroneStatus         { available, work_in_progress, sent};
         //work_in_progress - this Drone is charging...
         public enum Priorities { regular, fast, urgent };
+        
     }
 
 }
