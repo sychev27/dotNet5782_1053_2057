@@ -15,8 +15,8 @@ namespace IBL
             public IB.Enum.WeightCategories MaxWeight { get; set; }
             public double battery { get; set; }
             public IB.Enum.DroneStatus droneStatus { get; set; }
-            public IBL.BO.BLPckInDelivery pck{ get; set;}
-            public IBL.BO.BLLocation location{ get; set;}
+            public IBL.BO.ParcelInTransfer pck{ get; set;}
+            public IBL.BO.Location location{ get; set;}
 
 
 
