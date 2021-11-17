@@ -208,7 +208,15 @@ namespace IB
             }
         }
 
-   
+   double distance(IBL.BO.BOLocation l1, IBL.BO.BOLocation l2)
+        {
+            double diff1 = l1.Latitude - l2.Latitude;
+            double diff2 = l1.Longitude - l2.Longitude;
+            diff1 = diff1 * diff1;
+            diff2 = diff2 * diff2;
+            double sum = diff1 + diff2;
+            return Math.Sqrt(sum);
+        }
 
 
 
