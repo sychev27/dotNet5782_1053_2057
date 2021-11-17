@@ -32,8 +32,6 @@ namespace IB
         {
            IEnumerable<double> elecInfo = dataAccess.requestElec();
             empty = elecInfo.First();
-
-
             light = elecInfo.ElementAt(1);
             mediuim = elecInfo.ElementAt(2);
             heavy = elecInfo.ElementAt(3);
@@ -43,7 +41,7 @@ namespace IB
 
 
             //dont go beyond this line
-            listDrone = dataAccess.GetDrones();
+            //listDrone = dataAccess.GetDrones();
 
 
         }
