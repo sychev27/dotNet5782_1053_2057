@@ -49,6 +49,23 @@ namespace IDAL
             public DateTime Pickup { get; set; }
             public DateTime Delivered { get; set; }
 
+            public override string ToString()
+            {
+                string res = "";
+                res = "Parcel: " + Id.ToString() + "\n" ;
+                res += "SenderId: " + SenderId + "\n" +
+                    "TargetId: " + TargetId + "\n" +
+                    "Weight: " + Weight + "\n" +
+                    "Priority: " + Priority + "\n" +
+                    "Requested: " + Requested + "\n" +
+                    "DroneId: " + DroneId + "\n" +
+                    "Scheduled: " + Scheduled + "\n" +
+                    "Pickup: " + Pickup + "\n" +
+                    "Delivered: " + Delivered + "\n";
+                return res;
+            }
+
+
             //public void print()
             //{
             //    Console.WriteLine("Parcel: " + Id + "\n" +

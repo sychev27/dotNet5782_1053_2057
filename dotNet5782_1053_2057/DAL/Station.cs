@@ -26,6 +26,15 @@ namespace IDAL
             public double Latitude { get; set; }
             public int ChargeSlots { get; set; }
 
+            public override string ToString()
+            {
+                string res = "";
+                res + = "Station " + Name + " id: " + Id + "\n" +
+                    "(" + Longitude + "," + Latitude + ")" + "\n" +
+                    "ChargeSlots: " + ChargeSlots + "\n";
+                return res;
+            }
+
             //public void print()
             //{
             //    Console.WriteLine("Station " + Name + " id: " + Id + "\n" +
@@ -33,8 +42,8 @@ namespace IDAL
             //        "ChargeSlots: " + ChargeSlots + "\n");
             //}
 
-       
-                
+
+
             //public int freeSpots()
             //{//returns 0 (or less) if not spots are free...
             //    int numSpots = ChargeSlots;
@@ -45,7 +54,7 @@ namespace IDAL
             //    }
             //    return numSpots;
             //}
-            
+
 
         }
 
