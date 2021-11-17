@@ -8,10 +8,11 @@ namespace IBL
 {
     namespace BO
     {
-        class Location
+        class BOCustomerInParcel
         {
-            public double Longitude { get; set; }
-            public double Latitude { get; set; }
+            public int Id { get; set; }
+            public string Name { get; set; }
+
         }
     }
 }
