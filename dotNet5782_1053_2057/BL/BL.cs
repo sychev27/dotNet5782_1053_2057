@@ -26,31 +26,37 @@ namespace IB
         internal double heavy;
         internal double chargeRate; // per hour 
 
-        IEnumerable<IDAL.DO.Drone> listDrone;
+        IEnumerable<IBL.BO.BLDrone> listDrone;
+
         public BL()
         {
            IEnumerable<double> elecInfo = dataAccess.requestElec();
             empty = elecInfo.First();
-
-
-
             light = elecInfo.ElementAt(1);
             mediuim = elecInfo.ElementAt(2);
             heavy = elecInfo.ElementAt(3);
             chargeRate = elecInfo.ElementAt(4);
 
-
-
-
-            //dont go beyond this line
-            listDrone = dataAccess.GetDrones();
-
-
+            
 
 
 
 
         }
+
+
+
+        void updateDrones()
+        {
+
+        }
+
+
+
+
+
+
+
 
         public void addDrone(int _id, string _model, IDAL.DO.WeightCategories _maxWeight)
         {

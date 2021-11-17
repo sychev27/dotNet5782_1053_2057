@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 /*
  
-(DAL):
-1 create functions that return Clones 
-
-(ACTIONS):
-1 create "print" functions (that receive clones...)
- 
+(BL)
+make updateDrones() function 
+- get drones, 
+- create BLDrone object (create Location), create Constructor
+- add to listDrone
  
  */
 
