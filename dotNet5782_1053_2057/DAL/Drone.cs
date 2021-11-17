@@ -24,6 +24,7 @@ namespace IDAL
             public int Id { get; set; }
             public string Model { get; set; }
             public IDAL.DO.WeightCategories MaxWeight { get; set; }
+
             //public IDAL.DO.DroneStatus Status { get; set; }
             //public double Battery { get; set; }
 
@@ -34,10 +35,19 @@ namespace IDAL
             //       //Status + "\n" +
             //       //"Battery: " + Battery + "\n");
             //}
+            public override string ToString()
+            {
+                string res = "";
+                res += "Drone " + Id + " " + Model + "\n" +
+                   "MaxWeight: " + MaxWeight + "\n" ;
+                //Status + "\n" +
+                //"Battery: " + Battery + "\n");
+                return res;
+            }
 
             
 
-           
+
 
         }
 

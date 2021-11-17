@@ -11,9 +11,9 @@ namespace IBL
         class BOParcelAtCustomer
         {
             public int Id { get; set; }
-            public IB.Enum.WeightCategories WeightCategory { get; set;}
+            public IB.Enum.WeightCategories MaxWeight { get; set;}
             public IB.Enum.Priorities Priority { get; set; }
-            public IB.Enum.PackageStatus PackageStatus { get; set; }
+            public IB.Enum.ParcelStatus ParcelStatus { get; set; }
             public BOCustomerInParcel OtherSide { get; set; } //for Sender: holds the receiver
                                                               //for Receiver: holds the sender
             

@@ -32,6 +32,15 @@ namespace IDAL
             public double Longitude { get; set; }
             public double Latitude { get; set; }
 
+            public override string ToString()
+            {
+                string res = "";
+                res = "Customer" + Id.ToString() + Name + "\n";
+                res += "Phone " + Phone.ToString();
+                return res;
+            }
+
+
             //public void print()
             //{
             //    Console.WriteLine("Customer " + Id + " " + Name + "\n"+
@@ -39,7 +48,7 @@ namespace IDAL
             //        "(" + Longitude + "," + Longitude + ")" + "\n");
             //}
 
-  
+
 
         }
 
