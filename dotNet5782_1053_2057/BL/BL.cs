@@ -22,7 +22,7 @@ namespace IB
 
         internal double empty;
         internal double light;
-        internal double mediuim;
+        internal double medium;
         internal double heavy;
         internal double chargeRate; // per hour 
 
@@ -33,7 +33,7 @@ namespace IB
            IEnumerable<double> elecInfo = dataAccess.requestElec();
             empty = elecInfo.First();
             light = elecInfo.ElementAt(1);
-            mediuim = elecInfo.ElementAt(2);
+            medium = elecInfo.ElementAt(2);
             heavy = elecInfo.ElementAt(3);
             chargeRate = elecInfo.ElementAt(4);
 
@@ -273,20 +273,34 @@ namespace IB
 
         double distance(IBL.BO.BOLocation l1, IBL.BO.BOLocation l2)
         {
-            double diff1 = l1.Latitude - l2.Latitude;
-            double diff2 = l1.Longitude - l2.Longitude;
-            diff1 = diff1 * diff1;
-            diff2 = diff2 * diff2;
-            double sum = diff1 + diff2;
-            return Math.Sqrt(sum);
+            double lat1 = l1.Latitude / (180 / Math.PI);
+            double lat2 = l2.Latitude / (180 / Math.PI);
+            double long1 = l1.Longitude / (180 / Math.PI);
+            double long2 = l2.Longitude / (180 / Math.PI);
+            double distance = 3963 * Math.Acos((Math.Sin(lat1) * Math.Sin(lat2)) + Math.Cos(lat1) * Math.Cos(lat2) * Math.Cos(long2 - long1));
+            distance *= 1.609344;
+            //double diff1 = l1.Latitude - l2.Latitude;
+            //double diff2 = l1.Longitude - l2.Longitude;
+            //diff1 = diff1 * diff1;
+            //diff2 = diff2 * diff2;
+            //double sum = diff1 + diff2;
+            return distance;
         }
 
 
         double battNededForDist(IBL.BO.BODrone drone, IBL.BO.BOLocation loc)
         {
             double dist = distance(drone.location, loc);
-            if 
-
+            if(drone.pck.Collected)
+            {
+                if (drone.pck.MaxWeight == IBL.BO.Enum.WeightCategories.light)
+                    return dist * light;
+                if (drone.pck.MaxWeight == IBL.BO.Enum.WeightCategories.medium)
+                    return dist * medium;
+                if (drone.pck.MaxWeight == IBL.BO.Enum.WeightCategories.heavy)
+                    return dist * heavy;
+            }
+            return dist * empty;
         }
 
 
