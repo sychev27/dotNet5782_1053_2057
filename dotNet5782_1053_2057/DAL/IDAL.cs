@@ -29,11 +29,12 @@ namespace IDAL
        // void freeDrone(int droneId);
 
          IEnumerable<double> requestElec();
-        IEnumerable<IDAL.DO.Drone> GetDrones();
-        IEnumerable<IDAL.DO.Parcel> GetParcels();
-        IEnumerable<IDAL.DO.Station> GetStations();
+        IEnumerable<IDAL.DO.Drone> getDrones();
+        IEnumerable<IDAL.DO.Parcel> getParcels();
+        IEnumerable<IDAL.DO.Station> getStations();
 
-        IEnumerable<IDAL.DO.Customer> GetCustomers();
+        IEnumerable<IDAL.DO.Customer> getCustomers();
+        IEnumerable<IDAL.DO.DroneCharge> getDroneCharge();
 
 
 

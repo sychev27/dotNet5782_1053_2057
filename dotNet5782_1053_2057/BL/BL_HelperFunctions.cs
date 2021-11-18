@@ -13,7 +13,7 @@ namespace IB
             //if we need the station to have a free spot, then we send a parameter = true.
             //otherwise, we can ignore this parameter
 
-            IEnumerable<IDAL.DO.Station> stations = dataAccess.GetStations();
+            IEnumerable<IDAL.DO.Station> stations = dataAccess.getStations();
             IBL.BO.BOLocation ans = new IBL.BO.BOLocation(stations.First().Longitude, stations.First().Latitude);
             foreach (IDAL.DO.Station st in stations)
             {
@@ -81,14 +81,13 @@ namespace IB
         }
         int freeSpots(IDAL.DO.Station st)
         {//returns 0 (or less) if not spots are free...
-         //    int numSpots = ChargeSlots;
-         //    for (int i = 0; i < DalObject.DataSource.listDroneCharge.Count; i++)
-         //    {
-         //        if (Id == DalObject.DataSource.listDroneCharge[i].StationId)
-         //            numSpots--;
-         //    }
-         //    return numSpots;
-            return 0;
+             int numSpots = st.ChargeSlots;
+               foreach (IDAL.DO.DroneCharge drCharge in dataAccess.getDroneCharge())    
+               {
+                    if (st.Id == drCharge.StationId)
+                       numSpots--;
+               }
+            return numSpots;
         }
 
 

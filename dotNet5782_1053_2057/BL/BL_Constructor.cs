@@ -119,7 +119,7 @@ namespace IB
         void receiveDronesFromData()
         {
             //receives drones from Data Layer, saves them in listDrone
-            foreach (IDAL.DO.Drone drone in dataAccess.GetDrones())
+            foreach (IDAL.DO.Drone drone in dataAccess.getDrones())
             {
                 addDroneToBusiLayer(drone);
             }
@@ -158,7 +158,7 @@ namespace IB
             IBL.BO.BOParcelInTransfer thisParc = new IBL.BO.BOParcelInTransfer();
             //(1)FETCH PARCEL FROM DATA LAYER
             IDAL.IDal dataAcess = new DalObject.DataSource();
-            IEnumerable<IDAL.DO.Parcel> origList = dataAcess.GetParcels();
+            IEnumerable<IDAL.DO.Parcel> origList = dataAcess.getParcels();
             IDAL.DO.Parcel origParcel = new IDAL.DO.Parcel();
             origParcel.Id = -1;
             foreach (var item in origList)
@@ -191,7 +191,7 @@ namespace IB
         }
         IBL.BO.BOCustomerInParcel createCustInParcel(int origId)
         {
-           IEnumerable<IDAL.DO.Customer> origCustomers =  dataAccess.GetCustomers();
+           IEnumerable<IDAL.DO.Customer> origCustomers =  dataAccess.getCustomers();
             foreach (var item in origCustomers)
             {
                 if(origId == item.Id)
