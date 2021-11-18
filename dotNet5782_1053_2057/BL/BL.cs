@@ -19,6 +19,7 @@ namespace IB
     public class BL : IBL.Ibl
     {
         IDAL.IDal dataAccess = new DalObject.DataSource();
+        Random r = new Random();
 
         internal double empty;
         internal double light;
@@ -39,42 +40,48 @@ namespace IB
 
             receiveDronesFromData();
 
-            IBL.BO.BOLocation first = new IBL.BO.BOLocation(40, -70);
-            IBL.BO.BOLocation second = new IBL.BO.BOLocation(38, -77);
-
+            //test the Distance formula..
+            IBL.BO.BOLocation first = new IBL.BO.BOLocation(13, 63);
+            IBL.BO.BOLocation second = new IBL.BO.BOLocation(10, 20);
             double dummy = distance(first, second);
 
-            //dont go beyond this line
-            //updates Drones based on parcels received from Data Layer
-            IEnumerable<IDAL.DO.Parcel> listParcel = new List<IDAL.DO.Parcel>();
-            listParcel = dataAccess.GetParcels();
 
-            int dronePlace = -1; //holds place for drone in our listDrone
-            foreach (IDAL.DO.Parcel parcel in listParcel)
+            //dont go beyond this line
+            
+            foreach (IBL.BO.BODrone drone in listDrone)
             {
-                if (parcel.DroneId == -1) //if no drone is assigned to the parcel..
+                if (drone.Id == -1) //TRROW ERROR
                 {
                     continue;
                 }
-                else if (parcel.Pickup == DateTime.MinValue) 
+
+                if(drone.ParcelInTransfer != null)
                 {
-                    //if the parcel has a drone, but not yet collected
-                    dronePlace = droneIndex(parcel.DroneId);
-                    IBL.BO.BOLocation customerLocation = new IBL.BO.BOLocation(0,0);
-                    //code...  get customer location
-                    listDrone[dronePlace].location = closestStation(customerLocation);
-                    
+                    //IF DRONE HAS A PARCEL
+                    if (!drone.ParcelInTransfer.Collected) //but not yet COLLECTED
+                    {
+                        //(1) SET LOCATION - to closest station by station
+                        drone.location = closestStation(drone.ParcelInTransfer.PickupPoint);
+                    }
+                    else if (drone.ParcelInTransfer.Collected) // but not yet DELIVERED
+                    {
+                        //(1) SET LOCATION - to Sender's location
+                        drone.location = drone.ParcelInTransfer.PickupPoint;
+                    }
+                    //(2) SET BATTERY - to min needed to get to destination
 
+                    double minBatteryNeeded = battNededForDist(drone, drone.ParcelInTransfer.DeliveryPoint);
+                    double battery = r.Next((int)minBatteryNeeded + 1, 100);
+                    battery += r.NextDouble();
+                    drone.battery = battery;
                 }
-                else if (parcel.Delivered == DateTime.MinValue)
-                { 
-                    //if the parcel has been collected, but not yet delivered
+                else //if drone does not have a parcel..
 
-                }
-                else if (true)
+
                 {
 
                 }
+               
                 
 
 
@@ -92,19 +99,30 @@ namespace IB
         }
 
 
-        int droneIndex(int id) //returns index of drone which holds this id...
+        IBL.BO.BOLocation getCustomerLocation(int customerId)
         {
-            //CHECK
-            int counter = 0;
-            foreach (IBL.BO.BODrone item in listDrone)
-            {
-                if (id == item.Id)
-                    return counter;
-               
-                counter++;
-            }
-            return -1; //if drone is not found 
+            IBL.BO.BOLocation loc = 
+                        new IBL.BO.BOLocation(dataAccess.findCustomer(customerId).Longitude, 
+                        dataAccess.findCustomer(customerId).Latitude);
+            return loc;
         }
+
+        //int droneIndex(int id) //DELETE THIS FUNCTION!
+        //{
+        //    //returns index of drone which holds this id...
+
+        //    //CHECK
+        //    int counter = 0;
+        //    foreach (IBL.BO.BODrone item in listDrone)
+        //    {
+        //        if (id == item.Id)
+        //            return counter;
+               
+        //        counter++;
+        //    }
+        //    return -1; //if drone is not found 
+        //    //EXCEPTION
+        //}
         void receiveDronesFromData()
         {
             //receives drones from Data Layer, saves them in listDrone
@@ -128,23 +146,7 @@ namespace IB
             }
             //code..
         }
-
-        double distance(IBL.BO.BOLocation l1, IBL.BO.BOLocation l2)
-        {
-            double lat1 = l1.Latitude / (180 / Math.PI);
-            double lat2 = l2.Latitude / (180 / Math.PI);
-            double long1 = l1.Longitude / (180 / Math.PI);
-            double long2 = l2.Longitude / (180 / Math.PI);
-            double distance = 3963 * Math.Acos((Math.Sin(lat1) * Math.Sin(lat2)) + Math.Cos(lat1) * Math.Cos(lat2) * Math.Cos(long2 - long1));
-            distance *= 1.609344;
-            //double diff1 = l1.Latitude - l2.Latitude;
-            //double diff2 = l1.Longitude - l2.Longitude;
-            //diff1 = diff1 * diff1;
-            //diff2 = diff2 * diff2;
-            //double sum = diff1 + diff2;
-            return distance;
-        }
-
+        
         IBL.BO.BOLocation closestStation(IBL.BO.BOLocation l)
         {
             IEnumerable<IDAL.DO.Station> stations = dataAccess.GetStations();
@@ -164,9 +166,61 @@ namespace IB
 
 
 
+       IBL.BO.BOParcelInTransfer createParcInTrans(int origDroneId)
+        {
+            //receives ID of its drone. Fetches correct parcel from Data Layer.
+            //Builds the object based on that parcel
 
+            IBL.BO.BOParcelInTransfer thisParc = new IBL.BO.BOParcelInTransfer();
+            //(1)FETCH PARCEL FROM DATA LAYER
+            IDAL.IDal dataAcess = new DalObject.DataSource();
+            IEnumerable<IDAL.DO.Parcel> origList = dataAcess.GetParcels();
+            IDAL.DO.Parcel origParcel = new IDAL.DO.Parcel();
+            origParcel.Id = -1;
+            foreach (var item in origList)
+            {
+                if (origDroneId == item.DroneId)
+                {
+                    origParcel = item; break;
+                }
+            }
+            //(2) THROW EXCEPTION IF NOT FOUND
+            //if (origParcel.Id == -1)
+            //    throw Exception;
+            //this field will remain empty...
 
+            //(3) CREATE THIS OBJECT
+            thisParc.Id = origParcel.Id;
+            thisParc.Collected = (origParcel.Pickup == DateTime.MinValue) ? false : true;
+            thisParc.Priority = (IBL.BO.Enum.Priorities)origParcel.Priority;
+            thisParc.MaxWeight = (IBL.BO.Enum.WeightCategories)origParcel.Weight;
 
+            thisParc.Sender = createCustInParcel(origParcel.SenderId);
+            thisParc.Recipient = createCustInParcel(origParcel.TargetId);
+
+            thisParc.PickupPoint = getCustomerLocation(origParcel.SenderId);
+            thisParc.DeliveryPoint = getCustomerLocation(origParcel.TargetId);
+            thisParc.TransportDistance = distance(thisParc.PickupPoint, thisParc.DeliveryPoint);
+
+            return thisParc;
+
+        }
+        IBL.BO.BOCustomerInParcel createCustInParcel(int origId)
+        {
+           IEnumerable<IDAL.DO.Customer> origCustomers =  dataAccess.GetCustomers();
+            foreach (var item in origCustomers)
+            {
+                if(origId == item.Id)
+                {
+                    IBL.BO.BOCustomerInParcel ans = new IBL.BO.BOCustomerInParcel(item.Id, item.Name);
+                    return ans;
+                }
+            }
+            //throw exception! not found!
+            //delete this code block:
+            IBL.BO.BOCustomerInParcel error = new IBL.BO.BOCustomerInParcel(-1, "");
+            return error; //<--delete this!
+        }
 
         public void addDrone(int _id, string _model, IDAL.DO.WeightCategories _maxWeight)
         {
@@ -316,19 +370,42 @@ namespace IB
             }
         }
 
+        double distance(IBL.BO.BOLocation l1, IBL.BO.BOLocation l2)
+        {
+            //(1) find diff in radians:
+            double diffLat = l1.Latitude - l2.Latitude;
+            double diffLong = l1.Longitude - l2.Longitude;
+            diffLat *= (Math.PI / 180);
+            diffLong *= (Math.PI / 180);
 
+            //(2)convert latitude to radians
+            l1.Latitude *= (Math.PI / 180);
+            l2.Latitude *= (Math.PI / 180);
+
+            //(3) use Haversine Formula
+            double Hav = Math.Pow(Math.Sin(diffLat / 2), 2) +
+               Math.Pow(Math.Sin(diffLong / 2), 2) *
+               Math.Cos(l1.Latitude) * Math.Cos(l2.Latitude);
+
+            //(4) Find distance in KM based on earth's radius
+            //d = 2*radius * ArcSin(Square(Hav))
+            double radius = 6371; //radius of Earth in km...
+            double distance = 2 * radius * Math.Asin(Math.Sqrt(Hav)); 
+
+            return distance;
+        }
 
 
         double battNededForDist(IBL.BO.BODrone drone, IBL.BO.BOLocation loc)
         {
             double dist = distance(drone.location, loc);
-            if(drone.pck.Collected)
+            if(drone.ParcelInTransfer.Collected)
             {
-                if (drone.pck.MaxWeight == IBL.BO.Enum.WeightCategories.light)
+                if (drone.ParcelInTransfer.MaxWeight == IBL.BO.Enum.WeightCategories.light)
                     return dist * light;
-                if (drone.pck.MaxWeight == IBL.BO.Enum.WeightCategories.medium)
+                if (drone.ParcelInTransfer.MaxWeight == IBL.BO.Enum.WeightCategories.medium)
                     return dist * medium;
-                if (drone.pck.MaxWeight == IBL.BO.Enum.WeightCategories.heavy)
+                if (drone.ParcelInTransfer.MaxWeight == IBL.BO.Enum.WeightCategories.heavy)
                     return dist * heavy;
             }
             return dist * empty;

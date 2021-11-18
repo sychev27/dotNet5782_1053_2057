@@ -33,6 +33,7 @@ namespace IDAL
         IEnumerable<IDAL.DO.Parcel> GetParcels();
         IEnumerable<IDAL.DO.Station> GetStations()
 
+        IEnumerable<IDAL.DO.Customer> GetCustomers();
 
 
 

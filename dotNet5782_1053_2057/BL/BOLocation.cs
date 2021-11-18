@@ -15,7 +15,7 @@ namespace IBL
             public BOLocation(double longi, double lati)
             {
                 Longitude = longi;
-                Latitude = Latitude;
+                Latitude = lati;
             }
         }
     }
