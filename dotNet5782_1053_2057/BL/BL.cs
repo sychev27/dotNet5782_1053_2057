@@ -108,15 +108,56 @@ namespace IB
         void receiveDronesFromData()
         {
             //receives drones from Data Layer, saves them in listDrone
+            foreach (IDAL.DO.Drone drone in dataAccess.GetDrones())
+            {
+                IBL.BO.BODrone boDrone = new IBL.BO.BODrone();
+                boDrone.Id = drone.Id;
+                switch (drone.MaxWeight) 
+                {
+                    case IDAL.DO.WeightCategories.light: boDrone.MaxWeight = IBL.BO.Enum.WeightCategories.light;
+                        break;
+                    case IDAL.DO.WeightCategories.medium: boDrone.MaxWeight = IBL.BO.Enum.WeightCategories.medium;
+                        break;
+                    case IDAL.DO.WeightCategories.heavy: boDrone.MaxWeight = IBL.BO.Enum.WeightCategories.heavy;
+                        break;
+                    default:
+                        break;
+                }
+                boDrone.Model = drone.Model;
+                listDrone.Add(boDrone);
+            }
             //code..
         }
-        
+
+        double distance(IBL.BO.BOLocation l1, IBL.BO.BOLocation l2)
+        {
+            double lat1 = l1.Latitude / (180 / Math.PI);
+            double lat2 = l2.Latitude / (180 / Math.PI);
+            double long1 = l1.Longitude / (180 / Math.PI);
+            double long2 = l2.Longitude / (180 / Math.PI);
+            double distance = 3963 * Math.Acos((Math.Sin(lat1) * Math.Sin(lat2)) + Math.Cos(lat1) * Math.Cos(lat2) * Math.Cos(long2 - long1));
+            distance *= 1.609344;
+            //double diff1 = l1.Latitude - l2.Latitude;
+            //double diff2 = l1.Longitude - l2.Longitude;
+            //diff1 = diff1 * diff1;
+            //diff2 = diff2 * diff2;
+            //double sum = diff1 + diff2;
+            return distance;
+        }
+
         IBL.BO.BOLocation closestStation(IBL.BO.BOLocation l)
         {
-            IBL.BO.BOLocation ans = new IBL.BO.BOLocation(0, 0);
-
-            // code....
-
+            IEnumerable<IDAL.DO.Station> stations = dataAccess.GetStations();
+            IBL.BO.BOLocation ans = new IBL.BO.BOLocation(stations.First().Longitude, stations.First().Latitude);
+            foreach (IDAL.DO.Station st in stations)
+            {
+                IBL.BO.BOLocation checkLoc = new IBL.BO.BOLocation(st.Longitude, st.Latitude);
+                if (distance(l,ans) > distance(l,checkLoc))
+                {
+                    ans.Latitude = checkLoc.Latitude;
+                    ans.Longitude = checkLoc.Longitude;
+                }
+            }
             return ans;
             
         }
@@ -275,21 +316,7 @@ namespace IB
             }
         }
 
-        double distance(IBL.BO.BOLocation l1, IBL.BO.BOLocation l2)
-        {
-            double lat1 = l1.Latitude / (180 / Math.PI);
-            double lat2 = l2.Latitude / (180 / Math.PI);
-            double long1 = l1.Longitude / (180 / Math.PI);
-            double long2 = l2.Longitude / (180 / Math.PI);
-            double distance = 3963 * Math.Acos((Math.Sin(lat1) * Math.Sin(lat2)) + Math.Cos(lat1) * Math.Cos(lat2) * Math.Cos(long2 - long1));
-            distance *= 1.609344;
-            //double diff1 = l1.Latitude - l2.Latitude;
-            //double diff2 = l1.Longitude - l2.Longitude;
-            //diff1 = diff1 * diff1;
-            //diff2 = diff2 * diff2;
-            //double sum = diff1 + diff2;
-            return distance;
-        }
+
 
 
         double battNededForDist(IBL.BO.BODrone drone, IBL.BO.BOLocation loc)

@@ -114,8 +114,12 @@ namespace DalObject
         {
             return listParcel;
         }
+        public IEnumerable<IDAL.DO.Station> GetStations()
+        {
+            return listStation;
+        }
 
-        
+
         public static void Initialize()   
         {
             Random r = new Random();
