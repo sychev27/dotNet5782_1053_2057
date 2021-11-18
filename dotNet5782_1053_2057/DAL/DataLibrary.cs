@@ -166,8 +166,8 @@ namespace DalObject
 
                 exampleS.Id = i + 1;
                 exampleS.Name = r.Next(20, 100);
-                exampleS.Longitude = r.Next(10, 50) + r.NextDouble();
-                exampleS.Latitude = r.Next(10, 50) + r.NextDouble();
+                exampleS.Longitude = r.Next(34, 36) + r.NextDouble();
+                exampleS.Latitude = r.Next(30, 33) + r.NextDouble();
                 exampleS.ChargeSlots = r.Next(7, 13);
 
                 listStation.Add(exampleS);
