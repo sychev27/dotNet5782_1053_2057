@@ -142,6 +142,7 @@ namespace IB
                         break;
                 }
                 boDrone.Model = drone.Model;
+                boDrone.ParcelInTransfer = createParcInTrans(boDrone.Id);
                 listDrone.Add(boDrone);
             }
             //code..
