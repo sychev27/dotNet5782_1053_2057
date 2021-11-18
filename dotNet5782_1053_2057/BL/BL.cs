@@ -255,8 +255,12 @@ namespace IB
         double battNededForDist(IBL.BO.BODrone drone, IBL.BO.BOLocation loc)
         {
             double dist = distance(drone.location, loc);
-            if 
-
+            if(!drone.pck.Collected)
+                return dist * empty;
+            else 
+            {
+                if(drone.pck.MaxWeight = IBL.BO. )
+            }
         }
 
 
