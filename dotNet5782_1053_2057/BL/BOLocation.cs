@@ -12,6 +12,11 @@ namespace IBL
         {
             public double Longitude { get; set; }
             public double Latitude { get; set; }
+            public BOLocation(double longi, double lati)
+            {
+                Longitude = longi;
+                Latitude = Latitude;
+            }
         }
     }
 }

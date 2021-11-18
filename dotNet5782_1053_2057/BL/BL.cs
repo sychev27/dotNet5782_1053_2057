@@ -26,7 +26,7 @@ namespace IB
         internal double heavy;
         internal double chargeRate; // per hour 
 
-        IEnumerable<IBL.BO.BODrone> listDrone;
+        List<IBL.BO.BODrone> listDrone;
 
         public BL()
         {
@@ -37,7 +37,7 @@ namespace IB
             heavy = elecInfo.ElementAt(3);
             chargeRate = elecInfo.ElementAt(4);
 
-
+            receiveDronesFromData();
 
 
             //dont go beyond this line
@@ -45,6 +45,7 @@ namespace IB
             IEnumerable<IDAL.DO.Parcel> listParcel = new List<IDAL.DO.Parcel>();
             listParcel = dataAccess.GetParcels();
 
+            int dronePlace = -1; //holds place for drone in our listDrone
             foreach (IDAL.DO.Parcel parcel in listParcel)
             {
                 if (parcel.DroneId == -1) //if no drone is assigned to the parcel..
@@ -54,6 +55,11 @@ namespace IB
                 else if (parcel.Pickup == DateTime.MinValue) 
                 {
                     //if the parcel has a drone, but not yet collected
+                    dronePlace = droneIndex(parcel.DroneId);
+                    IBL.BO.BOLocation customerLocation = new IBL.BO.BOLocation(0,0);
+                    //code...  get customer location
+                    listDrone[dronePlace].location = closestStation(customerLocation);
+                    
 
                 }
                 else if (parcel.Delivered == DateTime.MinValue)
@@ -82,12 +88,34 @@ namespace IB
         }
 
 
-
-        void updateDrones()
+        int droneIndex(int id) //returns index of drone which holds this id...
         {
-
+            //CHECK
+            int counter = 0;
+            foreach (IBL.BO.BODrone item in listDrone)
+            {
+                if (id == item.Id)
+                    return counter;
+               
+                counter++;
+            }
+            return -1; //if drone is not found 
         }
+        void receiveDronesFromData()
+        {
+            //receives drones from Data Layer, saves them in listDrone
+            //code..
+        }
+        
+        IBL.BO.BOLocation closestStation(IBL.BO.BOLocation l)
+        {
+            IBL.BO.BOLocation ans = new IBL.BO.BOLocation(0, 0);
 
+            // code....
+
+            return ans;
+            
+        }
 
 
 
