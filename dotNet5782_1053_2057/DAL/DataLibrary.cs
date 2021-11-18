@@ -114,6 +114,10 @@ namespace DalObject
         {
             return listParcel;
         }
+        public IEnumerable<IDAL.DO.Customer> GetCustomers()
+        {
+            return listCustomer;
+        }
 
         
         public static void Initialize()   
