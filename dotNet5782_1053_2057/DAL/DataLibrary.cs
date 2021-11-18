@@ -110,7 +110,10 @@ namespace DalObject
         {
             return listDrone;
         }
-
+        public IEnumerable<IDAL.DO.Parcel> GetParcels ()
+        {
+            return listParcel;
+        }
 
         
         public static void Initialize()   

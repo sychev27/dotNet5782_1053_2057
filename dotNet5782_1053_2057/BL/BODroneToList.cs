@@ -12,7 +12,7 @@ namespace IBL
         {
             public int Id { get; set; }
             public string Model { get; set; }
-            public IB.Enum.WeightCategories MaxWeight { get; set; }
+            public IBL.BO.Enum.WeightCategories MaxWeight { get; set; }
             public double Battery { get; set; }
             public BOLocation Location { get; set; }
             public int IdOfParcelCarrying { get; set; }

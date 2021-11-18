@@ -42,7 +42,9 @@ namespace IB
 
             //dont go beyond this line
             //updates Drones based on parcels received from Data Layer
-            List<IDAL.DO.Parcel> listParcel = new List<IDAL.DO.Parcel>();
+            IEnumerable<IDAL.DO.Parcel> listParcel = new List<IDAL.DO.Parcel>();
+            listParcel = dataAccess.GetParcels();
+
             foreach (IDAL.DO.Parcel parcel in listParcel)
             {
                 if (parcel.DroneId == -1) //if no drone is assigned to the parcel..
@@ -59,7 +61,7 @@ namespace IB
                     //if the parcel has been collected, but not yet delivered
 
                 }
-                else if ()
+                else if (true)
                 {
 
                 }

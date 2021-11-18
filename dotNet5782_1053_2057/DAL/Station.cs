@@ -29,7 +29,7 @@ namespace IDAL
             public override string ToString()
             {
                 string res = "";
-                res + = "Station " + Name + " id: " + Id + "\n" +
+                res += "Station " + Name + " id: " + Id + "\n" +
                     "(" + Longitude + "," + Latitude + ")" + "\n" +
                     "ChargeSlots: " + ChargeSlots + "\n";
                 return res;
