@@ -39,6 +39,10 @@ namespace IB
 
             receiveDronesFromData();
 
+            IBL.BO.BOLocation first = new IBL.BO.BOLocation(40, -70);
+            IBL.BO.BOLocation second = new IBL.BO.BOLocation(38, -77);
+
+            double dummy = distance(first, second);
 
             //dont go beyond this line
             //updates Drones based on parcels received from Data Layer
