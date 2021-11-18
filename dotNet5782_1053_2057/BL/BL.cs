@@ -208,7 +208,7 @@ namespace IB
             }
         }
 
-   double distance(IBL.BO.BOLocation l1, IBL.BO.BOLocation l2)
+        double distance(IBL.BO.BOLocation l1, IBL.BO.BOLocation l2)
         {
             double diff1 = l1.Latitude - l2.Latitude;
             double diff2 = l1.Longitude - l2.Longitude;
@@ -218,6 +218,13 @@ namespace IB
             return Math.Sqrt(sum);
         }
 
+
+        double battNededForDist(IBL.BO.BODrone drone, IBL.BO.BOLocation loc)
+        {
+            double dist = distance(drone.location, loc);
+            if 
+
+        }
 
 
 
