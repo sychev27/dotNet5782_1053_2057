@@ -37,11 +37,44 @@ namespace IB
             heavy = elecInfo.ElementAt(3);
             chargeRate = elecInfo.ElementAt(4);
 
-            
+
 
 
             //dont go beyond this line
-            //listDrone = dataAccess.GetDrones();
+            //updates Drones based on parcels received from Data Layer
+            List<IDAL.DO.Parcel> listParcel = new List<IDAL.DO.Parcel>();
+            foreach (IDAL.DO.Parcel parcel in listParcel)
+            {
+                if (parcel.DroneId == -1) //if no drone is assigned to the parcel..
+                {
+                    continue;
+                }
+                else if (parcel.Pickup == DateTime.MinValue) 
+                {
+                    //if the parcel has a drone, but not yet collected
+
+                }
+                else if (parcel.Delivered == DateTime.MinValue)
+                { 
+                    //if the parcel has been collected, but not yet delivered
+
+                }
+                else if ()
+                {
+
+                }
+                
+
+
+
+
+
+
+
+
+
+
+            }
 
 
         }

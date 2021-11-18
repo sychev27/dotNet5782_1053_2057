@@ -11,7 +11,7 @@ namespace IDAL
         public struct Drone
         {
             
-            public Drone(int _id = 0, string _model = "", IDAL.DO.WeightCategories _maxWeight = 0)/*,
+            public Drone(int _id, string _model, IDAL.DO.WeightCategories _maxWeight)/*,
                  IDAL.DO.DroneStatus _status = 0,  double _battery = 0 )*/
             {
                 Id = _id;
