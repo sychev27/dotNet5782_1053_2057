@@ -13,9 +13,9 @@ namespace IBL
             public int Id { get; set;  }
             public string NameSender { get; set;  }
             public string NameReceiver { get; set;  }
-            public IB.Enum.WeightCategories Weight { get; set; }
-            public IB.Enum.Priorities Priority { get; set;}
-            public IB.Enum.ParcelStatus ParcelStatus { get; set; }
+            public IBL.BO.Enum.WeightCategories Weight { get; set; }
+            public IBL.BO.Enum.Priorities Priority { get; set;}
+            public IBL.BO.Enum.ParcelStatus ParcelStatus { get; set; }
             
         }
     }

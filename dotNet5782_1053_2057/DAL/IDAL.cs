@@ -30,7 +30,7 @@ namespace IDAL
 
          IEnumerable<double> requestElec();
         IEnumerable<IDAL.DO.Drone> GetDrones();
-
+        IEnumerable<IDAL.DO.Parcel> GetParcels();
 
 
 
