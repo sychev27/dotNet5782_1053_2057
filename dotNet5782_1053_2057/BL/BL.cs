@@ -41,9 +41,9 @@ namespace IB
             receiveDronesFromData();
 
             //test the Distance formula..
-            //IBL.BO.BOLocation first = new IBL.BO.BOLocation(40, -70);
-            //IBL.BO.BOLocation second = new IBL.BO.BOLocation(38, -77);
-            //double dummy = distance(first, second);
+            IBL.BO.BOLocation first = new IBL.BO.BOLocation(13, 63);
+            IBL.BO.BOLocation second = new IBL.BO.BOLocation(10, 20);
+            double dummy = distance(first, second);
 
 
             //dont go beyond this line
@@ -358,17 +358,26 @@ namespace IB
 
         double distance(IBL.BO.BOLocation l1, IBL.BO.BOLocation l2)
         {
-            double lat1 = l1.Latitude / (180 / Math.PI);
-            double lat2 = l2.Latitude / (180 / Math.PI);
-            double long1 = l1.Longitude / (180 / Math.PI);
-            double long2 = l2.Longitude / (180 / Math.PI);
-            double distance = 3963 * Math.Acos((Math.Sin(lat1) * Math.Sin(lat2)) + Math.Cos(lat1) * Math.Cos(lat2) * Math.Cos(long2 - long1));
-            distance *= 1.609344;
-            //double diff1 = l1.Latitude - l2.Latitude;
-            //double diff2 = l1.Longitude - l2.Longitude;
-            //diff1 = diff1 * diff1;
-            //diff2 = diff2 * diff2;
-            //double sum = diff1 + diff2;
+            //(1) find diff in radians:
+            double diffLat = l1.Latitude - l2.Latitude;
+            double diffLong = l1.Longitude - l2.Longitude;
+            diffLat *= (Math.PI / 180);
+            diffLong *= (Math.PI / 180);
+
+            //(2)convert latitude to radians
+            l1.Latitude *= (Math.PI / 180);
+            l2.Latitude *= (Math.PI / 180);
+
+            //(3) use Haversine Formula
+            double Hav = Math.Pow(Math.Sin(diffLat / 2), 2) +
+               Math.Pow(Math.Sin(diffLong / 2), 2) *
+               Math.Cos(l1.Latitude) * Math.Cos(l2.Latitude);
+
+            //(4) Find distance in KM based on earth's radius
+            //d = 2*radius * ArcSin(Square(Hav))
+            double radius = 6371; //radius of Earth in km...
+            double distance = 2 * radius * Math.Asin(Math.Sqrt(Hav)); 
+
             return distance;
         }
 
