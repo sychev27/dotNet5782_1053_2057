@@ -148,12 +148,22 @@ namespace IB
             //code..
         }
         
-        IBL.BO.BOLocation closestStation(IBL.BO.BOLocation l)
+        IBL.BO.BOLocation closestStation(IBL.BO.BOLocation l, bool needChargeSlot = false)
         {
+            //if we need the station to have a free spot, then we send a parameter = true.
+            //otherwise, we can ignore this parameter
+
             IEnumerable<IDAL.DO.Station> stations = dataAccess.GetStations();
             IBL.BO.BOLocation ans = new IBL.BO.BOLocation(stations.First().Longitude, stations.First().Latitude);
             foreach (IDAL.DO.Station st in stations)
             {
+                if(needChargeSlot == true) //if we need the station to have a free slot
+                {
+                    if (freeSpots(st) <= 0) //if there are no free spots in this station, we continue our loop
+                        continue;
+                }
+
+
                 IBL.BO.BOLocation checkLoc = new IBL.BO.BOLocation(st.Longitude, st.Latitude);
                 if (distance(l,ans) > distance(l,checkLoc))
                 {
@@ -412,6 +422,19 @@ namespace IB
             return dist * empty;
         }
 
+
+
+        int freeSpots(IDAL.DO.Station st)
+        {//returns 0 (or less) if not spots are free...
+         //    int numSpots = ChargeSlots;
+         //    for (int i = 0; i < DalObject.DataSource.listDroneCharge.Count; i++)
+         //    {
+         //        if (Id == DalObject.DataSource.listDroneCharge[i].StationId)
+         //            numSpots--;
+         //    }
+         //    return numSpots;
+            return 0;
+        }
 
 
 

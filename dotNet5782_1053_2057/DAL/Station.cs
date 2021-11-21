@@ -44,17 +44,7 @@ namespace IDAL
 
 
 
-            //public int freeSpots()
-            //{//returns 0 (or less) if not spots are free...
-            //    int numSpots = ChargeSlots;
-            //    for (int i = 0; i < DalObject.DataSource.listDroneCharge.Count; i++)
-            //    {
-            //        if (Id == DalObject.DataSource.listDroneCharge[i].StationId)
-            //            numSpots--;
-            //    }
-            //    return numSpots;
-            //}
-
+        
 
         }
 
