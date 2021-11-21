@@ -48,12 +48,14 @@ namespace IB
             IBL.BO.BOLocation second = new IBL.BO.BOLocation(10, 20);
             double dummy = distance(first, second);
 
+            //holds temporary list of locations of customers
+            List<IBL.BO.BOLocation> tempListCust = new List<IBL.BO.BOLocation>();
 
-            //dont go beyond this line
+         
             
             foreach (IBL.BO.BODrone drone in listDrone)
             {
-                if (drone.Id == -1) //TRROW ERROR
+                if (drone.Id == -1) //THROW ERROR
                 {
                     continue;
                 }
@@ -80,13 +82,18 @@ namespace IB
                 }
                 else //if drone does not have a parcel..
                 {
+                    if (tempListCust.Count == 0) //if not yet full, fill customer list
+                        foreach (var item in dataAccess.getCustomers())
+                        {
+                            IBL.BO.BOLocation loc = new IBL.BO.BOLocation(item.Longitude, item.Latitude);
+                            tempListCust.Add(loc);
+                        }
 
+                    drone.location = tempListCust[r.Next(0, tempListCust.Count())];
                 }
 
 
 
-
-                int f = 0;
 
 
 
