@@ -8,6 +8,8 @@ namespace IDAL
 { 
     public interface IDal
     {
+        void Initialize(); 
+        
         IDAL.DO.Drone findDrone(int _id);
         IDAL.DO.Customer findCustomer(int _id);
         IDAL.DO.Parcel findParcel(int _id);
@@ -35,7 +37,7 @@ namespace IDAL
 
         IEnumerable<IDAL.DO.Customer> GetCustomers();
 
-
+      
 
 
     }

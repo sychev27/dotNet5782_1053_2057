@@ -124,7 +124,7 @@ namespace DalObject
         }
 
 
-        public static void Initialize()   
+        public void Initialize()   
         {
             Random r = new Random();
             //initialize customer
@@ -145,6 +145,7 @@ namespace DalObject
 
             exampleC.Name = customerNames[i];
             exampleC.Phone = customerPhones[i];
+           
 
             listCustomer.Add(exampleC);
             //thisConfig.indexAvailCustomer++;
