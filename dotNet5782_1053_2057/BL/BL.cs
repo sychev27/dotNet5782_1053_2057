@@ -128,26 +128,35 @@ namespace IB
             //receives drones from Data Layer, saves them in listDrone
             foreach (IDAL.DO.Drone drone in dataAccess.GetDrones())
             {
-                IBL.BO.BODrone boDrone = new IBL.BO.BODrone();
-                boDrone.Id = drone.Id;
-                switch (drone.MaxWeight) 
-                {
-                    case IDAL.DO.WeightCategories.light: boDrone.MaxWeight = IBL.BO.Enum.WeightCategories.light;
-                        break;
-                    case IDAL.DO.WeightCategories.medium: boDrone.MaxWeight = IBL.BO.Enum.WeightCategories.medium;
-                        break;
-                    case IDAL.DO.WeightCategories.heavy: boDrone.MaxWeight = IBL.BO.Enum.WeightCategories.heavy;
-                        break;
-                    default:
-                        break;
-                }
-                boDrone.Model = drone.Model;
-                boDrone.ParcelInTransfer = createParcInTrans(boDrone.Id);
-                listDrone.Add(boDrone);
+                addDroneToBusiLayer(drone);
             }
-            //code..
+            
         }
         
+        void addDroneToBusiLayer(IDAL.DO.Drone drone)
+        {
+            //receives IDAL.DO.Drone, creates a corresponding BODrone, saves in BL's list
+            IBL.BO.BODrone boDrone = new IBL.BO.BODrone();
+            boDrone.Id = drone.Id;
+            switch (drone.MaxWeight)
+            {
+                case IDAL.DO.WeightCategories.light:
+                    boDrone.MaxWeight = IBL.BO.Enum.WeightCategories.light;
+                    break;
+                case IDAL.DO.WeightCategories.medium:
+                    boDrone.MaxWeight = IBL.BO.Enum.WeightCategories.medium;
+                    break;
+                case IDAL.DO.WeightCategories.heavy:
+                    boDrone.MaxWeight = IBL.BO.Enum.WeightCategories.heavy;
+                    break;
+                default:
+                    break;
+            }
+            boDrone.Model = drone.Model;
+            boDrone.ParcelInTransfer = createParcInTrans(boDrone.Id);
+            listDrone.Add(boDrone);
+        }
+
         IBL.BO.BOLocation closestStation(IBL.BO.BOLocation l, bool needChargeSlot = false)
         {
             //if we need the station to have a free spot, then we send a parameter = true.
@@ -236,6 +245,7 @@ namespace IB
         public void addDrone(int _id, string _model, IDAL.DO.WeightCategories _maxWeight)
         {
             IDAL.DO.Drone dummy = new IDAL.DO.Drone(_id, _model, _maxWeight);
+            //must include in our list too!!
             dataAccess.addDrone(dummy);
         }
         public void addCustomer(int _id, string _name, string _phone, double _longitude,
