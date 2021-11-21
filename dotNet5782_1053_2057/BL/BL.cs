@@ -244,9 +244,9 @@ namespace IB
 
         public void addDrone(int _id, string _model, IDAL.DO.WeightCategories _maxWeight)
         {
-            IDAL.DO.Drone dummy = new IDAL.DO.Drone(_id, _model, _maxWeight);
-            //must include in our list too!!
-            dataAccess.addDrone(dummy);
+            IDAL.DO.Drone newDOdrone = new IDAL.DO.Drone(_id, _model, _maxWeight);
+            addDroneToBusiLayer(newDOdrone); //adds to BL
+            dataAccess.addDrone(newDOdrone); //adds to DL
         }
         public void addCustomer(int _id, string _name, string _phone, double _longitude,
                 double _latitude)
