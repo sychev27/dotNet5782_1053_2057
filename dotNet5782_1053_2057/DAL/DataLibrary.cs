@@ -26,10 +26,10 @@ namespace DalObject
 
     internal class Config
         {
-            internal static double empty = 100;
-            internal static double light = 120;
-            internal static double mediuim =140;
-            internal static double heavy = 160;
+            internal static double empty = 0.4;
+            internal static double light = 0.5;
+            internal static double mediuim =0.6;
+            internal static double heavy = 0.7;
             internal static double chargeRate = 5.5; // per hour
             internal int parcelSerialNumber = 1;
         }
@@ -106,23 +106,27 @@ namespace DalObject
             return lst;
         }
 
-        public IEnumerable<IDAL.DO.Drone> GetDrones()
+        public IEnumerable<IDAL.DO.Drone> getDrones()
         {
             return listDrone;
         }
-        public IEnumerable<IDAL.DO.Parcel> GetParcels ()
+        public IEnumerable<IDAL.DO.Parcel> getParcels ()
         {
             return listParcel;
         }
-        public IEnumerable<IDAL.DO.Station> GetStations()
+        public IEnumerable<IDAL.DO.Station> getStations()
         {
             return listStation;
         }
-        public IEnumerable<IDAL.DO.Customer> GetCustomers()
+        public IEnumerable<IDAL.DO.Customer> getCustomers()
         {
             return listCustomer;
         }
 
+        public IEnumerable<IDAL.DO.DroneCharge> getDroneCharge()
+        {
+            return listDroneCharge;
+        }
 
         public void Initialize()   
         {
