@@ -14,7 +14,21 @@ namespace IB
             //otherwise, we can ignore this parameter
 
             IEnumerable<IDAL.DO.Station> stations = dataAccess.getStations();
-            IBL.BO.BOLocation ans = new IBL.BO.BOLocation(stations.First().Longitude, stations.First().Latitude);
+            IBL.BO.BOLocation ans = new IBL.BO.BOLocation(0,0); 
+            if (needChargeSlot == true)
+            {
+                foreach (IDAL.DO.Station st in stations)
+                {
+                    if (freeSpots(st) <= 0)
+                        continue;
+                    ans = new IBL.BO.BOLocation(st.Longitude, st.Latitude);
+                    break;
+                }
+            }
+            else 
+                ans = new IBL.BO.BOLocation(stations.First().Longitude, stations.First().Latitude);
+         //   if (ans.Latitude == 0 && ans.Longitude == 0)
+         //       throw // exception
             foreach (IDAL.DO.Station st in stations)
             {
                 if (needChargeSlot == true) //if we need the station to have a free slot
