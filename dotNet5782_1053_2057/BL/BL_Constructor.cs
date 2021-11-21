@@ -19,6 +19,7 @@ namespace IB
     public partial class BL : IBL.Ibl
     {
         IDAL.IDal dataAccess = new DalObject.DataSource();
+       
         Random r = new Random();
 
         internal double empty;
@@ -27,11 +28,13 @@ namespace IB
         internal double heavy;
         internal double chargeRate; // per hour 
 
-        List<IBL.BO.BODrone> listDrone;
+        List<IBL.BO.BODrone> listDrone = new List<IBL.BO.BODrone>();
 
         public BL()
         {
-           IEnumerable<double> elecInfo = dataAccess.requestElec();
+            dataAccess.Initialize();
+            
+            IEnumerable<double> elecInfo = dataAccess.requestElec();
             empty = elecInfo.First();
             light = elecInfo.ElementAt(1);
             medium = elecInfo.ElementAt(2);
@@ -76,16 +79,14 @@ namespace IB
                     drone.battery = battery;
                 }
                 else //if drone does not have a parcel..
-
-
                 {
 
                 }
-               
-                
 
 
 
+
+                int f = 0;
 
 
 
@@ -118,8 +119,9 @@ namespace IB
         //}
         void receiveDronesFromData()
         {
-            //receives drones from Data Layer, saves them in listDrone
-            foreach (IDAL.DO.Drone drone in dataAccess.getDrones())
+            IEnumerable<IDAL.DO.Drone> origList = dataAccess.getDrones();
+            //receives drones from Data Layer, adds them in listDrone
+            foreach (IDAL.DO.Drone drone in origList)
             {
                 addDroneToBusiLayer(drone);
             }

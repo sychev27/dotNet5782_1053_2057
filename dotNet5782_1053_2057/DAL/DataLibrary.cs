@@ -128,35 +128,21 @@ namespace DalObject
             return listDroneCharge;
         }
 
-        public static void Initialize()   
+        public void Initialize()   
         {
             Random r = new Random();
-            //initialize customer
-            string[] customerNames = new string[12] { "Reuven", "Shimon", "Levi", 
-                "Yehuda", "Yissachar", "Zevulun", "Asher", "Gad", "Dan", "Naftali", 
-                "Yosef", "Binyamin" };
-            string[] customerPhones = new string [10] { "+972-552-2555-18", "+972-525-5534-55", 
-                "+972-552-3555-77", "+972-557-1555-80", "+972-557-1555-48", "+972-559-5557-55",
-                "+972-556-5551-37", "+972-545-5586-84", "+972-556-5557-31", "+972-552-2555-13" };
+            //coordinates for area of jerusalem
+            const int LONGBEGIN = 35;
+            const int LONGEND = 36;
+            const int LATBEGIN = 31;
+            const int LATEND = 32;
 
-             for (int i = 0; i < 10; i++)
-            {
-                IDAL.DO.Customer exampleC = new IDAL.DO.Customer();
-                exampleC.Id = i + 1;
-            
-            exampleC.Longitude = r.Next(34, 45) + r.NextDouble();
-            exampleC.Latitude = r.Next(30, 31) + r.NextDouble();
 
-            exampleC.Name = customerNames[i];
-            exampleC.Phone = customerPhones[i];
 
-            listCustomer.Add(exampleC);
-            //thisConfig.indexAvailCustomer++;
-            }
 
 
             //INITIALIZE DRONE
-            
+
             string[] droneModels = { "Merkava", "Namer" };
 
             for (int i = 0; i < 5; i++)
@@ -173,6 +159,7 @@ namespace DalObject
                 //thisConfig.indexAvailDrone++;
 
             }
+
             //INITIALIZE STATION
             for (int i = 0; i < 2; i++)
             {
@@ -181,12 +168,39 @@ namespace DalObject
 
                 exampleS.Id = i + 1;
                 exampleS.Name = r.Next(20, 100);
-                exampleS.Longitude = r.Next(34, 36) + r.NextDouble();
-                exampleS.Latitude = r.Next(30, 33) + r.NextDouble();
+                //coordinates for Jerusalem area..
+                exampleS.Longitude = r.Next(LONGBEGIN, LONGEND) + r.NextDouble();
+                exampleS.Latitude = r.Next(LATBEGIN, LATEND) + r.NextDouble();
                 exampleS.ChargeSlots = r.Next(7, 13);
 
                 listStation.Add(exampleS);
                 //thisConfig.indexAvailStation++;
+            }
+
+
+            
+            //initialize customer
+            string[] customerNames = new string[12] { "Reuven", "Shimon", "Levi",
+                "Yehuda", "Yissachar", "Zevulun", "Asher", "Gad", "Dan", "Naftali",
+                "Yosef", "Binyamin" };
+            string[] customerPhones = new string[10] { "+972-552-2555-18", "+972-525-5534-55",
+                "+972-552-3555-77", "+972-557-1555-80", "+972-557-1555-48", "+972-559-5557-55",
+                "+972-556-5551-37", "+972-545-5586-84", "+972-556-5557-31", "+972-552-2555-13" };
+
+            for (int i = 0; i < 10; i++)
+            {
+                IDAL.DO.Customer exampleC = new IDAL.DO.Customer();
+                exampleC.Id = i + 1;
+
+                exampleC.Longitude = r.Next(LONGBEGIN, LONGEND) + r.NextDouble();
+                exampleC.Latitude = r.Next(LATBEGIN, LATEND) + r.NextDouble();
+
+                exampleC.Name = customerNames[i];
+                exampleC.Phone = customerPhones[i];
+
+
+                listCustomer.Add(exampleC);
+                //thisConfig.indexAvailCustomer++;
             }
 
 
@@ -195,29 +209,29 @@ namespace DalObject
             {
                 IDAL.DO.Parcel exampleP = new IDAL.DO.Parcel();
                 exampleP.Id = thisConfig.parcelSerialNumber++;
-                exampleP.SenderId = listCustomer[r.Next(0, 10)].Id; 
+                exampleP.SenderId = listCustomer[r.Next(0, 10)].Id;
                 do
                 {
                     exampleP.TargetId = listCustomer[r.Next(0, 10)].Id;
-                } while (exampleP.TargetId == exampleP.SenderId); 
+                } while (exampleP.TargetId == exampleP.SenderId);
 
                 exampleP.Weight = (IDAL.DO.WeightCategories)r.Next(1, 4);
                 exampleP.Priority = (IDAL.DO.Priorities)r.Next(1, 4);
-                int month = r.Next(1,13);
-                int day = r.Next(1,29);
-                int year = r.Next(2020,2022);
-                exampleP.Requested = new DateTime(year,month,day);
-                //exampleP.DroneId = r.Next(1, 6);
+                int month = r.Next(1, 13);
+                int day = r.Next(1, 29);
+                int year = r.Next(2020, 2022);
+                exampleP.Requested = new DateTime(year, month, day);
+
+                if (i <= 5)
+                    exampleP.DroneId = r.Next(1, 6);
                 //exampleP.Pickup = exampleP.Requested.AddDays(r.Next(1, 7));
                 //exampleP.Delivered = exampleP.Pickup.AddDays(r.Next(1, 3));
 
-                exampleP.Scheduled = exampleP.Requested.AddDays(r.Next(1,7));
-                
+                exampleP.Scheduled = exampleP.Requested.AddDays(r.Next(1, 7));
+
                 listParcel.Add(exampleP);
                 //thisConfig.indexAvailParcel++;
             }
-
-            
 
         }
 
@@ -244,12 +258,12 @@ namespace DalObject
         //    }
         //}
 
-        
 
 
-        
 
-       
+
+
+
 
         //public double[] requestElec()
         //{
