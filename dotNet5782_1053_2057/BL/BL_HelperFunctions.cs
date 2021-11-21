@@ -50,8 +50,8 @@ namespace IB
             diffLong *= (Math.PI / 180);
 
             //(2)convert latitude to radians
-            l1.Latitude *= (Math.PI / 180);
-            l2.Latitude *= (Math.PI / 180);
+            double lat1 = l1.Latitude * (Math.PI / 180);
+            double lat2 =  l2.Latitude * (Math.PI / 180);
 
             //(3) use Haversine Formula
             double Hav = Math.Pow(Math.Sin(diffLat / 2), 2) +
