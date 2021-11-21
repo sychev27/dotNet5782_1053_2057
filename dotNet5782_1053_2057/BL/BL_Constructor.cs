@@ -119,7 +119,7 @@ namespace IB
         //}
         void receiveDronesFromData()
         {
-            IEnumerable<IDAL.DO.Drone> origList = dataAccess.GetDrones();
+            IEnumerable<IDAL.DO.Drone> origList = dataAccess.getDrones();
             //receives drones from Data Layer, adds them in listDrone
             foreach (IDAL.DO.Drone drone in origList)
             {
