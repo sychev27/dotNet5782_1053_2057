@@ -14,6 +14,8 @@ namespace IB
         public const string STATION = "station";
         public const string PRCL_TO_ASSIGN = "ParcelsNotYetAssigned";
         public const string CHARGING_STATIONS = "availChargingStations";
+
+
     }
 
     public partial class BL : IBL.Ibl //CTOR
@@ -248,10 +250,16 @@ namespace IB
         }
 
         //DIDNT FINISH!!
-        IBL.BO.BOParcelAtCustomer createParcAtCust(IDAL.DO.Parcel origParc)
+        IBL.BO.BOParcelAtCustomer createParcAtCust(IDAL.DO.Parcel origParc, bool Sender)
         {
+            
             IBL.BO.BOParcelAtCustomer newParcAtCust = new IBL.BO.BOParcelAtCustomer();
-
+            newParcAtCust.Id = origParc.Id;
+            newParcAtCust.MaxWeight = (IBL.BO.Enum.WeightCategories)origParc.Weight;
+            //newParcAtCust.OtherSide  //FINISH
+            //newParcAtCust.ParcelStatus = (IBL.BO.Enum.ParcelStatus) ??
+            newParcAtCust.Priority = (IBL.BO.Enum.Priorities)origParc.Priority;
+            
             return newParcAtCust;
         }
 
@@ -290,14 +298,14 @@ namespace IB
             foreach (var item in dataAccess.getParcels())
             {
                 if (item.SenderId == newCust.Id)
-                    newCust.Sent.Add(createParcAtCust(item));
+                    newCust.Sent.Add(createParcAtCust(item, false));
             }
             newCust.Received = new List<IBL.BO.BOParcelAtCustomer>();
             {
                 foreach (var item in dataAccess.getParcels())
                 {
                     if (item.ReceiverId == newCust.Id)
-                        newCust.Received.Add(createParcAtCust(item));
+                        newCust.Received.Add(createParcAtCust(item, true));
                 }
             }
             return newCust;
