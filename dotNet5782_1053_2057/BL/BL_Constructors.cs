@@ -263,7 +263,7 @@ namespace IB
                 newParcAtCust.OtherSide = createCustInParcel(origParc.SenderId);
             }
             
-            //newParcAtCust.ParcelStatus = (IBL.BO.Enum.ParcelStatus) ?? FINISH
+            //newParcAtCust.ParcelStatus = (IBL.BO.Enum.ParcelStatus) ?? FINISH !!
             newParcAtCust.Priority = (IBL.BO.Enum.Priorities)origParc.Priority;
             
             return newParcAtCust;
