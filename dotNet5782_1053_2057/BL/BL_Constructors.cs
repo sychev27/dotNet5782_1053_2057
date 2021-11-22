@@ -182,7 +182,14 @@ namespace IB
                     break;
             }
             boDrone.Model = drone.Model;
-            boDrone.ParcelInTransfer = createParcInTrans(boDrone.Id);
+            try
+            {
+                boDrone.ParcelInTransfer = createParcInTrans(boDrone.Id);
+            }
+            catch (IBL.BO.BOParcInTransNotFoundException exception)
+            {
+                boDrone.ParcelInTransfer = exception.creatEmptyParcInTrans();
+            }
             listDrone.Add(boDrone);
         }
 
@@ -208,22 +215,23 @@ namespace IB
                 }
             }
             //(2) THROW EXCEPTION IF NOT FOUND
-            if (origParcel.Id == -1)
-            {
-                thisParc.Id = -1;
-                return thisParc;
-            }
-            // throw Exception;
-            //this field will remain empty...
+            if (origParcel.Id == -1) throw new IBL.BO.BOParcInTransNotFoundException();
 
             //(3) CREATE THIS OBJECT
             thisParc.Id = origParcel.Id;
             thisParc.Collected = (origParcel.Pickup == DateTime.MinValue) ? false : true;
             thisParc.Priority = (IBL.BO.Enum.Priorities)origParcel.Priority;
             thisParc.MaxWeight = (IBL.BO.Enum.WeightCategories)origParcel.Weight;
-
-            thisParc.Sender = createCustInParcel(origParcel.SenderId);
-            thisParc.Recipient = createCustInParcel(origParcel.ReceiverId);
+            try
+            {
+                thisParc.Sender = createCustInParcel(origParcel.SenderId);
+            }
+            catch (IBL.BO.BOCustInParcNotFoundException exception)
+            {
+                thisParc.Sender = exception.creatEmptyCustInParc();
+            }
+                thisParc.Recipient = createCustInParcel(origParcel.ReceiverId);
+          
 
             thisParc.PickupPoint = getCustomerLocation(origParcel.SenderId);
             thisParc.DeliveryPoint = getCustomerLocation(origParcel.ReceiverId);
@@ -243,10 +251,12 @@ namespace IB
                     return ans;
                 }
             }
-            //throw exception! not found!
-            //delete this code block:
-            IBL.BO.BOCustomerInParcel error = new IBL.BO.BOCustomerInParcel(-1, "");
-            return error; //<--delete this!
+                //throw exception! not found!
+                throw new IBL.BO.BOCustInParcNotFoundException();
+
+            
+           // IBL.BO.BOCustomerInParcel error = new IBL.BO.BOCustomerInParcel(-1, "");
+         //   return error ; //<--delete this!
         }
 
         IBL.BO.BOParcelAtCustomer createParcAtCust(IDAL.DO.Parcel origParc, bool Sender)
