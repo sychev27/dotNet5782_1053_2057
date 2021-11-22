@@ -375,18 +375,47 @@ namespace IB
         public IBL.BO.BODroneToList createBODroneToList(int _id)
         {
             IBL.BO.BODroneToList newDroneToList = new IBL.BO.BODroneToList();
-
+            IBL.BO.BODrone origDrone = getBODrone(_id);
+            newDroneToList.Id = origDrone.Id;
+            newDroneToList.Model = origDrone.Model;
+            newDroneToList.MaxWeight = origDrone.MaxWeight;
+            newDroneToList.Battery = origDrone.Battery;
+            newDroneToList.Location = origDrone.Location;
+            newDroneToList.IdOfParcelCarrying = origDrone.ParcelInTransfer.Id;
             return newDroneToList;
         }
         public IBL.BO.BOParcelToList createBOParcToList(int _id)
         {
             IBL.BO.BOParcelToList newParcToList = new IBL.BO.BOParcelToList();
+            IDAL.DO.Parcel origParcel = dataAccess.getParcel(_id);
+
+            newParcToList.Id = origParcel.Id;
+            newParcToList.NameReceiver = dataAccess.getCustomer(origParcel.ReceiverId).Name;
+            newParcToList.NameSender = dataAccess.getCustomer(origParcel.SenderId).Name;
+            newParcToList.Weight = (IBL.BO.Enum.WeightCategories)origParcel.Weight;
+            newParcToList.Priority = (IBL.BO.Enum.Priorities)origParcel.Priority;
+
+            if (origParcel.Delivered != DateTime.MinValue) //if delivered
+                newParcToList.ParcelStatus = IBL.BO.Enum.ParcelStatus.delivered;
+            else if (origParcel.Pickup != DateTime.MinValue) // if collected
+                newParcToList.ParcelStatus = IBL.BO.Enum.ParcelStatus.collected;
+            else if (origParcel.DroneId != -1)
+                newParcToList.ParcelStatus = IBL.BO.Enum.ParcelStatus.assigned;
+            else
+                newParcToList.ParcelStatus = IBL.BO.Enum.ParcelStatus.created;
+
 
             return newParcToList;
         }
         public IBL.BO.BOStationToList createBOStationToList(int _id)
         {
             IBL.BO.BOStationToList newStationToList = new IBL.BO.BOStationToList();
+            IDAL.DO.Station origStation = dataAccess.getStation(_id);
+
+            newStationToList.Id = origStation.Id;
+            newStationToList.NameStation = origStation.Name;
+            newStationToList.ChargeSpotsAvailable = freeSpots(origStation);
+            newStationToList.ChargeSpotsTaken = origStation.ChargeSlots - freeSpots(origStation);
 
             return newStationToList;
         }

@@ -11,7 +11,7 @@ namespace IBL
         public class BOStationToList
         {
             public int Id { get; set; }
-            public string NameStation { get; set; }
+            public int NameStation { get; set; }
             public int ChargeSpotsAvailable { get; set; }
             public int ChargeSpotsTaken { get; set; }
         }
