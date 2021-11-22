@@ -249,15 +249,21 @@ namespace IB
             return error; //<--delete this!
         }
 
-        //DIDNT FINISH!!
-        IBL.BO.BOParcelAtCustomer createParcAtCust(IDAL.DO.Parcel origParc, bool Sender)
+       IBL.BO.BOParcelAtCustomer createParcAtCust(IDAL.DO.Parcel origParc, bool Sender)
         {
-            
             IBL.BO.BOParcelAtCustomer newParcAtCust = new IBL.BO.BOParcelAtCustomer();
             newParcAtCust.Id = origParc.Id;
             newParcAtCust.MaxWeight = (IBL.BO.Enum.WeightCategories)origParc.Weight;
-            //newParcAtCust.OtherSide  //FINISH
-            //newParcAtCust.ParcelStatus = (IBL.BO.Enum.ParcelStatus) ??
+            if (Sender == true) //if the Parcel is being held by a Sender, this field holds the Receiver
+            {
+                newParcAtCust.OtherSide = createCustInParcel(origParc.ReceiverId);
+            }
+            else //if the Parcel is being held by a Receiver, this field holds the Sender
+            {
+                newParcAtCust.OtherSide = createCustInParcel(origParc.SenderId);
+            }
+            
+            //newParcAtCust.ParcelStatus = (IBL.BO.Enum.ParcelStatus) ?? FINISH
             newParcAtCust.Priority = (IBL.BO.Enum.Priorities)origParc.Priority;
             
             return newParcAtCust;
