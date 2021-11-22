@@ -344,6 +344,32 @@ namespace IB
         public IBL.BO.BOCustomerToList createBOCustToList(int _id)
         {
             IBL.BO.BOCustomerToList newCustToList = new IBL.BO.BOCustomerToList();
+            IDAL.DO.Customer origCust = dataAccess.getCustomer(_id);
+            newCustToList.Id = origCust.Id;
+            newCustToList.CustomerName = origCust.Name;
+            newCustToList.Phone = origCust.Phone;
+            newCustToList.numParcelsOnWayToCustomer = 0;
+            newCustToList.numParcelsRecieved = 0;
+            newCustToList.numParcelsSentDelivered = 0;
+            newCustToList.numParcelsSentNotDelivered = 0;
+
+            foreach (var item in dataAccess.getParcels())
+            {
+                if(item.SenderId == newCustToList.Id) //if sent this parcel
+                {
+                    if (item.Delivered == DateTime.MinValue)//if not delivered
+                        newCustToList.numParcelsSentNotDelivered++;
+                    else if (item.Delivered != DateTime.MinValue) //it deliverd
+                        newCustToList.numParcelsSentDelivered++;
+                }
+                else if (item.ReceiverId == newCustToList.Id)
+                {
+                    if (item.Delivered == DateTime.MinValue) //if not delivered
+                        newCustToList.numParcelsOnWayToCustomer++;
+                    else if (item.Delivered != DateTime.MinValue) //if delivered
+                        newCustToList.numParcelsRecieved++;
+                }
+            }
 
             return newCustToList;
         }

@@ -12,7 +12,7 @@ namespace IBL
         {
             public int Id { get; set; }
             public string CustomerName { get; set; }
-            public int Phone { get; set; }
+            public string Phone { get; set; }
             public int numParcelsSentDelivered { get; set; }
             public int numParcelsSentNotDelivered { get; set; }
             public int numParcelsRecieved { get; set; }
