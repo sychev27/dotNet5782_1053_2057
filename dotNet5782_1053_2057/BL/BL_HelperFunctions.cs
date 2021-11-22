@@ -117,7 +117,46 @@ namespace IB
             //throw exception!!!
             return null;
         }
-
+        public IEnumerable<IBL.BO.BODrone> getBODroneList()
+        {
+            return listDrone;
+        }
+        public IEnumerable<IBL.BO.BOCustomerToList> getCustToList() 
+        {
+            List<IBL.BO.BOCustomerToList> res = new List<IBL.BO.BOCustomerToList>();
+            foreach (var item in dataAccess.getCustomers())
+            {
+                res.Add(createBOCustToList(item.Id));
+            }
+            return res;
+        }
+        public IEnumerable<IBL.BO.BOParcelToList> getParcelToList() 
+        {
+            List<IBL.BO.BOParcelToList> res = new List<IBL.BO.BOParcelToList>();
+            foreach (var item in dataAccess.getParcels())
+            {
+                res.Add(createBOParcToList(item.Id));
+            }
+            return res;
+        }
+        public IEnumerable<IBL.BO.BOStationToList> getStationToList() 
+        {
+            List<IBL.BO.BOStationToList> res = new List<IBL.BO.BOStationToList>();
+            foreach (var item in dataAccess.getStations())
+            {
+                res.Add(createBOStationToList(item.Id));
+            }
+            return res;
+        }
+        public IEnumerable<IBL.BO.BODroneToList> getDroneToList()
+        {
+            List<IBL.BO.BODroneToList> res = new List<IBL.BO.BODroneToList>();
+            foreach (var item in listDrone)
+            {
+                res.Add(createBODroneToList(item.Id));
+            }
+            return res;
+        }
 
 
 

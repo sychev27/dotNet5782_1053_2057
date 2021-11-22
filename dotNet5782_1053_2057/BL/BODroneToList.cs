@@ -17,6 +17,13 @@ namespace IBL
             public BOLocation Location { get; set; }
             public int IdOfParcelCarrying { get; set; }
 
+            public override string ToString()
+            {
+                string res = "Drone " + Id + " Model: " + Model + " \n";
+                res += "Battery: " + Battery + " Location " + Location + "\n";
+                
+                return res;
+            }
         }
     }
     

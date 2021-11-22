@@ -37,7 +37,7 @@ namespace IBL
          IBL.BO.BOParcel createBOParcel(int id);
 
          IBL.BO.BODrone getBODrone(int id);
-
+        IEnumerable<IBL.BO.BODrone> getBODroneList();
 
 
         //IBL.BO.BOCustomerToList createBOCustToList(int _id);
@@ -46,6 +46,10 @@ namespace IBL
         //IBL.BO.BOStationToList createBOStationToList(int _id);
 
 
+        public IEnumerable<IBL.BO.BOCustomerToList> getCustToList();
+        public IEnumerable<IBL.BO.BOParcelToList> getParcelToList();
+        public IEnumerable<IBL.BO.BOStationToList> getStationToList();
+        public IEnumerable<IBL.BO.BODroneToList> getDroneToList();
 
         //end of interface
     }
