@@ -33,14 +33,17 @@ namespace IBL
         //void printParcel(int _id);
 
         IBL.BO.BOStation createBOStation(int id);
-        public IBL.BO.BOCustomer createBOCustomer(int id);
-        public IBL.BO.BOParcel createBOParcel(int id);
+         IBL.BO.BOCustomer createBOCustomer(int id);
+         IBL.BO.BOParcel createBOParcel(int id);
 
-        public IBL.BO.BODrone getBODrone(int id);
-
-
+         IBL.BO.BODrone getBODrone(int id);
 
 
+
+        //IBL.BO.BOCustomerToList createBOCustToList(int _id);
+        //IBL.BO.BODroneToList createBODroneToList(int _id);
+        //IBL.BO.BOParcelToList createBOParcToList(int _id);
+        //IBL.BO.BOStationToList createBOStationToList(int _id);
 
 
 

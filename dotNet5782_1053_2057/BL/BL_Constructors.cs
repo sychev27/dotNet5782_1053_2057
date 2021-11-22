@@ -21,7 +21,7 @@ namespace IB
     public partial class BL : IBL.Ibl //CTOR
     {
         IDAL.IDal dataAccess = new DalObject.DataSource();
-       
+
         Random r = new Random();
 
         internal double empty;
@@ -35,7 +35,7 @@ namespace IB
         public BL()
         {
             dataAccess.Initialize();
-            
+
             IEnumerable<double> elecInfo = dataAccess.requestElec();
             empty = elecInfo.First();
             light = elecInfo.ElementAt(1);
@@ -54,8 +54,8 @@ namespace IB
             List<IBL.BO.BOLocation> tempListCust = new List<IBL.BO.BOLocation>();
             //(for now, tempListCust holds every customer, not just those who have had a parcel delivered to them
 
-         
-            
+
+
             foreach (IBL.BO.BODrone drone in listDrone)
             {
                 if (drone.Id == -1) //THROW ERROR
@@ -63,7 +63,7 @@ namespace IB
                     continue;
                 }
 
-                if(drone.ParcelInTransfer.Id != -1 && drone.ParcelInTransfer != null)
+                if (drone.ParcelInTransfer.Id != -1 && drone.ParcelInTransfer != null)
                 {
                     //IF DRONE HAS A PARCEL
                     if (!drone.ParcelInTransfer.Collected) //but not yet COLLECTED
@@ -91,7 +91,7 @@ namespace IB
                     } while (drone.DroneStatus == IBL.BO.Enum.DroneStatus.inDelivery);
 
 
-                    if(drone.DroneStatus == IBL.BO.Enum.DroneStatus.maintenance)
+                    if (drone.DroneStatus == IBL.BO.Enum.DroneStatus.maintenance)
                     {
                         //(1) SET LOCATION - to Random Station
                         List<IDAL.DO.Station> listStation = new List<IDAL.DO.Station>();
@@ -133,7 +133,7 @@ namespace IB
             //end of Ctor
         }
 
-        
+
 
         //int droneIndex(int id) //DELETE THIS FUNCTION!
         //{
@@ -145,7 +145,7 @@ namespace IB
         //    {
         //        if (id == item.Id)
         //            return counter;
-               
+
         //        counter++;
         //    }
         //    return -1; //if drone is not found 
@@ -159,12 +159,12 @@ namespace IB
             {
                 addDroneToBusiLayer(drone);
             }
-            
+
         }
         void addDroneToBusiLayer(IDAL.DO.Drone drone) //receives IDAL.DO.Drone,
                                                       //creates a corresponding BODrone, saves in BL's list
         {
-            
+
             IBL.BO.BODrone boDrone = new IBL.BO.BODrone();
             boDrone.Id = drone.Id;
             switch (drone.MaxWeight)
@@ -213,7 +213,7 @@ namespace IB
                 thisParc.Id = -1;
                 return thisParc;
             }
-               // throw Exception;
+            // throw Exception;
             //this field will remain empty...
 
             //(3) CREATE THIS OBJECT
@@ -234,10 +234,10 @@ namespace IB
         }
         IBL.BO.BOCustomerInParcel createCustInParcel(int origCustId)
         {
-           IEnumerable<IDAL.DO.Customer> origCustomers =  dataAccess.getCustomers();
+            IEnumerable<IDAL.DO.Customer> origCustomers = dataAccess.getCustomers();
             foreach (var item in origCustomers)
             {
-                if(origCustId == item.Id)
+                if (origCustId == item.Id)
                 {
                     IBL.BO.BOCustomerInParcel ans = new IBL.BO.BOCustomerInParcel(item.Id, item.Name);
                     return ans;
@@ -249,7 +249,7 @@ namespace IB
             return error; //<--delete this!
         }
 
-       IBL.BO.BOParcelAtCustomer createParcAtCust(IDAL.DO.Parcel origParc, bool Sender)
+        IBL.BO.BOParcelAtCustomer createParcAtCust(IDAL.DO.Parcel origParc, bool Sender)
         {
             IBL.BO.BOParcelAtCustomer newParcAtCust = new IBL.BO.BOParcelAtCustomer();
             newParcAtCust.Id = origParc.Id;
@@ -262,10 +262,10 @@ namespace IB
             {
                 newParcAtCust.OtherSide = createCustInParcel(origParc.SenderId);
             }
-            
+
             //newParcAtCust.ParcelStatus = (IBL.BO.Enum.ParcelStatus) ?? FINISH !!
             newParcAtCust.Priority = (IBL.BO.Enum.Priorities)origParc.Priority;
-            
+
             return newParcAtCust;
         }
 
@@ -326,7 +326,7 @@ namespace IB
             newParc.Id = origParc.Id;
             newParc.Priority = (IBL.BO.Enum.Priorities)origParc.Priority;
             newParc.Sender = new IBL.BO.BOCustomerInParcel(
-                origParc.SenderId, dataAccess.getCustomer(origParc.SenderId).Name); 
+                origParc.SenderId, dataAccess.getCustomer(origParc.SenderId).Name);
             newParc.Receiver = new IBL.BO.BOCustomerInParcel(
                 origParc.ReceiverId, dataAccess.getCustomer(origParc.ReceiverId).Name);
 
@@ -340,7 +340,31 @@ namespace IB
             return newParc;
         }
 
+        //these four functions are not yet finished
+        public IBL.BO.BOCustomerToList createBOCustToList(int _id)
+        {
+            IBL.BO.BOCustomerToList newCustToList = new IBL.BO.BOCustomerToList();
 
+            return newCustToList;
+        }
+        public IBL.BO.BODroneToList createBODroneToList(int _id)
+        {
+            IBL.BO.BODroneToList newDroneToList = new IBL.BO.BODroneToList();
+
+            return newDroneToList;
+        }
+        public IBL.BO.BOParcelToList createBOParcToList(int _id)
+        {
+            IBL.BO.BOParcelToList newParcToList = new IBL.BO.BOParcelToList();
+
+            return newParcToList;
+        }
+        public IBL.BO.BOStationToList createBOStationToList(int _id)
+        {
+            IBL.BO.BOStationToList newStationToList = new IBL.BO.BOStationToList();
+
+            return newStationToList;
+        }
 
 
         //end of class
