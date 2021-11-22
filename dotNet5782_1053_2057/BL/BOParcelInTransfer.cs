@@ -23,8 +23,13 @@ namespace IBL
             public IBL.BO.BOLocation DeliveryPoint { get; set; }
             public double TransportDistance { get; set; }
 
-            
-            
+
+            public override string ToString()
+            {
+                string res = "Parcel " + Id + "from " + Sender.Name + " to " + Recipient + "\n";
+
+                return res;
+            }
 
 
         }

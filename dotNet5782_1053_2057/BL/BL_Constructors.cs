@@ -247,8 +247,15 @@ namespace IB
             return error; //<--delete this!
         }
 
+        //DIDNT FINISH!!
+        IBL.BO.BOParcelAtCustomer createParcAtCust(IDAL.DO.Parcel origParc)
+        {
+            IBL.BO.BOParcelAtCustomer newParcAtCust = new IBL.BO.BOParcelAtCustomer();
 
-        
+            return newParcAtCust;
+        }
+
+
         public IBL.BO.BOStation createBOStation(int id)
         {
             IDAL.DO.Station origSt = dataAccess.getStation(id);
@@ -278,8 +285,25 @@ namespace IB
             newCust.Location = new IBL.BO.BOLocation(origCust.Longitude, origCust.Latitude);
             newCust.Name = origCust.Name;
             newCust.Phone = origCust.Phone;
+
+            newCust.Sent = new List<IBL.BO.BOParcelAtCustomer>();
+            foreach (var item in dataAccess.getParcels())
+            {
+                if (item.SenderId == newCust.Id)
+                    newCust.Sent.Add(createParcAtCust(item));
+            }
+            newCust.Received = new List<IBL.BO.BOParcelAtCustomer>();
+            {
+                foreach (var item in dataAccess.getParcels())
+                {
+                    if (item.ReceiverId == newCust.Id)
+                        newCust.Received.Add(createParcAtCust(item));
+                }
+            }
             return newCust;
         }
+
+
         public IBL.BO.BOParcel createBOParcel(int id)
         {
             IBL.BO.BOParcel newParc = new IBL.BO.BOParcel();
@@ -301,6 +325,7 @@ namespace IB
 
             return newParc;
         }
+
 
 
 
