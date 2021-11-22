@@ -51,8 +51,8 @@ namespace IB
         IBL.BO.BOLocation getCustomerLocation(int customerId)
         {
             IBL.BO.BOLocation loc =
-                        new IBL.BO.BOLocation(dataAccess.findCustomer(customerId).Longitude,
-                        dataAccess.findCustomer(customerId).Latitude);
+                        new IBL.BO.BOLocation(dataAccess.getCustomer(customerId).Longitude,
+                        dataAccess.getCustomer(customerId).Latitude);
             return loc;
         }
         double distance(IBL.BO.BOLocation l1, IBL.BO.BOLocation l2)
@@ -70,7 +70,7 @@ namespace IB
             //(3) use Haversine Formula
             double Hav = Math.Pow(Math.Sin(diffLat / 2), 2) +
                Math.Pow(Math.Sin(diffLong / 2), 2) *
-               Math.Cos(l1.Latitude) * Math.Cos(l2.Latitude);
+               Math.Cos(lat1) * Math.Cos(lat2);
 
             //(4) Find distance in KM based on earth's radius
             //d = 2*radius * ArcSin(Square(Hav))
@@ -81,7 +81,7 @@ namespace IB
         }
         double battNededForDist(IBL.BO.BODrone drone, IBL.BO.BOLocation loc)
         {
-            double dist = distance(drone.location, loc);
+            double dist = distance(drone.Location, loc);
             if (drone.ParcelInTransfer.Collected)
             {
                 if (drone.ParcelInTransfer.MaxWeight == IBL.BO.Enum.WeightCategories.light)
@@ -103,6 +103,23 @@ namespace IB
                }
             return numSpots;
         }
+
+
+
+
+        public IBL.BO.BODrone getBODrone(int _id)
+        {
+            foreach (var item in listDrone)
+            {
+                if (_id == item.Id)
+                    return item;
+            }
+            //throw exception!!!
+            return null;
+        }
+
+
+
 
 
     }

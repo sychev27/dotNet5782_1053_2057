@@ -9,7 +9,7 @@ namespace IBL
     namespace BO
     {
 
-        class BOParcelInTransfer
+        public class BOParcelInTransfer
         {
 
             public int Id { get; set; }

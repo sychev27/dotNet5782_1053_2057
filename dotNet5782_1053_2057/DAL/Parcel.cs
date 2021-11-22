@@ -28,7 +28,7 @@ namespace IDAL
             {
                 Id = DalObject.DataSource.thisConfig.parcelSerialNumber++; 
                 SenderId = _senderId;
-                TargetId = _targetId;
+                ReceiverId = _targetId;
                 Weight = _weight;
                 Priority =_priority;
                 Requested = _requested; //when we receive request for the parcel
@@ -40,7 +40,7 @@ namespace IDAL
 
             public int Id { get; set; }
             public int SenderId { get; set; }
-            public int TargetId { get; set; }
+            public int ReceiverId { get; set; }
             public IDAL.DO.WeightCategories Weight { get; set; }
             public IDAL.DO.Priorities Priority { get; set; }
             public DateTime Requested { get; set; } //when we receive request for the parcel
@@ -54,7 +54,7 @@ namespace IDAL
                 string res = "";
                 res = "Parcel: " + Id.ToString() + "\n" ;
                 res += "SenderId: " + SenderId + "\n" +
-                    "TargetId: " + TargetId + "\n" +
+                    "ReceiverId: " + ReceiverId + "\n" +
                     "Weight: " + Weight + "\n" +
                     "Priority: " + Priority + "\n" +
                     "Requested: " + Requested + "\n" +
@@ -70,7 +70,7 @@ namespace IDAL
             //{
             //    Console.WriteLine("Parcel: " + Id + "\n" +
             //        "SenderId: " + SenderId + "\n" +
-            //        "TargetId: " + TargetId + "\n" +
+            //        "ReceiverId: " + ReceiverId + "\n" +
             //        "Weight: " + Weight + "\n" +
             //        "Priority: " + Priority + "\n" +
             //        "Requested: " + Requested + "\n" +

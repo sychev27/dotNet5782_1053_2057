@@ -8,7 +8,7 @@ namespace IBL
 {
     namespace BO
     {
-        class BOLocation
+        public class BOLocation
         {
             public double Longitude { get; set; }
             public double Latitude { get; set; }
@@ -17,6 +17,15 @@ namespace IBL
                 Longitude = longi;
                 Latitude = lati;
             }
+
+            public override string ToString()
+            {
+                string res = "";
+                res += "Long: " + Longitude +"Lat: " + Latitude + " "; 
+                return res;
+            }
+
         }
+
     }
 }

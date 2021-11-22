@@ -26,14 +26,19 @@ namespace IBL
         void freeDrone(int droneId, double hrsInCharge); //frees drone from station.. 
 
 
-        void printItem(string _item, int _id);
-        void printDrone(int _id);
-        void printCustomer(int _id);
-        void printStation(int _id);
-        void printParcel(int _id);
+        //void printItem(string _item, int _id);
+        //void printDrone(int _id);
+        //void printCustomer(int _id);
+        //void printStation(int _id);
+        //void printParcel(int _id);
 
-        
-        void printList(string _item);
+        IBL.BO.BOStation createBOStation(int id);
+        public IBL.BO.BOCustomer createBOCustomer(int id);
+        public IBL.BO.BOParcel createBOParcel(int id);
+
+        public IBL.BO.BODrone getBODrone(int id);
+
+
 
 
 

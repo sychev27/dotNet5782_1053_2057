@@ -9,12 +9,28 @@ namespace IBL
 {
     namespace BO
     {
-        class BOStation
+        public class BOStation
         {
             public int Id { get; set; }
-            public string Name { get; set; }
+            public int Name { get; set; }
             public BOLocation Location { get; set; }
-            public List<BODroneInCharge> Lst { get; set; }
+            public int ChargeSlots { get; set; }
+            public List<BODroneInCharge> ListDroneCharge { get; set; }
+
+            public override string ToString()
+            {
+                string res = "";
+                res += "Station " + Id + " Location: " + Location
+                    + "\nCharging Slots: " + ChargeSlots
+                    + "\nDrones charging at this station: ";
+                foreach (var item in ListDroneCharge)
+                {
+                    res += " " + item.Id;
+                }
+                res += "\n";
+                return res;
+            }
         }
+        
     }
 }

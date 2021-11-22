@@ -8,7 +8,7 @@ namespace IBL
 {
     namespace BO
     {
-        class BOParcelAtCustomer
+        public class BOParcelAtCustomer
         {
             public int Id { get; set; }
             public IBL.BO.Enum.WeightCategories MaxWeight { get; set;}

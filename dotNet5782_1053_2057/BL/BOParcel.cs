@@ -8,7 +8,7 @@ namespace IBL
 {
     namespace BO
     {
-        class BOParcel
+        public class BOParcel
         {
             public int Id { get; set; }
             public BOCustomerInParcel Sender { get; set; }
@@ -20,6 +20,14 @@ namespace IBL
             public DateTime timeOfCollection { get; set; }
             public DateTime timeOfDelivery { get; set; }
 
+            public override string ToString()
+            {
+                string res = "Parcel " + Id + "From " + Sender + " to " + Receiver + "\n";
+                res += (IBL.BO.Enum.WeightCategories)WeightCategory + " Priority: " + Priority;
+
+                res += "\n";
+                return res;
+            }
 
         }
     }

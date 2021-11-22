@@ -8,7 +8,7 @@ namespace IBL
 {
     namespace BO
     {
-        class BOCustomerInParcel
+        public class BOCustomerInParcel
         {
             public int Id { get; set; }
             public string Name { get; set; }
@@ -17,6 +17,12 @@ namespace IBL
             {
                 Id = _id;
                 Name = _name;
+            }
+            public override string ToString()
+            {
+                string res = Name;
+
+                return res;
             }
         }
     }

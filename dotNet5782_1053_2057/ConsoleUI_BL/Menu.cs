@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleUI_BL
 {
-        public class Menu
+        public partial class Menu
         {
             public const string DRONE = "drone";
             public const string CUSTOMER = "customer";
@@ -47,11 +47,11 @@ namespace ConsoleUI_BL
                         string item = chooseItem("print");
                         Console.WriteLine("Please enter the id number of the " + item + ":");
                         int id = 0;
-                        Int32.TryParse(Console.ReadLine(), out id);
-                        busiAccess.printItem(item, id);
+                        Int32.TryParse(Console.ReadLine(), out id); //exception!
+                        printItem(item, id);
                         break;
                     case "4":
-                        busiAccess.printList(chooseItem("print a list of"));
+                        printList(chooseItem("print a list of"));
                         break;
                     case "5":
                         Console.WriteLine("exiting....\n");
@@ -195,8 +195,8 @@ namespace ConsoleUI_BL
             int.TryParse(Console.ReadLine(), out num);
             Console.WriteLine("Please enter the drone's status:" + "\n" +
                 "1: available" + "\n" +
-                "2: work_in_progress" + "\n" +
-                "3: sent" + "\n");
+                "2: maintenance" + "\n" +
+                "3: inDelivery" + "\n");
             int num1 = 1;
             int.TryParse(Console.ReadLine(), out num1);
 

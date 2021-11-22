@@ -44,21 +44,21 @@ namespace DalObject
         internal static Config thisConfig = new Config();
 
 
-        public IDAL.DO.Drone findDrone(int _id) {
+        public IDAL.DO.Drone getDrone(int _id) {
             IDAL.DO.Drone  drone = new IDAL.DO.Drone(0,"",0);
             for (int i = 0; i < listDrone.Count; i++)
                 if (listDrone[i].Id == _id)
                     drone = listDrone[i];
             return drone;
         }
-        public IDAL.DO.Customer findCustomer(int _id) {
+        public IDAL.DO.Customer getCustomer(int _id) {
             IDAL.DO.Customer cust = new IDAL.DO.Customer(0, "", "", 0, 0);
             for (int i = 0; i < listCustomer.Count; i++)
                 if (listCustomer[i].Id == _id)
                     cust = listCustomer[i];
             return cust;
         }
-        public IDAL.DO.Parcel findParcel(int _id)
+        public IDAL.DO.Parcel getParcel(int _id)
         {
             IDAL.DO.Parcel parcel = new IDAL.DO.Parcel(0, 0, 0, 0,DateTime.MinValue,DateTime.MinValue);
             for (int i = 0; i < listParcel.Count; i++)
@@ -66,7 +66,7 @@ namespace DalObject
                     parcel = listParcel[i];
             return parcel;
         }
-        public IDAL.DO.Station findStation(int _id)
+        public IDAL.DO.Station getStation(int _id)
         {
             IDAL.DO.Station st = new IDAL.DO.Station(0, 0, 0, 0, 0);
             for (int i = 0; i < listStation.Count; i++)
@@ -179,7 +179,7 @@ namespace DalObject
 
 
             
-            //initialize customer
+            //INITIALIZE CUSTOMER
             string[] customerNames = new string[12] { "Reuven", "Shimon", "Levi",
                 "Yehuda", "Yissachar", "Zevulun", "Asher", "Gad", "Dan", "Naftali",
                 "Yosef", "Binyamin" };
@@ -212,8 +212,8 @@ namespace DalObject
                 exampleP.SenderId = listCustomer[r.Next(0, 10)].Id;
                 do
                 {
-                    exampleP.TargetId = listCustomer[r.Next(0, 10)].Id;
-                } while (exampleP.TargetId == exampleP.SenderId);
+                    exampleP.ReceiverId = listCustomer[r.Next(0, 10)].Id;
+                } while (exampleP.ReceiverId == exampleP.SenderId);
 
                 exampleP.Weight = (IDAL.DO.WeightCategories)r.Next(1, 4);
                 exampleP.Priority = (IDAL.DO.Priorities)r.Next(1, 4);

@@ -10,10 +10,10 @@ namespace IDAL
     {
         void Initialize(); 
         
-        IDAL.DO.Drone findDrone(int _id);
-        IDAL.DO.Customer findCustomer(int _id);
-        IDAL.DO.Parcel findParcel(int _id);
-        IDAL.DO.Station findStation(int _id);
+        IDAL.DO.Drone getDrone(int _id);
+        IDAL.DO.Customer getCustomer(int _id);
+        IDAL.DO.Parcel getParcel(int _id);
+        IDAL.DO.Station getStation(int _id);
         void addCustomer(IDAL.DO.Customer custom);
         void addDrone(IDAL.DO.Drone drone);
         void addParcel(IDAL.DO.Parcel parcel);

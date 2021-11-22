@@ -8,17 +8,24 @@ namespace IBL
 {
     namespace BO
     {
-        class BODrone
+        public class BODrone
         {
             public int Id { get; set; }
             public string Model { get; set; }
             public IBL.BO.Enum.WeightCategories MaxWeight { get; set; }
-            public double battery { get; set; }
-            public IBL.BO.Enum.DroneStatus droneStatus { get; set; }
+            public double Battery { get; set; }
+            public IBL.BO.Enum.DroneStatus DroneStatus { get; set; }
             public IBL.BO.BOParcelInTransfer ParcelInTransfer{ get; set;}
-            public IBL.BO.BOLocation location{ get; set;}
+            public IBL.BO.BOLocation Location{ get; set;}
+
+            public override string ToString()
+            {
+                string res = "Drone " + Id + " Model: " + Model + " \n";
+                res += "Battery: " + Battery + " Status: " + DroneStatus + "\n";
 
 
+                return res;
+            }
         }
 
     }
