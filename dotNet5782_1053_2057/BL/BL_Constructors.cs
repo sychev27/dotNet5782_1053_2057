@@ -350,7 +350,7 @@ namespace IB
             return newParc;
         }
 
-        //these four functions are not yet finished
+        
         public IBL.BO.BOCustomerToList createBOCustToList(int _id)
         {
             IBL.BO.BOCustomerToList newCustToList = new IBL.BO.BOCustomerToList();
@@ -424,8 +424,8 @@ namespace IB
 
             newStationToList.Id = origStation.Id;
             newStationToList.NameStation = origStation.Name;
-            newStationToList.ChargeSpotsAvailable = freeSpots(origStation);
-            newStationToList.ChargeSpotsTaken = origStation.ChargeSlots - freeSpots(origStation);
+            newStationToList.ChargeSlotsAvailable = freeSpots(origStation);
+            newStationToList.ChargeSlotsTaken = origStation.ChargeSlots - freeSpots(origStation);
 
             return newStationToList;
         }

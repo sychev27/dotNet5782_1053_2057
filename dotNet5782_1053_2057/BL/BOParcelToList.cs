@@ -16,7 +16,14 @@ namespace IBL
             public IBL.BO.Enum.WeightCategories Weight { get; set; }
             public IBL.BO.Enum.Priorities Priority { get; set;}
             public IBL.BO.Enum.ParcelStatus ParcelStatus { get; set; }
-            
+            public override string ToString()
+            {
+                string res = "Parcel " + Id + "From " + NameSender + " to " + NameReceiver + "\n";
+                res += (IBL.BO.Enum.WeightCategories)Weight + " Priority: " + Priority;
+
+                res += "\n";
+                return res;
+            }
         }
     }
     

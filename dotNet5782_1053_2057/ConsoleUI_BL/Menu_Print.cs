@@ -53,33 +53,24 @@ namespace ConsoleUI_BL
             switch (_item)
             {
                 case DRONE:
-                    //get list
-                    //foreach (IDAL.DO.Drone element in listDrone)
-                    //{
-                    //    if (element.Id != 0)
-                    //        element.print();
-                    //}
+                    foreach (var item in busiAccess.getDroneToList())
+                        Console.WriteLine(item.ToString());
+                    Console.WriteLine("\n");
                     break;
                 case CUSTOMER:
-                    //foreach (IDAL.DO.Customer element in listCustomer)
-                    //{
-                    //    if (element.Id != 0)
-                    //        element.print();
-                    //}
+                    foreach (var item in busiAccess.getCustToList())
+                        Console.WriteLine(item.ToString());
+                    Console.WriteLine("\n");
                     break;
                 case PARCEL:
-                    //foreach (IDAL.DO.Parcel element in listParcel)
-                    //{
-                    //    if (element.Id != 0)
-                    //        element.print();
-                    //}
+                    foreach (var item in busiAccess.getParcelToList())
+                        Console.WriteLine(item.ToString());
+                    Console.WriteLine("\n");
                     break;
                 case STATION:
-                    //foreach (IDAL.DO.Station element in listStation)
-                    //{
-                    //    if (element.Id != 0)
-                    //        element.print();
-                    //}
+                    foreach (var item in busiAccess.getStationToList())
+                        Console.WriteLine(item.ToString());
+                    Console.WriteLine("\n");
                     break;
                 case CHARGING_STATIONS:
                     //foreach (IDAL.DO.Station element in listStation)
