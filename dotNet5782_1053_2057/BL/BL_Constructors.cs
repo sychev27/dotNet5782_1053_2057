@@ -355,7 +355,7 @@ namespace IB
 
             foreach (var item in dataAccess.getParcels())
             {
-                if(item.SenderId == newCustToList.Id) //if sent this parcel
+                if (item.SenderId == newCustToList.Id) //if sent this parcel
                 {
                     if (item.Delivered == DateTime.MinValue)//if not delivered
                         newCustToList.numParcelsSentNotDelivered++;
@@ -370,7 +370,6 @@ namespace IB
                         newCustToList.numParcelsRecieved++;
                 }
             }
-
             return newCustToList;
         }
         public IBL.BO.BODroneToList createBODroneToList(int _id)
