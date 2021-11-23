@@ -72,6 +72,7 @@ namespace DalObject
             for (int i = 0; i < listStation.Count; i++)
                 if (listStation[i].Id == _id) 
                     st = listStation[i];
+            if (st.Id == 0) throw new IDAL.DO.EXItemNotFoundException();
             return st;
         }
 

@@ -186,7 +186,7 @@ namespace IB
             {
                 boDrone.ParcelInTransfer = createParcInTrans(boDrone.Id);
             }
-            catch (IBL.BO.BOParcInTransNotFoundException exception)
+            catch (IBL.BO.EXParcInTransNotFoundException exception)
             {
                 boDrone.ParcelInTransfer = exception.creatEmptyParcInTrans();
             }
@@ -215,7 +215,7 @@ namespace IB
                 }
             }
             //(2) THROW EXCEPTION IF NOT FOUND
-            if (origParcel.Id == -1) throw new IBL.BO.BOParcInTransNotFoundException();
+            if (origParcel.Id == -1) throw new IBL.BO.EXParcInTransNotFoundException();
 
             //(3) CREATE THIS OBJECT
             thisParc.Id = origParcel.Id;
@@ -226,12 +226,19 @@ namespace IB
             {
                 thisParc.Sender = createCustInParcel(origParcel.SenderId);
             }
-            catch (IBL.BO.BOCustInParcNotFoundException exception)
+            catch (IBL.BO.EXCustInParcNotFoundException exception)
             {
                 thisParc.Sender = exception.creatEmptyCustInParc();
             }
+            try
+            {
                 thisParc.Recipient = createCustInParcel(origParcel.ReceiverId);
-          
+            }
+            catch (IBL.BO.EXCustInParcNotFoundException exception)
+            {
+                thisParc.Recipient = exception.creatEmptyCustInParc();
+            }
+
 
             thisParc.PickupPoint = getCustomerLocation(origParcel.SenderId);
             thisParc.DeliveryPoint = getCustomerLocation(origParcel.ReceiverId);
@@ -252,11 +259,8 @@ namespace IB
                 }
             }
                 //throw exception! not found!
-                throw new IBL.BO.BOCustInParcNotFoundException();
+                throw new IBL.BO.EXCustInParcNotFoundException();
 
-            
-           // IBL.BO.BOCustomerInParcel error = new IBL.BO.BOCustomerInParcel(-1, "");
-         //   return error ; //<--delete this!
         }
 
         IBL.BO.BOParcelAtCustomer createParcAtCust(IDAL.DO.Parcel origParc, bool Sender)
@@ -282,7 +286,15 @@ namespace IB
 
         public IBL.BO.BOStation createBOStation(int id)
         {
-            IDAL.DO.Station origSt = dataAccess.getStation(id);
+            IDAL.DO.Station origSt = new IDAL.DO.Station();
+            try
+            {
+                origSt = dataAccess.getStation(id);
+            }
+            catch (IDAL.DO.EXItemNotFoundException)
+            {
+                throw new IBL.BO.EXNotFoundPrintException("Station");
+            }
             //exception! - if station not found
             IBL.BO.BOStation newSt = new IBL.BO.BOStation();
             newSt.Id = origSt.Id;

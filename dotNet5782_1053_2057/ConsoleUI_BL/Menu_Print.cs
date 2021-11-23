@@ -36,11 +36,18 @@ namespace ConsoleUI_BL
         }
         public void printCustomer(int _id)
         {
-            Console.WriteLine(busiAccess.createBOCustomer(_id) + "\n");
+            Console.WriteLine(busiAccess.createBOCustomer(_id).ToString() + "\n");
         }
         public void printStation(int _id)
         {
-            Console.WriteLine(busiAccess.createBOStation(_id).ToString() + "\n");
+            try
+            {
+                Console.WriteLine(busiAccess.createBOStation(_id).ToString() + "\n");
+            }
+            catch(IBL.BO.EXNotFoundPrintException exception)
+            {
+                exception.printException();
+            }
         }
         public void printParcel(int _id)
         {
