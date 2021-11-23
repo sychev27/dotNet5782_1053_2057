@@ -194,7 +194,27 @@ namespace IB
         }
 
 
-        IBL.BO.BOParcelInTransfer createParcInTrans(int origDroneId)
+        int getParcIdFromDroneID(int origDroneId)
+        {
+            //receives ID of its drone. Fetches correct parcel from Data Layer.
+            IEnumerable<IDAL.DO.Parcel> origParcList = dataAccess.getParcels();
+
+            //(1)FETCH PARCEL FROM DATA LAYER
+            IDAL.DO.Parcel origParcel = new IDAL.DO.Parcel();
+            origParcel.Id = -1;
+            foreach (var item in origParcList)
+            {
+                if (origDroneId == item.DroneId)
+                {
+                    origParcel = item; break;
+                }
+            }
+            //(2) THROW EXCEPTION IF NOT FOUND
+            if (origParcel.Id == -1) throw new IBL.BO.BOParcInTransNotFoundException();
+
+            return origParcel.Id;
+        }
+        IBL.BO.BOParcelInTransfer createParcInTrans(int origDroneId, int origParcId = -1) //used in Initialization
         {
             //receives ID of its drone. Fetches correct parcel from Data Layer.
             //Builds the object based on that parcel
@@ -202,14 +222,19 @@ namespace IB
             IBL.BO.BOParcelInTransfer thisParc = new IBL.BO.BOParcelInTransfer();
 
             //(1)FETCH PARCEL FROM DATA LAYER
-            IDAL.IDal dataAcess = new DalObject.DataSource();
-            IEnumerable<IDAL.DO.Parcel> origParcList = dataAcess.getParcels();
+            IEnumerable<IDAL.DO.Parcel> origParcList = dataAccess.getParcels();
 
             IDAL.DO.Parcel origParcel = new IDAL.DO.Parcel();
-            origParcel.Id = -1;
+            if (origParcId == -1)
+                origParcel.Id = getParcIdFromDroneID(origDroneId);
+            else
+                origParcel.Id = origParcId;
+
+            origParcel.SenderId = -1;
+
             foreach (var item in origParcList)
             {
-                if (origDroneId == item.DroneId)
+                if (item.Id == origParcel.Id)
                 {
                     origParcel = item; break;
                 }
@@ -247,6 +272,8 @@ namespace IB
             return thisParc;
 
         }
+
+
         IBL.BO.BOCustomerInParcel createCustInParcel(int origCustId)
         {
             IEnumerable<IDAL.DO.Customer> origCustomers = dataAccess.getCustomers();
@@ -262,7 +289,6 @@ namespace IB
                 throw new IBL.BO.EXCustInParcNotFoundException();
 
         }
-
         IBL.BO.BOParcelAtCustomer createParcAtCust(IDAL.DO.Parcel origParc, bool Sender)
         {
             IBL.BO.BOParcelAtCustomer newParcAtCust = new IBL.BO.BOParcelAtCustomer();

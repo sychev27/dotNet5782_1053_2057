@@ -4,6 +4,7 @@ namespace ConsoleUI_BL
 {
     class Program
     {
+
         static void Main(string[] args)
         {
             Menu ex = new Menu();
@@ -12,6 +13,8 @@ namespace ConsoleUI_BL
 
             //IDAL.DO.Customer john = new IDAL.DO.Customer(23, "john", "201", 33, 22);
             //Console.WriteLine(john.ToString());
+
+
 
             Console.ReadLine();
 
