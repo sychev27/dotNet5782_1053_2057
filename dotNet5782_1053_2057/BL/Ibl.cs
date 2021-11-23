@@ -42,6 +42,14 @@ namespace IBL
         IEnumerable<IBL.BO.BOParcelToList> getParcelsNotYetAssigned();
         IEnumerable<IBL.BO.BOStationToList> getStationAvailChargeSlots();
 
+
+
+        //update:
+        public void modifyDrone(int _id, string _model);
+        public void modifyCust(int _id, string _name, string _phone);
+        public void modifyStation(int _id, int _name, int _totalChargeSlots);
+
+
         //end of interface
     }
 }

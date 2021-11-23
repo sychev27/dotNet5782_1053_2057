@@ -38,8 +38,13 @@ namespace IDAL
         IEnumerable<IDAL.DO.Customer> getCustomers();
         IEnumerable<IDAL.DO.DroneCharge> getDroneCharge();
 
-      
 
+
+
+
+        public void modifyDrone(int _id, string _model);
+        public void modifyCust(int _id, string _name, string _phone);
+        public void modifyStation(int _id, int _name, int _totalChargeSlots);
 
     }
 }

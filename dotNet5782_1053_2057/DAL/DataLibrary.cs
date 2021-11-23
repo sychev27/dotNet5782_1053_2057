@@ -236,42 +236,88 @@ namespace DalObject
         }
 
 
-        //public void addItem(string itemToAdd)
-        //{
 
-        //    switch (itemToAdd)
+        //public void eraseDrone(int id)
+        //{
+        //    foreach (var item in listDrone)
         //    {
-        //        case ConsoleUI.Menu.DRONE: 
-        //            listDrone.Add(IDAL.DO.Drone.Create());
-        //            break;
-        //        case ConsoleUI.Menu.CUSTOMER:
-        //            listCustomer.Add(IDAL.DO.Customer.Create());
-        //            break;
-        //        case ConsoleUI.Menu.PARCEL: 
-        //            listParcel.Add(IDAL.DO.Parcel.Create());
-        //            break;
-        //        case ConsoleUI.Menu.STATION:
-        //            listStation.Add(IDAL.DO.Station.Create());
-        //            break;
-        //        default:
-        //            break;
+        //        if(item.Id == id)
+        //        {
+        //            IDAL.DO.Drone copy = item;
+        //            listDrone.Remove(copy);
+        //            return;
+        //        }    
         //    }
+            
         //}
-
-
-
-
-
-
-
-
-        //public double[] requestElec()
+        //public void eraseCustomer(int id)
         //{
-        //    double[] arr = { 0 };
-        //    Console.WriteLine("request Electrtiy...\n");
 
-        //    return arr;
         //}
+        //public void eraseStation(int id)
+        //{
+
+        //}
+
+
+
+
+
+
+
+        public void modifyDrone(int _id, string _model) //changes drone model
+        {
+            foreach (var item in listDrone)
+            {
+                if (item.Id == _id)
+                {
+                    IDAL.DO.Drone copy = item;
+                    listDrone.Remove(copy);
+                    copy.Model = _model;
+                    listDrone.Add(copy);
+                    return;
+                }
+            }
+        }
+        public void modifyCust(int _id, string _name = "", string _phone = "")
+        {
+            foreach (var item in listCustomer)
+            {
+                if (item.Id == _id)
+                {
+                    IDAL.DO.Customer copy = item;
+                    listCustomer.Remove(copy);
+                    if (_name != "")
+                        copy.Name = _name;
+                    if (_phone != "")
+                        copy.Phone = _phone;
+                    listCustomer.Add(copy);
+                    return;
+                }
+            }
+        }
+        public void modifyStation(int _id, int _name = 0, int _totalChargeSlots = 0)
+        {
+            foreach (var item in listStation)
+            {
+                if (item.Id == _id)
+                {
+                    IDAL.DO.Station copy = item;
+                    listStation.Remove(copy);
+                    if (_name != 0)
+                        copy.Name = _name;
+                    if (_totalChargeSlots != 0)
+                        copy.ChargeSlots = _totalChargeSlots;
+                    listStation.Add(copy);
+                    return;
+                }
+            }
+        }
+
+
+
+
+
     }
 
 }

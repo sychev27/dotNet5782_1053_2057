@@ -51,7 +51,40 @@ namespace IB
 
 
 
+
+
+
+
         //UPDATE
+
+        public void modifyDrone(int _id, string _model)
+        {
+            dataAccess.modifyDrone(_id, _model); //udpates drone in Data Layer
+            //update drone in Business layer:
+            foreach (var item in listDrone)
+            {
+                if (item.Id == _id)
+                {
+                    IBL.BO.BODrone copy = item;
+                    listDrone.Remove(copy);
+                    copy.Model = _model;
+                    listDrone.Add(copy);
+                    return;
+                }
+            }
+        }
+        public void modifyCust(int _id, string _name, string _phone)
+        {
+            dataAccess.modifyCust(_id, _name, _phone);
+        }
+        public void modifyStation(int _id, int _name, int _totalChargeSlots)
+        {
+            dataAccess.modifyStation(_id, _name, _totalChargeSlots);
+        }
+
+
+
+
         public void assignParcel(int droneId)  //drone determines its parcel based on algorithm
         {
 
