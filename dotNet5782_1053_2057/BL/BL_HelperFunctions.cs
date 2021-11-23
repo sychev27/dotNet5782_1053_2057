@@ -121,6 +121,8 @@ namespace IB
         {
             return listDrone;
         }
+
+        //for printing these lists:
         public IEnumerable<IBL.BO.BOCustomerToList> getCustToList() 
         {
             List<IBL.BO.BOCustomerToList> res = new List<IBL.BO.BOCustomerToList>();
@@ -157,9 +159,26 @@ namespace IB
             }
             return res;
         }
-
-
-
+        public IEnumerable<IBL.BO.BOParcelToList> getParcelsNotYetAssigned()
+        {
+            List<IBL.BO.BOParcelToList> res = new List<IBL.BO.BOParcelToList>;
+            foreach (var item in getParcelToList())
+            {
+                if (item.ParcelStatus == IBL.BO.Enum.ParcelStatus.created)
+                    res.Add(item);
+            }
+            return res;
+        }
+        public IEnumerable<IBL.BO.BOStationToList> getStationAvailChargeSlots()
+        {
+            List<IBL.BO.BOStationToList> res = new List<IBL.BO.BOStationToList>();
+            foreach (var item in dataAccess.getStations())
+            {
+                if(freeSpots(item) > 0)
+                    res.Add(createBOStationToList(item.Id));
+            }
+            return res;
+        }
 
     }
 }

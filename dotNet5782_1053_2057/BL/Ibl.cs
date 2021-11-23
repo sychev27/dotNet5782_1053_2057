@@ -46,10 +46,12 @@ namespace IBL
         //IBL.BO.BOStationToList createBOStationToList(int _id);
 
 
-        public IEnumerable<IBL.BO.BOCustomerToList> getCustToList();
-        public IEnumerable<IBL.BO.BOParcelToList> getParcelToList();
-        public IEnumerable<IBL.BO.BOStationToList> getStationToList();
-        public IEnumerable<IBL.BO.BODroneToList> getDroneToList();
+        IEnumerable<IBL.BO.BOCustomerToList> getCustToList();
+        IEnumerable<IBL.BO.BOParcelToList> getParcelToList();
+        IEnumerable<IBL.BO.BOStationToList> getStationToList();
+        IEnumerable<IBL.BO.BODroneToList> getDroneToList();
+        IEnumerable<IBL.BO.BOParcelToList> getParcelsNotYetAssigned();
+        IEnumerable<IBL.BO.BOStationToList> getStationAvailChargeSlots();
 
         //end of interface
     }

@@ -258,7 +258,6 @@ namespace IB
            // IBL.BO.BOCustomerInParcel error = new IBL.BO.BOCustomerInParcel(-1, "");
          //   return error ; //<--delete this!
         }
-
         IBL.BO.BOParcelAtCustomer createParcAtCust(IDAL.DO.Parcel origParc, bool Sender)
         {
             IBL.BO.BOParcelAtCustomer newParcAtCust = new IBL.BO.BOParcelAtCustomer();

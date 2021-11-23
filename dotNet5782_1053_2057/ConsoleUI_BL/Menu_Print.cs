@@ -72,22 +72,19 @@ namespace ConsoleUI_BL
                         Console.WriteLine(item.ToString());
                     Console.WriteLine("\n");
                     break;
-                case CHARGING_STATIONS:
-                    //foreach (IDAL.DO.Station element in listStation)
-                    //{
-                    //    if (element.Id != 0 && element.freeSpots() > 0)
-                    //        element.print();
-                    //}
+                case CHARGING_STATIONS: //prints Stations with available charging slots
+                    foreach (var item in busiAccess.getStationAvailChargeSlots())
+                        Console.Write(item.ToString());
+                    Console.Write("\n");
                     break;
-                case PRCL_TO_ASSIGN:
-                    //foreach (IDAL.DO.Parcel item in listParcel)
-                    //{
-                    //    if (item.Id != 0 && item.DroneId == 0)
-                    //        item.print();
-                    //}
+                case PRCL_TO_ASSIGN: //prints parcels that have not yet been assigned
+                    foreach (var item in busiAccess.getParcelsNotYetAssigned())
+                        Console.Write(item.ToString());
+                    Console.Write("\n");
                     break;
 
                 default:
+                    Console.WriteLine("No directions received!\n");
                     break;
             }
         }
