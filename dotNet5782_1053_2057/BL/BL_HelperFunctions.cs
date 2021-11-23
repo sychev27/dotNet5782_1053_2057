@@ -161,7 +161,7 @@ namespace IB
         }
         public IEnumerable<IBL.BO.BOParcelToList> getParcelsNotYetAssigned()
         {
-            List<IBL.BO.BOParcelToList> res = new List<IBL.BO.BOParcelToList>;
+            List<IBL.BO.BOParcelToList> res = new List<IBL.BO.BOParcelToList>();
             foreach (var item in getParcelToList())
             {
                 if (item.ParcelStatus == IBL.BO.Enum.ParcelStatus.created)
