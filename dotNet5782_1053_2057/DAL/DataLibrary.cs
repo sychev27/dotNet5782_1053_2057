@@ -278,6 +278,7 @@ namespace DalObject
                     return;
                 }
             }
+            //if not found --> exception
         }
         public void modifyCust(int _id, string _name = "", string _phone = "")
         {
@@ -295,6 +296,8 @@ namespace DalObject
                     return;
                 }
             }
+            //if not found --> exception
+
         }
         public void modifyStation(int _id, int _name = 0, int _totalChargeSlots = 0)
         {
@@ -312,6 +315,8 @@ namespace DalObject
                     return;
                 }
             }
+            //if not found --> exception
+
         }
 
 

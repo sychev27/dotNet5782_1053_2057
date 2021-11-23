@@ -56,7 +56,6 @@ namespace IB
 
 
         //UPDATE
-
         public void modifyDrone(int _id, string _model)
         {
             dataAccess.modifyDrone(_id, _model); //udpates drone in Data Layer
@@ -87,6 +86,25 @@ namespace IB
 
         public void assignParcel(int droneId)  //drone determines its parcel based on algorithm
         {
+
+            //check if drone is avail
+            IBL.BO.BODrone copy = new IBL.BO.BODrone();
+            foreach (var item in listDrone)
+            {
+                if(item.Id == droneId)
+                {
+                    copy = item;
+                    break;
+                }
+            }
+            //if(copy.Id != droneId)
+            //    throw exception//not found!
+
+            //if(copy.DroneStatus != IBL.BO.Enum.DroneStatus.available)
+            //    throw //exception not available
+
+            //rest of code...HERE
+
 
         }
         public void collectParcel(int droneId) //drone collects its pre-determined parcel 

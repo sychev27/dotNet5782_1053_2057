@@ -19,7 +19,7 @@ namespace ConsoleUI_BL
             switch (choice)
             {
                 case 1:
-                    updateFields();
+                    modifyFields();
                     break;
                 case 2:
                     updateActions();
@@ -36,7 +36,7 @@ namespace ConsoleUI_BL
 
         }
 
-        void updateFields()
+        void modifyFields()
         {
             Console.WriteLine("What Item would you like to modify?\n" +
                 "1: Drone\n" +
