@@ -8,7 +8,7 @@ namespace IBL
 {
     public interface Ibl
     {
-        void addDrone(int _id, string _model, IDAL.DO.WeightCategories _maxWeight);
+        void addDrone(int _id, string _model, IDAL.DO.WeightCategories _maxWeight, int _stationId);
         void addCustomer(int _id, string _name, string _phone, double _longitude,
                 double _latitude);
         void addDroneCharge(int _droneId, int _stationId);
@@ -26,12 +26,6 @@ namespace IBL
         void freeDrone(int droneId, double hrsInCharge); //frees drone from station.. 
 
 
-        //void printItem(string _item, int _id);
-        //void printDrone(int _id);
-        //void printCustomer(int _id);
-        //void printStation(int _id);
-        //void printParcel(int _id);
-
         IBL.BO.BOStation createBOStation(int id);
          IBL.BO.BOCustomer createBOCustomer(int id);
          IBL.BO.BOParcel createBOParcel(int id);
@@ -39,11 +33,6 @@ namespace IBL
          IBL.BO.BODrone getBODrone(int id);
         IEnumerable<IBL.BO.BODrone> getBODroneList();
 
-
-        //IBL.BO.BOCustomerToList createBOCustToList(int _id);
-        //IBL.BO.BODroneToList createBODroneToList(int _id);
-        //IBL.BO.BOParcelToList createBOParcToList(int _id);
-        //IBL.BO.BOStationToList createBOStationToList(int _id);
 
 
         IEnumerable<IBL.BO.BOCustomerToList> getCustToList();

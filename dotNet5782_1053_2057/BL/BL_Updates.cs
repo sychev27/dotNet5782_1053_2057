@@ -10,17 +10,26 @@ namespace IB
     {
 
         //ADD
-        public void addDrone(int _id, string _model, IDAL.DO.WeightCategories _maxWeight)
+        public void addDrone(int _id, string _model, IDAL.DO.WeightCategories _maxWeight, int _stationId)
         {
             IDAL.DO.Drone newDOdrone = new IDAL.DO.Drone(_id, _model, _maxWeight);
-            addDroneToBusiLayer(newDOdrone); //adds to BL
             dataAccess.addDrone(newDOdrone); //adds to DL
+
+            //adds to BL
+            IBL.BO.BODrone boDrone = new IBL.BO.BODrone();
+            boDrone.Id = _id;
+            boDrone.MaxWeight = (IBL.BO.Enum.WeightCategories)_maxWeight;
+            boDrone.Model = _model;
+            boDrone.Battery = r.Next(20, 40) + r.NextDouble();
+            boDrone.DroneStatus = IBL.BO.Enum.DroneStatus.maintenance;
+            boDrone.Location = getStationLocation(_stationId);
+            listDrone.Add(boDrone);
         }
         public void addCustomer(int _id, string _name, string _phone, double _longitude,
                 double _latitude)
         {
-            IDAL.DO.Customer dummy = new IDAL.DO.Customer(_id, _name, _phone, _longitude, _latitude);
-            dataAccess.addCustomer(dummy);
+            IDAL.DO.Customer newCust = new IDAL.DO.Customer(_id, _name, _phone, _longitude, _latitude);
+            dataAccess.addCustomer(newCust);
         }
         public void addDroneCharge(int _droneId, int _stationId)
         {

@@ -55,6 +55,16 @@ namespace IB
                         dataAccess.getCustomer(customerId).Latitude);
             return loc;
         }
+        IBL.BO.BOLocation getStationLocation(int StationId)
+        {
+            IBL.BO.BOLocation loc =
+                        new IBL.BO.BOLocation(dataAccess.getStation(StationId).Longitude,
+                        dataAccess.getStation(StationId).Latitude);
+            return loc;
+
+            
+        }
+
         double distance(IBL.BO.BOLocation l1, IBL.BO.BOLocation l2)
         {
             //(1) find diff in radians:
