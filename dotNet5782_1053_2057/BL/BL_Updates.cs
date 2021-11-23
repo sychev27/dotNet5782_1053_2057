@@ -37,9 +37,9 @@ namespace IB
             dataAccess.addDroneCharge(dummy);
         }
         public void addParcel(int _senderId, int _targetId, IDAL.DO.WeightCategories _weight,
-                         IDAL.DO.Priorities _priority, DateTime _requested, DateTime _scheduled)
+                         IDAL.DO.Priorities _priority)// DateTime _requested, DateTime _scheduled)
         {
-            IDAL.DO.Parcel dummy = new IDAL.DO.Parcel(_senderId, _targetId, _weight, _priority, _requested, _scheduled);
+            IDAL.DO.Parcel dummy = new IDAL.DO.Parcel(_senderId, _targetId, _weight, _priority);
             dataAccess.addParcel(dummy);
         }
         public void addStation(int _id, int _name, double _longitude, double _latitude, int _chargeSlots)

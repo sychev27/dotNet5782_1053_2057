@@ -60,7 +60,7 @@ namespace DalObject
         }
         public IDAL.DO.Parcel getParcel(int _id)
         {
-            IDAL.DO.Parcel parcel = new IDAL.DO.Parcel(0, 0, 0, 0,DateTime.MinValue,DateTime.MinValue);
+            IDAL.DO.Parcel parcel = new IDAL.DO.Parcel(0, 0, 0, 0);// DateTime.MinValue,DateTime.MinValue);
             for (int i = 0; i < listParcel.Count; i++)
                 if (listParcel[i].Id == _id)
                     parcel = listParcel[i];

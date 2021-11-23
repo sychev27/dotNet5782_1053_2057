@@ -82,10 +82,10 @@ namespace ConsoleUI_BL
             int.TryParse(Console.ReadLine(), out senderId);
             int targetId = 0;
             int.TryParse(Console.ReadLine(), out targetId);
-            Console.WriteLine("Enter a date (e.g. 10/22/1987) for requested");
-            DateTime requested = DateTime.Parse(Console.ReadLine());
-            Console.WriteLine("Enter a date (e.g. 10/22/1987) for scheduled");
-            DateTime scheduled = DateTime.Parse(Console.ReadLine());
+            //Console.WriteLine("Enter a date (e.g. 10/22/1987) for requested");
+            //DateTime requested = DateTime.Parse(Console.ReadLine());
+            //Console.WriteLine("Enter a date (e.g. 10/22/1987) for scheduled");
+            //DateTime scheduled = DateTime.Parse(Console.ReadLine());
 
             Console.WriteLine("Please enter the parcel's weight:" + "\n" +
                 "1: light" + "\n" +
@@ -101,7 +101,7 @@ namespace ConsoleUI_BL
             int.TryParse(Console.ReadLine(), out num1);
 
             busiAccess.addParcel(senderId, targetId, (IDAL.DO.WeightCategories)num,
-            (IDAL.DO.Priorities)num1, requested, scheduled);
+            (IDAL.DO.Priorities)num1);
 
         }
         public void inputStation() //receives station from user and adds to database

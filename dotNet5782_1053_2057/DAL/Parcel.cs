@@ -23,17 +23,17 @@ namespace IDAL
             //DateTime delivered;
 
             public Parcel(/*int _id, */int _senderId,int _targetId,IDAL.DO.WeightCategories _weight,
-                          IDAL.DO.Priorities _priority,DateTime _requested,
-                          DateTime _scheduled)// DateTime _pickup, DateTime _delivered)
+                          IDAL.DO.Priorities _priority) //DateTime _requested = DateTime.MinValue,
+                         // DateTime _scheduled = DateTime.MinValue)// DateTime _pickup, DateTime _delivered)
             {
                 Id = DalObject.DataSource.thisConfig.parcelSerialNumber++; 
                 SenderId = _senderId;
                 ReceiverId = _targetId;
                 Weight = _weight;
                 Priority =_priority;
-                Requested = _requested; //when we receive request for the parcel
+                Requested = DateTime.MinValue; //when we receive request for the parcel
                 DroneId = -1;             //null...
-                Scheduled = _scheduled;
+                Scheduled = DateTime.MinValue;
                 Pickup = DateTime.MinValue;     //null...
                 Delivered = DateTime.MinValue; //null...
             }
