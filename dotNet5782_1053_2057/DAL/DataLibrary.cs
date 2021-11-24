@@ -361,13 +361,18 @@ namespace DalObject
 
         public void pickupParcel(int parcelId)
         {
-            for (int i = 0; i < listParcel.Count; i++)
+            foreach (var item in listParcel)
             {
-                //if(listParcel[i].Id == parcelId)
-                //{
-                //    listParcel[i].Pickup = DateTime.Now;
-                //}
+                if (item.Id == parcelId)
+                {
+                    IDAL.DO.Parcel copy = item;
+                    listParcel.Remove(copy);
+                    copy.Pickup = DateTime.Now;
+                    listParcel.Add(copy);
+                    return;
+                }
             }
+            //if not found --> exception
         }
 
 

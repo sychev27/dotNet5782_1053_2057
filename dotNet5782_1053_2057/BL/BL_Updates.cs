@@ -128,10 +128,11 @@ namespace IB
                     IBL.BO.BOLocation custLoc = getCustomerLocation(item.ParcelInTransfer.Sender.Id);
                     item.Battery -= battNededForDist(item, custLoc);
                     item.Location = custLoc;
-                    
+                    dataAccess.pickupParcel(item.ParcelInTransfer.Id);
+                    return;
                 }
             }
-
+            //throw Exception //parcel not collected!
         }
         public void deliverParcel(int droneId) //drone delivers its pre-determined parcel
         {
