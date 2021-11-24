@@ -129,6 +129,15 @@ namespace IB
             //if(drone.DroneStatus != IBL.BO.Enum.DroneStatus.available)
             //    throw //drone unavailable - return to main menu..
 
+            IBL.BO.BOLocation closestStation =  getClosestStation(drone.Location, true);
+            //if (drone.Battery < battNededForDist(drone, closestStation))
+            //{
+            //    throw // not enough battery to make to closet station
+            //        //return to main menu
+            //}
+
+            //working on rest of func
+
 
         }
         public void freeDrone(int droneId, double hrsInCharge) //frees drone from station.. 

@@ -8,7 +8,7 @@ namespace IB
 {
     public partial class BL
     {
-        IBL.BO.BOLocation closestStation(IBL.BO.BOLocation l, bool needChargeSlot = false)
+        IBL.BO.BOLocation getClosestStation(IBL.BO.BOLocation l, bool needChargeSlot = false)
         {
             //if we need the station to have a free spot, then we send a parameter = true.
             //otherwise, we can ignore this parameter
@@ -113,7 +113,7 @@ namespace IB
 
             totalBattery += battNededForDist(drone, Sender);                            //drone -> Sender
             totalBattery += battNededForDist(drone, Receiver, Sender);                  //Sender -> Receiver
-            totalBattery += battNededForDist(drone, closestStation(Receiver), Receiver);//Receiver -> Station
+            totalBattery += battNededForDist(drone, getClosestStation(Receiver), Receiver);//Receiver -> Station
 
             //error in logic, assumes that Drone is traveling without package...
 

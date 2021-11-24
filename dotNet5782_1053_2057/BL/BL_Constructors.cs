@@ -64,7 +64,7 @@ namespace IB
                     if (!drone.ParcelInTransfer.Collected) //but not yet COLLECTED
                     {
                         //(1) SET LOCATION - to closest station by station
-                        drone.Location = closestStation(drone.ParcelInTransfer.PickupPoint);
+                        drone.Location = getClosestStation(drone.ParcelInTransfer.PickupPoint);
                     }
                     else if (drone.ParcelInTransfer.Collected) // but not yet DELIVERED
                     {
@@ -114,7 +114,7 @@ namespace IB
                         drone.Location = tempListCust[r.Next(0, tempListCust.Count())];
 
                         //(2) SET BATTERY - battNeeded to 100%
-                        double minBatteryNeeded = battNededForDist(drone, closestStation(drone.Location));
+                        double minBatteryNeeded = battNededForDist(drone, getClosestStation(drone.Location));
                         double battery = r.Next((int)minBatteryNeeded + 1, 100);
                         battery += r.NextDouble();
                         drone.Battery = battery;
