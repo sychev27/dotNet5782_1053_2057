@@ -46,5 +46,12 @@ namespace IDAL
         public void modifyCust(int _id, string _name, string _phone);
         public void modifyStation(int _id, int _name, int _totalChargeSlots);
 
+
+
+        void assignDroneToParcel(int droneId, int parcelId);
+
+
     }
+
+
 }

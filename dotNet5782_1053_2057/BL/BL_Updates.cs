@@ -23,6 +23,7 @@ namespace IB
             boDrone.Battery = r.Next(20, 40) + r.NextDouble();
             boDrone.DroneStatus = IBL.BO.Enum.DroneStatus.maintenance;
             boDrone.Location = getStationLocation(_stationId);
+            boDrone.ParcelInTransfer = createEmptyParcInTrans();
             listDrone.Add(boDrone);
         }
         public void addCustomer(int _id, string _name, string _phone, double _longitude,
@@ -88,15 +89,8 @@ namespace IB
         {
 
            //(1) find drone
-            IBL.BO.BODrone droneCopy = new IBL.BO.BODrone();
-            foreach (var item in listDrone)
-            {
-                if(item.Id == droneId)
-                {
-                    droneCopy = item;
-                    break;
-                }
-            }
+            IBL.BO.BODrone droneCopy = getBODrone(droneId);
+
             //if(copy.Id != droneId)
             //    throw exception//not found!
 
@@ -106,12 +100,15 @@ namespace IB
 
             //(3) find closest parcel
             int closestParcelId = findClosestParcel(droneCopy);
-            //if(closestParcelId == -1)
-            //    throw Exception //no closest parcel --> dont assign drone, continue in menu...
+            if (closestParcelId == -1)
+                return;
+                //throw Exception //no closest parcel --> dont assign drone, continue in menu...
 
             //(4) assign parcel to drone
             droneCopy.DroneStatus = IBL.BO.Enum.DroneStatus.inDelivery;
-            droneCopy.ParcelInTransfer = createParcInTrans(droneCopy.Id);
+            droneCopy.ParcelInTransfer = createParcInTrans(droneCopy.Id, closestParcelId);
+
+            dataAccess.assignDroneToParcel(droneId, closestParcelId);
 
 
 
@@ -128,6 +125,10 @@ namespace IB
         }
         public void chargeDrone(int droneId) //sends drone to available station
         {
+            IBL.BO.BODrone drone = getBODrone(droneId);
+            //if(drone.DroneStatus != IBL.BO.Enum.DroneStatus.available)
+            //    throw //drone unavailable - return to main menu..
+
 
         }
         public void freeDrone(int droneId, double hrsInCharge) //frees drone from station.. 

@@ -239,6 +239,7 @@ namespace DalObject
         }
 
 
+       
 
         //public void eraseDrone(int id)
         //{
@@ -323,7 +324,21 @@ namespace DalObject
         }
 
 
-
+        public void assignDroneToParcel(int droneId, int parcelId)
+        {
+            foreach (var item in listParcel)
+            {
+                if (item.Id == parcelId)
+                {
+                    IDAL.DO.Parcel copy = item;
+                    listParcel.Remove(copy);
+                    copy.DroneId = droneId;
+                    listParcel.Add(copy);
+                    return;
+                }
+            }
+            //if not found --> exception
+        }
 
 
     }

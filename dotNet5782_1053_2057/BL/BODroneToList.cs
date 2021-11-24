@@ -21,6 +21,8 @@ namespace IBL
             {
                 string res = "Drone " + Id + " Model: " + Model + " \n";
                 res += "Battery: " + Battery + " Location " + Location + "\n";
+                if (IdOfParcelCarrying != 0 && IdOfParcelCarrying != -1)
+                    res += "carrying parcel " + IdOfParcelCarrying + "\n";
                 
                 return res;
             }

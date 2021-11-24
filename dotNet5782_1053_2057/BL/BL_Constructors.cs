@@ -45,11 +45,6 @@ namespace IB
 
             receiveDronesFromData();
 
-            //test the Distance formula..
-            IBL.BO.BOLocation first = new IBL.BO.BOLocation(13, 63);
-            IBL.BO.BOLocation second = new IBL.BO.BOLocation(10, 20);
-            double dummy = distance(first, second);
-
             //holds temporary list of locations of customers 
             List<IBL.BO.BOLocation> tempListCust = new List<IBL.BO.BOLocation>();
             //(for now, tempListCust holds every customer, not just those who have had a parcel delivered to them
@@ -185,6 +180,8 @@ namespace IB
             try
             {
                 boDrone.ParcelInTransfer = createParcInTrans(boDrone.Id);
+                if (boDrone.ParcelInTransfer != null)
+                    boDrone.DroneStatus = IBL.BO.Enum.DroneStatus.inDelivery;
             }
             catch (IBL.BO.EXParcInTransNotFoundException exception)
             {
@@ -213,6 +210,39 @@ namespace IB
             if (origParcel.Id == -1) throw new IBL.BO.EXParcInTransNotFoundException();
 
             return origParcel.Id;
+        }
+        IBL.BO.BOParcelInTransfer createEmptyParcInTrans()
+        {
+            IBL.BO.BOParcelInTransfer thisParc = new IBL.BO.BOParcelInTransfer();
+            thisParc.Id = 0;
+            thisParc.Collected = false;
+            thisParc.Priority = (IBL.BO.Enum.Priorities)0;
+            thisParc.MaxWeight = (IBL.BO.Enum.WeightCategories)0;
+            try
+            {
+                thisParc.Sender = createCustInParcel(0);
+            }
+            catch (IBL.BO.EXCustInParcNotFoundException exception)
+            {
+                thisParc.Sender = exception.creatEmptyCustInParc();
+            }
+            try
+            {
+                thisParc.Recipient = createCustInParcel(0);
+            }
+            catch (IBL.BO.EXCustInParcNotFoundException exception)
+            {
+                thisParc.Recipient = exception.creatEmptyCustInParc();
+            }
+
+
+            thisParc.PickupPoint = new IBL.BO.BOLocation(0, 0);
+            thisParc.DeliveryPoint = new IBL.BO.BOLocation(0, 0);
+            thisParc.TransportDistance = 0;
+
+
+
+            return thisParc;
         }
         IBL.BO.BOParcelInTransfer createParcInTrans(int origDroneId, int origParcId = -1) //used in Initialization
         {
@@ -423,13 +453,16 @@ namespace IB
         public IBL.BO.BODroneToList createBODroneToList(int _id)
         {
             IBL.BO.BODroneToList newDroneToList = new IBL.BO.BODroneToList();
-            IBL.BO.BODrone origDrone = getBODrone(_id);
-            newDroneToList.Id = origDrone.Id;
-            newDroneToList.Model = origDrone.Model;
-            newDroneToList.MaxWeight = origDrone.MaxWeight;
-            newDroneToList.Battery = origDrone.Battery;
-            newDroneToList.Location = origDrone.Location;
-            newDroneToList.IdOfParcelCarrying = origDrone.ParcelInTransfer.Id;
+            IBL.BO.BODrone origBODrone = getBODrone(_id);
+            newDroneToList.Id = origBODrone.Id;
+            newDroneToList.Model = origBODrone.Model;
+            newDroneToList.MaxWeight = origBODrone.MaxWeight;
+            newDroneToList.Battery = origBODrone.Battery;
+            newDroneToList.Location = origBODrone.Location;
+            //if (origBODrone.ParcelInTransfer.Id == 0)
+            //    newDroneToList.IdOfParcelCarrying = 0;
+            //else
+            newDroneToList.IdOfParcelCarrying = origBODrone.ParcelInTransfer.Id;
             return newDroneToList;
         }
         public IBL.BO.BOParcelToList createBOParcToList(int _id)
