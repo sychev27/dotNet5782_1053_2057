@@ -137,7 +137,7 @@ namespace IB
             //}
 
             //working on rest of func
-
+            drone.Battery -= battNededForDist(drone, closestStation);
 
         }
         public void freeDrone(int droneId, double hrsInCharge) //frees drone from station.. 
