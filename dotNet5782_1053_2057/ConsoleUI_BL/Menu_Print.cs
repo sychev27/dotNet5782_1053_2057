@@ -32,11 +32,26 @@ namespace ConsoleUI_BL
         }
         public void printDrone(int _id)
         {
-            Console.WriteLine(busiAccess.getBODrone(_id).ToString() + "\n");
+            try
+            {
+                Console.WriteLine(busiAccess.getBODrone(_id).ToString() + "\n");
+            }
+            catch(IBL.BO.EXNotFoundPrintException exception)
+            {
+                exception.printException();
+            }
         }
         public void printCustomer(int _id)
         {
-            Console.WriteLine(busiAccess.createBOCustomer(_id).ToString() + "\n");
+            try
+            {
+                Console.WriteLine(busiAccess.createBOCustomer(_id).ToString() + "\n");
+            }
+            catch (IBL.BO.EXNotFoundPrintException exception) 
+            {
+                exception.printException();
+            }
+
         }
         public void printStation(int _id)
         {
@@ -51,7 +66,14 @@ namespace ConsoleUI_BL
         }
         public void printParcel(int _id)
         {
-            Console.WriteLine(busiAccess.createBOParcel(_id).ToString() + "\n");
+            try
+            {
+                Console.WriteLine(busiAccess.createBOParcel(_id).ToString() + "\n");
+            }
+            catch (IBL.BO.EXNotFoundPrintException exception)
+            {
+                exception.printException();
+            }
         }
 
 
