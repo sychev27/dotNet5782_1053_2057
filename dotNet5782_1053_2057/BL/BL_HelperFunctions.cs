@@ -235,6 +235,7 @@ namespace IB
                     return item;
             }
             //throw exception!!!
+            throw new IBL.BO.EXNotFoundPrintException("Drone");
             return null;
         }
         public IEnumerable<IBL.BO.BODrone> getBODroneList()
