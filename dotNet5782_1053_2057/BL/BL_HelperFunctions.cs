@@ -150,7 +150,7 @@ namespace IB
             foreach (var origParcel in dataAccess.getParcels())
             {
                 //(1) Take Relevant Parcels
-                if ((int)origParcel.Weight <= (int)droneCopy.MaxWeight) //if drone can hold parcel
+                if ((int)origParcel.Weight <= (int)droneCopy.MaxWeight && (origParcel.DroneId != 0)) //if drone can hold parcel
                 {
                     //(2) Fill our 3 Arrays...each with 3 sub groups
                     switch (origParcel.Priority)

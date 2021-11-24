@@ -234,6 +234,8 @@ namespace DalObject
                 //thisConfig.indexAvailParcel++;
             }
 
+
+
         }
 
 

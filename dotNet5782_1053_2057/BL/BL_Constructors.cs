@@ -210,7 +210,7 @@ namespace IB
                 }
             }
             //(2) THROW EXCEPTION IF NOT FOUND
-            if (origParcel.Id == -1) throw new IBL.BO.BOParcInTransNotFoundException();
+            if (origParcel.Id == -1) throw new IBL.BO.EXParcInTransNotFoundException();
 
             return origParcel.Id;
         }
