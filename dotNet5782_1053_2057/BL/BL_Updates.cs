@@ -82,18 +82,18 @@ namespace IB
         }
 
 
-
+        
 
         public void assignParcel(int droneId)  //drone determines its parcel based on algorithm
         {
 
             //check if drone is avail
-            IBL.BO.BODrone copy = new IBL.BO.BODrone();
+            IBL.BO.BODrone droneCopy = new IBL.BO.BODrone();
             foreach (var item in listDrone)
             {
                 if(item.Id == droneId)
                 {
-                    copy = item;
+                    droneCopy = item;
                     break;
                 }
             }
@@ -103,7 +103,81 @@ namespace IB
             //if(copy.DroneStatus != IBL.BO.Enum.DroneStatus.available)
             //    throw //exception not available
 
+
+
             //rest of code...HERE
+            //Explanation:
+            //(1) Only take the relevant Parcels (acc to Drone's max weight)
+            //(2) organize into 3 groups (by Priority), each group with 3 sub groups (by weight)
+            //(3) Traverse the parcels, beginning from best choice. if we can make the journey, take the parcel
+
+            //Each array has 3 sub groups(by parcel weight): index 0: light, index 1: medium, index 2: heavy
+            List<IDAL.DO.Parcel>[] urgent = new List<IDAL.DO.Parcel>[3];
+            List<IDAL.DO.Parcel>[] fast = new List<IDAL.DO.Parcel>[3];
+            List<IDAL.DO.Parcel>[] regular = new List<IDAL.DO.Parcel>[3];
+
+            foreach (var origParcel in dataAccess.getParcels())
+            {
+                //(1) Take Parcels
+                if((int)origParcel.Weight <= (int)droneCopy.MaxWeight) //if drone can hold parcel
+                {
+                    //(2) Fill our Arrays...
+                    switch (origParcel.Priority)
+                    {
+                        case IDAL.DO.Priorities.regular:
+                            if (origParcel.Weight == IDAL.DO.WeightCategories.light)
+                                regular[0].Add(origParcel);
+                            if (origParcel.Weight == IDAL.DO.WeightCategories.medium)
+                                regular[1].Add(origParcel);
+                            if (origParcel.Weight == IDAL.DO.WeightCategories.heavy)
+                                regular[2].Add(origParcel);
+                            break;
+                        case IDAL.DO.Priorities.fast:
+                            if (origParcel.Weight == IDAL.DO.WeightCategories.light)
+                                fast[0].Add(origParcel);
+                            if (origParcel.Weight == IDAL.DO.WeightCategories.medium)
+                                fast[1].Add(origParcel);
+                            if (origParcel.Weight == IDAL.DO.WeightCategories.heavy)
+                                fast[2].Add(origParcel);
+                            break;
+                        case IDAL.DO.Priorities.urgent:
+                            if (origParcel.Weight == IDAL.DO.WeightCategories.light)
+                                urgent[0].Add(origParcel);
+                            if (origParcel.Weight == IDAL.DO.WeightCategories.medium)
+                                urgent[1].Add(origParcel);
+                            if (origParcel.Weight == IDAL.DO.WeightCategories.heavy)
+                                urgent[2].Add(origParcel);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+            }
+
+            //(3) traverse parcels
+            for (int i = 2; i >= 0; i--)
+            {
+                foreach (var parcel in urgent[i])
+                {
+                    if (battNeededForJourey(droneCopy, getCustomerLocation(parcel.SenderId), 
+                        getCustomerLocation(parcel.ReceiverId)) >= droneCopy.Battery)
+                    { //if drone can make the journey
+                        //update closest parcel
+                    }
+
+                    //if closest != null, return.... 
+                    //else, continue to next priority
+                }
+
+            }
+
+
+
+
+
+
+
 
 
         }

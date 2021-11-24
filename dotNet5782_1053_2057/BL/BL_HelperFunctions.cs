@@ -89,9 +89,13 @@ namespace IB
 
             return distance;
         }
-        double battNededForDist(IBL.BO.BODrone drone, IBL.BO.BOLocation loc)
+        double battNededForDist(IBL.BO.BODrone drone, IBL.BO.BOLocation finish, IBL.BO.BOLocation start = null)
         {
-            double dist = distance(drone.Location, loc);
+            //if start definition is not defined, calculate based on drone's current location
+            if (start == null)
+                start = drone.Location;
+
+            double dist = distance(start, finish);
             if (drone.ParcelInTransfer.Collected)
             {
                 if (drone.ParcelInTransfer.MaxWeight == IBL.BO.Enum.WeightCategories.light)
@@ -103,6 +107,21 @@ namespace IB
             }
             return dist * empty;
         }
+        double battNeededForJourey(IBL.BO.BODrone drone, IBL.BO.BOLocation Sender, 
+            IBL.BO.BOLocation Receiver) {
+            double totalBattery = 0;
+
+            totalBattery += battNededForDist(drone, Sender);                            //drone -> Sender
+            totalBattery += battNededForDist(drone, Receiver, Sender);                  //Sender -> Receiver
+            totalBattery += battNededForDist(drone, closestStation(Receiver), Receiver);//Receiver -> Station
+
+            //error in logic, assumes that Drone is traveling without package...
+
+            return totalBattery;
+
+        }
+
+            
         int freeSpots(IDAL.DO.Station st)
         {//returns 0 (or less) if not spots are free...
              int numSpots = st.ChargeSlots;
