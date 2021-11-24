@@ -242,7 +242,7 @@ namespace IB
             return closestParcelId; //will return -1
         }
 
-
+         
 
 
 
@@ -255,7 +255,7 @@ namespace IB
             }
             //throw exception!!!
             throw new IBL.BO.EXNotFoundPrintException("Drone");
-            return null;
+            //return null;
         }
         public IEnumerable<IBL.BO.BODrone> getBODroneList()
         {
