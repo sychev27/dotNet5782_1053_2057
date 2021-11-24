@@ -138,7 +138,22 @@ namespace IB
         {
             IBL.BO.BODrone drone = getBODrone(droneId);
             //if (drone.DroneStatus != IBL.BO.Enum.DroneStatus.inDelivery)
-            //    throw Exception //not 
+            //    throw Exception //not in delivery , return to main menu
+
+            foreach (var item in listDrone)
+            {
+                if (item.Id == droneId)
+                {
+                    IBL.BO.BOLocation custLoc = getCustomerLocation(item.ParcelInTransfer.Recipient.Id);
+                    item.Battery -= battNededForDist(item, custLoc);
+                    item.Location = custLoc;
+                    dataAccess.deliverParcel(item.ParcelInTransfer.Id);
+                    return;
+                }
+            }
+            //throw Exception //parcel not delivered!
+
+           
         }
         public void chargeDrone(int droneId) //sends drone to available station
         {

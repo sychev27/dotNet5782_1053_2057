@@ -374,6 +374,21 @@ namespace DalObject
             }
             //if not found --> exception
         }
+        public void deliverParcel(int parcelId)
+        {
+            foreach (var item in listParcel)
+            {
+                if (item.Id == parcelId)
+                {
+                    IDAL.DO.Parcel copy = item;
+                    listParcel.Remove(copy);
+                    copy.Delivered = DateTime.Now;
+                    listParcel.Add(copy);
+                    return;
+                }
+            }
+            //if not found --> exception
+        }
 
 
         //ignore!

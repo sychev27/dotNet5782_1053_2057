@@ -60,8 +60,8 @@ namespace IDAL
         //ignore//void addBattery(int droneId, double batteryGained);
 
         void assignDroneToParcel(int droneId, int parcelId);
-
         void pickupParcel(int parcelId);
+        void deliverParcel(int parcelId);
     }
 
 
