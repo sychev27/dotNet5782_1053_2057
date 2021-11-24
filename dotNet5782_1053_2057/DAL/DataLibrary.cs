@@ -56,6 +56,7 @@ namespace DalObject
             for (int i = 0; i < listCustomer.Count; i++)
                 if (listCustomer[i].Id == _id)
                     cust = listCustomer[i];
+            if (cust.Id == 0) throw new IDAL.DO.EXItemNotFoundException();
             return cust;
         }
         public IDAL.DO.Parcel getParcel(int _id)
@@ -64,6 +65,7 @@ namespace DalObject
             for (int i = 0; i < listParcel.Count; i++)
                 if (listParcel[i].Id == _id)
                     parcel = listParcel[i];
+            if (parcel.Id == 0) throw new IDAL.DO.EXItemNotFoundException();
             return parcel;
         }
         public IDAL.DO.Station getStation(int _id)

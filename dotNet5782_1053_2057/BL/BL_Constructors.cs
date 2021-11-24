@@ -210,7 +210,7 @@ namespace IB
                 }
             }
             //(2) THROW EXCEPTION IF NOT FOUND
-            if (origParcel.Id == -1) throw new IBL.BO.BOParcInTransNotFoundException();
+            if (origParcel.Id == -1) throw new IBL.BO.EXParcInTransNotFoundException();
 
             return origParcel.Id;
         }
@@ -241,6 +241,9 @@ namespace IB
             }
             //(2) THROW EXCEPTION IF NOT FOUND
             if (origParcel.Id == -1) throw new IBL.BO.EXParcInTransNotFoundException();
+
+            if (origParcel.SenderId == -1) throw new IBL.BO.EXParcInTransNotFoundException();
+
 
             //(3) CREATE THIS OBJECT
             thisParc.Id = origParcel.Id;
@@ -341,7 +344,15 @@ namespace IB
         public IBL.BO.BOCustomer createBOCustomer(int id)
         {
             IBL.BO.BOCustomer newCust = new IBL.BO.BOCustomer();
-            IDAL.DO.Customer origCust = dataAccess.getCustomer(id);
+            IDAL.DO.Customer origCust = new IDAL.DO.Customer();
+            try
+            {
+                origCust = dataAccess.getCustomer(id);
+            }
+            catch(IDAL.DO.EXItemNotFoundException)
+            {
+                throw new IBL.BO.EXNotFoundPrintException("Customer");
+            }
             //throw exception if not found..
             newCust.Id = origCust.Id;
             newCust.Location = new IBL.BO.BOLocation(origCust.Longitude, origCust.Latitude);
@@ -369,8 +380,16 @@ namespace IB
         public IBL.BO.BOParcel createBOParcel(int id)
         {
             IBL.BO.BOParcel newParc = new IBL.BO.BOParcel();
-            IDAL.DO.Parcel origParc = dataAccess.getParcel(id);
+            IDAL.DO.Parcel origParc = new IDAL.DO.Parcel();
+            try
+            {
+                origParc = dataAccess.getParcel(id);
+            }
             //throw exception if not found..
+            catch(IDAL.DO.EXItemNotFoundException)
+            {
+                throw new IBL.BO.EXNotFoundPrintException("Parcel");
+            }
             newParc.Id = origParc.Id;
             newParc.Priority = (IBL.BO.Enum.Priorities)origParc.Priority;
             newParc.Sender = new IBL.BO.BOCustomerInParcel(
