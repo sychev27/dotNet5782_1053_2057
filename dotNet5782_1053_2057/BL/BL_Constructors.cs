@@ -28,7 +28,7 @@ namespace IB
         internal double light;
         internal double medium;
         internal double heavy;
-        internal double chargeRate; // per hour 
+        internal double chargeRate; // per min
 
         List<IBL.BO.BODrone> listDrone = new List<IBL.BO.BODrone>();
 
@@ -64,7 +64,7 @@ namespace IB
                     if (!drone.ParcelInTransfer.Collected) //but not yet COLLECTED
                     {
                         //(1) SET LOCATION - to closest station by station
-                        drone.Location = getClosestStation(drone.ParcelInTransfer.PickupPoint);
+                        drone.Location = getClosestStationLoc(drone.ParcelInTransfer.PickupPoint);
                     }
                     else if (drone.ParcelInTransfer.Collected) // but not yet DELIVERED
                     {
@@ -114,7 +114,7 @@ namespace IB
                         drone.Location = tempListCust[r.Next(0, tempListCust.Count())];
 
                         //(2) SET BATTERY - battNeeded to 100%
-                        double minBatteryNeeded = battNededForDist(drone, getClosestStation(drone.Location));
+                        double minBatteryNeeded = battNededForDist(drone, getClosestStationLoc(drone.Location));
                         double battery = r.Next((int)minBatteryNeeded + 1, 100);
                         battery += r.NextDouble();
                         drone.Battery = battery;
@@ -359,7 +359,7 @@ namespace IB
             newSt.ChargeSlots = origSt.ChargeSlots;
             newSt.ListDroneCharge = new List<IBL.BO.BODroneInCharge>();
 
-            foreach (var item in dataAccess.getDroneCharge()) //create BODroneInCharge and add to list
+            foreach (var item in dataAccess.getDroneCharges()) //create BODroneInCharge and add to list
             {
                 IBL.BO.BODroneInCharge d = new IBL.BO.BODroneInCharge();
                 d.Id = item.DroneId;

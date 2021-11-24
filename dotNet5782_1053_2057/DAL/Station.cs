@@ -18,7 +18,7 @@ namespace IDAL
                 Name = _name;
                 Longitude = _longitude;
                 Latitude = _latitude;
-                ChargeSlots = _chargeSlots;
+                ChargeSlots = _chargeSlots; //total charge slots 
             }
             public int Id { get; set; }
             public int Name { get; set; }

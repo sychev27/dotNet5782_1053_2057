@@ -30,7 +30,7 @@ namespace DalObject
             internal static double light = 0.5;
             internal static double mediuim =0.6;
             internal static double heavy = 0.7;
-            internal static double chargeRate = 5.5; // per hour
+            internal static double chargeRate = 5.5; // per minute
             internal int parcelSerialNumber = 1;
         }
 
@@ -74,6 +74,16 @@ namespace DalObject
                     st = listStation[i];
             if (st.Id == 0) throw new IDAL.DO.EXItemNotFoundException();
             return st;
+        }
+        public IDAL.DO.DroneCharge getDroneCharge(int _droneId)
+        {
+            IDAL.DO.DroneCharge dc = new IDAL.DO.DroneCharge(0, 0);
+            foreach (var item in listDroneCharge)
+            {
+                if (item.DroneId == _droneId)
+                    return item;
+            }
+            throw new IDAL.DO.EXItemNotFoundException();
         }
 
 
@@ -124,7 +134,7 @@ namespace DalObject
             return listCustomer;
         }
 
-        public IEnumerable<IDAL.DO.DroneCharge> getDroneCharge()
+        public IEnumerable<IDAL.DO.DroneCharge> getDroneCharges()
         {
             return listDroneCharge;
         }
@@ -239,7 +249,7 @@ namespace DalObject
         }
 
 
-       
+
 
         //public void eraseDrone(int id)
         //{
@@ -252,7 +262,7 @@ namespace DalObject
         //            return;
         //        }    
         //    }
-            
+
         //}
         //public void eraseCustomer(int id)
         //{
@@ -262,7 +272,14 @@ namespace DalObject
         //{
 
         //}
-
+        public void eraseDroneCharge(IDAL.DO.DroneCharge thisDroneCharge)
+        {
+            foreach (var item in listDroneCharge)
+            {
+                if (item.DroneId == thisDroneCharge.DroneId)
+                    listDroneCharge.Remove(thisDroneCharge);
+            }
+        }
 
 
 
@@ -339,6 +356,29 @@ namespace DalObject
             }
             //if not found --> exception
         }
+
+        public void pickupParcel(int parcelId)
+        {
+            for (int i = 0; i < listParcel.Count; i++)
+            {
+                //if(listParcel[i].Id == parcelId)
+                //{
+                //    listParcel[i].Pickup = DateTime.Now;
+                //}
+            }
+        }
+
+
+        //ignore!
+        //public void addBattery(int droneId, double batteryGained)
+        //{
+        //    foreach (var item in listDrone)
+        //    {
+        //        if(item.Id == droneId)
+        //            item.b
+        //    }
+        //}
+
 
 
     }

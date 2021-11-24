@@ -34,8 +34,8 @@ namespace IB
         }
         public void addDroneCharge(int _droneId, int _stationId)
         {
-            IDAL.DO.DroneCharge dummy = new IDAL.DO.DroneCharge(_droneId, _stationId);
-            dataAccess.addDroneCharge(dummy);
+            IDAL.DO.DroneCharge newDroneCharge = new IDAL.DO.DroneCharge(_droneId, _stationId);
+            dataAccess.addDroneCharge(newDroneCharge);
         }
         public void addParcel(int _senderId, int _targetId, IDAL.DO.WeightCategories _weight,
                          IDAL.DO.Priorities _priority)// DateTime _requested, DateTime _scheduled)
@@ -49,7 +49,7 @@ namespace IB
             dataAccess.addStation(dummy);
         }
 
-
+        
 
 
 
@@ -117,32 +117,66 @@ namespace IB
         }
         public void collectParcel(int droneId) //drone collects its pre-determined parcel 
         {
+            IBL.BO.BODrone drone = getBODrone(droneId);
+            //if(drone.DroneStatus != IBL.BO.Enum.DroneStatus.inDelivery)
+            //    throw Exception //not in delivery -- return to main menu
+
+            foreach (var item in listDrone)
+            {
+                if(item.Id == droneId)
+                {
+                    IBL.BO.BOLocation custLoc = getCustomerLocation(item.ParcelInTransfer.Sender.Id);
+                    item.Battery -= battNededForDist(item, custLoc);
+                    item.Location = custLoc;
+                    
+                }
+            }
 
         }
         public void deliverParcel(int droneId) //drone delivers its pre-determined parcel
         {
-
+            IBL.BO.BODrone drone = getBODrone(droneId);
+            //if (drone.DroneStatus != IBL.BO.Enum.DroneStatus.inDelivery)
+            //    throw Exception //not 
         }
         public void chargeDrone(int droneId) //sends drone to available station
         {
             IBL.BO.BODrone drone = getBODrone(droneId);
             //if(drone.DroneStatus != IBL.BO.Enum.DroneStatus.available)
-            //    throw //drone unavailable - return to main menu..
+            //    throw exception //drone unavailable - return to main menu..
 
-            IBL.BO.BOLocation closestStation =  getClosestStation(drone.Location, true);
+            IBL.BO.BOLocation closestStationLoc =  getClosestStationLoc(drone.Location, true);
             //if (drone.Battery < battNededForDist(drone, closestStation))
             //{
-            //    throw // not enough battery to make to closet station
+            //    throw exception // not enough battery to make to closet station
             //        //return to main menu
             //}
 
             //working on rest of func
-            drone.Battery -= battNededForDist(drone, closestStation);
+            drone.Battery -= battNededForDist(drone, closestStationLoc);
+            drone.Location = closestStationLoc;
+            drone.DroneStatus = IBL.BO.Enum.DroneStatus.maintenance;
 
+            addDroneCharge(drone.Id, getStationFromLoc(closestStationLoc).Id);
+            //station's available charging slots update automatcially
         }
-        public void freeDrone(int droneId, double hrsInCharge) //frees drone from station.. 
+        public void freeDrone(int droneId, double minutesInCharge) //frees drone from station.. 
         {
+            IBL.BO.BODrone drone = getBODrone(droneId);
+            //if(drone.DroneStatus != IBL.BO.Enum.DroneStatus.maintenance)
+            //    throw Exception //drone not charging! return to main menu
 
+            double batteryGained = chargeRate * minutesInCharge;
+            //update drone...
+            foreach (var item in listDrone)
+            {
+                if(item.Id == droneId)
+                {
+                    item.Battery += batteryGained;
+                    item.DroneStatus = IBL.BO.Enum.DroneStatus.available;
+                }
+            }
+            dataAccess.eraseDroneCharge(dataAccess.getDroneCharge(droneId));
         }
 
 

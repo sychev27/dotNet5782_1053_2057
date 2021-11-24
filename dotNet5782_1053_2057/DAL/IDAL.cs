@@ -14,6 +14,12 @@ namespace IDAL
         IDAL.DO.Customer getCustomer(int _id);
         IDAL.DO.Parcel getParcel(int _id);
         IDAL.DO.Station getStation(int _id);
+        IDAL.DO.DroneCharge getDroneCharge(int _droneId);
+
+
+
+
+
         void addCustomer(IDAL.DO.Customer custom);
         void addDrone(IDAL.DO.Drone drone);
         void addParcel(IDAL.DO.Parcel parcel);
@@ -30,13 +36,13 @@ namespace IDAL
        // void chargeDrone(int droneId);
        // void freeDrone(int droneId);
 
-         IEnumerable<double> requestElec();
+        IEnumerable<double> requestElec();
         IEnumerable<IDAL.DO.Drone> getDrones();
         IEnumerable<IDAL.DO.Parcel> getParcels();
         IEnumerable<IDAL.DO.Station> getStations();
 
         IEnumerable<IDAL.DO.Customer> getCustomers();
-        IEnumerable<IDAL.DO.DroneCharge> getDroneCharge();
+        IEnumerable<IDAL.DO.DroneCharge> getDroneCharges();
 
 
 
@@ -46,11 +52,16 @@ namespace IDAL
         public void modifyCust(int _id, string _name, string _phone);
         public void modifyStation(int _id, int _name, int _totalChargeSlots);
 
+        void eraseDroneCharge(IDAL.DO.DroneCharge thisDroneCharge);
 
+
+
+
+        //ignore//void addBattery(int droneId, double batteryGained);
 
         void assignDroneToParcel(int droneId, int parcelId);
 
-
+        void pickupParcel(int parcelId);
     }
 
 
