@@ -133,6 +133,97 @@ namespace IB
             return numSpots;
         }
 
+        int findClosestParcel(IBL.BO.BODrone droneCopy)
+        {
+            //Explanation:
+            //(1) Only take the relevant Parcels (acc to Drone's max weight)
+            //(2) organize into 3 groups (by Priority), each group with 3 sub groups (by weight)
+            //(3) Traverse the parcels, beginning from best choice. if we can make the journey, take the parcel
+
+            //2D array:
+            //first dimension - organized by Parcel Priority
+            //second dimesion - organized by weight category - index 0: light, index 1: medium, index 2: heavy
+            List<IDAL.DO.Parcel>[,] parcels = new List<IDAL.DO.Parcel>[3, 3];
+            const int REGULAR = 0, FAST = 1, URGENT = 2;
+
+            
+            foreach (var origParcel in dataAccess.getParcels())
+            {
+                //(1) Take Relevant Parcels
+                if ((int)origParcel.Weight <= (int)droneCopy.MaxWeight) //if drone can hold parcel
+                {
+                    //(2) Fill our 3 Arrays...each with 3 sub groups
+                    switch (origParcel.Priority)
+                    {
+                        case IDAL.DO.Priorities.regular:
+                            if (origParcel.Weight == IDAL.DO.WeightCategories.light)
+                               parcels[REGULAR, 0].Add(origParcel);
+                            if (origParcel.Weight == IDAL.DO.WeightCategories.medium)
+                               parcels[REGULAR, 1].Add(origParcel);
+                            if (origParcel.Weight == IDAL.DO.WeightCategories.heavy)
+                               parcels[REGULAR, 2].Add(origParcel);
+                            break;
+                        case IDAL.DO.Priorities.fast:
+                            if (origParcel.Weight == IDAL.DO.WeightCategories.light)
+                                parcels[FAST, 0].Add(origParcel);
+                            if (origParcel.Weight == IDAL.DO.WeightCategories.medium)
+                                parcels[FAST, 1].Add(origParcel);
+                            if (origParcel.Weight == IDAL.DO.WeightCategories.heavy)
+                                parcels[FAST, 2].Add(origParcel);
+                            break;
+                        case IDAL.DO.Priorities.urgent:
+                            if (origParcel.Weight == IDAL.DO.WeightCategories.light)
+                                parcels[URGENT, 0].Add(origParcel);
+                            if (origParcel.Weight == IDAL.DO.WeightCategories.medium)
+                                parcels[URGENT, 1].Add(origParcel);
+                            if (origParcel.Weight == IDAL.DO.WeightCategories.heavy)
+                                parcels[URGENT, 2].Add(origParcel);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+            }
+
+            //(3) traverse parcels, choose closest parcel
+            int closestParcelId = -1;
+            IBL.BO.BOLocation closestLoc = new IBL.BO.BOLocation(0, 0); //distance will be big..
+
+            for (int i = 2; i >= 0; i--) //i iterates thru parcel priority
+            {
+                for (int j = 2; j >= 0; j--) //j iterates thru weight category
+                {
+                    foreach (var parcel in parcels[i, j])
+                    {
+                        if (battNeededForJourey(droneCopy, getCustomerLocation(parcel.SenderId),
+                            getCustomerLocation(parcel.ReceiverId)) >= droneCopy.Battery)
+                        { //if drone can make the journey,
+
+                            //find the closest parcel:
+                            IBL.BO.BOLocation thisParcLoc = new IBL.BO.BOLocation(getCustomerLocation(parcel.SenderId).Longitude,
+                                getCustomerLocation(parcel.SenderId).Latitude);
+
+                            if (distance(droneCopy.Location, thisParcLoc) < distance(droneCopy.Location, closestLoc))
+                            {
+                                closestParcelId = parcel.Id;
+                                closestLoc = thisParcLoc;
+                            }
+                        }
+                              
+                    }
+                    if (closestParcelId != -1) //if we found a parcel that fits our criteria
+                        return closestParcelId;
+                    //else, j-- ; next weight category
+                    
+                }
+                //i-- ; next parcel priority
+            }
+
+            return closestParcelId; //will return -1
+        }
+
+
 
 
 
@@ -150,6 +241,10 @@ namespace IB
         {
             return listDrone;
         }
+
+
+
+
 
         //for printing these lists:
         public IEnumerable<IBL.BO.BOCustomerToList> getCustToList() 
