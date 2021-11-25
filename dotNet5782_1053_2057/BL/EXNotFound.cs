@@ -29,18 +29,22 @@ namespace IBL
 
         public class EXNotFoundPrintException:Exception
         {
-            private  string itemName;
+            public string ItemName { get; }
 
             public EXNotFoundPrintException(string name)
             {
-                itemName = name;
+                ItemName = name;
             }
 
             public void printException()
             {
-                Console.WriteLine(itemName + " not found!/n");
+                Console.WriteLine(ItemName + " not found!/n");
             }
 
+            public void printNotAvailableException()
+            {
+                Console.WriteLine(ItemName + " is not available!/n");
+            }
         }
 
     }

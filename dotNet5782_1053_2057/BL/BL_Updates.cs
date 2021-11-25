@@ -59,7 +59,14 @@ namespace IB
         //Modify
         public void modifyDrone(int _id, string _model)
         {
-            dataAccess.modifyDrone(_id, _model); //udpates drone in Data Layer
+            try
+            {
+                dataAccess.modifyDrone(_id, _model); //udpates drone in Data Layer
+            }
+            catch (IDAL.DO.EXItemNotFoundException)
+            {
+                throw new IBL.BO.EXNotFoundPrintException("Drone");
+            }
             //update drone in Business layer:
             foreach (var item in listDrone)
             {
@@ -75,11 +82,25 @@ namespace IB
         }
         public void modifyCust(int _id, string _name, string _phone)
         {
-            dataAccess.modifyCust(_id, _name, _phone);
+            try
+            {
+                dataAccess.modifyCust(_id, _name, _phone);
+            }
+            catch(IDAL.DO.EXItemNotFoundException)
+            {
+                throw new IBL.BO.EXNotFoundPrintException("Custumer");
+            }
         }
         public void modifyStation(int _id, int _name, int _totalChargeSlots)
         {
-            dataAccess.modifyStation(_id, _name, _totalChargeSlots);
+            try
+            {
+                dataAccess.modifyStation(_id, _name, _totalChargeSlots);
+            }
+            catch(IDAL.DO.EXItemNotFoundException)
+            {
+                throw new IBL.BO.EXNotFoundPrintException("Station");
+            }
         }
 
 
@@ -87,22 +108,29 @@ namespace IB
 
         public void assignParcel(int droneId)  //drone determines its parcel based on algorithm
         {
-
-           //(1) find drone
-            IBL.BO.BODrone droneCopy = getBODrone(droneId);
-
+            IBL.BO.BODrone droneCopy = new IBL.BO.BODrone();
+            //(1) find drone
+            try
+            {
+                droneCopy = getBODrone(droneId);
+            }
             //if(copy.Id != droneId)
             //    throw exception//not found!
+            catch (IBL.BO.EXNotFoundPrintException)
+            {
+                throw new IBL.BO.EXNotFoundPrintException("Drone");
+            }
 
             ////(2)check if drone is avail
-            //if(copy.DroneStatus != IBL.BO.Enum.DroneStatus.available)
-            //    throw //exception not available
+            if(droneCopy.DroneStatus != IBL.BO.Enum.DroneStatus.available)
+                //    throw //exception not available
+                throw new IBL.BO.EXNotFoundPrintException("not available");
 
             //(3) find closest parcel
             int closestParcelId = findClosestParcel(droneCopy);
             if (closestParcelId == -1)
-                return;
                 //throw Exception //no closest parcel --> dont assign drone, continue in menu...
+                throw new IBL.BO.EXPrintEception("no closest parcel --> dont assign drone, continue in menu...");
 
             //(4) assign parcel to drone
             droneCopy.DroneStatus = IBL.BO.Enum.DroneStatus.inDelivery;

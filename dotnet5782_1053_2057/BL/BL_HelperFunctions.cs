@@ -8,7 +8,7 @@ namespace IB
 {
     public partial class BL
     {
-        IBL.BO.BOLocation closestStation(IBL.BO.BOLocation l, bool needChargeSlot = false)
+        IBL.BO.BOLocation getClosestStation(IBL.BO.BOLocation l, bool needChargeSlot = false)
         {
             //if we need the station to have a free spot, then we send a parameter = true.
             //otherwise, we can ignore this parameter
@@ -113,7 +113,7 @@ namespace IB
 
             totalBattery += battNededForDist(drone, Sender);                            //drone -> Sender
             totalBattery += battNededForDist(drone, Receiver, Sender);                  //Sender -> Receiver
-            totalBattery += battNededForDist(drone, closestStation(Receiver), Receiver);//Receiver -> Station
+            totalBattery += battNededForDist(drone, getClosestStation(Receiver), Receiver);//Receiver -> Station
 
             //error in logic, assumes that Drone is traveling without package...
 
@@ -144,13 +144,21 @@ namespace IB
             //first dimension - organized by Parcel Priority
             //second dimesion - organized by weight category - index 0: light, index 1: medium, index 2: heavy
             List<IDAL.DO.Parcel>[,] parcels = new List<IDAL.DO.Parcel>[3, 3];
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    parcels[i, j] = new List<IDAL.DO.Parcel>();
+                }
+            }
+
             const int REGULAR = 0, FAST = 1, URGENT = 2;
 
             
             foreach (var origParcel in dataAccess.getParcels())
             {
                 //(1) Take Relevant Parcels
-                if ((int)origParcel.Weight <= (int)droneCopy.MaxWeight) //if drone can hold parcel
+                if ((int)origParcel.Weight <= (int)droneCopy.MaxWeight && (origParcel.DroneId == 0)) //if drone can hold parcel
                 {
                     //(2) Fill our 3 Arrays...each with 3 sub groups
                     switch (origParcel.Priority)
@@ -236,7 +244,6 @@ namespace IB
             }
             //throw exception!!!
             throw new IBL.BO.EXNotFoundPrintException("Drone");
-            return null;
         }
         public IEnumerable<IBL.BO.BODrone> getBODroneList()
         {

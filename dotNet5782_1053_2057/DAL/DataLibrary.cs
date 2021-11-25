@@ -285,6 +285,7 @@ namespace DalObject
                 }
             }
             //if not found --> exception
+            throw new IDAL.DO.EXItemNotFoundException();
         }
         public void modifyCust(int _id, string _name = "", string _phone = "")
         {
@@ -303,6 +304,7 @@ namespace DalObject
                 }
             }
             //if not found --> exception
+            throw new IDAL.DO.EXItemNotFoundException();
 
         }
         public void modifyStation(int _id, int _name = 0, int _totalChargeSlots = 0)
@@ -322,6 +324,7 @@ namespace DalObject
                 }
             }
             //if not found --> exception
+            throw new IDAL.DO.EXItemNotFoundException();
 
         }
 

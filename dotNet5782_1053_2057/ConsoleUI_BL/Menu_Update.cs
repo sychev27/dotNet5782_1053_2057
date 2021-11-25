@@ -67,7 +67,14 @@ namespace ConsoleUI_BL
             int _id = 0;
             Int32.TryParse(Console.ReadLine(), out _id);
             string _model = Console.ReadLine();
-            busiAccess.modifyDrone(_id, _model);
+            try
+            {
+                busiAccess.modifyDrone(_id, _model);
+            }
+            catch(IBL.BO.EXNotFoundPrintException exception)
+            {
+                exception.printException();
+            }
 
         }
         void modifyCustomer()
@@ -81,7 +88,14 @@ namespace ConsoleUI_BL
             string _phone = Console.ReadLine();
             if (_name == "0") _name = "";
             if (_phone == "0") _phone = "";
-            busiAccess.modifyCust(_id, _name, _phone);
+            try
+            {
+                busiAccess.modifyCust(_id, _name, _phone);
+            }
+            catch(IBL.BO.EXNotFoundPrintException exception)
+            {
+                exception.printException();
+            }
         }
         void modifyStation()
         {
@@ -94,8 +108,14 @@ namespace ConsoleUI_BL
             Int32.TryParse(Console.ReadLine(), out _name);
             int _numChargingSlots = 0;
             Int32.TryParse(Console.ReadLine(), out _numChargingSlots);
-           
-            busiAccess.modifyStation(_id, _name, _numChargingSlots);
+            try
+            {
+                busiAccess.modifyStation(_id, _name, _numChargingSlots);
+            }
+            catch(IBL.BO.EXNotFoundPrintException exception)
+            {
+                exception.printException();
+            }
         }
 
         void updateActions()
@@ -117,7 +137,21 @@ namespace ConsoleUI_BL
                 case 1:
                     Console.WriteLine("Enter the ID of the drone you would like to assign:\n");
                     Int32.TryParse(Console.ReadLine(), out id);
-                    busiAccess.assignParcel(id);
+                    try
+                    {
+                        busiAccess.assignParcel(id);
+                    }
+                    catch(IBL.BO.EXNotFoundPrintException exception)
+                    {
+                        if (exception.ItemName != "not available")
+                            exception.printException();
+                        else
+                            exception.printNotAvailableException();
+                    }
+                    catch(IBL.BO.EXPrintEception exception)
+                    {
+                        exception.Print();
+                    }
                     break;
                 case 2:
                     Console.WriteLine("Enter the ID of the drone you want to collect:\n");
