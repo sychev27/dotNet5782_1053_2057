@@ -23,7 +23,10 @@ namespace IBL
             public override string ToString()
             {
                 string res = "Parcel " + Id + "From " + Sender + " to " + Receiver + "\n";
-                res += (IBL.BO.Enum.WeightCategories)WeightCategory + " Priority: " + Priority;
+                res += (IBL.BO.Enum.WeightCategories)WeightCategory + " Priority: " + Priority + "\n";
+                res += "assigned: " + timeOfAssignment.ToString() + "\n";
+                res += "collected: " + timeOfCollection.ToString() + "\n";
+                res += "deliverd: " + timeOfDelivery.ToString() + "\n"; 
 
                 res += "\n";
                 return res;

@@ -8,7 +8,7 @@ namespace IB
 {
     public partial class BL
     {
-        IBL.BO.BOLocation getClosestStation(IBL.BO.BOLocation l, bool needChargeSlot = false)
+        IBL.BO.BOLocation getClosestStationLoc(IBL.BO.BOLocation l, bool needChargeSlot = false)
         {
             //if we need the station to have a free spot, then we send a parameter = true.
             //otherwise, we can ignore this parameter
@@ -47,6 +47,17 @@ namespace IB
             }
             return ans;
 
+        }
+        IDAL.DO.Station getStationFromLoc(IBL.BO.BOLocation loc)
+        {
+            IEnumerable<IDAL.DO.Station> stations = dataAccess.getStations();
+            foreach (var item in stations)
+            {
+                if (item.Longitude == loc.Longitude && item.Latitude == loc.Latitude)
+                    return item;
+            }
+            return new IDAL.DO.Station(); //<--delete this!
+            //throw exception! //not found;
         }
         IBL.BO.BOLocation getCustomerLocation(int customerId)
         {
@@ -113,7 +124,7 @@ namespace IB
 
             totalBattery += battNededForDist(drone, Sender);                            //drone -> Sender
             totalBattery += battNededForDist(drone, Receiver, Sender);                  //Sender -> Receiver
-            totalBattery += battNededForDist(drone, getClosestStation(Receiver), Receiver);//Receiver -> Station
+            totalBattery += battNededForDist(drone, getClosestStationLoc(Receiver), Receiver);//Receiver -> Station
 
             //error in logic, assumes that Drone is traveling without package...
 
@@ -125,7 +136,7 @@ namespace IB
         int freeSpots(IDAL.DO.Station st)
         {//returns 0 (or less) if not spots are free...
              int numSpots = st.ChargeSlots;
-               foreach (IDAL.DO.DroneCharge drCharge in dataAccess.getDroneCharge())    
+               foreach (IDAL.DO.DroneCharge drCharge in dataAccess.getDroneCharges())    
                {
                     if (st.Id == drCharge.StationId)
                        numSpots--;
@@ -231,7 +242,7 @@ namespace IB
             return closestParcelId; //will return -1
         }
 
-
+         
 
 
 
@@ -244,6 +255,7 @@ namespace IB
             }
             //throw exception!!!
             throw new IBL.BO.EXNotFoundPrintException("Drone");
+            //return null;
         }
         public IEnumerable<IBL.BO.BODrone> getBODroneList()
         {
@@ -311,6 +323,10 @@ namespace IB
             }
             return res;
         }
+
+
+
+
 
     }
 }

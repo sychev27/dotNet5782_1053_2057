@@ -171,10 +171,10 @@ namespace ConsoleUI_BL
                 case 5:
                     Console.WriteLine("Enter the ID of the drone you want to free:\n ");
                     Int32.TryParse(Console.ReadLine(), out id);
-                    double hrsCharged = 0;
-                    Console.WriteLine("Enter the num of hrs the drone charged:\n ");
-                    Double.TryParse(Console.ReadLine(), out hrsCharged);
-                    busiAccess.freeDrone(id, hrsCharged);
+                    double minutesCharged = 0;
+                    Console.WriteLine("Enter the num of minutess the drone charged:\n ");
+                    Double.TryParse(Console.ReadLine(), out minutesCharged);
+                    busiAccess.freeDrone(id, minutesCharged);
                     break;
                 default:
                     break;
