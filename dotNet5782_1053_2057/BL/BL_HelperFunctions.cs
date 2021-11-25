@@ -56,7 +56,6 @@ namespace IB
                 if (item.Longitude == loc.Longitude && item.Latitude == loc.Latitude)
                     return item;
             }
-            return new IDAL.DO.Station(); //<--delete this!
             //throw exception! //not found;
             throw new IBL.BO.EXNotFoundPrintException("Station");
         }
@@ -324,10 +323,5 @@ namespace IB
             }
             return res;
         }
-
-
-
-
-
     }
 }
