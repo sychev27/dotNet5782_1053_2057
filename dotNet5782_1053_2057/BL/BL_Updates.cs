@@ -130,7 +130,7 @@ namespace IB
             int closestParcelId = findClosestParcel(droneCopy);
             if (closestParcelId == -1)
                 //throw Exception //no closest parcel --> dont assign drone, continue in menu...
-                throw new IBL.BO.EXPrintEception("no closest parcel --> dont assign drone, continue in menu...");
+                throw new IBL.BO.EXPrintException("no closest parcel --> dont assign drone, continue in menu...");
 
             //(4) assign parcel to drone
             droneCopy.DroneStatus = IBL.BO.Enum.DroneStatus.inDelivery;
@@ -145,9 +145,18 @@ namespace IB
         }
         public void collectParcel(int droneId) //drone collects its pre-determined parcel 
         {
-            IBL.BO.BODrone drone = getBODrone(droneId);
-            //if(drone.DroneStatus != IBL.BO.Enum.DroneStatus.inDelivery)
-            //    throw Exception //not in delivery -- return to main menu
+            IBL.BO.BODrone drone = new IBL.BO.BODrone();
+            try
+            {
+                drone = getBODrone(droneId);
+            }
+            catch (IBL.BO.EXNotFoundPrintException) 
+            {
+                throw new IBL.BO.EXNotFoundPrintException("Drone");
+            }
+            if (drone.DroneStatus != IBL.BO.Enum.DroneStatus.inDelivery)
+                //    throw Exception //not in delivery -- return to main menu
+                throw new IBL.BO.EXPrintException("Drone is not in delivery");
 
             foreach (var item in listDrone)
             {
@@ -161,13 +170,19 @@ namespace IB
                 }
             }
             //throw Exception //parcel not collected!
+            throw new IBL.BO.EXPrintException("parcel not collected!");
         }
         public void deliverParcel(int droneId) //drone delivers its pre-determined parcel
         {
-            IBL.BO.BODrone drone = getBODrone(droneId);
-            //if (drone.DroneStatus != IBL.BO.Enum.DroneStatus.inDelivery)
-            //    throw Exception //not in delivery , return to main menu
-
+            IBL.BO.BODrone drone = new IBL.BO.BODrone();
+            try
+            {
+                drone = getBODrone(droneId);
+            }
+            catch (IBL.BO.EXNotFoundPrintException) {throw new IBL.BO.EXNotFoundPrintException("Drone");}
+            if (drone.DroneStatus != IBL.BO.Enum.DroneStatus.inDelivery)
+                //    throw Exception //not in delivery , return to main menu
+                throw new IBL.BO.EXPrintException("Drone is not in delivery");
             foreach (var item in listDrone)
             {
                 if (item.Id == droneId)
@@ -180,35 +195,48 @@ namespace IB
                 }
             }
             //throw Exception //parcel not delivered!
-
-           
+            throw new IBL.BO.EXPrintException("parcel not delivered!");
         }
         public void chargeDrone(int droneId) //sends drone to available station
         {
-            IBL.BO.BODrone drone = getBODrone(droneId);
-            //if(drone.DroneStatus != IBL.BO.Enum.DroneStatus.available)
-            //    throw exception //drone unavailable - return to main menu..
+            IBL.BO.BODrone drone;
+            try
+            {
+                drone = getBODrone(droneId);
+            }
+            catch (IBL.BO.EXNotFoundPrintException) { throw new IBL.BO.EXNotFoundPrintException("Drone");}
+            if(drone.DroneStatus != IBL.BO.Enum.DroneStatus.available)
+                //    throw exception //drone unavailable - return to main menu..
+                throw new IBL.BO.EXNotFoundPrintException("not available");
 
             IBL.BO.BOLocation closestStationLoc =  getClosestStationLoc(drone.Location, true);
-            //if (drone.Battery < battNededForDist(drone, closestStation))
-            //{
-            //    throw exception // not enough battery to make to closet station
-            //        //return to main menu
-            //}
+            if (drone.Battery < battNededForDist(drone, closestStationLoc))
+                //    throw exception // not enough battery to make to closet station
+                throw new IBL.BO.EXPrintException("not enough battery to make to closet station!");
 
             //working on rest of func
             drone.Battery -= battNededForDist(drone, closestStationLoc);
             drone.Location = closestStationLoc;
             drone.DroneStatus = IBL.BO.Enum.DroneStatus.maintenance;
-
-            addDroneCharge(drone.Id, getStationFromLoc(closestStationLoc).Id);
+            try
+            {
+                addDroneCharge(drone.Id, getStationFromLoc(closestStationLoc).Id);
+            }
+            catch (IBL.BO.EXNotFoundPrintException) {throw new IBL.BO.EXNotFoundPrintException("Station"); }
             //station's available charging slots update automatcially
         }
         public void freeDrone(int droneId, double minutesInCharge) //frees drone from station.. 
         {
-            IBL.BO.BODrone drone = getBODrone(droneId);
-            //if(drone.DroneStatus != IBL.BO.Enum.DroneStatus.maintenance)
-            //    throw Exception //drone not charging! return to main menu
+            IBL.BO.BODrone drone;
+            try
+            {
+                drone = getBODrone(droneId);
+            }
+            catch (IBL.BO.EXNotFoundPrintException) {throw new IBL.BO.EXNotFoundPrintException("Drone");}
+
+            if (drone.DroneStatus != IBL.BO.Enum.DroneStatus.maintenance)
+                //    throw Exception //drone not charging! return to main menu
+                throw new IBL.BO.EXPrintException("drone not charging!");
 
             double batteryGained = chargeRate * minutesInCharge;
             //update drone...
@@ -220,7 +248,11 @@ namespace IB
                     item.DroneStatus = IBL.BO.Enum.DroneStatus.available;
                 }
             }
-            dataAccess.eraseDroneCharge(dataAccess.getDroneCharge(droneId));
+            try
+            {
+                dataAccess.eraseDroneCharge(dataAccess.getDroneCharge(droneId));
+            }
+            catch (IDAL.DO.EXItemNotFoundException) { return; }
         }
 
 

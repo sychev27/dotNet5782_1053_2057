@@ -8,11 +8,11 @@ namespace IBL
 {
     namespace BO
     {
-        public class EXPrintEception:Exception
+        public class EXPrintException:Exception
         {
             private string str;
 
-            public EXPrintEception(string _str) { str = _str; }
+            public EXPrintException(string _str) { str = _str; }
             public  void Print()
             {
                 Console.WriteLine(str + "/n");

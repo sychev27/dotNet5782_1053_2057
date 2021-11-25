@@ -58,6 +58,7 @@ namespace IB
             }
             return new IDAL.DO.Station(); //<--delete this!
             //throw exception! //not found;
+            throw new IBL.BO.EXNotFoundPrintException("Station");
         }
         IBL.BO.BOLocation getCustomerLocation(int customerId)
         {

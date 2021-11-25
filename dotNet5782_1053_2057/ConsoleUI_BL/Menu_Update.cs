@@ -148,25 +148,44 @@ namespace ConsoleUI_BL
                         else
                             exception.printNotAvailableException();
                     }
-                    catch(IBL.BO.EXPrintEception exception)
-                    {
-                        exception.Print();
-                    }
+                    catch(IBL.BO.EXPrintException exception) {exception.Print();}
                     break;
                 case 2:
                     Console.WriteLine("Enter the ID of the drone you want to collect:\n");
                     Int32.TryParse(Console.ReadLine(), out id);
-                    busiAccess.collectParcel(id);
+                    try
+                    {
+                        busiAccess.collectParcel(id);
+                    }
+                    catch (IBL.BO.EXNotFoundPrintException exception) {exception.printException();}
+                    catch (IBL.BO.EXPrintException exception){exception.Print();}
                     break;
                 case 3:
                     Console.WriteLine("Enter the ID of the drone you want to deliver:\n ");
                     Int32.TryParse(Console.ReadLine(), out id);
-                    busiAccess.deliverParcel(id);
+                    try
+                    {
+                        busiAccess.deliverParcel(id);
+                    }
+                    catch (IBL.BO.EXNotFoundPrintException exception) { exception.printException();}
+                    catch (IBL.BO.EXPrintException exception) { exception.Print();}
                     break;
                 case 4:
                     Console.WriteLine("Enter the ID of the drone you want to charge:\n ");
                     Int32.TryParse(Console.ReadLine(), out id);
-                    busiAccess.chargeDrone(id);
+                    try
+                    {
+                        busiAccess.chargeDrone(id);
+                    }
+                    catch (IBL.BO.EXNotFoundPrintException exception)
+                    {
+                        if (exception.ItemName != "not available")
+                            exception.printException();
+                        else
+                            exception.printNotAvailableException();
+                    }
+                    catch (IBL.BO.EXPrintException exception) { exception.Print();}
+
                     break;
                 case 5:
                     Console.WriteLine("Enter the ID of the drone you want to free:\n ");
@@ -174,7 +193,12 @@ namespace ConsoleUI_BL
                     double minutesCharged = 0;
                     Console.WriteLine("Enter the num of minutess the drone charged:\n ");
                     Double.TryParse(Console.ReadLine(), out minutesCharged);
-                    busiAccess.freeDrone(id, minutesCharged);
+                    try
+                    {
+                        busiAccess.freeDrone(id, minutesCharged);
+                    }
+                    catch (IBL.BO.EXNotFoundPrintException exception) { exception.printException(); }
+                    catch (IBL.BO.EXPrintException exception) { exception.Print(); }
                     break;
                 default:
                     break;
