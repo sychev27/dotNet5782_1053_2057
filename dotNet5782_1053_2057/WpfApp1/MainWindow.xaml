@@ -11,5 +11,16 @@
             <RowDefinition Height="50*"/>
             <RowDefinition Height="400*"/>
         </Grid.RowDefinitions>
+        
+        
+        <Grid Name = "UpGrid" HorizontalAlignment = "Stretch" Height = "auto" Grid.Row = "0" 
+            VerticalAlignment = "Stretch" Width = "auto">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+        </Grid>
     </Grid>
 </Window>
