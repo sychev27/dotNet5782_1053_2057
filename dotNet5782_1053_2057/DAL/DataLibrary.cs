@@ -394,16 +394,11 @@ namespace DalObject
         }
 
 
-        //ignore!
-        //public void addBattery(int droneId, double batteryGained)
-        //{
-        //    foreach (var item in listDrone)
-        //    {
-        //        if(item.Id == droneId)
-        //            item.b
-        //    }
-        //}
 
+        public IEnumerable<IDAL.DO.Drone> getSpecificDroneList(Predicate<IDAL.DO.Drone> property)
+        {
+            return listDrone.FindAll(property);
+        }
 
 
     }

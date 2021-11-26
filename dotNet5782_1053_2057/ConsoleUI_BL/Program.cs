@@ -1,4 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
 
 namespace ConsoleUI_BL
 {
@@ -7,14 +12,12 @@ namespace ConsoleUI_BL
 
         static void Main(string[] args)
         {
-            Menu ex = new Menu();
-  
-            ex.beginMenu();
+            //Menu ex = new Menu();
 
-            //IDAL.DO.Customer john = new IDAL.DO.Customer(23, "john", "201", 33, 22);
-            //Console.WriteLine(john.ToString());
+            //ex.beginMenu();
 
-
+            IBL.Ibl dummy = new IB.BL();
+            dummy.getHeavyDrones();
 
             Console.ReadLine();
 
