@@ -45,7 +45,7 @@ namespace IDAL
         IEnumerable<IDAL.DO.DroneCharge> getDroneCharges();
 
 
-        IEnumerable<IDAL.DO.Drone> getSpecificDroneList(Predicate<IDAL.DO.Drone> property);
+        IEnumerable<IDAL.DO.Drone> getSpecificDroneList(Predicate<IDAL.DO.Drone> typeOfDrone);
 
 
 
