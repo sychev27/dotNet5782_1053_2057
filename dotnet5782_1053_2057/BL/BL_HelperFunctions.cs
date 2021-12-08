@@ -76,6 +76,8 @@ namespace IB
             
         }
 
+
+
         double distance(IBL.BO.BOLocation l1, IBL.BO.BOLocation l2)
         {
             //(1) find diff in radians:
@@ -133,6 +135,8 @@ namespace IB
         }
 
             
+
+
         int freeSpots(IDAL.DO.Station st)
         {//returns 0 (or less) if not spots are free...
              int numSpots = st.ChargeSlots;
@@ -262,9 +266,22 @@ namespace IB
             return listDrone;
         }
 
+        public IEnumerable<IDAL.DO.Drone> getSpecificDroneList(Predicate<IDAL.DO.Drone> property)
+        {
+            return dataAccess.getSpecificDroneList(property);
+        }
+        public IEnumerable<IDAL.DO.Drone> getHeavyDrones()
+        {
+            return getSpecificDroneList(heavyDrone);
+        }
 
-
-
+        private static bool heavyDrone(IDAL.DO.Drone _drone)
+        {
+            if (_drone.MaxWeight == IDAL.DO.WeightCategories.heavy)
+                return true;
+            else
+                return false;
+        }
 
         //for printing these lists:
         public IEnumerable<IBL.BO.BOCustomerToList> getCustToList() 
