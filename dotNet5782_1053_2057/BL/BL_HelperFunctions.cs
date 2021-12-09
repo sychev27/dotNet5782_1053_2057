@@ -266,14 +266,53 @@ namespace IB
             return listDrone;
         }
 
-        public IEnumerable<IDAL.DO.Drone> getSpecificDroneList(Predicate<IDAL.DO.Drone> typeOfDrone)
+        public IEnumerable<IBL.BO.BODrone> getSpecificDroneList(int num)
         {
-            
-            return dataAccess.getSpecificDroneList(typeOfDrone);
+            switch(num)
+            {
+                case 1:
+                    {
+                        Predicate<IBL.BO.BODrone> res = availableDrone;
+                        return listDrone.FindAll(res);
+                    }
+                case 2:
+                    {
+                        Predicate<IBL.BO.BODrone> res = maintenanceDrone;
+                        return listDrone.FindAll(res);
+                    }
+                case 3:
+                    {
+                        Predicate<IBL.BO.BODrone> res = inDeliveryDrone;
+                        return listDrone.FindAll(res);
+                    }
+                default:
+                    return listDrone;
+            }
+
+          //  return dataAccess.getSpecificDroneList(typeOfDrone);
         }
-        public IEnumerable<IDAL.DO.Drone> getHeavyDrones()
+
+        private static bool availableDrone(IBL.BO.BODrone _drone)
         {
-            return getSpecificDroneList(heavyDrone);
+            if (_drone.DroneStatus == IBL.BO.Enum.DroneStatus.available)
+                return true;
+            else
+                return false;
+        }
+
+        private static bool maintenanceDrone(IBL.BO.BODrone _drone)
+        {
+            if (_drone.DroneStatus == IBL.BO.Enum.DroneStatus.maintenance)
+                return true;
+            else
+                return false;
+        }
+        private static bool inDeliveryDrone(IBL.BO.BODrone _drone)
+        {
+            if (_drone.DroneStatus == IBL.BO.Enum.DroneStatus.inDelivery)
+                return true;
+            else
+                return false;
         }
 
         private static bool heavyDrone(IDAL.DO.Drone _drone)

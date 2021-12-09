@@ -33,6 +33,8 @@ namespace WpfApp1
 
         private void StatusSelector1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            
+
            // DronesListView.ItemsSource = busiAccess.getSpecificDroneList();
         }
     }

@@ -43,8 +43,8 @@ namespace IBL
         IEnumerable<IBL.BO.BOStationToList> getStationAvailChargeSlots();
 
 
-        IEnumerable<IDAL.DO.Drone> getSpecificDroneList(Predicate<IDAL.DO.Drone> property);
-        IEnumerable<IDAL.DO.Drone> getHeavyDrones();
+        IEnumerable<IDAL.DO.Drone> getSpecificDroneList(int num);
+   
 
 
 
