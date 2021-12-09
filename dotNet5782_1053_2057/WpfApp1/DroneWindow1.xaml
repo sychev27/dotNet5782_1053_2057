@@ -14,9 +14,9 @@
             <TextBlock x:Name="textBlock_chooseMaxWeight" HorizontalAlignment="Center" Grid.Row="2" Text="Choose Maximum Weight Category:" TextWrapping="Wrap" VerticalAlignment="Center"/>
             <TextBlock HorizontalAlignment="Center" Grid.Row="3" Text="Enter Station ID" TextWrapping="Wrap" VerticalAlignment="Center"/>
 
-            <TextBox x:Name="IdInput" Grid.Column="1" HorizontalAlignment="Center" Margin="0,10,0,7" Text="" TextWrapping="Wrap" Width="92" />
-            <TextBox x:Name ="ModelInput" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="1" Text="" TextWrapping="Wrap" VerticalAlignment="Center" Width="92" Height="21" />
-            <TextBox x:Name = "StationIdInput" Grid.Column="1" HorizontalAlignment="Left" Margin="25,13,0,0" Grid.Row="3" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+            <TextBox x:Name="tBoxIdInput" Grid.Column="1" HorizontalAlignment="Center" Margin="0,10,0,7" Text="" TextWrapping="Wrap" Width="92" />
+            <TextBox x:Name ="tBoxModelInput" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="1" Text="" TextWrapping="Wrap" VerticalAlignment="Center" Width="92" Height="21" />
+            <TextBox x:Name = "tBoxStationIdInput" Grid.Column="1" HorizontalAlignment="Left" Margin="25,13,0,0" Grid.Row="3" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
 
 
             <Button x:Name ="btnAddDrone" Content="Add Drone" Grid.Column="1" HorizontalAlignment="Left" Margin="52,0,0,8" Grid.Row="4" VerticalAlignment="Bottom" Click = "btnAddDrone_Click"/>
