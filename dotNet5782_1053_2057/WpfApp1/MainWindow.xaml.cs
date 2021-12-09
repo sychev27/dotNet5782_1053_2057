@@ -34,7 +34,7 @@ namespace WpfApp1
             new DroneWindow(busiAccess).Show();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void btnOpenDroneList_Click(object sender, RoutedEventArgs e)
         {
             new DroneListWindow(busiAccess).Show();
         }
