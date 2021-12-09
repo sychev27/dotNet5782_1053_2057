@@ -11,15 +11,21 @@
             <RowDefinition Height="50*"/>
             <RowDefinition Height="400*"/>
         </Grid.RowDefinitions>
-        <Grid Name = "UpGrid" HorizontalAlignment = "Stretch" Height = "auto" Grid.Row = "0" 
-            VerticalAlignment = "Stretch" Width = "auto">
+        <Grid Name = "UpGrid" Height = "auto" Grid.Row = "0" Width = "auto">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+            <TextBox  Grid.Column="0" HorizontalAlignment="Stretch" Margin="4,6,6,4" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Stretch" Width="190"/>
+            <ComboBox Grid.Column="1" Name="StatusSelector1" HorizontalAlignment="Stretch" Margin="4,6,6,4" VerticalAlignment="Stretch" Width="190"/>
+            <TextBox  Grid.Column="2" HorizontalAlignment="Stretch" Margin="4,6,6,4" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Stretch" Width="190"/>
+            <ComboBox Grid.Column="3" Name="StatusSelector2" HorizontalAlignment="Stretch" Margin="4,6,6,4" VerticalAlignment="Stretch" Width="190"/>
+
         </Grid>
+
+
 
     </Grid>
 </Window>
