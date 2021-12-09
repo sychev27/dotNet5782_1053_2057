@@ -19,10 +19,15 @@ namespace WpfApp1
     /// </summary>
     public partial class DroneListWindow : Window
     {
-        public DroneListWindow(IBL.Ibl busiAccess)
+        IBL.Ibl busiAccess;
+        
+        public DroneListWindow(IBL.Ibl busiAccess1)
         {
-
             InitializeComponent();
+            busiAccess = busiAccess1;
+            DronesListView.ItemsSource = busiAccess.getBODroneList();
+
+            
         }
     }
 }

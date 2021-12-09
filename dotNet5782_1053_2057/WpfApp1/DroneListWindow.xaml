@@ -24,6 +24,13 @@
             <ComboBox Grid.Column="3" Name="StatusSelector2" HorizontalAlignment="Stretch" Margin="4,6,6,4" VerticalAlignment="Stretch" Width="190"/>
 
         </Grid>
+        <ListView Grid.Row="1" x:Name="DronesListView">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
 
 
 
