@@ -27,9 +27,14 @@ namespace WpfApp1
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void btnOpenDroneList_Click(object sender, RoutedEventArgs e)
         {
             new DroneListWindow(busiAccess).Show() ;
+        }
+
+        private void btnAddDrone_Click(object sender, RoutedEventArgs e)
+        {
+            new DroneWindow(busiAccess).Show();
         }
     }
 }

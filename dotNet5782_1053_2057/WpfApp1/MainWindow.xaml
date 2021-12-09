@@ -22,7 +22,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
         </Grid>
-        <Button Content="Open Drone List" HorizontalAlignment="Left" Margin="596,358,0,0" Grid.Row="1" VerticalAlignment="Top" Height="61" Width="106" RenderTransformOrigin="0.5,0.5" Click="Button_Click">
+        <Button Content="Open Drone List" HorizontalAlignment="Left" Margin="596,358,0,0" Grid.Row="1" VerticalAlignment="Top" Height="61" Width="106" RenderTransformOrigin="0.5,0.5" Click="btnOpenDroneList_Click">
             <Button.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -32,5 +32,6 @@
                 </TransformGroup>
             </Button.RenderTransform>
         </Button>
+        <Button Content="Add a Drone" HorizontalAlignment="Left" Height="82" Margin="88,161,0,0" Grid.Row="1" VerticalAlignment="Top" Width="141" Click="btnAddDrone_Click"/>
     </Grid>
 </Window>

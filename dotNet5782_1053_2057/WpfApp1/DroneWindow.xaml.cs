@@ -17,11 +17,14 @@ namespace WpfApp1
     /// <summary>
     /// Interaction logic for DroneProperties.xaml
     /// </summary>
-    public partial class DroneProperties : Window
+    public partial class DroneWindow : Window
     {
-        public DroneProperties()
+        
+        public DroneWindow(IBL.Ibl busiAccess)
         {
             InitializeComponent();
+
         }
+
     }
 }

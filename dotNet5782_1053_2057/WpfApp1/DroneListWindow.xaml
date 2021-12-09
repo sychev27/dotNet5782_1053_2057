@@ -7,6 +7,14 @@
         mc:Ignorable="d"
         Title="DroneList" Height="450" Width="800">
     <Grid>
-        
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="93*"/>
+                <ColumnDefinition Width="33*"/>
+                <ColumnDefinition Width="7*"/>
+                <ColumnDefinition Width="267*"/>
+            </Grid.ColumnDefinitions>
+        </Grid>
+
     </Grid>
 </Window>
