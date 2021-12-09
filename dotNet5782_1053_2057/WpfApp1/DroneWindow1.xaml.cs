@@ -15,16 +15,13 @@ using System.Windows.Shapes;
 namespace WpfApp1
 {
     /// <summary>
-    /// Interaction logic for DroneProperties.xaml
+    /// Interaction logic for DroneWindow.xaml
     /// </summary>
     public partial class DroneWindow : Window
     {
-        
-        public DroneWindow(IBL.Ibl busiAccess)
+        public DroneWindow(IBL.Ibl busiAcces)
         {
             InitializeComponent();
-
         }
-
     }
 }
