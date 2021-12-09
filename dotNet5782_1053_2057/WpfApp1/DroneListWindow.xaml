@@ -18,11 +18,14 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBox HorizontalAlignment="Center" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Center" Width="120"/>
-            <TextBlock Grid.Column="2" HorizontalAlignment="Left" Margin="91,0,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Center"/>
-            <ComboBox Grid.Column="3" HorizontalAlignment="Left" Margin="58,13,0,0" VerticalAlignment="Top" Width="120"/>
+            <TextBox  Grid.Column="0" HorizontalAlignment="Stretch" Margin="4,6,6,4" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Stretch" Width="190"/>
+            <ComboBox Grid.Column="1" Name="StatusSelector1" HorizontalAlignment="Stretch" Margin="4,6,6,4" VerticalAlignment="Stretch" Width="190"/>
+            <TextBox  Grid.Column="2" HorizontalAlignment="Stretch" Margin="4,6,6,4" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Stretch" Width="190"/>
+            <ComboBox Grid.Column="3" Name="StatusSelector2" HorizontalAlignment="Stretch" Margin="4,6,6,4" VerticalAlignment="Stretch" Width="190"/>
+
         </Grid>
-        <ComboBox HorizontalAlignment="Left" Margin="214,13,0,0" VerticalAlignment="Top" Width="120"/>
+
+
 
     </Grid>
 </Window>
