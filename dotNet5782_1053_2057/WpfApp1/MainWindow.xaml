@@ -11,8 +11,8 @@
             <RowDefinition Height="50*"/>
             <RowDefinition Height="400*"/>
         </Grid.RowDefinitions>
-        
-        
+
+
         <Grid Name = "UpGrid" HorizontalAlignment = "Stretch" Height = "auto" Grid.Row = "0" 
             VerticalAlignment = "Stretch" Width = "auto">
             <Grid.ColumnDefinitions>
@@ -22,5 +22,15 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
         </Grid>
+        <Button Content="Open Drone List" HorizontalAlignment="Left" Margin="596,358,0,0" Grid.Row="1" VerticalAlignment="Top" Height="61" Width="106" RenderTransformOrigin="0.5,0.5" Click="Button_Click">
+            <Button.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0.0"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Button.RenderTransform>
+        </Button>
     </Grid>
 </Window>

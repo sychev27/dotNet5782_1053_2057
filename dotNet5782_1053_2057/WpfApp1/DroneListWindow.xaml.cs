@@ -17,10 +17,11 @@ namespace WpfApp1
     /// <summary>
     /// Interaction logic for DroneList.xaml
     /// </summary>
-    public partial class DroneList : Window
+    public partial class DroneListWindow : Window
     {
-        public DroneList()
+        public DroneListWindow(IBL.Ibl busiAccess)
         {
+
             InitializeComponent();
         }
     }

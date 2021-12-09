@@ -20,9 +20,16 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window
     {
+        IBL.Ibl busiAccess = new IB.BL();
+
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            new DroneListWindow(busiAccess).Show() ;
         }
     }
 }
