@@ -268,6 +268,7 @@ namespace IB
 
         public IEnumerable<IDAL.DO.Drone> getSpecificDroneList(Predicate<IDAL.DO.Drone> typeOfDrone)
         {
+            
             return dataAccess.getSpecificDroneList(typeOfDrone);
         }
         public IEnumerable<IDAL.DO.Drone> getHeavyDrones()
