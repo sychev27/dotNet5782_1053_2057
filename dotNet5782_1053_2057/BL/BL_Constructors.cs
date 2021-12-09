@@ -32,7 +32,8 @@ namespace IB
 
         List<IBL.BO.BODrone> listDrone = new List<IBL.BO.BODrone>();
 
-        public BL()
+        
+        public BL() //main constructor 
         {
             dataAccess.Initialize();
 
@@ -130,22 +131,6 @@ namespace IB
 
 
 
-        //int droneIndex(int id) //DELETE THIS FUNCTION!
-        //{
-        //    //returns index of drone which holds this id...
-
-        //    //CHECK
-        //    int counter = 0;
-        //    foreach (IBL.BO.BODrone item in listDrone)
-        //    {
-        //        if (id == item.Id)
-        //            return counter;
-
-        //        counter++;
-        //    }
-        //    return -1; //if drone is not found 
-        //    //EXCEPTION
-        //}
         void receiveDronesFromData()
         {
             IEnumerable<IDAL.DO.Drone> origList = dataAccess.getDrones();

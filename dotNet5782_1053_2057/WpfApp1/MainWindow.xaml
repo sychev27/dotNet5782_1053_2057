@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="640" Width="800">
     <Grid Name="MainGrid">
-        <Button Content="Open Drone List" HorizontalAlignment="Left" Margin="596,358,0,0" Grid.Row="1" VerticalAlignment="Top" Height="61" Width="106" RenderTransformOrigin="0.5,0.5" Click="Button_Click">
+        <Button x:Name="btnOpenDroneList" Content="Open Drone List" HorizontalAlignment="Left" Margin="596,358,0,0" Grid.Row="1" VerticalAlignment="Top" Height="61" Width="106" RenderTransformOrigin="0.5,0.5" Click="Button_Click">
             <Button.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>

@@ -19,9 +19,13 @@ namespace WpfApp1
     /// </summary>
     public partial class DroneWindow : Window
     {
-        public DroneWindow(IBL.Ibl busiAcces)
+        public DroneWindow(IBL.Ibl busiAccess)//to add a Drone
         {
             InitializeComponent();
+
+            //busiAccess.addDrone(id, model, (IDAL.DO.WeightCategories)num, stationId);
         }
+
+       
     }
 }
