@@ -27,8 +27,9 @@ namespace WpfApp1
             busiAccess = _busiAccess;
         }
 
-        
-
+        const string WEIGHTSELECTED = "Weight Selected!";
+        const string CHOOSEWEIGHT = "Choose Maximum Weight Category:";
+        const string DRONEADDED = "Drone Added Successfully!";
         private void btnAddDrone_Click(object sender, RoutedEventArgs e)
         {
             int _id;
@@ -43,20 +44,26 @@ namespace WpfApp1
             
 
             busiAccess.addDrone(_id, _model, (IDAL.DO.WeightCategories)weight, _stationId);
+            textBlock_chooseMaxWeight.Text = CHOOSEWEIGHT;
+            textBlock_DroneAdded.Text = DRONEADDED;
+
         }
 
         private void btnLightWeight_Click(object sender, RoutedEventArgs e)
         {
             weightChoice = IDAL.DO.WeightCategories.light;
+            textBlock_chooseMaxWeight.Text = WEIGHTSELECTED;
         }
 
         private void btnMediumWeight_Click(object sender, RoutedEventArgs e)
         {
             weightChoice = IDAL.DO.WeightCategories.medium;
+            textBlock_chooseMaxWeight.Text = WEIGHTSELECTED;
         }
         private void btnHeavyWeight_Click(object sender, RoutedEventArgs e)
         {
             weightChoice = IDAL.DO.WeightCategories.heavy;
+            textBlock_chooseMaxWeight.Text = WEIGHTSELECTED;
         }
 
 
