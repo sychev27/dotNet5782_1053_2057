@@ -26,8 +26,14 @@ namespace WpfApp1
             InitializeComponent();
             busiAccess = busiAccess1;
             DronesListView.ItemsSource = busiAccess.getBODroneList();
+            StatusSelector1.ItemsSource = Enum.GetValues(typeof(IBL.BO.Enum.DroneStatus));
+            StatusSelector2.ItemsSource = Enum.GetValues(typeof(IBL.BO.Enum.WeightCategories));
 
-            
+        }
+
+        private void StatusSelector1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+           // DronesListView.ItemsSource = busiAccess.getSpecificDroneList();
         }
     }
 }
