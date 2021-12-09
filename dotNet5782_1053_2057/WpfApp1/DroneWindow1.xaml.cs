@@ -40,6 +40,11 @@ namespace WpfApp1
             btnHeavyWeight.IsEnabled = false;
             btnLightWeight.IsEnabled = false;
             btnMediumWeight.IsEnabled = false;
+
+            tBlock_chooseMaxWeight.Text = "Max Weight:";
+            
+
+
         }
 
         private void btnAddDrone_Click(object sender, RoutedEventArgs e)
@@ -55,26 +60,26 @@ namespace WpfApp1
             //    throw excepeiton!!
 
             busiAccess.addDrone(_id, _model, (IDAL.DO.WeightCategories)weight, _stationId);
-            textBlock_chooseMaxWeight.Text = CHOOSEWEIGHT;
-            textBlock_DroneAdded.Text = DRONEADDED;
+            tBlock_chooseMaxWeight.Text = CHOOSEWEIGHT;
+            tBlock_DroneAdded.Text = DRONEADDED;
 
         }
 
         private void btnLightWeight_Click(object sender, RoutedEventArgs e)
         {
             weightChoice = IDAL.DO.WeightCategories.light;
-            textBlock_chooseMaxWeight.Text = WEIGHTSELECTED;
+            tBlock_chooseMaxWeight.Text = WEIGHTSELECTED;
         }
 
         private void btnMediumWeight_Click(object sender, RoutedEventArgs e)
         {
             weightChoice = IDAL.DO.WeightCategories.medium;
-            textBlock_chooseMaxWeight.Text = WEIGHTSELECTED;
+            tBlock_chooseMaxWeight.Text = WEIGHTSELECTED;
         }
         private void btnHeavyWeight_Click(object sender, RoutedEventArgs e)
         {
             weightChoice = IDAL.DO.WeightCategories.heavy;
-            textBlock_chooseMaxWeight.Text = WEIGHTSELECTED;
+            tBlock_chooseMaxWeight.Text = WEIGHTSELECTED;
         }
 
 
