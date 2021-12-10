@@ -76,6 +76,27 @@ namespace IB
             
         }
 
+        public int getStationIdOfBODrone(int droneId)
+        {
+            //check if charging
+            IBL.BO.BODrone drone = getBODrone(droneId);
+            foreach (IDAL.DO.DroneCharge drCharge in dataAccess.getDroneCharges())
+            {
+                if (drCharge.DroneId == droneId)
+                    return drCharge.StationId;
+            }
+
+            //check if assigned at Station
+            foreach (IDAL.DO.Station st in dataAccess.getStations())
+            {
+                IBL.BO.BOLocation stLoc = new IBL.BO.BOLocation(st.Longitude, st.Latitude);
+                if (stLoc == drone.Location)
+                    return st.Id;
+            }
+            //if drone is not charging at station
+            return -1;
+        }
+
 
 
         double distance(IBL.BO.BOLocation l1, IBL.BO.BOLocation l2)
@@ -417,6 +438,12 @@ namespace IB
                     res.Add(createBOStationToList(item.Id));
             }
             return res;
+        }
+
+        public string getBODroneModel(int id)
+        {
+            IBL.BO.BODrone bodrone = getBODrone(id);
+            return bodrone.Model;
         }
     }
 }
