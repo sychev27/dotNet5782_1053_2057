@@ -30,9 +30,8 @@
                     <GridViewColumn/>
                 </GridView>
             </ListView.View>
-            <Button Content="Button"/>
         </ListView>
-        <Button x:Name="btnAddDrone" Content="Add new drone" HorizontalAlignment="Left" Margin="646,414,0,0" Grid.Row="1" VerticalAlignment="Top" Height="27" Width="138" FontSize="16" Click="Button_Click"/>
+        <Button x:Name="btnAddDrone1" Content="Add new drone" HorizontalAlignment="Left" Margin="646,414,0,0" Grid.Row="1" VerticalAlignment="Top" Height="27" Width="138" FontSize="16" Click="btnAddDrone1_Click"/>
 
 
 
