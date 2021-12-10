@@ -33,9 +33,14 @@ namespace WpfApp1
 
         private void StatusSelector1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+            int index = StatusSelector1.SelectedIndex;
+            DronesListView.ItemsSource = busiAccess.getSpecificDroneListStatus(index);
+        }
 
-           // DronesListView.ItemsSource = busiAccess.getSpecificDroneList();
+        private void StatusSelector2_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int index = StatusSelector2.SelectedIndex;
+            DronesListView.ItemsSource = busiAccess.getSpecificDroneListWeight(index);
         }
     }
 }

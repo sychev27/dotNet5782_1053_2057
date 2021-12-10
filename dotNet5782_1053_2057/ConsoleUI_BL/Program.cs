@@ -17,7 +17,7 @@ namespace ConsoleUI_BL
             //ex.beginMenu();
 
             IBL.Ibl dummy = new IB.BL();
-            dummy.getSpecificDroneList(1);
+           // dummy.getSpecificDroneList(1);
 
             Console.ReadLine();
 
