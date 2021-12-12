@@ -155,7 +155,7 @@ namespace ConsoleUI_BL
                     Int32.TryParse(Console.ReadLine(), out id);
                     try
                     {
-                        busiAccess.collectParcel(id);
+                        busiAccess.PickupParcel(id);
                     }
                     catch (IBL.BO.EXNotFoundPrintException exception) {exception.printException();}
                     catch (IBL.BO.EXPrintException exception){exception.Print();}
