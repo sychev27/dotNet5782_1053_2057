@@ -36,6 +36,23 @@ namespace WpfApp1
             InitializeComponent();
             busiAccess = _busiAccess;
             btnGetDrone.IsEnabled = false;
+
+            btnModifyDroneModel.IsEnabled = false;
+            btnSendDroneToCustomer.IsEnabled = false;
+            btnFreeDroneFromCharge.IsEnabled = false;
+            btnPickupPkg.IsEnabled = false;
+            btnSendToCharge.IsEnabled = false;
+            btnDeliverPkg.IsEnabled = false;
+
+            btnModifyDroneModel.Visibility = Visibility.Hidden;
+            btnSendDroneToCustomer.Visibility = Visibility.Hidden;
+            btnFreeDroneFromCharge.Visibility = Visibility.Hidden;
+            btnPickupPkg.Visibility = Visibility.Hidden;
+            btnSendToCharge.Visibility = Visibility.Hidden;
+            btnDeliverPkg.Visibility = Visibility.Hidden;
+
+
+
         }
 
         private void btnAddDrone_Click(object sender, RoutedEventArgs e)
@@ -57,7 +74,6 @@ namespace WpfApp1
             tBlock_chooseMaxWeight.Text = CHOOSEWEIGHT;
             tBlock_DroneAdded.Text = DRONEADDED;
 
-            Close();
         }
 
         private void btnLightWeight_Click(object sender, RoutedEventArgs e)
