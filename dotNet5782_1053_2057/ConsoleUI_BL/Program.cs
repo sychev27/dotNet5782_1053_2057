@@ -17,8 +17,7 @@ namespace ConsoleUI_BL
             //ex.beginMenu();
 
             IBL.Ibl dummy = new IB.BL();
-            //IBL.BO.BODrone d = dummy.getBODrone(1);
-            //Console.WriteLine(d.MaxWeight);
+           // dummy.getSpecificDroneList(1);
 
             Console.ReadLine();
 

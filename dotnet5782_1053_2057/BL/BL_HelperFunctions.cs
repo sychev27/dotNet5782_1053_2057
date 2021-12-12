@@ -287,19 +287,96 @@ namespace IB
             return listDrone;
         }
 
-        public IEnumerable<IDAL.DO.Drone> getSpecificDroneList(Predicate<IDAL.DO.Drone> typeOfDrone)
+        public IEnumerable<IBL.BO.BODrone> getSpecificDroneListStatus(int num)
         {
-            
-            return dataAccess.getSpecificDroneList(typeOfDrone);
-        }
-        public IEnumerable<IDAL.DO.Drone> getHeavyDrones()
-        {
-            return getSpecificDroneList(heavyDrone);
+            switch(num)
+            {
+                case 0:
+                    {
+                        Predicate<IBL.BO.BODrone> res = availableDrone;
+                        return listDrone.FindAll(res);
+                    }
+                case 1:
+                    {
+                        Predicate<IBL.BO.BODrone> res = maintenanceDrone;
+                        return listDrone.FindAll(res);
+                    }
+                case 2:
+                    {
+                        Predicate<IBL.BO.BODrone> res = inDeliveryDrone;
+                        return listDrone.FindAll(res);
+                    }
+                default:
+                    return listDrone;
+            }
         }
 
-        private static bool heavyDrone(IDAL.DO.Drone _drone)
+        public IEnumerable<IBL.BO.BODrone> getSpecificDroneListWeight(int num)
         {
-            if (_drone.MaxWeight == IDAL.DO.WeightCategories.heavy)
+            switch (num)
+            {
+                case 0:
+                    {
+                        Predicate<IBL.BO.BODrone> res = lightDrone;
+                        return listDrone.FindAll(res);
+                    }
+                case 1:
+                    {
+                        Predicate<IBL.BO.BODrone> res = mediumDrone;
+                        return listDrone.FindAll(res);
+                    }
+                case 2:
+                    {
+                        Predicate<IBL.BO.BODrone> res = heavyDrone;
+                        return listDrone.FindAll(res);
+                    }
+                default:
+                    return listDrone;
+            }
+        }
+
+        private static bool availableDrone(IBL.BO.BODrone _drone)
+        {
+            if (_drone.DroneStatus == IBL.BO.Enum.DroneStatus.available)
+                return true;
+            else
+                return false;
+        }
+
+        private static bool maintenanceDrone(IBL.BO.BODrone _drone)
+        {
+            if (_drone.DroneStatus == IBL.BO.Enum.DroneStatus.maintenance)
+                return true;
+            else
+                return false;
+        }
+        private static bool inDeliveryDrone(IBL.BO.BODrone _drone)
+        {
+            if (_drone.DroneStatus == IBL.BO.Enum.DroneStatus.inDelivery)
+                return true;
+            else
+                return false;
+        }
+
+        private static bool heavyDrone(IBL.BO.BODrone _drone)
+        {
+            if (_drone.MaxWeight == IBL.BO.Enum.WeightCategories.heavy)
+                return true;
+            else
+                return false;
+        }
+
+        private static bool mediumDrone(IBL.BO.BODrone _drone)
+        {
+            if (_drone.MaxWeight == IBL.BO.Enum.WeightCategories.medium)
+                return true;
+            else
+                return false;
+        }
+
+        private static bool lightDrone(IBL.BO.BODrone _drone)
+        {
+            if (_drone.MaxWeight == IBL.BO.Enum.WeightCategories.light)
                 return true;
             else
                 return false;
