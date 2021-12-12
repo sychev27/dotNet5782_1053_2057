@@ -345,7 +345,7 @@ namespace IB
 
         private static bool maintenanceDrone(IBL.BO.BODrone _drone)
         {
-            if (_drone.DroneStatus == IBL.BO.Enum.DroneStatus.maintenance)
+            if (_drone.DroneStatus == IBL.BO.Enum.DroneStatus.charging)
                 return true;
             else
                 return false;
@@ -442,8 +442,14 @@ namespace IB
 
         public string getBODroneModel(int id)
         {
-            IBL.BO.BODrone bodrone = getBODrone(id);
-            return bodrone.Model;
+            return getBODrone(id).Model;
+            
         }
+        public IBL.BO.Enum.WeightCategories getBoDroneMaxWeight(int id)
+        {
+            return getBODrone(id).MaxWeight;
+        }
+
+
     }
 }

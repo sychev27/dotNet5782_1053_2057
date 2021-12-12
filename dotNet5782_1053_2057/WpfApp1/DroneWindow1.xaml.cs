@@ -57,6 +57,7 @@ namespace WpfApp1
             tBlock_chooseMaxWeight.Text = CHOOSEWEIGHT;
             tBlock_DroneAdded.Text = DRONEADDED;
 
+            Close();
         }
 
         private void btnLightWeight_Click(object sender, RoutedEventArgs e)
