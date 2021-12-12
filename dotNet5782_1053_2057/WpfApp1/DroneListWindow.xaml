@@ -24,7 +24,7 @@
             <ComboBox Grid.Column="3" Name="StatusSelector2" HorizontalAlignment="Stretch" Margin="4,6,6,4" VerticalAlignment="Stretch" Width="190" SelectionChanged="StatusSelector2_SelectionChanged"/>
 
         </Grid>
-        <ListView x:Name="DronesListView" Margin="0,58,0,62" Grid.RowSpan="2">
+        <ListView x:Name="DronesListView" Margin="0,58,0,62" Grid.RowSpan="2" MouseDoubleClick="DronesListView_MouseDoubleClick">
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>
@@ -32,6 +32,7 @@
             </ListView.View>
         </ListView>
         <Button x:Name="btnAddDrone1" Content="Add new drone" HorizontalAlignment="Left" Margin="646,414,0,0" Grid.Row="1" VerticalAlignment="Top" Height="27" Width="138" FontSize="16" Click="btnAddDrone1_Click"/>
+        <Button x:Name="btnClose" Content="Close" HorizontalAlignment="Left" Margin="43,415,0,0" Grid.Row="1" VerticalAlignment="Top" Height="26" Width="148" FontSize="18" Click="btnClose_Click"/>
 
 
 
