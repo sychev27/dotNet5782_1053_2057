@@ -22,6 +22,8 @@ namespace IBL
             {
                 string res = "Drone " + Id + " Model: " + Model + " \n";
                 res += "Battery: " + Battery + " Status: " + DroneStatus + "\n";
+                res += "MaxWeight: " + MaxWeight + "\n";
+
                 if ((ParcelInTransfer.Id != -1))
                     res += ParcelInTransfer.ToString();
 

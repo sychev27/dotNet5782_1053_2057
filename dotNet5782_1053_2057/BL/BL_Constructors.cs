@@ -96,6 +96,8 @@ namespace IB
 
                         IDAL.DO.Station st = listStation[r.Next(0, listStation.Count)];
 
+                        drone.Location = new IBL.BO.BOLocation(st.Longitude, st.Latitude);
+
                         //(2) SET BATTERY - btw 0 to 20%
                         drone.Battery = r.Next(0, 20);
                         drone.Battery += r.NextDouble();

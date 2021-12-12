@@ -31,6 +31,8 @@ namespace IBL
          IBL.BO.BOParcel createBOParcel(int id);
 
          IBL.BO.BODrone getBODrone(int id);
+        public int getStationIdOfBODrone(int droneId);
+        string getBODroneModel(int id);
         IEnumerable<IBL.BO.BODrone> getBODroneList();
 
 

@@ -26,25 +26,13 @@ namespace WpfApp1
         const string CHOOSEWEIGHT = "Choose Maximum Weight Category:";
         const string DRONEADDED = "Drone Added Successfully!";
 
+        const string btnUpdateText = "Update this Drone";
+        
+        
         public DroneWindow(IBL.Ibl _busiAccess, int num)//to add a Drone
         {
             InitializeComponent();
             busiAccess = _busiAccess;
-        }
-
-        public DroneWindow(IBL.Ibl _busiAccess, char let) //to update Drone
-        {
-            InitializeComponent();
-            busiAccess = _busiAccess;
-            btnAddDrone.IsEnabled = false;
-            btnHeavyWeight.IsEnabled = false;
-            btnLightWeight.IsEnabled = false;
-            btnMediumWeight.IsEnabled = false;
-
-            tBlock_chooseMaxWeight.Text = "Max Weight:";
-            
-
-
         }
 
         private void btnAddDrone_Click(object sender, RoutedEventArgs e)
@@ -59,6 +47,8 @@ namespace WpfApp1
             //if(weight == null)
             //    throw excepeiton!!
 
+            //alex write code here. exception
+
             busiAccess.addDrone(_id, _model, (IDAL.DO.WeightCategories)weight, _stationId);
             tBlock_chooseMaxWeight.Text = CHOOSEWEIGHT;
             tBlock_DroneAdded.Text = DRONEADDED;
@@ -69,22 +59,94 @@ namespace WpfApp1
         {
             weightChoice = IDAL.DO.WeightCategories.light;
             tBlock_chooseMaxWeight.Text = WEIGHTSELECTED;
+            resetWeightBtns();
+            btnLightWeight.IsEnabled = false;
+
+
         }
 
         private void btnMediumWeight_Click(object sender, RoutedEventArgs e)
         {
             weightChoice = IDAL.DO.WeightCategories.medium;
             tBlock_chooseMaxWeight.Text = WEIGHTSELECTED;
+            resetWeightBtns();
+            btnMediumWeight.IsEnabled = false;
         }
         private void btnHeavyWeight_Click(object sender, RoutedEventArgs e)
         {
             weightChoice = IDAL.DO.WeightCategories.heavy;
             tBlock_chooseMaxWeight.Text = WEIGHTSELECTED;
+            resetWeightBtns();
+            btnHeavyWeight.IsEnabled = false;
+        }
+
+        private void resetWeightBtns()
+        {
+            if(btnLightWeight.IsEnabled == false)
+            {
+                btnLightWeight.IsEnabled = true; return;
+            } 
+            else if(btnMediumWeight.IsEnabled == false)
+            {
+                btnMediumWeight.IsEnabled = true; return;
+            }
+            else if(btnHeavyWeight.IsEnabled == false)
+            {
+                btnHeavyWeight.IsEnabled = true; return;
+            }
         }
 
 
 
 
 
+
+
+        //TO UPDATE A DRONE...
+        public DroneWindow(IBL.Ibl _busiAccess, char let) //to update Drone
+        {
+            //(1) Redesign text boxes and buttons
+            InitializeComponent();
+            busiAccess = _busiAccess;
+            btnAddDrone.Content = btnUpdateText;
+
+            btnHeavyWeight.IsEnabled = false;
+            btnLightWeight.IsEnabled = false;
+            btnMediumWeight.IsEnabled = false;
+
+            tBlock_chooseMaxWeight.Text = "Max Weight: ";
+            tBlock_chooseStation.Text = "Station Id:";
+
+            tBoxModelInput.IsEnabled = false;
+            tBoxStationIdInput.IsEnabled = false;
+            
+
+        }
+
+        private void btnGetDrone_Click(object sender, RoutedEventArgs e)
+        {
+            int droneId;
+            Int32.TryParse(tBoxIdInput.Text, out droneId);
+            //alex write code here, if ID wasnt typed correctly. exception
+            //and if boDrone doesnt exists
+            //create an error msg
+
+            if (busiAccess.getStationIdOfBODrone(droneId) != -1)
+                tBoxStationIdInput.Text = (busiAccess.getStationIdOfBODrone(droneId)).ToString();
+            else
+                tBoxStationIdInput.Text = "Drone is not charging at a Station";
+
+            tBoxModelInput.Text = busiAccess.getBODroneModel(droneId);
+            tBoxModelInput.IsEnabled = true;
+
+
+
+        }
+
+        private void tBoxModelInput_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            tBoxModelInput.Text = "";
+
+        }
     }
 }
