@@ -163,7 +163,8 @@ namespace WpfApp1
 
 
         }
-        public DroneWindow(IBL.Ibl _busiAccess, IBL.BO.BODrone _drone)
+        
+        public DroneWindow(IBL.Ibl _busiAccess, IBL.BO.BODrone _drone) //CTOR called by DroneListWindow
         {
             //int droneId;
             //Int32.TryParse(tBoxIdInput.Text, out droneId);
