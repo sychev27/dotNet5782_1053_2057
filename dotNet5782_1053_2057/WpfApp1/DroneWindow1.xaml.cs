@@ -285,6 +285,11 @@ namespace WpfApp1
             tBlockDisplayDrone.Text = busiAccess.getBODrone(thisDroneId).ToString();
         }
 
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
 
         //private void tBoxModelInput_TextChanged(object sender, TextChangedEventArgs e)
         //{
