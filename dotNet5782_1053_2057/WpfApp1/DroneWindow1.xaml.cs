@@ -34,6 +34,7 @@ namespace WpfApp1
             InitializeComponent();
             busiAccess = _busiAccess;
             btnGetDrone.IsEnabled = false;
+           
         }
 
         private void btnAddDrone_Click(object sender, RoutedEventArgs e)
