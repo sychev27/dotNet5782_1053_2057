@@ -28,11 +28,12 @@ namespace WpfApp1
 
         const string btnUpdateText = "Update this Drone";
         
-        
+        //default constructor is to Add a drone
         public DroneWindow(IBL.Ibl _busiAccess, int num)//to add a Drone
         {
             InitializeComponent();
             busiAccess = _busiAccess;
+            btnGetDrone.IsEnabled = false;
         }
 
         private void btnAddDrone_Click(object sender, RoutedEventArgs e)
@@ -102,6 +103,16 @@ namespace WpfApp1
 
 
 
+
+
+
+
+
+
+
+
+
+
         //TO UPDATE A DRONE...
         public DroneWindow(IBL.Ibl _busiAccess, char let) //to update Drone
         {
@@ -143,10 +154,11 @@ namespace WpfApp1
 
         }
 
-        private void tBoxModelInput_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            tBoxModelInput.Text = "";
 
-        }
+        //private void tBoxModelInput_TextChanged(object sender, TextChangedEventArgs e)
+        //{
+        //    tBoxModelInput.Text = "";
+
+        //}
     }
 }

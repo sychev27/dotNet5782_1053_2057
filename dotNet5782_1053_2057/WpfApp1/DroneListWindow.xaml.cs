@@ -45,7 +45,9 @@ namespace WpfApp1
 
         private void btnAddDrone_Click(object sender, RoutedEventArgs e)
         {
-            new DroneWindow(busiAccess).Show();
+            new DroneWindow(busiAccess, 0).Show();
         }
+
+        
     }
 }
