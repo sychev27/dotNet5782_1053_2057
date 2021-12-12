@@ -52,7 +52,7 @@ namespace ConsoleUI_BL
             int.TryParse(Console.ReadLine(), out num);
             //Console.WriteLine("Please enter the drone's status:" + "\n" +
             //    "1: available" + "\n" +
-            //    "2: maintenance" + "\n" +
+            //    "2: charging" + "\n" +
             //    "3: inDelivery" + "\n");
             ////int num1 = 1;
             //int.TryParse(Console.ReadLine(), out num1);

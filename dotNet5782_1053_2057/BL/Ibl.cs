@@ -8,7 +8,7 @@ namespace IBL
 {
     public interface Ibl
     {
-        void addDrone(int _id, string _model, IDAL.DO.WeightCategories _maxWeight, int _stationId);
+        void addDrone(int _id, string _model, IDAL.DO.WeightCategories _maxWeight, int _stationId = 0);
         void addCustomer(int _id, string _name, string _phone, double _longitude,
                 double _latitude);
         void addDroneCharge(int _droneId, int _stationId);
@@ -18,12 +18,13 @@ namespace IBL
         void addStation(int _id, int _name, double _longitude, double _latitude, int _chargeSlots);
 
 
-
-        void assignParcel(int droneId);  //drone determines its parcel based on algorithm
-        void collectParcel(int droneId); //drone collects its pre-determined parcel
-        void deliverParcel(int droneId); //drone delivers its pre-determined parcel
+        //UPDATES:
         void chargeDrone(int droneId); //sends drone to available station
         void freeDrone(int droneId, double hrsInCharge); //frees drone from station.. 
+        void assignParcel(int droneId);  //drone determines its parcel based on algorithm
+        void PickupParcel(int droneId); //drone collects its pre-determined parcel
+        void deliverParcel(int droneId); //drone delivers its pre-determined parcel
+        
 
 
         IBL.BO.BOStation createBOStation(int id);
@@ -33,6 +34,7 @@ namespace IBL
          IBL.BO.BODrone getBODrone(int id);
         public int getStationIdOfBODrone(int droneId);
         string getBODroneModel(int id);
+        IBL.BO.Enum.WeightCategories getBoDroneMaxWeight(int id);
         IEnumerable<IBL.BO.BODrone> getBODroneList();
 
 

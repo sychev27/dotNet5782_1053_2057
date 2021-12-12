@@ -21,7 +21,7 @@ namespace IB
             boDrone.MaxWeight = (IBL.BO.Enum.WeightCategories)_maxWeight;
             boDrone.Model = _model;
             boDrone.Battery = r.Next(20, 40) + r.NextDouble();
-            boDrone.DroneStatus = IBL.BO.Enum.DroneStatus.maintenance;
+            boDrone.DroneStatus = IBL.BO.Enum.DroneStatus.charging;
             boDrone.Location = getStationLocation(_stationId);
             boDrone.ParcelInTransfer = createEmptyParcInTrans();
             listDrone.Add(boDrone);
@@ -143,7 +143,7 @@ namespace IB
 
 
         }
-        public void collectParcel(int droneId) //drone collects its pre-determined parcel 
+        public void PickupParcel(int droneId) //drone collects its pre-determined parcel 
         {
             IBL.BO.BODrone drone = new IBL.BO.BODrone();
             try
@@ -172,6 +172,8 @@ namespace IB
             //throw Exception //parcel not collected!
             throw new IBL.BO.EXPrintException("parcel not collected!");
         }
+
+
         public void deliverParcel(int droneId) //drone delivers its pre-determined parcel
         {
             IBL.BO.BODrone drone = new IBL.BO.BODrone();
@@ -217,7 +219,7 @@ namespace IB
             //working on rest of func
             drone.Battery -= battNededForDist(drone, closestStationLoc);
             drone.Location = closestStationLoc;
-            drone.DroneStatus = IBL.BO.Enum.DroneStatus.maintenance;
+            drone.DroneStatus = IBL.BO.Enum.DroneStatus.charging;
             try
             {
                 addDroneCharge(drone.Id, getStationFromLoc(closestStationLoc).Id);
@@ -234,7 +236,7 @@ namespace IB
             }
             catch (IBL.BO.EXNotFoundPrintException) {throw new IBL.BO.EXNotFoundPrintException("Drone");}
 
-            if (drone.DroneStatus != IBL.BO.Enum.DroneStatus.maintenance)
+            if (drone.DroneStatus != IBL.BO.Enum.DroneStatus.charging)
                 //    throw Exception //drone not charging! return to main menu
                 throw new IBL.BO.EXPrintException("drone not charging!");
 

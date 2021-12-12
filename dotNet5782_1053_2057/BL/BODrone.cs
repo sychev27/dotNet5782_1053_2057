@@ -21,7 +21,7 @@ namespace IBL
             public override string ToString()
             {
                 string res = "Drone " + Id + " Model: " + Model + " \n";
-                res += "Battery: " + Battery + " Status: " + DroneStatus + "\n";
+                res += "Battery: " + Battery + " \nStatus: " + DroneStatus + "\n";
                 res += "MaxWeight: " + MaxWeight + "\n";
 
                 if ((ParcelInTransfer.Id != -1))

@@ -81,13 +81,13 @@ namespace IB
                 }
                 else //IF DRONE DOES NOT HAVE A PARCEL..
                 {
-                    do //randomly set droneStatus =  "maintenance" and "available"
+                    do //randomly set droneStatus =  "charging" and "available"
                     {
                         drone.DroneStatus = (IBL.BO.Enum.DroneStatus)r.Next(0, 3);
                     } while (drone.DroneStatus == IBL.BO.Enum.DroneStatus.inDelivery);
 
 
-                    if (drone.DroneStatus == IBL.BO.Enum.DroneStatus.maintenance)
+                    if (drone.DroneStatus == IBL.BO.Enum.DroneStatus.charging)
                     {
                         //(1) SET LOCATION - to Random Station
                         List<IDAL.DO.Station> listStation = new List<IDAL.DO.Station>();
