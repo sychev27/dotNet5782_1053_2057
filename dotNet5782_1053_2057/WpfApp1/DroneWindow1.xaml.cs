@@ -82,7 +82,7 @@ namespace WpfApp1
             //(2) Check that Data is Valid
             bool validData = true;
             //check Id
-            if (tBoxIdInput.Text == null || !idSuccess)
+            if (tBoxIdInput.Text == null || !idSuccess || _id <= 0)
             {
                 tBlock_chooseDroneId.Foreground = new SolidColorBrush(Colors.Red);
                 validData = false;
@@ -101,7 +101,7 @@ namespace WpfApp1
                 validData = false;
             }
 
-            if (tBoxStationIdInput.Text == null || !stationIdSuccess || _stationId == 0)
+            if (tBoxStationIdInput.Text == null || !stationIdSuccess || _stationId <= 0)
             {
                 tBlock_chooseStation.Foreground = new SolidColorBrush(Colors.Red);
                 validData = false;
@@ -111,12 +111,23 @@ namespace WpfApp1
                 tBlock_chooseMaxWeight.Foreground = new SolidColorBrush(Colors.Red);
                 validData = false;
             }
-           
 
-            
-                        //(3) Add Drone..
+
+
+            //(3) Add Drone..
             if (validData)
+            {
                 busiAccess.addDrone(_id, _model, (IDAL.DO.WeightCategories)weight, _stationId);
+                //try
+                //{
+                //    busiAccess.addDrone(_id, _model, (IDAL.DO.WeightCategories)weight, _stationId);
+                //}
+                //catch (IDAL.DO.EXItemNotFoundException)
+                //{
+
+                //    throw;
+                //} 
+            }
             else
                 return;
             
