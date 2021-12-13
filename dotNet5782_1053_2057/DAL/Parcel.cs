@@ -31,11 +31,11 @@ namespace IDAL
                 ReceiverId = _targetId;
                 Weight = _weight;
                 Priority =_priority;
-                Requested = DateTime.MinValue; //when we receive request for the parcel
+                Requested = null; //when we receive request for the parcel
                 DroneId = -1;             //null...
-                Scheduled = DateTime.MinValue;
-                Pickup = DateTime.MinValue;     //null...
-                Delivered = DateTime.MinValue; //null...
+                Scheduled = null;
+                Pickup = null;     //null...
+                Delivered = null; //null...
             }
 
             public int Id { get; set; }
@@ -43,11 +43,11 @@ namespace IDAL
             public int ReceiverId { get; set; }
             public IDAL.DO.WeightCategories Weight { get; set; }
             public IDAL.DO.Priorities Priority { get; set; }
-            public DateTime Requested { get; set; } //when we receive request for the parcel
+            public DateTime? Requested { get; set; } //when we receive request for the parcel
             public int DroneId { get; set; }
-            public DateTime Scheduled { get; set; }
-            public DateTime Pickup { get; set; }
-            public DateTime Delivered { get; set; }
+            public DateTime ?Scheduled { get; set; }
+            public DateTime? Pickup { get; set; }
+            public DateTime? Delivered { get; set; }
 
             public override string ToString()
             {

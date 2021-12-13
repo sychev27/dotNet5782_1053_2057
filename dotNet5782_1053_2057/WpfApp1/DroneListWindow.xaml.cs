@@ -46,9 +46,11 @@ namespace WpfApp1
 
        private void btnAddDrone1_Click(object sender, RoutedEventArgs e)
        {
+          // Close();
            new DroneWindow(busiAccess,0).Show();
-           DronesListView.ItemsSource = null;
-           DronesListView.ItemsSource = busiAccess.getBODroneList();
+             DronesListView.ItemsSource = null;
+             DronesListView.ItemsSource = busiAccess.getBODroneList();
+           // new DroneListWindow(busiAccess).Show();
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
