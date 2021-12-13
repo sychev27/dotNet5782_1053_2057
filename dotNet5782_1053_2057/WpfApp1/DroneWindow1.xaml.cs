@@ -20,11 +20,10 @@ namespace WpfApp1
     public partial class DroneWindow : Window
     {
         IBL.Ibl busiAccess;
-
         int thisDroneId;
-
-        const string btnUpdateText = "Update this Drone";
+        bool modelTBoxChanged = false;
         
+
         //default constructor is to Add a drone
         public DroneWindow(IBL.Ibl _busiAccess, int num)//to add a Drone
         {
@@ -67,21 +66,66 @@ namespace WpfApp1
 
         private void btnAddDrone_Click(object sender, RoutedEventArgs e)
         {
+            //reset text color
+            changeTBlockColor(Colors.Black, tBlock_chooseDroneId, 
+                tBlock_chooseModel, tBlock_chooseStationID);
+            
+            //(1) Receive Data
             int _id;
-            Int32.TryParse(tBoxIdInput.Text, out _id);
+            bool idSuccess = Int32.TryParse(tBoxIdInput.Text, out _id);
             string _model = tBoxModelInput.Text;
             int _stationId;
-            Int32.TryParse(tBoxStationIdInput.Text, out _stationId);
+            bool stationIdSuccess = Int32.TryParse(tBoxStationIdInput.Text, out _stationId);
             IDAL.DO.WeightCategories? weight = (IDAL.DO.WeightCategories)cmbWeightChoice.SelectedIndex;
 
-            //if(weight == null)
-            //    throw excepeiton!!
 
-            //alex write code here. exception
+            //(2) Check that Data is Valid
+            bool validData = true;
+            //check Id
+            if (tBoxIdInput.Text == null || !idSuccess)
+            {
+                tBlock_chooseDroneId.Foreground = new SolidColorBrush(Colors.Red);
+                validData = false;
+            }
+            else if (busiAccess.droneIdExists(_id))
+            {
+                tBlock_chooseDroneId.Text = "Drone Id is not unique!";
+                tBlock_chooseDroneId.Foreground = new SolidColorBrush(Colors.Red);
+                validData = false;
+            }
 
 
-            busiAccess.addDrone(_id, _model, (IDAL.DO.WeightCategories)weight, _stationId);
-            
+            if(tBoxModelInput.Text == null || tBoxModelInput.Text == "")
+            {
+                tBlock_chooseModel.Foreground = new SolidColorBrush(Colors.Red);
+                validData = false;
+            }
+
+            if (tBoxStationIdInput.Text == null || !idSuccess || _stationId == 0)
+            {
+                tBlock_chooseStation.Foreground = new SolidColorBrush(Colors.Red);
+                validData = false;
+            }
+            if(weight == null)
+            {
+                tBlock_chooseMaxWeight.Foreground = new SolidColorBrush(Colors.Red);
+                validData = false;
+            }
+            //check weight categories!
+
+            //tBlockCurrentLocation.Foreground = new SolidColorBrush(Colors.Red);
+
+
+
+
+
+
+
+            //(3) Add Drone..
+            if (validData)
+                busiAccess.addDrone(_id, _model, (IDAL.DO.WeightCategories)weight, _stationId);
+            else
+                return;
             
             MessageBox.Show("Drone Added Successfully","SUCCESS",MessageBoxButton.OK, MessageBoxImage.Information,MessageBoxResult.OK);
             Close();
@@ -116,14 +160,24 @@ namespace WpfApp1
             //AFTER THROWING EXCEPTIONS:
             InitializeComponent();
             busiAccess = _busiAccess;
+            tBoxIdInput.IsReadOnly = true;
+            tBoxIdInput.BorderBrush = Brushes.Transparent;
+            tBoxStationIdInput.IsReadOnly = true;
+            tBoxStationIdInput.BorderBrush = Brushes.Transparent;
 
             displayBODrone(_bodrone);
           
 
         }
 
+
+
+
         private void displayBODrone(IBL.BO.BODrone bodrone)
         {
+            thisDroneId = bodrone.Id;
+
+
             tBoxIdInput.Text = bodrone.Id.ToString();
             tBoxModelInput.Text = bodrone.Model;
             if (busiAccess.getStationIdOfBODrone(bodrone.Id) != -1)
@@ -131,8 +185,8 @@ namespace WpfApp1
             else
                 tBoxStationIdInput.Text = "Drone is not charging at a Station";
 
-            cmbWeightChoice.IsReadOnly = true;
-            cmbWeightChoice.Text = bodrone.MaxWeight.ToString();
+            //cmbWeightChoice.IsReadOnly = true;
+            //cmbWeightChoice.Text = bodrone.MaxWeight.ToString();
 
             tBlockStatusInfo.Text = bodrone.DroneStatus.ToString();
             if (bodrone.ParcelInTransfer.Id == -1)
@@ -142,9 +196,36 @@ namespace WpfApp1
             tBlockLongInfo.Text = bodrone.Location.Longitude.ToString();
             tBlockLatinfo.Text = bodrone.Location.Latitude.ToString();
 
-            
+            tBlockCurrentLocation.Text = "working on this....";
+            //working on a function in BL..
 
         }
+
+        private void changeTBlockColor(Color color, params TextBlock[] listTBlock)
+        {
+            foreach (var item in listTBlock)
+            {
+                item.Foreground = new SolidColorBrush(Colors.Black);
+            }
+        }
+        
+        //private bool modelTextBoxChanged()
+        //{
+
+        //}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -160,29 +241,31 @@ namespace WpfApp1
         private void btnSendToCharge_Click(object sender, RoutedEventArgs e)
         {
             busiAccess.chargeDrone(thisDroneId);
+            displayBODrone(busiAccess.getBODrone(thisDroneId));
         }
 
         private void btnFreeDroneFromCharge_Click(object sender, RoutedEventArgs e)
         {
             busiAccess.freeDrone(thisDroneId, 0);
-
+            displayBODrone(busiAccess.getBODrone(thisDroneId));
         }
 
         private void btnPickupPkg_Click(object sender, RoutedEventArgs e)
         {
             busiAccess.PickupParcel(thisDroneId);
-
+            displayBODrone(busiAccess.getBODrone(thisDroneId));
         }
 
         private void btnSendDroneToCustomer_Click(object sender, RoutedEventArgs e)
         {
             busiAccess.assignParcel(thisDroneId);
-
+            displayBODrone(busiAccess.getBODrone(thisDroneId));
         }
 
         private void btnDeliverPkg_Click(object sender, RoutedEventArgs e)
         {
             busiAccess.deliverParcel(thisDroneId);
+            displayBODrone(busiAccess.getBODrone(thisDroneId));
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
