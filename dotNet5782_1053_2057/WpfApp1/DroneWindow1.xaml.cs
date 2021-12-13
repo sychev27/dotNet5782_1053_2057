@@ -67,7 +67,7 @@ namespace WpfApp1
         private void btnAddDrone_Click(object sender, RoutedEventArgs e)
         {
             //reset text color
-            changeTBlockColor(Colors.Black, tBlock_chooseDroneId,
+            changeTBlockColor(Colors.Black, tBlock_chooseDroneId, tBlock_chooseMaxWeight,
                 tBlock_chooseModel, tBlock_chooseStation);
             
             //(1) Receive Data
@@ -106,7 +106,7 @@ namespace WpfApp1
                 tBlock_chooseStation.Foreground = new SolidColorBrush(Colors.Red);
                 validData = false;
             }
-            if(weight == null)  //check weight categories
+            if(weight == null || (int)weight == -1)  //check weight categories
             {
                 tBlock_chooseMaxWeight.Foreground = new SolidColorBrush(Colors.Red);
                 validData = false;
