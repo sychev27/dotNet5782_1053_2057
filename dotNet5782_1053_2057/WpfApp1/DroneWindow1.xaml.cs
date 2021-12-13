@@ -101,27 +101,20 @@ namespace WpfApp1
                 validData = false;
             }
 
-            if (tBoxStationIdInput.Text == null || !idSuccess || _stationId == 0)
+            if (tBoxStationIdInput.Text == null || !stationIdSuccess || _stationId == 0)
             {
                 tBlock_chooseStation.Foreground = new SolidColorBrush(Colors.Red);
                 validData = false;
             }
-            if(weight == null)
+            if(weight == null)  //check weight categories
             {
                 tBlock_chooseMaxWeight.Foreground = new SolidColorBrush(Colors.Red);
                 validData = false;
             }
-            //check weight categories!
+           
 
-            //tBlockCurrentLocation.Foreground = new SolidColorBrush(Colors.Red);
-
-
-
-
-
-
-
-            //(3) Add Drone..
+            
+                        //(3) Add Drone..
             if (validData)
                 busiAccess.addDrone(_id, _model, (IDAL.DO.WeightCategories)weight, _stationId);
             else
@@ -149,17 +142,10 @@ namespace WpfApp1
         
         public DroneWindow(IBL.Ibl _busiAccess, IBL.BO.BODrone _bodrone) //CTOR called by DroneListWindow
         {
-            
-
-            //int droneId;
-            //Int32.TryParse(tBoxIdInput.Text, out droneId);
-            //alex write code here, if ID wasnt typed correctly. exception
-            //and if boDrone doesnt exists
-            //create an error msg
-
-            //AFTER THROWING EXCEPTIONS:
             InitializeComponent();
             busiAccess = _busiAccess;
+
+            //edit buttons and text boxes for Update Window:
             tBoxIdInput.IsReadOnly = true;
             tBoxIdInput.BorderBrush = Brushes.Transparent;
             tBoxStationIdInput.IsReadOnly = true;
