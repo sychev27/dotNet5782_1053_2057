@@ -20,13 +20,8 @@ namespace WpfApp1
     public partial class DroneWindow : Window
     {
         IBL.Ibl busiAccess;
-        IDAL.DO.WeightCategories? weightChoice = null;
 
         int thisDroneId;
-
-        const string WEIGHTSELECTED = "Weight Selected!";
-        const string CHOOSEWEIGHT = "Choose Maximum Weight Category:";
-        const string DRONEADDED = "Drone Added Successfully!";
 
         const string btnUpdateText = "Update this Drone";
         
@@ -38,11 +33,8 @@ namespace WpfApp1
 
             cmbWeightChoice.ItemsSource = Enum.GetValues(typeof(IBL.BO.Enum.WeightCategories));
 
-
-
-
+            //(1) Disable irrelevant buttons
             btnGetDrone.IsEnabled = false;
-
             btnModifyDroneModel.IsEnabled = false;
             btnSendDroneToCustomer.IsEnabled = false;
             btnFreeDroneFromCharge.IsEnabled = false;
@@ -50,6 +42,8 @@ namespace WpfApp1
             btnSendToCharge.IsEnabled = false;
             btnDeliverPkg.IsEnabled = false;
 
+            //(2) Hide irrelevant buttons
+            btnGetDrone.Visibility = Visibility.Hidden;
             btnModifyDroneModel.Visibility = Visibility.Hidden;
             btnSendDroneToCustomer.Visibility = Visibility.Hidden;
             btnFreeDroneFromCharge.Visibility = Visibility.Hidden;
@@ -57,7 +51,17 @@ namespace WpfApp1
             btnSendToCharge.Visibility = Visibility.Hidden;
             btnDeliverPkg.Visibility = Visibility.Hidden;
 
-
+            //(3) Hide irrelevnat TextBlocks
+            tBlockStatus.Visibility = Visibility.Hidden;
+            tBlockStatusInfo.Visibility = Visibility.Hidden;
+            tBlockDelivery.Visibility = Visibility.Hidden;
+            tBlockDeliveryInfo.Visibility = Visibility.Hidden;
+            tBlockCurrentLocation.Visibility = Visibility.Hidden;
+            tBlockCurrentLocationInfo.Visibility = Visibility.Hidden;
+            tBlockLongitude.Visibility = Visibility.Hidden;
+            tBlockLongInfo.Visibility = Visibility.Hidden;
+            tBlockLatitude.Visibility = Visibility.Hidden;
+            tBlockLatinfo.Visibility = Visibility.Hidden;
 
         }
 
@@ -68,7 +72,7 @@ namespace WpfApp1
             string _model = tBoxModelInput.Text;
             int _stationId;
             Int32.TryParse(tBoxStationIdInput.Text, out _stationId);
-            IDAL.DO.WeightCategories? weight = weightChoice;
+            IDAL.DO.WeightCategories? weight = (IDAL.DO.WeightCategories)cmbWeightChoice.SelectedIndex;
 
             //if(weight == null)
             //    throw excepeiton!!
@@ -77,8 +81,8 @@ namespace WpfApp1
 
 
             busiAccess.addDrone(_id, _model, (IDAL.DO.WeightCategories)weight, _stationId);
-            tBlock_chooseMaxWeight.Text = CHOOSEWEIGHT;
-            //tBlock_DroneAdded.Text = DRONEADDED;
+            
+            
             MessageBox.Show("Drone Added Successfully","SUCCESS",MessageBoxButton.OK, MessageBoxImage.Information,MessageBoxResult.OK);
             Close();
         }
