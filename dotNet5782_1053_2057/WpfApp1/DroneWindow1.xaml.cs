@@ -35,6 +35,12 @@ namespace WpfApp1
         {
             InitializeComponent();
             busiAccess = _busiAccess;
+
+            cmbWeightChoice.ItemsSource = Enum.GetValues(typeof(IBL.BO.Enum.WeightCategories));
+
+
+
+
             btnGetDrone.IsEnabled = false;
 
             btnModifyDroneModel.IsEnabled = false;
@@ -77,47 +83,7 @@ namespace WpfApp1
             Close();
         }
 
-        private void btnLightWeight_Click(object sender, RoutedEventArgs e)
-        {
-            weightChoice = IDAL.DO.WeightCategories.light;
-            tBlock_chooseMaxWeight.Text = WEIGHTSELECTED;
-            resetWeightBtns();
-            btnLightWeight.IsEnabled = false;
-
-
-        }
-
-        private void btnMediumWeight_Click(object sender, RoutedEventArgs e)
-        {
-            weightChoice = IDAL.DO.WeightCategories.medium;
-            tBlock_chooseMaxWeight.Text = WEIGHTSELECTED;
-            resetWeightBtns();
-            btnMediumWeight.IsEnabled = false;
-        }
-        private void btnHeavyWeight_Click(object sender, RoutedEventArgs e)
-        {
-            weightChoice = IDAL.DO.WeightCategories.heavy;
-            tBlock_chooseMaxWeight.Text = WEIGHTSELECTED;
-            resetWeightBtns();
-            btnHeavyWeight.IsEnabled = false;
-        }
-
-        private void resetWeightBtns()
-        {
-            if(btnLightWeight.IsEnabled == false)
-            {
-                btnLightWeight.IsEnabled = true; return;
-            } 
-            else if(btnMediumWeight.IsEnabled == false)
-            {
-                btnMediumWeight.IsEnabled = true; return;
-            }
-            else if(btnHeavyWeight.IsEnabled == false)
-            {
-                btnHeavyWeight.IsEnabled = true; return;
-            }
-        }
-
+      
 
 
 
@@ -143,9 +109,6 @@ namespace WpfApp1
             btnAddDrone.IsEnabled = false;
             btnModifyDroneModel.IsEnabled = false;
 
-            btnHeavyWeight.IsEnabled = false;
-            btnLightWeight.IsEnabled = false;
-            btnMediumWeight.IsEnabled = false;
 
             tBlock_chooseMaxWeight.Text = "Max Weight: ";
             tBlock_chooseStation.Text = "Station Id:";
@@ -192,8 +155,7 @@ namespace WpfApp1
 
             tBlock_chooseMaxWeight.Text = "Max Weight: \n" + busiAccess.getBoDroneMaxWeight(_drone.Id);
 
-            tBlockDisplayDrone.Text = busiAccess.getBODrone(_drone.Id).ToString();
-
+           
             //enable modifying buttons:
             btnModifyDroneModel.IsEnabled = true;
             btnFreeDroneFromCharge.IsEnabled = true;
@@ -231,8 +193,7 @@ namespace WpfApp1
 
             tBlock_chooseMaxWeight.Text = "Max Weight: \n" + busiAccess.getBoDroneMaxWeight(droneId);
 
-            tBlockDisplayDrone.Text = busiAccess.getBODrone(droneId).ToString();
-
+           
             //enable modifying buttons:
             btnModifyDroneModel.IsEnabled = true;
             btnFreeDroneFromCharge.IsEnabled = true;
@@ -249,41 +210,35 @@ namespace WpfApp1
             int id;
             Int32.TryParse(tBoxIdInput.Text, out id);
             busiAccess.modifyDrone(id, tBoxModelInput.Text);
-            tBlock_DroneAdded.Text = "Drone modified!";
-            tBlockDisplayDrone.Text = busiAccess.getBODrone(id).ToString();
+           
         }
 
         private void btnSendToCharge_Click(object sender, RoutedEventArgs e)
         {
             busiAccess.chargeDrone(thisDroneId);
-            tBlockDisplayDrone.Text = busiAccess.getBODrone(thisDroneId).ToString();
         }
 
         private void btnFreeDroneFromCharge_Click(object sender, RoutedEventArgs e)
         {
             busiAccess.freeDrone(thisDroneId, 0);
-            tBlockDisplayDrone.Text = busiAccess.getBODrone(thisDroneId).ToString();
 
         }
 
         private void btnPickupPkg_Click(object sender, RoutedEventArgs e)
         {
             busiAccess.PickupParcel(thisDroneId);
-            tBlockDisplayDrone.Text = busiAccess.getBODrone(thisDroneId).ToString();
 
         }
 
         private void btnSendDroneToCustomer_Click(object sender, RoutedEventArgs e)
         {
             busiAccess.assignParcel(thisDroneId);
-            tBlockDisplayDrone.Text = busiAccess.getBODrone(thisDroneId).ToString();
 
         }
 
         private void btnDeliverPkg_Click(object sender, RoutedEventArgs e)
         {
             busiAccess.deliverParcel(thisDroneId);
-            tBlockDisplayDrone.Text = busiAccess.getBODrone(thisDroneId).ToString();
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
@@ -291,11 +246,11 @@ namespace WpfApp1
             Close();
         }
 
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
 
-        //private void tBoxModelInput_TextChanged(object sender, TextChangedEventArgs e)
-        //{
-        //    tBoxModelInput.Text = "";
+        }
 
-        //}
+
     }
 }
