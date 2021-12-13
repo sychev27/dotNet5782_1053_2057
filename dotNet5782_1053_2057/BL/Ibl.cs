@@ -8,6 +8,12 @@ namespace IBL
 {
     public interface Ibl
     {
+
+        bool droneIdExists(int id);
+
+
+
+
         void addDrone(int _id, string _model, IDAL.DO.WeightCategories _maxWeight, int _stationId = 0);
         void addCustomer(int _id, string _name, string _phone, double _longitude,
                 double _latitude);

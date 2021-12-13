@@ -451,5 +451,21 @@ namespace IB
         }
 
 
+
+
+        public bool droneIdExists(int id)
+        {
+            
+            foreach (IBL.BO.BODrone item in listDrone)
+            {
+                if (id == item.Id)
+                    return true;
+            }
+            return false;
+        }
+
+
+
+
     }
 }
