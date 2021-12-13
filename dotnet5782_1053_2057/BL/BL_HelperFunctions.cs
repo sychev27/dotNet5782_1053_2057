@@ -132,11 +132,11 @@ namespace IB
             double dist = distance(start, finish);
             if (drone.ParcelInTransfer.Collected)
             {
-                if (drone.ParcelInTransfer.MaxWeight == IBL.BO.Enum.WeightCategories.light)
+                if (drone.ParcelInTransfer.MaxWeight == IBL.BO.Enum.WeightCategories.Light)
                     return dist * light;
-                if (drone.ParcelInTransfer.MaxWeight == IBL.BO.Enum.WeightCategories.medium)
+                if (drone.ParcelInTransfer.MaxWeight == IBL.BO.Enum.WeightCategories.Medium)
                     return dist * medium;
-                if (drone.ParcelInTransfer.MaxWeight == IBL.BO.Enum.WeightCategories.heavy)
+                if (drone.ParcelInTransfer.MaxWeight == IBL.BO.Enum.WeightCategories.Heavy)
                     return dist * heavy;
             }
             return dist * empty;
@@ -337,7 +337,7 @@ namespace IB
 
         private static bool availableDrone(IBL.BO.BODrone _drone)
         {
-            if (_drone.DroneStatus == IBL.BO.Enum.DroneStatus.available)
+            if (_drone.DroneStatus == IBL.BO.Enum.DroneStatus.Available)
                 return true;
             else
                 return false;
@@ -345,14 +345,14 @@ namespace IB
 
         private static bool maintenanceDrone(IBL.BO.BODrone _drone)
         {
-            if (_drone.DroneStatus == IBL.BO.Enum.DroneStatus.charging)
+            if (_drone.DroneStatus == IBL.BO.Enum.DroneStatus.Charging)
                 return true;
             else
                 return false;
         }
         private static bool inDeliveryDrone(IBL.BO.BODrone _drone)
         {
-            if (_drone.DroneStatus == IBL.BO.Enum.DroneStatus.inDelivery)
+            if (_drone.DroneStatus == IBL.BO.Enum.DroneStatus.InDelivery)
                 return true;
             else
                 return false;
@@ -360,7 +360,7 @@ namespace IB
 
         private static bool heavyDrone(IBL.BO.BODrone _drone)
         {
-            if (_drone.MaxWeight == IBL.BO.Enum.WeightCategories.heavy)
+            if (_drone.MaxWeight == IBL.BO.Enum.WeightCategories.Heavy)
                 return true;
             else
                 return false;
@@ -368,7 +368,7 @@ namespace IB
 
         private static bool mediumDrone(IBL.BO.BODrone _drone)
         {
-            if (_drone.MaxWeight == IBL.BO.Enum.WeightCategories.medium)
+            if (_drone.MaxWeight == IBL.BO.Enum.WeightCategories.Medium)
                 return true;
             else
                 return false;
@@ -376,7 +376,7 @@ namespace IB
 
         private static bool lightDrone(IBL.BO.BODrone _drone)
         {
-            if (_drone.MaxWeight == IBL.BO.Enum.WeightCategories.light)
+            if (_drone.MaxWeight == IBL.BO.Enum.WeightCategories.Light)
                 return true;
             else
                 return false;
