@@ -166,7 +166,8 @@ namespace WpfApp1
             tBoxStationIdInput.BorderBrush = Brushes.Transparent;
             cmbWeightChoice.ItemsSource = Enum.GetValues(typeof(IBL.BO.Enum.WeightCategories));
 
-
+            btnAddDrone.IsEnabled = false;
+            btnAddDrone.Visibility = Visibility.Hidden;
 
             displayBODrone(_bodrone);
           
