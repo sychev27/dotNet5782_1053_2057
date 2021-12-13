@@ -237,10 +237,10 @@ namespace DalObject
 
                 if (i <= 5)
                     exampleP.DroneId = r.Next(1, 6);
-                //exampleP.Pickup = exampleP.Requested.AddDays(r.Next(1, 7));
+               // exampleP.Pickup = exampleP.Requested + new TimeSpan(r.Next(1, 7),0,0,0) ;   //AddDays(r.Next(1, 7));
                 //exampleP.Delivered = exampleP.Pickup.AddDays(r.Next(1, 3));
 
-                exampleP.Scheduled = exampleP.Requested.AddDays(r.Next(1, 7));
+                exampleP.Scheduled = exampleP.Requested + new TimeSpan(r.Next(1, 7), 0, 0, 0);
 
                 listParcel.Add(exampleP);
                 //thisConfig.indexAvailParcel++;

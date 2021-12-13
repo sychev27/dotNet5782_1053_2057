@@ -482,9 +482,9 @@ namespace IB
             newParcToList.Weight = (IBL.BO.Enum.WeightCategories)origParcel.Weight;
             newParcToList.Priority = (IBL.BO.Enum.Priorities)origParcel.Priority;
 
-            if (origParcel.Delivered != DateTime.MinValue) //if delivered
+            if (origParcel.Delivered != null) //if delivered
                 newParcToList.ParcelStatus = IBL.BO.Enum.ParcelStatus.delivered;
-            else if (origParcel.Pickup != DateTime.MinValue) // if collected
+            else if (origParcel.Pickup != null) // if collected
                 newParcToList.ParcelStatus = IBL.BO.Enum.ParcelStatus.collected;
             else if (origParcel.DroneId != -1)
                 newParcToList.ParcelStatus = IBL.BO.Enum.ParcelStatus.assigned;
