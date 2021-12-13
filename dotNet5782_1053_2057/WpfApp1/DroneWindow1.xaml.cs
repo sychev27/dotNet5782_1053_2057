@@ -67,8 +67,8 @@ namespace WpfApp1
         private void btnAddDrone_Click(object sender, RoutedEventArgs e)
         {
             //reset text color
-            changeTBlockColor(Colors.Black, tBlock_chooseDroneId, 
-                tBlock_chooseModel, tBlock_chooseStationID);
+            changeTBlockColor(Colors.Black, tBlock_chooseDroneId,
+                tBlock_chooseModel, tBlock_chooseStation);
             
             //(1) Receive Data
             int _id;
@@ -164,6 +164,9 @@ namespace WpfApp1
             tBoxIdInput.BorderBrush = Brushes.Transparent;
             tBoxStationIdInput.IsReadOnly = true;
             tBoxStationIdInput.BorderBrush = Brushes.Transparent;
+            cmbWeightChoice.ItemsSource = Enum.GetValues(typeof(IBL.BO.Enum.WeightCategories));
+
+
 
             displayBODrone(_bodrone);
           
@@ -185,8 +188,9 @@ namespace WpfApp1
             else
                 tBoxStationIdInput.Text = "Drone is not charging at a Station";
 
-            //cmbWeightChoice.IsReadOnly = true;
-            //cmbWeightChoice.Text = bodrone.MaxWeight.ToString();
+            cmbWeightChoice.SelectedIndex = (int)bodrone.MaxWeight;
+            cmbWeightChoice.IsReadOnly = true;
+            cmbWeightChoice.IsEnabled = false;
 
             tBlockStatusInfo.Text = bodrone.DroneStatus.ToString();
             if (bodrone.ParcelInTransfer.Id == -1)
