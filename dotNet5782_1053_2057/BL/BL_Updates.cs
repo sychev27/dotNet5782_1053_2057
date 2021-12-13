@@ -21,7 +21,7 @@ namespace IB
             boDrone.MaxWeight = (IBL.BO.Enum.WeightCategories)_maxWeight;
             boDrone.Model = _model;
             boDrone.Battery = r.Next(20, 40) + r.NextDouble();
-            boDrone.DroneStatus = IBL.BO.Enum.DroneStatus.charging;
+            boDrone.DroneStatus = IBL.BO.Enum.DroneStatus.Charging;
             boDrone.Location = getStationLocation(_stationId);
             boDrone.ParcelInTransfer = createEmptyParcInTrans();
             listDrone.Add(boDrone);
@@ -122,7 +122,7 @@ namespace IB
             }
 
             ////(2)check if drone is avail
-            if(droneCopy.DroneStatus != IBL.BO.Enum.DroneStatus.available)
+            if(droneCopy.DroneStatus != IBL.BO.Enum.DroneStatus.Available)
                 //    throw //exception not available
                 throw new IBL.BO.EXNotFoundPrintException("not available");
 
@@ -133,7 +133,7 @@ namespace IB
                 throw new IBL.BO.EXPrintException("no closest parcel --> dont assign drone, continue in menu...");
 
             //(4) assign parcel to drone
-            droneCopy.DroneStatus = IBL.BO.Enum.DroneStatus.inDelivery;
+            droneCopy.DroneStatus = IBL.BO.Enum.DroneStatus.InDelivery;
             droneCopy.ParcelInTransfer = createParcInTrans(droneCopy.Id, closestParcelId);
 
             dataAccess.assignDroneToParcel(droneId, closestParcelId);
@@ -154,7 +154,7 @@ namespace IB
             {
                 throw new IBL.BO.EXNotFoundPrintException("Drone");
             }
-            if (drone.DroneStatus != IBL.BO.Enum.DroneStatus.inDelivery)
+            if (drone.DroneStatus != IBL.BO.Enum.DroneStatus.InDelivery)
                 //    throw Exception //not in delivery -- return to main menu
                 throw new IBL.BO.EXPrintException("Drone is not in delivery");
 
@@ -182,7 +182,7 @@ namespace IB
                 drone = getBODrone(droneId);
             }
             catch (IBL.BO.EXNotFoundPrintException) {throw new IBL.BO.EXNotFoundPrintException("Drone");}
-            if (drone.DroneStatus != IBL.BO.Enum.DroneStatus.inDelivery)
+            if (drone.DroneStatus != IBL.BO.Enum.DroneStatus.InDelivery)
                 //    throw Exception //not in delivery , return to main menu
                 throw new IBL.BO.EXPrintException("Drone is not in delivery");
             foreach (var item in listDrone)
@@ -207,7 +207,7 @@ namespace IB
                 drone = getBODrone(droneId);
             }
             catch (IBL.BO.EXNotFoundPrintException) { throw new IBL.BO.EXNotFoundPrintException("Drone");}
-            if(drone.DroneStatus != IBL.BO.Enum.DroneStatus.available)
+            if(drone.DroneStatus != IBL.BO.Enum.DroneStatus.Available)
                 //    throw exception //drone unavailable - return to main menu..
                 throw new IBL.BO.EXNotFoundPrintException("not available");
 
@@ -219,7 +219,7 @@ namespace IB
             //working on rest of func
             drone.Battery -= battNededForDist(drone, closestStationLoc);
             drone.Location = closestStationLoc;
-            drone.DroneStatus = IBL.BO.Enum.DroneStatus.charging;
+            drone.DroneStatus = IBL.BO.Enum.DroneStatus.Charging;
             try
             {
                 addDroneCharge(drone.Id, getStationFromLoc(closestStationLoc).Id);
@@ -236,7 +236,7 @@ namespace IB
             }
             catch (IBL.BO.EXNotFoundPrintException) {throw new IBL.BO.EXNotFoundPrintException("Drone");}
 
-            if (drone.DroneStatus != IBL.BO.Enum.DroneStatus.charging)
+            if (drone.DroneStatus != IBL.BO.Enum.DroneStatus.Charging)
                 //    throw Exception //drone not charging! return to main menu
                 throw new IBL.BO.EXPrintException("drone not charging!");
 
@@ -247,7 +247,7 @@ namespace IB
                 if(item.Id == droneId)
                 {
                     item.Battery += batteryGained;
-                    item.DroneStatus = IBL.BO.Enum.DroneStatus.available;
+                    item.DroneStatus = IBL.BO.Enum.DroneStatus.Available;
                 }
             }
             try

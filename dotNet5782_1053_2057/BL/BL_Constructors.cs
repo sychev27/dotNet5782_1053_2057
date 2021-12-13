@@ -84,10 +84,10 @@ namespace IB
                     do //randomly set droneStatus =  "charging" and "available"
                     {
                         drone.DroneStatus = (IBL.BO.Enum.DroneStatus)r.Next(0, 3);
-                    } while (drone.DroneStatus == IBL.BO.Enum.DroneStatus.inDelivery);
+                    } while (drone.DroneStatus == IBL.BO.Enum.DroneStatus.InDelivery);
 
 
-                    if (drone.DroneStatus == IBL.BO.Enum.DroneStatus.charging)
+                    if (drone.DroneStatus == IBL.BO.Enum.DroneStatus.Charging)
                     {
                         //(1) SET LOCATION - to Random Station
                         List<IDAL.DO.Station> listStation = new List<IDAL.DO.Station>();
@@ -102,7 +102,7 @@ namespace IB
                         drone.Battery = r.Next(0, 20);
                         drone.Battery += r.NextDouble();
                     }
-                    else if (drone.DroneStatus == IBL.BO.Enum.DroneStatus.available)
+                    else if (drone.DroneStatus == IBL.BO.Enum.DroneStatus.Available)
                     {
                         //(1) SET LOCATION - to Random Customer's location
                         if (tempListCust.Count == 0) //if not yet full, fill customer list
@@ -152,13 +152,13 @@ namespace IB
             switch (drone.MaxWeight)
             {
                 case IDAL.DO.WeightCategories.light:
-                    boDrone.MaxWeight = IBL.BO.Enum.WeightCategories.light;
+                    boDrone.MaxWeight = IBL.BO.Enum.WeightCategories.Light;
                     break;
                 case IDAL.DO.WeightCategories.medium:
-                    boDrone.MaxWeight = IBL.BO.Enum.WeightCategories.medium;
+                    boDrone.MaxWeight = IBL.BO.Enum.WeightCategories.Medium;
                     break;
                 case IDAL.DO.WeightCategories.heavy:
-                    boDrone.MaxWeight = IBL.BO.Enum.WeightCategories.heavy;
+                    boDrone.MaxWeight = IBL.BO.Enum.WeightCategories.Heavy;
                     break;
                 default:
                     break;
@@ -168,7 +168,7 @@ namespace IB
             {
                 boDrone.ParcelInTransfer = createParcInTrans(boDrone.Id);
                 if (boDrone.ParcelInTransfer != null)
-                    boDrone.DroneStatus = IBL.BO.Enum.DroneStatus.inDelivery;
+                    boDrone.DroneStatus = IBL.BO.Enum.DroneStatus.InDelivery;
             }
             catch (IBL.BO.EXParcInTransNotFoundException exception)
             {

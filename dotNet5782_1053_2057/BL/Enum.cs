@@ -10,8 +10,8 @@ namespace IBL
     {
         public class Enum
         {
-            public enum WeightCategories { light, medium, heavy };
-            public enum DroneStatus { available, charging, inDelivery }; 
+            public enum WeightCategories { Light, Medium, Heavy };
+            public enum DroneStatus { Available, Charging, InDelivery }; 
             // charging = charging, inDelivery = delivering a parcel...
             public enum ParcelStatus { created, assigned, collected, delivered };
             public enum Priorities { regular, fast, urgent };

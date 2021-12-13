@@ -34,7 +34,7 @@ namespace WpfApp1
             cmbWeightChoice.ItemsSource = Enum.GetValues(typeof(IBL.BO.Enum.WeightCategories));
 
             //(1) Disable irrelevant buttons
-            btnGetDrone.IsEnabled = false;
+            //btnGetDrone.IsEnabled = false;
             btnModifyDroneModel.IsEnabled = false;
             btnSendDroneToCustomer.IsEnabled = false;
             btnFreeDroneFromCharge.IsEnabled = false;
@@ -43,7 +43,7 @@ namespace WpfApp1
             btnDeliverPkg.IsEnabled = false;
 
             //(2) Hide irrelevant buttons
-            btnGetDrone.Visibility = Visibility.Hidden;
+            //btnGetDrone.Visibility = Visibility.Hidden;
             btnModifyDroneModel.Visibility = Visibility.Hidden;
             btnSendDroneToCustomer.Visibility = Visibility.Hidden;
             btnFreeDroneFromCharge.Visibility = Visibility.Hidden;
@@ -101,38 +101,12 @@ namespace WpfApp1
 
 
 
-
-
-
         //TO UPDATE A DRONE...
-        public DroneWindow(IBL.Ibl _busiAccess, char let) //Update Drone CTOR
-        {
-            //(1) Redesign text boxes and buttons
-            InitializeComponent();
-            busiAccess = _busiAccess;
-            btnAddDrone.IsEnabled = false;
-            btnModifyDroneModel.IsEnabled = false;
-
-
-            tBlock_chooseMaxWeight.Text = "Max Weight: ";
-            tBlock_chooseStation.Text = "Station Id:";
-
-            tBoxModelInput.IsEnabled = false;
-            tBoxStationIdInput.IsEnabled = false;
-
-
-            btnModifyDroneModel.IsEnabled = false;
-            btnSendDroneToCustomer.IsEnabled = false;
-            btnFreeDroneFromCharge.IsEnabled = false;
-            btnPickupPkg.IsEnabled = false;
-            btnSendToCharge.IsEnabled = false;
-            btnDeliverPkg.IsEnabled = false;
-
-
-        }
         
-        public DroneWindow(IBL.Ibl _busiAccess, IBL.BO.BODrone _drone) //CTOR called by DroneListWindow
+        public DroneWindow(IBL.Ibl _busiAccess, IBL.BO.BODrone _bodrone) //CTOR called by DroneListWindow
         {
+            
+
             //int droneId;
             //Int32.TryParse(tBoxIdInput.Text, out droneId);
             //alex write code here, if ID wasnt typed correctly. exception
@@ -143,71 +117,37 @@ namespace WpfApp1
             InitializeComponent();
             busiAccess = _busiAccess;
 
-            tBlock_chooseDroneId.Text = "Drone ID: ";
-            tBoxIdInput.Text = _drone.Id.ToString();
-            tBoxIdInput.IsEnabled = false;
-            thisDroneId = _drone.Id;
-
-            if (busiAccess.getStationIdOfBODrone(_drone.Id) != -1)
-                tBoxStationIdInput.Text = (busiAccess.getStationIdOfBODrone(_drone.Id)).ToString();
-            else
-                tBoxStationIdInput.Text = "Drone is not charging at a Station";
-
-            tBlock_chooseModel.Text = "Model";
-            tBoxModelInput.Text = busiAccess.getBODroneModel(_drone.Id);
-            tBoxModelInput.IsEnabled = true;
-
-            tBlock_chooseMaxWeight.Text = "Max Weight: \n" + busiAccess.getBoDroneMaxWeight(_drone.Id);
-
-           
-            //enable modifying buttons:
-            btnModifyDroneModel.IsEnabled = true;
-            btnFreeDroneFromCharge.IsEnabled = true;
-            btnSendDroneToCustomer.IsEnabled = true;
-            btnPickupPkg.IsEnabled = true;
-            btnSendToCharge.IsEnabled = true;
-            btnDeliverPkg.IsEnabled = true;
-
+            displayBODrone(_bodrone);
+          
 
         }
 
-        private void btnGetDrone_Click(object sender, RoutedEventArgs e)
+        private void displayBODrone(IBL.BO.BODrone bodrone)
         {
-            int droneId;
-            Int32.TryParse(tBoxIdInput.Text, out droneId);
-            //alex write code here, if ID wasnt typed correctly. exception
-            //and if boDrone doesnt exists
-            //create an error msg
-
-            //AFTER THROWING EXCEPTIONS:
-
-            tBlock_chooseDroneId.Text = "Drone ID: ";
-            tBoxIdInput.Text = droneId.ToString();
-            tBoxIdInput.IsEnabled = false;
-            thisDroneId = droneId;
-
-            if (busiAccess.getStationIdOfBODrone(droneId) != -1)
-                tBoxStationIdInput.Text = (busiAccess.getStationIdOfBODrone(droneId)).ToString();
+            tBoxIdInput.Text = bodrone.Id.ToString();
+            tBoxModelInput.Text = bodrone.Model;
+            if (busiAccess.getStationIdOfBODrone(bodrone.Id) != -1)
+                tBoxStationIdInput.Text = (busiAccess.getStationIdOfBODrone(bodrone.Id)).ToString();
             else
                 tBoxStationIdInput.Text = "Drone is not charging at a Station";
 
-            tBlock_chooseModel.Text = "Model";
-            tBoxModelInput.Text = busiAccess.getBODroneModel(droneId);
-            tBoxModelInput.IsEnabled = true;
+            cmbWeightChoice.IsReadOnly = true;
+            cmbWeightChoice.Text = bodrone.MaxWeight.ToString();
 
-            tBlock_chooseMaxWeight.Text = "Max Weight: \n" + busiAccess.getBoDroneMaxWeight(droneId);
+            tBlockStatusInfo.Text = bodrone.DroneStatus.ToString();
+            if (bodrone.ParcelInTransfer.Id == -1)
+                tBlockDeliveryInfo.Text = "Not yet carrying Parcel";
+            else 
+                tBlockDeliveryInfo.Text = bodrone.ParcelInTransfer.ToString();
+            tBlockLongInfo.Text = bodrone.Location.Longitude.ToString();
+            tBlockLatinfo.Text = bodrone.Location.Latitude.ToString();
 
-           
-            //enable modifying buttons:
-            btnModifyDroneModel.IsEnabled = true;
-            btnFreeDroneFromCharge.IsEnabled = true;
-            btnSendDroneToCustomer.IsEnabled = true;
-            btnPickupPkg.IsEnabled = true;
-            btnSendToCharge.IsEnabled = true;
-            btnDeliverPkg.IsEnabled = true;
-
+            
 
         }
+
+
+
 
         private void btnModifyDroneModel_Click(object sender, RoutedEventArgs e)
         {
@@ -252,9 +192,80 @@ namespace WpfApp1
 
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            
         }
 
+
+
+
+
+
+
+
+        //public DroneWindow(IBL.Ibl _busiAccess, char let) //Update Drone CTOR, 
+        //    //called from Main Window Only!
+        //{
+        //    //(1) Disable irrelevant buttons
+        //    InitializeComponent();
+        //    busiAccess = _busiAccess;
+
+        //    btnAddDrone.IsEnabled = false;
+        //    btnAddDrone.Visibility = Visibility.Hidden;
+
+        //    tBoxModelInput.IsEnabled = true;
+        //    tBoxStationIdInput.IsEnabled = false;
+
+
+        //    btnModifyDroneModel.IsEnabled = false;
+        //    btnSendDroneToCustomer.IsEnabled = false;
+        //    btnFreeDroneFromCharge.IsEnabled = false;
+        //    btnPickupPkg.IsEnabled = false;
+        //    btnSendToCharge.IsEnabled = false;
+        //    btnDeliverPkg.IsEnabled = false;
+
+        //    //(2) Display this drone
+
+
+        //}
+
+
+        //private void btnGetDrone_Click(object sender, RoutedEventArgs e)
+        //{
+        //    int droneId;
+        //    Int32.TryParse(tBoxIdInput.Text, out droneId);
+        //    //alex write code here, if ID wasnt typed correctly. exception
+        //    //and if boDrone doesnt exists
+        //    //create an error msg
+
+        //    //AFTER THROWING EXCEPTIONS:
+
+        //    tBlock_chooseDroneId.Text = "Drone ID: ";
+        //    tBoxIdInput.Text = droneId.ToString();
+        //    tBoxIdInput.IsEnabled = false;
+        //    thisDroneId = droneId;
+
+        //    if (busiAccess.getStationIdOfBODrone(droneId) != -1)
+        //        tBoxStationIdInput.Text = (busiAccess.getStationIdOfBODrone(droneId)).ToString();
+        //    else
+        //        tBoxStationIdInput.Text = "Drone is not charging at a Station";
+
+        //    tBlock_chooseModel.Text = "Model";
+        //    tBoxModelInput.Text = busiAccess.getBODroneModel(droneId);
+        //    tBoxModelInput.IsEnabled = true;
+
+        //    tBlock_chooseMaxWeight.Text = "Max Weight: \n" + busiAccess.getBoDroneMaxWeight(droneId);
+
+
+        //    //enable modifying buttons:
+        //    btnModifyDroneModel.IsEnabled = true;
+        //    btnFreeDroneFromCharge.IsEnabled = true;
+        //    btnSendDroneToCustomer.IsEnabled = true;
+        //    btnPickupPkg.IsEnabled = true;
+        //    btnSendToCharge.IsEnabled = true;
+        //    btnDeliverPkg.IsEnabled = true;
+
+
+        //}
 
     }
 }

@@ -42,7 +42,7 @@
 
 
             <Button x:Name ="btnAddDrone" Content="Add Drone" Grid.Row="9" Click = "btnAddDrone_Click" Grid.Column="1" Margin="5,5,5,5"/>
-            <Button x:Name ="btnGetDrone" Content="Get Drone" Grid.Column="2" Click="btnGetDrone_Click" HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Margin="5,5,5,5" Width="Auto"/>
+           <!-- <Button x:Name ="btnGetDrone" Content="Get Drone" Grid.Column="2" Click="btnGetDrone_Click" HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Margin="5,5,5,5" Width="Auto"/>  -->
             <Button x:Name ="btnModifyDroneModel" Content="Modify Model" Grid.Column="2" Grid.Row="1" Click="btnModifyDroneModel_Click" HorizontalAlignment="Stretch" Margin="5,5,5,5"  Width="Auto"/>
 
             <Button x:Name="btnSendToCharge" Content="Send Drone To Charge" Grid.Column="3" Click="btnSendToCharge_Click" Margin="5,5,5,5" />

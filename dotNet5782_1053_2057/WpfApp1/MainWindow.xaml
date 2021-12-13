@@ -18,6 +18,6 @@
             </Button.RenderTransform>
         </Button>
         <Button x:Name="btnAddDrone" Content="Add a Drone" HorizontalAlignment="Left" Height="82" Margin="88,161,0,0" Grid.Row="1" VerticalAlignment="Top" Width="141" Click="btnAddDrone_Click"/>
-        <Button x:Name="btnUpdateDrone" Content="Update a Drone" HorizontalAlignment="Left" Margin="350,128,0,0" VerticalAlignment="Top" Height="74" Width="131" Click="btnUpdateDrone_Click"/>
+       <!-- <Button x:Name="btnUpdateDrone" Content="Update a Drone" HorizontalAlignment="Left" Margin="350,128,0,0" VerticalAlignment="Top" Height="74" Width="131" Click="btnUpdateDrone_Click"/> -->
     </Grid>
 </Window>

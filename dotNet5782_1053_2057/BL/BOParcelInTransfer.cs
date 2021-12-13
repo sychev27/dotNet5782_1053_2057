@@ -26,7 +26,7 @@ namespace IBL
 
             public override string ToString()
             {
-                string res = "Parcel " + Id + "from " + Sender.Name + " to " + Recipient + "\n";
+                string res = "Parcel " + Id + ": from " + Sender.Name + " to " + Recipient + "\n";
 
                 return res;
             }
