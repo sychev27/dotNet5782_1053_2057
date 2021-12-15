@@ -200,7 +200,7 @@ namespace WpfApp1
             tBlockLongInfo.Text = bodrone.Location.Longitude.ToString();
             tBlockLatinfo.Text = bodrone.Location.Latitude.ToString();
 
-            tBlockCurrentLocation.Text = "working on this....";
+            tBlockCurrentLocationInfo.Text = busiAccess.getDroneLocationString(bodrone.Id);
 
             tBlockBatteryInfo.Text = bodrone.Battery.ToString();
             //working on a function in BL..
