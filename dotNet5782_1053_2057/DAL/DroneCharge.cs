@@ -17,9 +17,12 @@ namespace IDAL
             {
                 DroneId = _droneId;
                 StationId = _stationId;
+                Exists = true;
             }
             public int DroneId { get; set; }
             public int StationId { get; set; }
+            public bool Exists { get; set; }
+
         }
 
     }

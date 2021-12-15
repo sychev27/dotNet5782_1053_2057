@@ -24,6 +24,7 @@ namespace IDAL
                 Phone = _phone;
                 Longitude = _longitude;
                 Latitude = _latitude;
+                Exists = true;
             }
 
             public int Id { get; set; }
@@ -31,6 +32,7 @@ namespace IDAL
             public string Phone { get; set; }
             public double Longitude { get; set; }
             public double Latitude { get; set; }
+            public bool Exists { get; set; }
 
             public override string ToString()
             {

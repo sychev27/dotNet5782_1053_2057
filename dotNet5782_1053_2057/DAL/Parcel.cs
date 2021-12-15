@@ -36,6 +36,7 @@ namespace IDAL
                 Scheduled = null;
                 Pickup = null;     //null...
                 Delivered = null; //null...
+                Exists = true;
             }
 
             public int Id { get; set; }
@@ -48,6 +49,7 @@ namespace IDAL
             public DateTime ?Scheduled { get; set; }
             public DateTime? Pickup { get; set; }
             public DateTime? Delivered { get; set; }
+            public bool Exists { get; set; }
 
             public override string ToString()
             {
