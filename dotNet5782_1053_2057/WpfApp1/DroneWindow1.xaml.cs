@@ -61,6 +61,8 @@ namespace WpfApp1
             tBlockLongInfo.Visibility = Visibility.Hidden;
             tBlockLatitude.Visibility = Visibility.Hidden;
             tBlockLatinfo.Visibility = Visibility.Hidden;
+            tBlockBattery.Visibility = Visibility.Hidden;
+            tBlockBatteryInfo.Visibility = Visibility.Hidden;
 
         }
 
@@ -199,6 +201,8 @@ namespace WpfApp1
             tBlockLatinfo.Text = bodrone.Location.Latitude.ToString();
 
             tBlockCurrentLocation.Text = "working on this....";
+
+            tBlockBatteryInfo.Text = bodrone.Battery.ToString();
             //working on a function in BL..
 
         }

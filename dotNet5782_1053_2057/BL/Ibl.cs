@@ -45,6 +45,11 @@ namespace IBL
 
 
 
+
+        string getDroneLocationString(int id);//returns string describing drone's location
+
+
+
         IEnumerable<IBL.BO.BOCustomerToList> getCustToList();
         IEnumerable<IBL.BO.BOParcelToList> getParcelToList();
         IEnumerable<IBL.BO.BOStationToList> getStationToList();

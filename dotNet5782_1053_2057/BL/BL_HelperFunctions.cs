@@ -382,6 +382,9 @@ namespace IB
                 return false;
         }
 
+
+
+
         //for printing these lists:
         public IEnumerable<IBL.BO.BOCustomerToList> getCustToList() 
         {
@@ -465,7 +468,54 @@ namespace IB
         }
 
 
+        public string getDroneLocationString(int id) //returns string describing location
+        //helpful for debugging adn user convenience
+        {
+            IBL.BO.BODrone bodrone = getBODrone(id);
+            if(bodrone.DroneStatus == IBL.BO.Enum.DroneStatus.Charging)
+            {
+                foreach (var item in dataAccess.getDroneCharges())
+                {
+                    if (item.DroneId == bodrone.Id)
+                        return "At Station " + item.StationId.ToString();
+                }
+            } 
+            else if(bodrone.DroneStatus == IBL.BO.Enum.DroneStatus.InDelivery)
+            {
+                if(bodrone.ParcelInTransfer != null)
+                {
+                    if (bodrone.Location == bodrone.ParcelInTransfer.PickupPoint)
+                        return "At Customer " + bodrone.ParcelInTransfer.Sender.Name;
+                    else if (bodrone.Location == bodrone.ParcelInTransfer.DeliveryPoint)
+                        return "At customer " + bodrone.ParcelInTransfer.Recipient.Name;
+                }
 
+            }
+            else if(bodrone.DroneStatus == IBL.BO.Enum.DroneStatus.Available)
+            {
+                //if at station - after charging
+                foreach (var station in dataAccess.getStations())
+                {
+                    IBL.BO.BOLocation stationLoc = new
+                        IBL.BO.BOLocation(station.Longitude, station.Latitude);
+
+                    if (bodrone.Location == stationLoc)
+                        return "At Station " + station.Id.ToString();
+                }
+                //if at customer
+                foreach (var cust in dataAccess.getCustomers())
+                {
+                    IBL.BO.BOLocation custLoc = new
+                        IBL.BO.BOLocation(cust.Longitude, cust.Latitude);
+
+                    if (bodrone.Location == custLoc)
+                        return "At Station " + cust.Id.ToString();
+                }
+
+            }
+
+            return "Could not locate..";
+        }
 
     }
 }
