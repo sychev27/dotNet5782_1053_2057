@@ -16,6 +16,7 @@ namespace IDAL
             // double longitude;
             // double latitude;
 
+            
             public Customer(int _id, string _name, string _phone, double _longitude,
                 double _latitude)
             {

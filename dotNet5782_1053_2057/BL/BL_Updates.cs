@@ -25,6 +25,8 @@ namespace IB
             boDrone.Location = getStationLocation(_stationId);
             boDrone.ParcelInTransfer = createEmptyParcInTrans();
             listDrone.Add(boDrone);
+
+            //add drone in charge!!
         }
         public void addCustomer(int _id, string _name, string _phone, double _longitude,
                 double _latitude)

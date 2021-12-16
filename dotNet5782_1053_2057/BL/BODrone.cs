@@ -18,6 +18,7 @@ namespace IBL
             public IBL.BO.BOParcelInTransfer ParcelInTransfer{ get; set;}
             public IBL.BO.BOLocation Location{ get; set;}
 
+
             public override string ToString()
             {
                 string res = "Drone " + Id + " Model: " + Model + " \n";

@@ -13,6 +13,7 @@ namespace IBL
             public int Id { get; set; }
             public string Name { get; set; }
 
+
             public BOCustomerInParcel(int _id, string _name)
             {
                 Id = _id;

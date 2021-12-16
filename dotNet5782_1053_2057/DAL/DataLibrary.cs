@@ -167,7 +167,7 @@ namespace DalObject
                 exampleD.MaxWeight = (IDAL.DO.WeightCategories) r.Next(1, 4);
                 exampleD.Model = droneModels[r.Next(0, 2)];
                 //exampleD.Status = (IDAL.DO.DroneStatus)r.Next(0, 3);
-
+                exampleD.Exists = true;
                 listDrone.Add(exampleD);
                 //thisConfig.indexAvailDrone++;
 
@@ -185,7 +185,7 @@ namespace DalObject
                 exampleS.Longitude = r.Next(LONGBEGIN, LONGEND) + r.NextDouble();
                 exampleS.Latitude = r.Next(LATBEGIN, LATEND) + r.NextDouble();
                 exampleS.ChargeSlots = r.Next(7, 13);
-
+                exampleS.Exists = true;
                 listStation.Add(exampleS);
                 //thisConfig.indexAvailStation++;
             }
@@ -210,7 +210,7 @@ namespace DalObject
 
                 exampleC.Name = customerNames[i];
                 exampleC.Phone = customerPhones[i];
-
+                exampleC.Exists = true;
 
                 listCustomer.Add(exampleC);
                 //thisConfig.indexAvailCustomer++;
@@ -234,6 +234,8 @@ namespace DalObject
                 int day = r.Next(1, 29);
                 int year = r.Next(2020, 2022);
                 exampleP.Requested = new DateTime(year, month, day);
+
+                exampleP.Exists = true;
 
                 if (i <= 5)
                     exampleP.DroneId = r.Next(1, 6);
