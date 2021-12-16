@@ -94,6 +94,7 @@ namespace DalObject
 
         public void addDrone(IDAL.DO.Drone drone)
         {
+
             listDrone.Add(drone);
         }
         public void addCustomer(IDAL.DO.Customer custom)
