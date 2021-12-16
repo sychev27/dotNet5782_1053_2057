@@ -117,6 +117,7 @@ namespace WpfApp1
                 {
                     busiAccess.addDrone(_id, _model, (IDAL.DO.WeightCategories)weight, _stationId);
                     MessageBox.Show("Drone Added Successfully", "SUCCESS", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
+                    Close();
                 }
                 catch (IBL.BO.EXAlreadyPrintException exception)
                 {
@@ -126,7 +127,7 @@ namespace WpfApp1
             else
                 return;
            
-            Close();
+            
         }
 
       
