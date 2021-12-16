@@ -69,7 +69,7 @@ namespace ConsoleUI_BL
             string _model = Console.ReadLine();
             try
             {
-                busiAccess.modifyDrone(_id, _model);
+                busiAccess.ModifyDrone(_id, _model);
             }
             catch(IBL.BO.EXNotFoundPrintException exception)
             {
@@ -90,7 +90,7 @@ namespace ConsoleUI_BL
             if (_phone == "0") _phone = "";
             try
             {
-                busiAccess.modifyCust(_id, _name, _phone);
+                busiAccess.ModifyCust(_id, _name, _phone);
             }
             catch(IBL.BO.EXNotFoundPrintException exception)
             {
@@ -110,7 +110,7 @@ namespace ConsoleUI_BL
             Int32.TryParse(Console.ReadLine(), out _numChargingSlots);
             try
             {
-                busiAccess.modifyStation(_id, _name, _numChargingSlots);
+                busiAccess.ModifyStation(_id, _name, _numChargingSlots);
             }
             catch(IBL.BO.EXNotFoundPrintException exception)
             {
@@ -139,7 +139,7 @@ namespace ConsoleUI_BL
                     Int32.TryParse(Console.ReadLine(), out id);
                     try
                     {
-                        busiAccess.assignParcel(id);
+                        busiAccess.AssignParcel(id);
                     }
                     catch(IBL.BO.EXNotFoundPrintException exception)
                     {
@@ -165,7 +165,7 @@ namespace ConsoleUI_BL
                     Int32.TryParse(Console.ReadLine(), out id);
                     try
                     {
-                        busiAccess.deliverParcel(id);
+                        busiAccess.DeliverParcel(id);
                     }
                     catch (IBL.BO.EXNotFoundPrintException exception) { exception.printException();}
                     catch (IBL.BO.EXPrintException exception) { exception.Print();}
@@ -175,7 +175,7 @@ namespace ConsoleUI_BL
                     Int32.TryParse(Console.ReadLine(), out id);
                     try
                     {
-                        busiAccess.chargeDrone(id);
+                        busiAccess.ChargeDrone(id);
                     }
                     catch (IBL.BO.EXNotFoundPrintException exception)
                     {
@@ -195,7 +195,7 @@ namespace ConsoleUI_BL
                     Double.TryParse(Console.ReadLine(), out minutesCharged);
                     try
                     {
-                        busiAccess.freeDrone(id, minutesCharged);
+                        busiAccess.FreeDrone(id, minutesCharged);
                     }
                     catch (IBL.BO.EXNotFoundPrintException exception) { exception.printException(); }
                     catch (IBL.BO.EXPrintException exception) { exception.Print(); }

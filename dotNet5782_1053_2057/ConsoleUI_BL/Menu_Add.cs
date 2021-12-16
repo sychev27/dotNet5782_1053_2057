@@ -57,7 +57,7 @@ namespace ConsoleUI_BL
             ////int num1 = 1;
             //int.TryParse(Console.ReadLine(), out num1);
 
-            busiAccess.addDrone(id, model, (IDAL.DO.WeightCategories)num, stationId);
+            busiAccess.AddDrone(id, model, (IDAL.DO.WeightCategories)num, stationId);
         }
         public void inputCustomer() //receives customer from user and adds to database
         {
@@ -71,7 +71,7 @@ namespace ConsoleUI_BL
             double.TryParse(Console.ReadLine(), out longitude);
             double latitude = 0;
             double.TryParse(Console.ReadLine(), out latitude);
-            busiAccess.addCustomer(id, name, phone, longitude, latitude);
+            busiAccess.AddCustomer(id, name, phone, longitude, latitude);
 
         }
         public void inputParcel() //receives parcel from user and adds to database
@@ -100,7 +100,7 @@ namespace ConsoleUI_BL
             int num1 = 1;
             int.TryParse(Console.ReadLine(), out num1);
 
-            busiAccess.addParcel(senderId, targetId, (IDAL.DO.WeightCategories)num,
+            busiAccess.AddParcel(senderId, targetId, (IDAL.DO.WeightCategories)num,
             (IDAL.DO.Priorities)num1);
 
         }
@@ -119,7 +119,7 @@ namespace ConsoleUI_BL
             double.TryParse(Console.ReadLine(), out latitude);
             int chargeSlots = 0;
             int.TryParse(Console.ReadLine(), out chargeSlots);
-            busiAccess.addStation(id, name, longitude, latitude, chargeSlots);
+            busiAccess.AddStation(id, name, longitude, latitude, chargeSlots);
         }
 
     }

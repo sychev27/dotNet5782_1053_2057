@@ -10,7 +10,7 @@ namespace IB
     {
 
         //ADD
-        public void addDrone(int _id, string _model, IDAL.DO.WeightCategories _maxWeight, int _stationId)
+        public void AddDrone(int _id, string _model, IDAL.DO.WeightCategories _maxWeight, int _stationId)
         {
             foreach (var item in dataAccess.getDrones())
             {
@@ -31,28 +31,28 @@ namespace IB
             boDrone.Location = getStationLocation(_stationId);
             boDrone.ParcelInTransfer = createEmptyParcInTrans();
             listDrone.Add(boDrone);
-            addDroneCharge(_id, _stationId);
+            AddDroneCharge(_id, _stationId);
 
             //add drone in charge!!
         }
-        public void addCustomer(int _id, string _name, string _phone, double _longitude,
+        public void AddCustomer(int _id, string _name, string _phone, double _longitude,
                 double _latitude)
         {
             IDAL.DO.Customer newCust = new IDAL.DO.Customer(_id, _name, _phone, _longitude, _latitude);
             dataAccess.addCustomer(newCust);
         }
-        public void addDroneCharge(int _droneId, int _stationId)
+        public void AddDroneCharge(int _droneId, int _stationId)
         {
             IDAL.DO.DroneCharge newDroneCharge = new IDAL.DO.DroneCharge(_droneId, _stationId);
             dataAccess.addDroneCharge(newDroneCharge);
         }
-        public void addParcel(int _senderId, int _targetId, IDAL.DO.WeightCategories _weight,
+        public void AddParcel(int _senderId, int _targetId, IDAL.DO.WeightCategories _weight,
                          IDAL.DO.Priorities _priority)// DateTime _requested, DateTime _scheduled)
         {
             IDAL.DO.Parcel dummy = new IDAL.DO.Parcel(_senderId, _targetId, _weight, _priority);
             dataAccess.addParcel(dummy);
         }
-        public void addStation(int _id, int _name, double _longitude, double _latitude, int _chargeSlots)
+        public void AddStation(int _id, int _name, double _longitude, double _latitude, int _chargeSlots)
         {
             IDAL.DO.Station dummy = new IDAL.DO.Station(_id, _name, _longitude, _latitude, _chargeSlots);
             dataAccess.addStation(dummy);
@@ -66,7 +66,7 @@ namespace IB
 
 
         //Modify
-        public void modifyDrone(int _id, string _model)
+        public void ModifyDrone(int _id, string _model)
         {
             try
             {
@@ -89,7 +89,7 @@ namespace IB
                 }
             }
         }
-        public void modifyCust(int _id, string _name, string _phone)
+        public void ModifyCust(int _id, string _name, string _phone)
         {
             try
             {
@@ -100,7 +100,7 @@ namespace IB
                 throw new IBL.BO.EXNotFoundPrintException("Custumer");
             }
         }
-        public void modifyStation(int _id, int _name, int _totalChargeSlots)
+        public void ModifyStation(int _id, int _name, int _totalChargeSlots)
         {
             try
             {
@@ -115,13 +115,13 @@ namespace IB
 
         //UPDATE ACTIONS
 
-        public void assignParcel(int droneId)  //drone determines its parcel based on algorithm
+        public void AssignParcel(int droneId)  //drone determines its parcel based on algorithm
         {
             IBL.BO.BODrone droneCopy = new IBL.BO.BODrone();
             //(1) find drone
             try
             {
-                droneCopy = getBODrone(droneId);
+                droneCopy = GetBODrone(droneId);
             }
             //if(copy.Id != droneId)
             //    throw exception//not found!
@@ -157,7 +157,7 @@ namespace IB
             IBL.BO.BODrone drone = new IBL.BO.BODrone();
             try
             {
-                drone = getBODrone(droneId);
+                drone = GetBODrone(droneId);
             }
             catch (IBL.BO.EXNotFoundPrintException) 
             {
@@ -183,12 +183,12 @@ namespace IB
         }
 
 
-        public void deliverParcel(int droneId) //drone delivers its pre-determined parcel
+        public void DeliverParcel(int droneId) //drone delivers its pre-determined parcel
         {
             IBL.BO.BODrone drone = new IBL.BO.BODrone();
             try
             {
-                drone = getBODrone(droneId);
+                drone = GetBODrone(droneId);
             }
             catch (IBL.BO.EXNotFoundPrintException) {throw new IBL.BO.EXNotFoundPrintException("Drone");}
             if (drone.DroneStatus != IBL.BO.Enum.DroneStatus.InDelivery)
@@ -208,12 +208,12 @@ namespace IB
             //throw Exception //parcel not delivered!
             throw new IBL.BO.EXPrintException("parcel not delivered!");
         }
-        public void chargeDrone(int droneId) //sends drone to available station
+        public void ChargeDrone(int droneId) //sends drone to available station
         {
             IBL.BO.BODrone drone;
             try
             {
-                drone = getBODrone(droneId);
+                drone = GetBODrone(droneId);
             }
             catch (IBL.BO.EXNotFoundPrintException) { throw new IBL.BO.EXNotFoundPrintException("Drone");}
             if(drone.DroneStatus != IBL.BO.Enum.DroneStatus.Available)
@@ -231,17 +231,17 @@ namespace IB
             drone.DroneStatus = IBL.BO.Enum.DroneStatus.Charging;
             try
             {
-                addDroneCharge(drone.Id, getStationFromLoc(closestStationLoc).Id);
+                AddDroneCharge(drone.Id, getStationFromLoc(closestStationLoc).Id);
             }
             catch (IBL.BO.EXNotFoundPrintException) {throw new IBL.BO.EXNotFoundPrintException("Station"); }
             //station's available charging slots update automatcially
         }
-        public void freeDrone(int droneId, double minutesInCharge) //frees drone from station.. 
+        public void FreeDrone(int droneId, double minutesInCharge) //frees drone from station.. 
         {
             IBL.BO.BODrone drone;
             try
             {
-                drone = getBODrone(droneId);
+                drone = GetBODrone(droneId);
             }
             catch (IBL.BO.EXNotFoundPrintException) {throw new IBL.BO.EXNotFoundPrintException("Drone");}
 

@@ -14,14 +14,39 @@ namespace IB
         public const string STATION = "station";
         public const string PRCL_TO_ASSIGN = "ParcelsNotYetAssigned";
         public const string CHARGING_STATIONS = "availChargingStations";
-
-
     }
 
-    public partial class BL : IBL.Ibl //CTOR
-    {
-        IDAL.IDal dataAccess = new DalObject.DataSource();
 
+    //public sealed class SingletonBl
+    //{
+    //    private static IB.BL obj;
+
+    //    // private constructor to force use of
+    //    // getInstance() to create Singleton object
+    //    private SingletonBl() { }
+
+    //    public static SingletonBl getInstance()
+    //    {
+    //        if (obj == null)
+    //            obj = new SingletonBl();
+    //        return obj;
+    //    }
+
+
+    //}
+
+    
+    public partial class BL : IBL.Ibl 
+    {
+        class NestedClass //for Lazy Initialization...
+        {
+            static NestedClass() { }
+            internal static readonly BL instance = new BL(); //constructed only one
+        }
+        
+        public static BL Instance {  get { return NestedClass.instance; } }
+
+        IDAL.IDal dataAccess = new DalObject.DataSource();
         Random r = new Random();
 
         internal double empty;
@@ -32,8 +57,9 @@ namespace IB
 
         List<IBL.BO.BODrone> listDrone = new List<IBL.BO.BODrone>();
 
-        
-        public BL() //main constructor 
+        //Lazy Initialization...
+        static BL() { }
+        private BL() //Private CTOR - implementing Singleton Design Pattern
         {
             dataAccess.Initialize();
 
@@ -102,7 +128,7 @@ namespace IB
                         drone.Battery = r.Next(0, 20);
                         drone.Battery += r.NextDouble();
 
-                        addDroneCharge(drone.Id, st.Id);
+                        AddDroneCharge(drone.Id, st.Id);
                     }
                     else if (drone.DroneStatus == IBL.BO.Enum.DroneStatus.Available)
                     {
@@ -333,7 +359,7 @@ namespace IB
         }
 
 
-        public IBL.BO.BOStation createBOStation(int id)
+        public IBL.BO.BOStation CreateBOStation(int id)
         {
             IDAL.DO.Station origSt = new IDAL.DO.Station();
             try
@@ -356,12 +382,12 @@ namespace IB
             {
                 IBL.BO.BODroneInCharge d = new IBL.BO.BODroneInCharge();
                 d.Id = item.DroneId;
-                d.Battery = getBODrone(d.Id).Battery;
+                d.Battery = GetBODrone(d.Id).Battery;
                 newSt.ListDroneCharge.Add(d);
             }
             return newSt;
         }
-        public IBL.BO.BOCustomer createBOCustomer(int id)
+        public IBL.BO.BOCustomer CreateBOCustomer(int id)
         {
             IBL.BO.BOCustomer newCust = new IBL.BO.BOCustomer();
             IDAL.DO.Customer origCust = new IDAL.DO.Customer();
@@ -397,7 +423,7 @@ namespace IB
         }
 
 
-        public IBL.BO.BOParcel createBOParcel(int id)
+        public IBL.BO.BOParcel CreateBOParcel(int id)
         {
             IBL.BO.BOParcel newParc = new IBL.BO.BOParcel();
             IDAL.DO.Parcel origParc = new IDAL.DO.Parcel();
@@ -462,7 +488,7 @@ namespace IB
         public IBL.BO.BODroneToList createBODroneToList(int _id)
         {
             IBL.BO.BODroneToList newDroneToList = new IBL.BO.BODroneToList();
-            IBL.BO.BODrone origBODrone = getBODrone(_id);
+            IBL.BO.BODrone origBODrone = GetBODrone(_id);
             newDroneToList.Id = origBODrone.Id;
             newDroneToList.Model = origBODrone.Model;
             newDroneToList.MaxWeight = origBODrone.MaxWeight;

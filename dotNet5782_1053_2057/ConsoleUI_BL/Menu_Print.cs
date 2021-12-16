@@ -34,7 +34,7 @@ namespace ConsoleUI_BL
         {
             try
             {
-                Console.WriteLine(busiAccess.getBODrone(_id).ToString() + "\n");
+                Console.WriteLine(busiAccess.GetBODrone(_id).ToString() + "\n");
             }
             catch(IBL.BO.EXNotFoundPrintException exception)
             {
@@ -45,7 +45,7 @@ namespace ConsoleUI_BL
         {
             try
             {
-                Console.WriteLine(busiAccess.createBOCustomer(_id).ToString() + "\n");
+                Console.WriteLine(busiAccess.CreateBOCustomer(_id).ToString() + "\n");
             }
             catch (IBL.BO.EXNotFoundPrintException exception) 
             {
@@ -57,7 +57,7 @@ namespace ConsoleUI_BL
         {
             try
             {
-                Console.WriteLine(busiAccess.createBOStation(_id).ToString() + "\n");
+                Console.WriteLine(busiAccess.CreateBOStation(_id).ToString() + "\n");
             }
             catch(IBL.BO.EXNotFoundPrintException exception)
             {
@@ -68,7 +68,7 @@ namespace ConsoleUI_BL
         {
             try
             {
-                Console.WriteLine(busiAccess.createBOParcel(_id).ToString() + "\n");
+                Console.WriteLine(busiAccess.CreateBOParcel(_id).ToString() + "\n");
             }
             catch (IBL.BO.EXNotFoundPrintException exception)
             {
@@ -82,32 +82,32 @@ namespace ConsoleUI_BL
             switch (_item)
             {
                 case DRONE:
-                    foreach (var item in busiAccess.getDroneToList())
+                    foreach (var item in busiAccess.GetDroneToList())
                         Console.WriteLine(item.ToString());
                     Console.WriteLine("\n");
                     break;
                 case CUSTOMER:
-                    foreach (var item in busiAccess.getCustToList())
+                    foreach (var item in busiAccess.GetCustToList())
                         Console.WriteLine(item.ToString());
                     Console.WriteLine("\n");
                     break;
                 case PARCEL:
-                    foreach (var item in busiAccess.getParcelToList())
+                    foreach (var item in busiAccess.GetParcelToList())
                         Console.WriteLine(item.ToString());
                     Console.WriteLine("\n");
                     break;
                 case STATION:
-                    foreach (var item in busiAccess.getStationToList())
+                    foreach (var item in busiAccess.GetStationToList())
                         Console.WriteLine(item.ToString());
                     Console.WriteLine("\n");
                     break;
                 case CHARGING_STATIONS: //prints Stations with available charging slots
-                    foreach (var item in busiAccess.getStationAvailChargeSlots())
+                    foreach (var item in busiAccess.GetStationAvailChargeSlots())
                         Console.Write(item.ToString());
                     Console.Write("\n");
                     break;
                 case PRCL_TO_ASSIGN: //prints parcels that have not yet been assigned
-                    foreach (var item in busiAccess.getParcelsNotYetAssigned())
+                    foreach (var item in busiAccess.GetParcelsNotYetAssigned())
                         Console.Write(item.ToString());
                     Console.Write("\n");
                     break;

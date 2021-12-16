@@ -115,8 +115,9 @@ namespace WpfApp1
             {
                 try
                 {
-                    busiAccess.addDrone(_id, _model, (IDAL.DO.WeightCategories)weight, _stationId);
+                    busiAccess.AddDrone(_id, _model, (IDAL.DO.WeightCategories)weight, _stationId);
                     MessageBox.Show("Drone Added Successfully", "SUCCESS", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
+                    new DroneListWindow(busiAccess).Show();
                 }
                 catch (IBL.BO.EXAlreadyPrintException exception)
                 {
@@ -175,8 +176,8 @@ namespace WpfApp1
 
             tBoxIdInput.Text = bodrone.Id.ToString();
             tBoxModelInput.Text = bodrone.Model;
-            if (busiAccess.getStationIdOfBODrone(bodrone.Id) != -1)
-                tBoxStationIdInput.Text = (busiAccess.getStationIdOfBODrone(bodrone.Id)).ToString();
+            if (busiAccess.GetStationIdOfBODrone(bodrone.Id) != -1)
+                tBoxStationIdInput.Text = (busiAccess.GetStationIdOfBODrone(bodrone.Id)).ToString();
             else
                 tBoxStationIdInput.Text = "Drone is not charging at a Station";
 
@@ -192,7 +193,7 @@ namespace WpfApp1
             tBlockLongInfo.Text = bodrone.Location.Longitude.ToString();
             tBlockLatinfo.Text = bodrone.Location.Latitude.ToString();
 
-            tBlockCurrentLocationInfo.Text = busiAccess.getDroneLocationString(bodrone.Id);
+            tBlockCurrentLocationInfo.Text = busiAccess.GetDroneLocationString(bodrone.Id);
 
             tBlockBatteryInfo.Text = bodrone.Battery.ToString();
             //working on a function in BL..
@@ -232,38 +233,38 @@ namespace WpfApp1
         {
             int id;
             Int32.TryParse(tBoxIdInput.Text, out id);
-            busiAccess.modifyDrone(id, tBoxModelInput.Text);
+            busiAccess.ModifyDrone(id, tBoxModelInput.Text);
            
         }
 
         private void btnSendToCharge_Click(object sender, RoutedEventArgs e)
         {
-            busiAccess.chargeDrone(thisDroneId);
-            displayBODrone(busiAccess.getBODrone(thisDroneId));
+            busiAccess.ChargeDrone(thisDroneId);
+            displayBODrone(busiAccess.GetBODrone(thisDroneId));
         }
 
         private void btnFreeDroneFromCharge_Click(object sender, RoutedEventArgs e)
         {
-            busiAccess.freeDrone(thisDroneId, 0);
-            displayBODrone(busiAccess.getBODrone(thisDroneId));
+            busiAccess.FreeDrone(thisDroneId, 0);
+            displayBODrone(busiAccess.GetBODrone(thisDroneId));
         }
 
         private void btnPickupPkg_Click(object sender, RoutedEventArgs e)
         {
             busiAccess.PickupParcel(thisDroneId);
-            displayBODrone(busiAccess.getBODrone(thisDroneId));
+            displayBODrone(busiAccess.GetBODrone(thisDroneId));
         }
 
         private void btnSendDroneToCustomer_Click(object sender, RoutedEventArgs e)
         {
-            busiAccess.assignParcel(thisDroneId);
-            displayBODrone(busiAccess.getBODrone(thisDroneId));
+            busiAccess.AssignParcel(thisDroneId);
+            displayBODrone(busiAccess.GetBODrone(thisDroneId));
         }
 
         private void btnDeliverPkg_Click(object sender, RoutedEventArgs e)
         {
-            busiAccess.deliverParcel(thisDroneId);
-            displayBODrone(busiAccess.getBODrone(thisDroneId));
+            busiAccess.DeliverParcel(thisDroneId);
+            displayBODrone(busiAccess.GetBODrone(thisDroneId));
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)

@@ -20,13 +20,12 @@ namespace WpfApp1
     public partial class DroneListWindow : Window
     {
         IBL.Ibl busiAccess;
-        
         public DroneListWindow(IBL.Ibl busiAccess1)
         {
             InitializeComponent();
             busiAccess = busiAccess1;
 
-            DronesListView.ItemsSource = busiAccess.getBODroneList();
+            DronesListView.ItemsSource = busiAccess.GetBODroneList();
             StatusSelector1.ItemsSource = Enum.GetValues(typeof(IBL.BO.Enum.DroneStatus));
             StatusSelector2.ItemsSource = Enum.GetValues(typeof(IBL.BO.Enum.WeightCategories));
 
@@ -35,18 +34,19 @@ namespace WpfApp1
         private void StatusSelector1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = StatusSelector1.SelectedIndex;
-            DronesListView.ItemsSource = busiAccess.getSpecificDroneListStatus(index);
+            DronesListView.ItemsSource = busiAccess.GetSpecificDroneListStatus(index);
         }
 
         private void StatusSelector2_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             int index = StatusSelector2.SelectedIndex;
-            DronesListView.ItemsSource = busiAccess.getSpecificDroneListWeight(index);
+            DronesListView.ItemsSource = busiAccess.GetSpecificDroneListWeight(index);
         }
 
        private void btnAddDrone1_Click(object sender, RoutedEventArgs e)
        {
          new DroneWindow(busiAccess,0).Show();
+         //Close();
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
@@ -63,7 +63,7 @@ namespace WpfApp1
         private void btnRefresh_Click(object sender, RoutedEventArgs e)
         {
             DronesListView.ItemsSource = null;
-            DronesListView.ItemsSource = busiAccess.getBODroneList();
+            DronesListView.ItemsSource = busiAccess.GetBODroneList();
         }
     }
 }
