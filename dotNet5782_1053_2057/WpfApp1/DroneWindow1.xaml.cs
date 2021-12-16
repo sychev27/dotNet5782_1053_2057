@@ -61,6 +61,8 @@ namespace WpfApp1
             tBlockLongInfo.Visibility = Visibility.Hidden;
             tBlockLatitude.Visibility = Visibility.Hidden;
             tBlockLatinfo.Visibility = Visibility.Hidden;
+            tBlockBattery.Visibility = Visibility.Hidden;
+            tBlockBatteryInfo.Visibility = Visibility.Hidden;
 
         }
 
@@ -190,7 +192,9 @@ namespace WpfApp1
             tBlockLongInfo.Text = bodrone.Location.Longitude.ToString();
             tBlockLatinfo.Text = bodrone.Location.Latitude.ToString();
 
-            tBlockCurrentLocation.Text = "working on this....";
+            tBlockCurrentLocationInfo.Text = busiAccess.getDroneLocationString(bodrone.Id);
+
+            tBlockBatteryInfo.Text = bodrone.Battery.ToString();
             //working on a function in BL..
 
         }
@@ -278,71 +282,6 @@ namespace WpfApp1
 
 
 
-
-        //public DroneWindow(IBL.Ibl _busiAccess, char let) //Update Drone CTOR, 
-        //    //called from Main Window Only!
-        //{
-        //    //(1) Disable irrelevant buttons
-        //    InitializeComponent();
-        //    busiAccess = _busiAccess;
-
-        //    btnAddDrone.IsEnabled = false;
-        //    btnAddDrone.Visibility = Visibility.Hidden;
-
-        //    tBoxModelInput.IsEnabled = true;
-        //    tBoxStationIdInput.IsEnabled = false;
-
-
-        //    btnModifyDroneModel.IsEnabled = false;
-        //    btnSendDroneToCustomer.IsEnabled = false;
-        //    btnFreeDroneFromCharge.IsEnabled = false;
-        //    btnPickupPkg.IsEnabled = false;
-        //    btnSendToCharge.IsEnabled = false;
-        //    btnDeliverPkg.IsEnabled = false;
-
-        //    //(2) Display this drone
-
-
-        //}
-
-
-        //private void btnGetDrone_Click(object sender, RoutedEventArgs e)
-        //{
-        //    int droneId;
-        //    Int32.TryParse(tBoxIdInput.Text, out droneId);
-        //    //alex write code here, if ID wasnt typed correctly. exception
-        //    //and if boDrone doesnt exists
-        //    //create an error msg
-
-        //    //AFTER THROWING EXCEPTIONS:
-
-        //    tBlock_chooseDroneId.Text = "Drone ID: ";
-        //    tBoxIdInput.Text = droneId.ToString();
-        //    tBoxIdInput.IsEnabled = false;
-        //    thisDroneId = droneId;
-
-        //    if (busiAccess.getStationIdOfBODrone(droneId) != -1)
-        //        tBoxStationIdInput.Text = (busiAccess.getStationIdOfBODrone(droneId)).ToString();
-        //    else
-        //        tBoxStationIdInput.Text = "Drone is not charging at a Station";
-
-        //    tBlock_chooseModel.Text = "Model";
-        //    tBoxModelInput.Text = busiAccess.getBODroneModel(droneId);
-        //    tBoxModelInput.IsEnabled = true;
-
-        //    tBlock_chooseMaxWeight.Text = "Max Weight: \n" + busiAccess.getBoDroneMaxWeight(droneId);
-
-
-        //    //enable modifying buttons:
-        //    btnModifyDroneModel.IsEnabled = true;
-        //    btnFreeDroneFromCharge.IsEnabled = true;
-        //    btnSendDroneToCustomer.IsEnabled = true;
-        //    btnPickupPkg.IsEnabled = true;
-        //    btnSendToCharge.IsEnabled = true;
-        //    btnDeliverPkg.IsEnabled = true;
-
-
-        //}
 
     }
 }

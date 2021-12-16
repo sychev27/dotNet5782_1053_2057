@@ -19,12 +19,14 @@ namespace IDAL
                 Longitude = _longitude;
                 Latitude = _latitude;
                 ChargeSlots = _chargeSlots; //total charge slots 
+                Exists = true;
             }
             public int Id { get; set; }
             public int Name { get; set; }
             public double Longitude { get; set; }
             public double Latitude { get; set; }
             public int ChargeSlots { get; set; }
+            public bool Exists { get; set; }
 
             public override string ToString()
             {

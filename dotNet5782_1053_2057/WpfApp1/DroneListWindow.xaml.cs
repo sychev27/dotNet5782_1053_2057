@@ -46,11 +46,7 @@ namespace WpfApp1
 
        private void btnAddDrone1_Click(object sender, RoutedEventArgs e)
        {
-          // Close();
-           new DroneWindow(busiAccess,0).Show();
-             DronesListView.ItemsSource = null;
-             DronesListView.ItemsSource = busiAccess.getBODroneList();
-           // new DroneListWindow(busiAccess).Show();
+         new DroneWindow(busiAccess,0).Show();
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
@@ -62,6 +58,12 @@ namespace WpfApp1
         {
             IBL.BO.BODrone drone = DronesListView.SelectedItem as IBL.BO.BODrone;
             new DroneWindow(busiAccess, drone).Show();
+        }
+
+        private void btnRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            DronesListView.ItemsSource = null;
+            DronesListView.ItemsSource = busiAccess.getBODroneList();
         }
     }
 }

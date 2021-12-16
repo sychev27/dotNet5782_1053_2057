@@ -24,8 +24,9 @@
             <TextBlock x:Name="tBlockStatus" Grid.Row="4" Text="Status:" TextWrapping="Wrap" Margin="5,5,5,5"/>
             <TextBlock x:Name="tBlockDelivery" Grid.Row="5" Text="Delivery:" TextWrapping="Wrap" Margin="5,5,5,5"/>
             <TextBlock x:Name="tBlockCurrentLocation" Grid.Row="6"  Margin="5,5,5,5" TextWrapping="Wrap"><Run Text="Current "/><Run Text="Location:"/></TextBlock>
-            <TextBlock x:Name="tBlockLongitude" Grid.Row="7" Text="Longitude:" TextWrapping="Wrap" Margin="5,5,5,5" Grid.RowSpan="2"/>
+            <TextBlock x:Name="tBlockLongitude" Grid.Row="9" Text="Longitude:" TextWrapping="Wrap" Margin="5,5,5,5"/>
             <TextBlock x:Name="tBlockLatitude" Grid.Row="8" Text="Latitude:" TextWrapping="Wrap" Margin="5,5,5,5"/>
+            <TextBlock x:Name="tBlockBattery" Grid.Row="7" Text="Battery:" TextWrapping="Wrap" Height="Auto" Width="Auto" Margin="5,5,5,5"/>
 
 
 
@@ -36,13 +37,14 @@
             <TextBlock x:Name="tBlockStatusInfo" Grid.Column="1" Grid.Row="4" Text="TextBlock" TextWrapping="Wrap" Margin="5,5,5,5"/>
             <TextBlock x:Name="tBlockDeliveryInfo" Grid.Column="1" Grid.Row="5" Text="TextBlock" TextWrapping="Wrap" Margin="5,5,5,5"/>
             <TextBlock x:Name="tBlockCurrentLocationInfo" Grid.Column="1" Grid.Row="6" Text="TextBlock" TextWrapping="Wrap" Margin="5,5,5,5"/>
-            <TextBlock x:Name="tBlockLongInfo" Grid.Column="1" Grid.Row="7" Text="TextBox" TextWrapping="Wrap" Margin="5,5,5,5"/>
-            <TextBlock x:Name="tBlockLatinfo" Grid.Column="1" Grid.Row="8" Text="TextBox" TextWrapping="Wrap" Margin="5,5,5,5"/>
+            <TextBlock x:Name="tBlockLongInfo" Grid.Column="1" Grid.Row="9" Text="TextBlock" TextWrapping="Wrap" Margin="5,5,5,5"/>
+            <TextBlock x:Name="tBlockLatinfo" Grid.Column="1" Grid.Row="8" Text="TextBlock" TextWrapping="Wrap" Margin="5,5,5,5"/>
+            <TextBlock x:Name="tBlockBatteryInfo" Grid.Column="1" Grid.Row="7" Text="TextBlock" TextWrapping="Wrap" Margin="4,5,5,5" />
 
 
 
-            <Button x:Name ="btnAddDrone" Content="Add Drone" Grid.Row="9" Click = "btnAddDrone_Click" Grid.Column="1" Margin="5,5,5,5"/>
-           <!-- <Button x:Name ="btnGetDrone" Content="Get Drone" Grid.Column="2" Click="btnGetDrone_Click" HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Margin="5,5,5,5" Width="Auto"/>  -->
+            <Button x:Name ="btnAddDrone" Content="Add Drone" Grid.Row="10" Click = "btnAddDrone_Click" Grid.Column="1" HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Margin="5,5,5,5" Width="Auto"/>
+            <!-- <Button x:Name ="btnGetDrone" Content="Get Drone" Grid.Column="2" Click="btnGetDrone_Click" HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Margin="5,5,5,5" Width="Auto"/>  -->
             <Button x:Name ="btnModifyDroneModel" Content="Modify Model" Grid.Column="2" Grid.Row="1" Click="btnModifyDroneModel_Click" HorizontalAlignment="Stretch" Margin="5,5,5,5"  Width="Auto"/>
 
             <Button x:Name="btnSendToCharge" Content="Send Drone To Charge" Grid.Column="3" Click="btnSendToCharge_Click" Margin="5,5,5,5" />
@@ -50,7 +52,7 @@
             <Button x:Name="btnPickupPkg"  Content="Pick Up Package" Grid.Column="3" Grid.Row="3" Margin="5,5,5,5" Click="btnPickupPkg_Click"/>
             <Button x:Name="btnSendDroneToCustomer" Content="Send Drone To Customer" Grid.Column="3" Grid.Row="2" Click="btnSendDroneToCustomer_Click" Margin="5,5,5,5"/>
             <Button x:Name ="btnDeliverPkg" Content="Deliver Package" Grid.Column="3" Grid.Row="4" Margin="5,5,5,5" Click="btnDeliverPkg_Click"/>
-            <Button x:Name="btnCancel" Content="Cancel" Grid.Row="9" RenderTransformOrigin="0.5,0.5" Margin="5,5,5,5" Click="btnCancel_Click" Height="Auto" VerticalAlignment="Stretch">
+            <Button x:Name="btnCancel" Content="Cancel" Grid.Row="10" RenderTransformOrigin="0.5,0.5" Click="btnCancel_Click" HorizontalAlignment="Stretch" Margin="5,5,5,5" VerticalAlignment="Stretch" Width="Auto">
                 <Button.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform/>
@@ -60,7 +62,7 @@
                     </TransformGroup>
                 </Button.RenderTransform>
             </Button>
-           
+
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="45*"/>
@@ -78,6 +80,8 @@
                 <RowDefinition Height ="*"/>
                 <RowDefinition Height ="*"/>
                 <RowDefinition Height ="*"/>
+                <RowDefinition Height ="*"/>
+
                 <RowDefinition Height ="*"/>
 
             </Grid.RowDefinitions>

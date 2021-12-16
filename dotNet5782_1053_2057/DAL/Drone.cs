@@ -17,6 +17,7 @@ namespace IDAL
                 Id = _id;
                 Model = _model;
                 MaxWeight = _maxWeight;
+                Exists = true;
                 //Status = _status;
                 //Battery = _battery;
             }
@@ -24,6 +25,7 @@ namespace IDAL
             public int Id { get; set; }
             public string Model { get; set; }
             public IDAL.DO.WeightCategories MaxWeight { get; set; }
+            public bool Exists { get; set; }
 
             //public IDAL.DO.DroneStatus Status { get; set; }
             //public double Battery { get; set; }

@@ -18,13 +18,14 @@ namespace IBL
             public IBL.BO.BOParcelInTransfer ParcelInTransfer{ get; set;}
             public IBL.BO.BOLocation Location{ get; set;}
 
+
             public override string ToString()
             {
                 string res = "Drone " + Id + " Model: " + Model + " \n";
                 res += "Battery: " + Battery + " \nStatus: " + DroneStatus + "\n";
                 res += "MaxWeight: " + MaxWeight + "\n";
 
-                if ((ParcelInTransfer.Id != -1))
+                if ((ParcelInTransfer.Id != -1) && ParcelInTransfer.Id != 0)
                     res += ParcelInTransfer.ToString();
 
                 return res;

@@ -101,6 +101,8 @@ namespace IB
                         //(2) SET BATTERY - btw 0 to 20%
                         drone.Battery = r.Next(0, 20);
                         drone.Battery += r.NextDouble();
+
+                        addDroneCharge(drone.Id, st.Id);
                     }
                     else if (drone.DroneStatus == IBL.BO.Enum.DroneStatus.Available)
                     {
@@ -201,7 +203,7 @@ namespace IB
         IBL.BO.BOParcelInTransfer createEmptyParcInTrans()
         {
             IBL.BO.BOParcelInTransfer thisParc = new IBL.BO.BOParcelInTransfer();
-            thisParc.Id = 0;
+            thisParc.Id = -1;
             thisParc.Collected = false;
             thisParc.Priority = (IBL.BO.Enum.Priorities)0;
             thisParc.MaxWeight = (IBL.BO.Enum.WeightCategories)0;
