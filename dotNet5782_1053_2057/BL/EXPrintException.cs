@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BL
 {
-    namespace BO
+    namespace BLApi
     {
         public class EXPrintException:Exception
         {

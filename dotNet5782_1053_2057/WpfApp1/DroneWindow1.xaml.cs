@@ -119,9 +119,17 @@ namespace WpfApp1
                     MessageBox.Show("Drone Added Successfully", "SUCCESS", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
                     Close();
                 }
-                catch (BL.BO.EXAlreadyPrintException exception)
+                catch (BL.BLApi.EXAlreadyExistsPrintException exception)
                 {
-                    MessageBox.Show(exception.printException(), "Error Message", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+                    //if Drone's Id already exists
+                    MessageBox.Show(exception.printException(), "Error Message", 
+                        MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+                }
+                catch (BL.BLApi.EXNotFoundPrintException ex)
+                {
+                    //if Station not found.. (must Add Drone at existing Station...)
+                    MessageBox.Show(ex.ToString(), "Error Message", 
+                        MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
                 }
             }
             else

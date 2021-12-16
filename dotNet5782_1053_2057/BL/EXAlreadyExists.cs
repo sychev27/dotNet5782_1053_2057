@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace BL
 {
-    namespace BO
+    namespace BLApi
     {
-        public class EXAlreadyPrintException:Exception
+        public class EXAlreadyExistsPrintException:Exception
         {
             public string ItemName { get; }
-            public EXAlreadyPrintException(string name)
+            public EXAlreadyExistsPrintException(string name)
             {
                 ItemName = name;
             }

@@ -6,22 +6,22 @@ using System.Threading.Tasks;
 
 namespace BL
 {
-    namespace BO
+    namespace BLApi
     {
         class EXCustInParcNotFoundException : Exception
         {
-           public BOCustomerInParcel creatEmptyCustInParc()
+           public BO.BOCustomerInParcel creatEmptyCustInParc()
             {
-                BOCustomerInParcel ans = new BOCustomerInParcel(-1,"");
+                BO.BOCustomerInParcel ans = new BO.BOCustomerInParcel(-1,"");
                 return ans;
             }
         }
 
         class EXParcInTransNotFoundException : Exception
         {
-            public BOParcelInTransfer creatEmptyParcInTrans()
+            public BO.BOParcelInTransfer creatEmptyParcInTrans()
             {
-                BOParcelInTransfer ans = new BOParcelInTransfer();
+                BO.BOParcelInTransfer ans = new BO.BOParcelInTransfer();
                 ans.Id = -1;
                 return ans;
             }
@@ -35,7 +35,10 @@ namespace BL
             {
                 ItemName = name;
             }
-
+            public override string ToString()
+            {
+                return ItemName + " not found";
+            }
             public void printException()
             {
                 Console.WriteLine(ItemName + " not found!/n");
