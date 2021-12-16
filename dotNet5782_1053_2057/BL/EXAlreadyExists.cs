@@ -8,10 +8,10 @@ namespace IBL
 {
     namespace BO
     {
-        public class EXAlreadyPrintException:Exception
+        public class EXAlreadyExistsPrintException:Exception
         {
             public string ItemName { get; }
-            public EXAlreadyPrintException(string name)
+            public EXAlreadyExistsPrintException(string name)
             {
                 ItemName = name;
             }
