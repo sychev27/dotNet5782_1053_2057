@@ -61,7 +61,7 @@ namespace IB
 
                 if (drone.ParcelInTransfer.Id != -1 && drone.ParcelInTransfer != null)
                 {
-                    //IF DRONE HAS A PARCEL
+                    //IF DRONE ALREADY ASSIGNED A PARCEL
                     if (!drone.ParcelInTransfer.Collected) //but not yet COLLECTED
                     {
                         //(1) SET LOCATION - to closest station by station
@@ -123,6 +123,7 @@ namespace IB
                         double battery = r.Next((int)minBatteryNeeded + 1, 100);
                         battery += r.NextDouble();
                         drone.Battery = battery;
+
                     }
 
                 }
