@@ -87,12 +87,6 @@ namespace WpfApp1
                 tBlock_chooseDroneId.Foreground = new SolidColorBrush(Colors.Red);
                 validData = false;
             }
-            else if (busiAccess.droneIdExists(_id))
-            {
-                tBlock_chooseDroneId.Text = "Drone Id is not unique!";
-                tBlock_chooseDroneId.Foreground = new SolidColorBrush(Colors.Red);
-                validData = false;
-            }
 
 
             if(tBoxModelInput.Text == null || tBoxModelInput.Text == "")
@@ -117,21 +111,19 @@ namespace WpfApp1
             //(3) Add Drone..
             if (validData)
             {
-                busiAccess.addDrone(_id, _model, (IDAL.DO.WeightCategories)weight, _stationId);
-                //try
-                //{
-                //    busiAccess.addDrone(_id, _model, (IDAL.DO.WeightCategories)weight, _stationId);
-                //}
-                //catch (IDAL.DO.EXItemNotFoundException)
-                //{
-
-                //    throw;
-                //} 
+                try
+                {
+                    busiAccess.addDrone(_id, _model, (IDAL.DO.WeightCategories)weight, _stationId);
+                    MessageBox.Show("Drone Added Successfully", "SUCCESS", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
+                }
+                catch (IBL.BO.EXAlreadyPrintException exception)
+                {
+                    MessageBox.Show(exception.printException(), "ALREADY", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+                }
             }
             else
                 return;
-            
-            MessageBox.Show("Drone Added Successfully","SUCCESS",MessageBoxButton.OK, MessageBoxImage.Information,MessageBoxResult.OK);
+           
             Close();
         }
 

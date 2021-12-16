@@ -12,6 +12,12 @@ namespace IB
         //ADD
         public void addDrone(int _id, string _model, IDAL.DO.WeightCategories _maxWeight, int _stationId)
         {
+            foreach (var item in dataAccess.getDrones())
+            {
+                if (item.Id == _id)
+                    throw new IBL.BO.EXAlreadyPrintException("Drone"); 
+            }
+
             IDAL.DO.Drone newDOdrone = new IDAL.DO.Drone(_id, _model, _maxWeight);
             dataAccess.addDrone(newDOdrone); //adds to DL
 
