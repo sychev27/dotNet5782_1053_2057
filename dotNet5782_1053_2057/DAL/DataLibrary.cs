@@ -47,14 +47,14 @@ namespace DalObject
         public IDAL.DO.Drone getDrone(int _id) {
             IDAL.DO.Drone  drone = new IDAL.DO.Drone(0,"",0);
             for (int i = 0; i < listDrone.Count; i++)
-                if (listDrone[i].Id == _id)
+                if (listDrone[i].Id == _id  && listDrone[i].Exists)
                     drone = listDrone[i];
             return drone;
         }
         public IDAL.DO.Customer getCustomer(int _id) {
             IDAL.DO.Customer cust = new IDAL.DO.Customer(0, "", "", 0, 0);
             for (int i = 0; i < listCustomer.Count; i++)
-                if (listCustomer[i].Id == _id)
+                if (listCustomer[i].Id == _id && listCustomer[i].Exists)
                     cust = listCustomer[i];
             if (cust.Id == 0) throw new IDAL.DO.EXItemNotFoundException();
             return cust;
@@ -63,7 +63,7 @@ namespace DalObject
         {
             IDAL.DO.Parcel parcel = new IDAL.DO.Parcel(0, 0, 0, 0);// DateTime.MinValue,DateTime.MinValue);
             for (int i = 0; i < listParcel.Count; i++)
-                if (listParcel[i].Id == _id)
+                if (listParcel[i].Id == _id && listParcel[i].Exists)
                     parcel = listParcel[i];
             if (parcel.Id == 0) throw new IDAL.DO.EXItemNotFoundException();
             return parcel;
@@ -82,7 +82,7 @@ namespace DalObject
             IDAL.DO.DroneCharge dc = new IDAL.DO.DroneCharge(0, 0);
             foreach (var item in listDroneCharge)
             {
-                if (item.DroneId == _droneId)
+                if (item.DroneId == _droneId && item.Exists)
                     return item;
             }
             throw new IDAL.DO.EXItemNotFoundException();
@@ -255,17 +255,11 @@ namespace DalObject
 
         //public void eraseDrone(int id)
         //{
-        //    foreach (var item in listDrone)
-        //    {
-        //        if(item.Id == id)
-        //        {
-        //            IDAL.DO.Drone copy = item;
-        //            listDrone.Remove(copy);
-        //            return;
-        //        }    
-        //    }
+        //    
 
         //}
+
+
         //public void eraseCustomer(int id)
         //{
 
@@ -279,8 +273,14 @@ namespace DalObject
             foreach (var item in listDroneCharge)
             {
                 if (item.DroneId == thisDroneCharge.DroneId)
+                {
+                    IDAL.DO.DroneCharge copy = new IDAL.DO.DroneCharge();
+                    copy.Exists = false;
                     listDroneCharge.Remove(thisDroneCharge);
+                    listDroneCharge.Add(copy);
+                }
             }
+
         }
 
 
@@ -292,7 +292,7 @@ namespace DalObject
         {
             foreach (var item in listDrone)
             {
-                if (item.Id == _id)
+                if (item.Id == _id && item.Exists)
                 {
                     IDAL.DO.Drone copy = item;
                     listDrone.Remove(copy);
@@ -306,9 +306,9 @@ namespace DalObject
         }
         public void modifyCust(int _id, string _name = "", string _phone = "")
         {
-            foreach (var item in listCustomer)
+            foreach (var item in listCustomer )
             {
-                if (item.Id == _id)
+                if (item.Id == _id && item.Exists)
                 {
                     IDAL.DO.Customer copy = item;
                     listCustomer.Remove(copy);
@@ -328,7 +328,7 @@ namespace DalObject
         {
             foreach (var item in listStation)
             {
-                if (item.Id == _id)
+                if (item.Id == _id && item.Exists)
                 {
                     IDAL.DO.Station copy = item;
                     listStation.Remove(copy);
@@ -350,7 +350,7 @@ namespace DalObject
         {
             foreach (var item in listParcel)
             {
-                if (item.Id == parcelId)
+                if (item.Id == parcelId && item.Exists)
                 {
                     IDAL.DO.Parcel copy = item;
                     listParcel.Remove(copy);
@@ -366,7 +366,7 @@ namespace DalObject
         {
             foreach (var item in listParcel)
             {
-                if (item.Id == parcelId)
+                if (item.Id == parcelId && item.Exists)
                 {
                     IDAL.DO.Parcel copy = item;
                     listParcel.Remove(copy);
@@ -379,9 +379,9 @@ namespace DalObject
         }
         public void deliverParcel(int parcelId)
         {
-            foreach (var item in listParcel)
+            foreach (var item in listParcel )
             {
-                if (item.Id == parcelId)
+                if (item.Id == parcelId && item.Exists)
                 {
                     IDAL.DO.Parcel copy = item;
                     listParcel.Remove(copy);
