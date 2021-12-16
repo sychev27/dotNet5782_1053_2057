@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="640" Width="800">
     <Grid Name="MainGrid">
-        <Button x:Name="btnOpenDroneList" Content="Open Drone List" HorizontalAlignment="Left" Margin="596,358,0,0" Grid.Row="1" VerticalAlignment="Top" Height="61" Width="106" RenderTransformOrigin="0.5,0.5" Click="btnOpenDroneList_Click">
+        <Button x:Name="btnOpenDroneList" Content="Open Drone List" HorizontalAlignment="Left" Margin="649,494,0,0" VerticalAlignment="Top" Height="61" Width="106" RenderTransformOrigin="0.5,0.5" Click="btnOpenDroneList_Click">
             <Button.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -17,7 +17,24 @@
                 </TransformGroup>
             </Button.RenderTransform>
         </Button>
-        <Button x:Name="btnAddDrone" Content="Add a Drone" HorizontalAlignment="Left" Height="82" Margin="88,161,0,0" Grid.Row="1" VerticalAlignment="Top" Width="141" Click="btnAddDrone_Click"/>
-       <!-- <Button x:Name="btnUpdateDrone" Content="Update a Drone" HorizontalAlignment="Left" Margin="350,128,0,0" VerticalAlignment="Top" Height="74" Width="131" Click="btnUpdateDrone_Click"/> -->
+        <Button x:Name="btnAddDrone" Content="Add a Drone" HorizontalAlignment="Left" Height="82" Margin="649,29,0,0" VerticalAlignment="Top" Width="141" Click="btnAddDrone_Click"/>
+        <Grid x:Name="Main4Btns" HorizontalAlignment="Center" Height="277" VerticalAlignment="Center" Width="466">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="117*"/>
+                <ColumnDefinition Width="117*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height ="*"/>
+
+                <RowDefinition Height ="*"/>
+
+            </Grid.RowDefinitions>
+            <Button x:Name="btnParcelLists" Content="Button" Grid.Column="1" Margin="20, 20, 20, 20"/>
+            <Button x:Name="btnStationLists" Content="Button" Margin="20, 20, 20, 20"/>
+            <Button x:Name="btnCustomerLists" Content="Button" Grid.Row="1" Margin="20, 20, 20, 20"/>
+
+        </Grid>
+
+
     </Grid>
 </Window>
