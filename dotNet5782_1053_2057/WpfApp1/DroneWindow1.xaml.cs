@@ -121,7 +121,7 @@ namespace WpfApp1
                 }
                 catch (IBL.BO.EXAlreadyPrintException exception)
                 {
-                    MessageBox.Show(exception.printException(), "ALREADY", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+                    MessageBox.Show(exception.printException(), "Error Message", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
                 }
             }
             else

@@ -18,7 +18,7 @@ namespace IBL
 
             public string printException()
             {
-                return ItemName + " already exists!/n";
+                return ItemName + " already exists!";
             }
         }
     }
