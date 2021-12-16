@@ -15,7 +15,7 @@ namespace IB
             foreach (var item in dataAccess.getDrones())
             {
                 if (item.Id == _id)
-                    throw new IBL.BO.EXAlreadyExistsPrintException("Drone"); 
+                    throw new IBL.BO.EXAlreadyPrintException("Drone"); 
             }
 
             IDAL.DO.Drone newDOdrone = new IDAL.DO.Drone(_id, _model, _maxWeight);

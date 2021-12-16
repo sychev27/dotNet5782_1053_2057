@@ -8,17 +8,17 @@ namespace IBL
 {
     namespace BO
     {
-        public class EXAlreadyExistsPrintException:Exception
+        public class EXAlreadyPrintException:Exception
         {
             public string ItemName { get; }
-            public EXAlreadyExistsPrintException(string name)
+            public EXAlreadyPrintException(string name)
             {
                 ItemName = name;
             }
 
             public string printException()
             {
-                return ItemName + " already exists!/n";
+                return ItemName + " already exists!";
             }
         }
     }
