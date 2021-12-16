@@ -20,7 +20,9 @@ namespace WpfApp1
     /// </summary>
     public partial class MainWindow : Window
     {
-        IBL.Ibl busiAccess = IB.BL.Instance;
+
+        IBL.Ibl busiAccess = IB.FactoryBL.getBL();
+
 
         public MainWindow()
         {

@@ -253,8 +253,7 @@ namespace DalObject
 
         }
 
-
-
+       
 
         //public void eraseDrone(int id)
         //{
@@ -281,6 +280,7 @@ namespace DalObject
                     copy.Exists = false;
                     listDroneCharge.Remove(thisDroneCharge);
                     listDroneCharge.Add(copy);
+
                 }
             }
 

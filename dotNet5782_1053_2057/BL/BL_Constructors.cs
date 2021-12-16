@@ -17,23 +17,13 @@ namespace IB
     }
 
 
-    //public sealed class SingletonBl
-    //{
-    //    private static IB.BL obj;
-
-    //    // private constructor to force use of
-    //    // getInstance() to create Singleton object
-    //    private SingletonBl() { }
-
-    //    public static SingletonBl getInstance()
-    //    {
-    //        if (obj == null)
-    //            obj = new SingletonBl();
-    //        return obj;
-    //    }
-
-
-    //}
+    public static class FactoryBL
+    {
+        public static IBL.Ibl getBL()
+        {
+            return IB.BL.Instance;
+        }
+    }
 
     
     public partial class BL : IBL.Ibl 

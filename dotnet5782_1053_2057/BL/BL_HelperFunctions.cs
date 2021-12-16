@@ -76,10 +76,10 @@ namespace IB
             
         }
 
-        public int getStationIdOfBODrone(int droneId)
+        public int GetStationIdOfBODrone(int droneId)
         {
             //check if charging
-            IBL.BO.BODrone drone = getBODrone(droneId);
+            IBL.BO.BODrone drone = GetBODrone(droneId);
             foreach (IDAL.DO.DroneCharge drCharge in dataAccess.getDroneCharges())
             {
                 if (drCharge.DroneId == droneId)
@@ -271,7 +271,7 @@ namespace IB
 
 
 
-        public IBL.BO.BODrone getBODrone(int _id)
+        public IBL.BO.BODrone GetBODrone(int _id)
         {
             foreach (var item in listDrone)
             {
@@ -282,12 +282,12 @@ namespace IB
             throw new IBL.BO.EXNotFoundPrintException("Drone");
             //return null;
         }
-        public IEnumerable<IBL.BO.BODrone> getBODroneList()
+        public IEnumerable<IBL.BO.BODrone> GetBODroneList()
         {
             return listDrone;
         }
 
-        public IEnumerable<IBL.BO.BODrone> getSpecificDroneListStatus(int num)
+        public IEnumerable<IBL.BO.BODrone> GetSpecificDroneListStatus(int num)
         {
             switch(num)
             {
@@ -311,7 +311,7 @@ namespace IB
             }
         }
 
-        public IEnumerable<IBL.BO.BODrone> getSpecificDroneListWeight(int num)
+        public IEnumerable<IBL.BO.BODrone> GetSpecificDroneListWeight(int num)
         {
             switch (num)
             {
@@ -386,7 +386,7 @@ namespace IB
 
 
         //for printing these lists:
-        public IEnumerable<IBL.BO.BOCustomerToList> getCustToList() 
+        public IEnumerable<IBL.BO.BOCustomerToList> GetCustToList() 
         {
             List<IBL.BO.BOCustomerToList> res = new List<IBL.BO.BOCustomerToList>();
             foreach (var item in dataAccess.getCustomers())
@@ -395,7 +395,7 @@ namespace IB
             }
             return res;
         }
-        public IEnumerable<IBL.BO.BOParcelToList> getParcelToList() 
+        public IEnumerable<IBL.BO.BOParcelToList> GetParcelToList() 
         {
             List<IBL.BO.BOParcelToList> res = new List<IBL.BO.BOParcelToList>();
             foreach (var item in dataAccess.getParcels())
@@ -404,7 +404,7 @@ namespace IB
             }
             return res;
         }
-        public IEnumerable<IBL.BO.BOStationToList> getStationToList() 
+        public IEnumerable<IBL.BO.BOStationToList> GetStationToList() 
         {
             List<IBL.BO.BOStationToList> res = new List<IBL.BO.BOStationToList>();
             foreach (var item in dataAccess.getStations())
@@ -413,7 +413,7 @@ namespace IB
             }
             return res;
         }
-        public IEnumerable<IBL.BO.BODroneToList> getDroneToList()
+        public IEnumerable<IBL.BO.BODroneToList> GetDroneToList()
         {
             List<IBL.BO.BODroneToList> res = new List<IBL.BO.BODroneToList>();
             foreach (var item in listDrone)
@@ -422,17 +422,17 @@ namespace IB
             }
             return res;
         }
-        public IEnumerable<IBL.BO.BOParcelToList> getParcelsNotYetAssigned()
+        public IEnumerable<IBL.BO.BOParcelToList> GetParcelsNotYetAssigned()
         {
             List<IBL.BO.BOParcelToList> res = new List<IBL.BO.BOParcelToList>();
-            foreach (var item in getParcelToList())
+            foreach (var item in GetParcelToList())
             {
                 if (item.ParcelStatus == IBL.BO.Enum.ParcelStatus.created)
                     res.Add(item);
             }
             return res;
         }
-        public IEnumerable<IBL.BO.BOStationToList> getStationAvailChargeSlots()
+        public IEnumerable<IBL.BO.BOStationToList> GetStationAvailChargeSlots()
         {
             List<IBL.BO.BOStationToList> res = new List<IBL.BO.BOStationToList>();
             foreach (var item in dataAccess.getStations())
@@ -443,14 +443,14 @@ namespace IB
             return res;
         }
 
-        public string getBODroneModel(int id)
+        public string GetBODroneModel(int id)
         {
-            return getBODrone(id).Model;
+            return GetBODrone(id).Model;
             
         }
-        public IBL.BO.Enum.WeightCategories getBoDroneMaxWeight(int id)
+        public IBL.BO.Enum.WeightCategories GetBoDroneMaxWeight(int id)
         {
-            return getBODrone(id).MaxWeight;
+            return GetBODrone(id).MaxWeight;
         }
 
 
@@ -468,10 +468,10 @@ namespace IB
         }
 
 
-        public string getDroneLocationString(int id) //returns string describing location
+        public string GetDroneLocationString(int id) //returns string describing location
         //helpful for debugging adn user convenience
         {
-            IBL.BO.BODrone bodrone = getBODrone(id);
+            IBL.BO.BODrone bodrone = GetBODrone(id);
             if(bodrone.DroneStatus == IBL.BO.Enum.DroneStatus.Charging)
             {
                 foreach (var item in dataAccess.getDroneCharges())
