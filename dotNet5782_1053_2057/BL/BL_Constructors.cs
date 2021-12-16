@@ -102,11 +102,7 @@ namespace IB
                         drone.Battery = r.Next(0, 20);
                         drone.Battery += r.NextDouble();
 
-                        IDAL.DO.DroneCharge droneCharge = new IDAL.DO.DroneCharge();
-                        droneCharge.DroneId = drone.Id;
-                        droneCharge.StationId = st.Id;
-                        dataAccess.addDroneCharge(droneCharge);
-
+                        addDroneCharge(drone.Id, st.Id);
                     }
                     else if (drone.DroneStatus == IBL.BO.Enum.DroneStatus.Available)
                     {

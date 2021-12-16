@@ -15,7 +15,7 @@ namespace IB
             IDAL.DO.Drone newDOdrone = new IDAL.DO.Drone(_id, _model, _maxWeight);
             dataAccess.addDrone(newDOdrone); //adds to DL
 
-            //adds to BL
+            //adds to BL, assuming the drone is charging at station
             IBL.BO.BODrone boDrone = new IBL.BO.BODrone();
             boDrone.Id = _id;
             boDrone.MaxWeight = (IBL.BO.Enum.WeightCategories)_maxWeight;
@@ -25,6 +25,7 @@ namespace IB
             boDrone.Location = getStationLocation(_stationId);
             boDrone.ParcelInTransfer = createEmptyParcInTrans();
             listDrone.Add(boDrone);
+            addDroneCharge(_id, _stationId);
 
             //add drone in charge!!
         }
