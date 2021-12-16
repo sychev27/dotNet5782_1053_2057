@@ -203,7 +203,7 @@ namespace IB
         IBL.BO.BOParcelInTransfer createEmptyParcInTrans()
         {
             IBL.BO.BOParcelInTransfer thisParc = new IBL.BO.BOParcelInTransfer();
-            thisParc.Id = 0;
+            thisParc.Id = -1;
             thisParc.Collected = false;
             thisParc.Priority = (IBL.BO.Enum.Priorities)0;
             thisParc.MaxWeight = (IBL.BO.Enum.WeightCategories)0;
