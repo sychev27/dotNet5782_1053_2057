@@ -17,15 +17,25 @@ namespace IDAL
 }
 
 
+public static class FactoryDL
+{
+    public static IDAL.IDal GetDL()
+    {
+        return DalObject.DataSource.Instance;
+    }
+}
+
+
+
 
 namespace DalObject
 { 
-    public class DataSource :IDAL.IDal
+    public sealed class DataSource :IDAL.IDal
     {
-   
-
-    internal class Config
+        internal class Config
         {
+            //ratios for charging the drone; how many units of battery per minute, 
+            //according to weigth of the Parcel (heavier parcels require more battery
             internal static double empty = 0.4;
             internal static double light = 0.5;
             internal static double mediuim =0.6;
@@ -34,7 +44,7 @@ namespace DalObject
             internal int parcelSerialNumber = 1;
         }
 
-
+        //interanl fields:
         internal static List<IDAL.DO.Station> listStation = new List<IDAL.DO.Station>();
         internal static List<IDAL.DO.DroneCharge> listDroneCharge = new List<IDAL.DO.DroneCharge>();
         internal static List<IDAL.DO.Drone> listDrone = new List<IDAL.DO.Drone>();
@@ -42,6 +52,21 @@ namespace DalObject
         internal static List<IDAL.DO.Customer> listCustomer = new List<IDAL.DO.Customer>();
 
         internal static Config thisConfig = new Config();
+
+        //Internal Class - for Lazy Initialization:
+        class Nested
+        {
+            static Nested() { }
+            internal static readonly DataSource instance = new DataSource();
+        }
+        //this field is static- so that it can be accessed even before the object is initialized
+        public static DataSource Instance { get { return Nested.instance; } }
+        private DataSource() //private CTOR - implemented Singleton Design pattern
+        {
+            Initialize();
+        }
+
+
 
 
         public IDAL.DO.Drone getDrone(int _id) {

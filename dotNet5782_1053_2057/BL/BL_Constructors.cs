@@ -19,7 +19,7 @@ namespace IB
 
     public static class FactoryBL
     {
-        public static IBL.Ibl getBL()
+        public static IBL.Ibl GetBL()
         {
             return IB.BL.Instance;
         }
@@ -31,12 +31,12 @@ namespace IB
         class NestedClass //for Lazy Initialization...
         {
             static NestedClass() { }
-            internal static readonly BL instance = new BL(); //constructed only one
+            internal static readonly BL instance = new BL(); //constructed only once
         }
         
         public static BL Instance {  get { return NestedClass.instance; } }
 
-        IDAL.IDal dataAccess = new DalObject.DataSource();
+        IDAL.IDal dataAccess = FactoryDL.GetDL();
         Random r = new Random();
 
         internal double empty;
@@ -48,10 +48,10 @@ namespace IB
         List<IBL.BO.BODrone> listDrone = new List<IBL.BO.BODrone>();
 
         //Lazy Initialization...
-        static BL() { }
+        //static BL() { }
         private BL() //Private CTOR - implementing Singleton Design Pattern
         {
-            dataAccess.Initialize();
+            //dataAccess.Initialize();
 
             IEnumerable<double> elecInfo = dataAccess.requestElec();
             empty = elecInfo.First();
