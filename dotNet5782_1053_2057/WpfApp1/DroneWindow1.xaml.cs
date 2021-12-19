@@ -127,7 +127,7 @@ namespace WpfApp1
                 }
                 catch (BL.BLApi.EXNotFoundPrintException ex)
                 {
-                    //if Station not found..
+                    //if Station not found.. (must Add Drone at existing Station...)
                     MessageBox.Show(ex.ToString(), "Error Message", 
                         MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
                 }
