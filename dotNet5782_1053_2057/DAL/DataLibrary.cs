@@ -17,14 +17,20 @@ namespace DalXml
 
 }
 
-
-public static class FactoryDL
+namespace DalObject
 {
-    public static IDal GetDL()
+    namespace DalApi
     {
-        return DalObject.DalApi.DataSource.Instance;
+        public static class FactoryDL
+        {
+            public static IDal GetDL()
+            {
+                return DalObject.DalApi.DataSource.Instance;
+            }
+        }
     }
 }
+
 
 
 

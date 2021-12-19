@@ -42,7 +42,7 @@ namespace BL
 
             public static BL Instance { get { return NestedClass.instance; } }
 
-            IDal dataAccess = FactoryDL.GetDL();
+            IDal dataAccess = DalObject.DalApi.FactoryDL.GetDL();
             Random r = new Random();
 
             internal double empty;
