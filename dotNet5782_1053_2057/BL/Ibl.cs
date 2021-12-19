@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace BL
 {
-
     namespace BLApi
     {
-
         public interface Ibl
         {
 

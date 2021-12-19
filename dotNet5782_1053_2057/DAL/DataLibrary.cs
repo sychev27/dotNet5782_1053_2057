@@ -17,28 +17,23 @@ namespace DalXml
 
 }
 
+
 namespace DalObject
 {
     namespace DalApi
     {
+        
         public static class FactoryDL
         {
-            public static IDal GetDL()
+            public static IDal GetDL(string objType)
             {
-                return DalObject.DalApi.DataSource.Instance;
+                if (objType == "Object")
+                    return DalObject.DalApi.DataSource.Instance;
+                else
+                    return null;
             }
         }
-    }
-}
 
-
-
-
-
-namespace DalObject
-{
-    namespace DalApi
-    {
         public sealed class DataSource : IDal
         {
         internal class Config
