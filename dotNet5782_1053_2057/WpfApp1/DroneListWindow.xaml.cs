@@ -19,8 +19,8 @@ namespace WpfApp1
     /// </summary>
     public partial class DroneListWindow : Window
     {
-        BL.Ibl busiAccess;
-        public DroneListWindow(BL.Ibl busiAccess1)
+        BL.BLApi.Ibl busiAccess;
+        public DroneListWindow(BL.BLApi.Ibl busiAccess1)
         {
             InitializeComponent();
             busiAccess = busiAccess1;
@@ -46,10 +46,7 @@ namespace WpfApp1
        private void btnAddDrone1_Click(object sender, RoutedEventArgs e)
        {
             new DroneWindow(busiAccess, 0).ShowDialog();
-            //refresh the info...
-            DronesListView.ItemsSource = null;
-            DronesListView.ItemsSource = busiAccess.GetBODroneList();
-
+            refreshList();
 
         }
 
@@ -61,13 +58,22 @@ namespace WpfApp1
         private void DronesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             BL.BO.BODrone drone = DronesListView.SelectedItem as BL.BO.BODrone;
-            new DroneWindow(busiAccess, drone).Show();
+            new DroneWindow(busiAccess, drone).ShowDialog();
+            refreshList();
+            
         }
 
         private void btnRefresh_Click(object sender, RoutedEventArgs e)
         {
+            refreshList();
+         }
+
+        private void refreshList()
+        {
             DronesListView.ItemsSource = null;
             DronesListView.ItemsSource = busiAccess.GetBODroneList();
+
         }
+
     }
 }

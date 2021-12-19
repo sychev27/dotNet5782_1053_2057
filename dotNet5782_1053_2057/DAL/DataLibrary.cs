@@ -1,8 +1,9 @@
-﻿using System;
+﻿using DalObject.DalApi;
+using System;
 using System.Collections.Generic;
 
 
-namespace DalApi
+namespace DalXml
 {
 
     namespace DO
@@ -19,9 +20,9 @@ namespace DalApi
 
 public static class FactoryDL
 {
-    public static DalApi.IDal GetDL()
+    public static IDal GetDL()
     {
-        return DalObject.DataSource.Instance;
+        return DalObject.DalApi.DataSource.Instance;
     }
 }
 
@@ -29,9 +30,11 @@ public static class FactoryDL
 
 
 namespace DalObject
-{ 
-    public sealed class DataSource :DalApi.IDal
+{
+    namespace DalApi
     {
+        public sealed class DataSource : IDal
+        {
         internal class Config
         {
             //ratios for charging the drone; how many units of battery per minute, 
@@ -45,11 +48,11 @@ namespace DalObject
         }
 
         //interanl fields:
-        internal static List<DalApi.DO.Station> listStation = new List<DalApi.DO.Station>();
-        internal static List<DalApi.DO.DroneCharge> listDroneCharge = new List<DalApi.DO.DroneCharge>();
-        internal static List<DalApi.DO.Drone> listDrone = new List<DalApi.DO.Drone>();
-        internal static List<DalApi.DO.Parcel> listParcel = new List<DalApi.DO.Parcel>();
-        internal static List<DalApi.DO.Customer> listCustomer = new List<DalApi.DO.Customer>();
+        internal static List<DalXml.DO.Station> listStation = new List<DalXml.DO.Station>();
+        internal static List<DalXml.DO.DroneCharge> listDroneCharge = new List<DalXml.DO.DroneCharge>();
+        internal static List<DalXml.DO.Drone> listDrone = new List<DalXml.DO.Drone>();
+        internal static List<DalXml.DO.Parcel> listParcel = new List<DalXml.DO.Parcel>();
+        internal static List<DalXml.DO.Customer> listCustomer = new List<DalXml.DO.Customer>();
 
         internal static Config thisConfig = new Config();
 
@@ -69,72 +72,72 @@ namespace DalObject
 
 
 
-        public DalApi.DO.Drone getDrone(int _id) {
-            DalApi.DO.Drone  drone = new DalApi.DO.Drone(0,"",0);
+        public DalXml.DO.Drone getDrone(int _id) {
+            DalXml.DO.Drone  drone = new DalXml.DO.Drone(0,"",0);
             for (int i = 0; i < listDrone.Count; i++)
                 if (listDrone[i].Id == _id  && listDrone[i].Exists)
                     drone = listDrone[i];
             return drone;
         }
-        public DalApi.DO.Customer getCustomer(int _id) {
-            DalApi.DO.Customer cust = new DalApi.DO.Customer(0, "", "", 0, 0);
+        public DalXml.DO.Customer getCustomer(int _id) {
+            DalXml.DO.Customer cust = new DalXml.DO.Customer(0, "", "", 0, 0);
             for (int i = 0; i < listCustomer.Count; i++)
                 if (listCustomer[i].Id == _id && listCustomer[i].Exists)
                     cust = listCustomer[i];
-            if (cust.Id == 0) throw new DalApi.DO.EXItemNotFoundException();
+            if (cust.Id == 0) throw new DalXml.DO.EXItemNotFoundException();
             return cust;
         }
-        public DalApi.DO.Parcel getParcel(int _id)
+        public DalXml.DO.Parcel getParcel(int _id)
         {
-            DalApi.DO.Parcel parcel = new DalApi.DO.Parcel(0, 0, 0, 0);// DateTime.MinValue,DateTime.MinValue);
+            DalXml.DO.Parcel parcel = new DalXml.DO.Parcel(0, 0, 0, 0);// DateTime.MinValue,DateTime.MinValue);
             for (int i = 0; i < listParcel.Count; i++)
                 if (listParcel[i].Id == _id && listParcel[i].Exists)
                     parcel = listParcel[i];
-            if (parcel.Id == 0) throw new DalApi.DO.EXItemNotFoundException();
+            if (parcel.Id == 0) throw new DalXml.DO.EXItemNotFoundException();
             return parcel;
         }
-        public DalApi.DO.Station getStation(int _id)
+        public DalXml.DO.Station getStation(int _id)
         {
-            DalApi.DO.Station st = new DalApi.DO.Station(0, 0, 0, 0, 0);
+            DalXml.DO.Station st = new DalXml.DO.Station(0, 0, 0, 0, 0);
             for (int i = 0; i < listStation.Count; i++)
                 if (listStation[i].Id == _id) 
                     st = listStation[i];
-            if (st.Id == 0) throw new DalApi.DO.EXItemNotFoundException();
+            if (st.Id == 0) throw new DalXml.DO.EXItemNotFoundException();
             return st;
         }
-        public DalApi.DO.DroneCharge getDroneCharge(int _droneId)
+        public DalXml.DO.DroneCharge getDroneCharge(int _droneId)
         {
-            DalApi.DO.DroneCharge dc = new DalApi.DO.DroneCharge(0, 0);
+            DalXml.DO.DroneCharge dc = new DalXml.DO.DroneCharge(0, 0);
             foreach (var item in listDroneCharge)
             {
                 if (item.DroneId == _droneId && item.Exists)
                     return item;
             }
-            throw new DalApi.DO.EXItemNotFoundException();
+            throw new DalXml.DO.EXItemNotFoundException();
         }
 
 
 
 
 
-        public void addDrone(DalApi.DO.Drone drone)
+        public void addDrone(DalXml.DO.Drone drone)
         {
 
             listDrone.Add(drone);
         }
-        public void addCustomer(DalApi.DO.Customer custom)
+        public void addCustomer(DalXml.DO.Customer custom)
         {
             listCustomer.Add(custom);
         }
-        public void addParcel(DalApi.DO.Parcel parcel)
+        public void addParcel(DalXml.DO.Parcel parcel)
         {
             listParcel.Add(parcel);
         }
-        public void addStation(DalApi.DO.Station st)
+        public void addStation(DalXml.DO.Station st)
         {
             listStation.Add(st);
         }
-        public void addDroneCharge(DalApi.DO.DroneCharge droneCharge)
+        public void addDroneCharge(DalXml.DO.DroneCharge droneCharge)
         {
             listDroneCharge.Add(droneCharge);
         }
@@ -145,24 +148,24 @@ namespace DalObject
             return lst;
         }
 
-        public IEnumerable<DalApi.DO.Drone> getDrones()
+        public IEnumerable<DalXml.DO.Drone> getDrones()
         {
             return listDrone;
         }
-        public IEnumerable<DalApi.DO.Parcel> getParcels ()
+        public IEnumerable<DalXml.DO.Parcel> getParcels ()
         {
             return listParcel;
         }
-        public IEnumerable<DalApi.DO.Station> getStations()
+        public IEnumerable<DalXml.DO.Station> getStations()
         {
             return listStation;
         }
-        public IEnumerable<DalApi.DO.Customer> getCustomers()
+        public IEnumerable<DalXml.DO.Customer> getCustomers()
         {
             return listCustomer;
         }
 
-        public IEnumerable<DalApi.DO.DroneCharge> getDroneCharges()
+        public IEnumerable<DalXml.DO.DroneCharge> getDroneCharges()
         {
             return listDroneCharge;
         }
@@ -186,11 +189,11 @@ namespace DalObject
 
             for (int i = 0; i < 5; i++)
             {
-                DalApi.DO.Drone exampleD = new DalApi.DO.Drone();
+                DalXml.DO.Drone exampleD = new DalXml.DO.Drone();
                 
                 exampleD.Id = i + 1;
                 //exampleD.Battery = r.Next(20, 100);
-                exampleD.MaxWeight = (DalApi.DO.WeightCategories) r.Next(1, 4);
+                exampleD.MaxWeight = (DalXml.DO.WeightCategories) r.Next(1, 4);
                 exampleD.Model = droneModels[r.Next(0, 2)];
                 //exampleD.Status = (IDAL.DO.DroneStatus)r.Next(0, 3);
                 exampleD.Exists = true;
@@ -202,7 +205,7 @@ namespace DalObject
             //INITIALIZE STATION
             for (int i = 0; i < 2; i++)
             {
-                DalApi.DO.Station exampleS = new DalApi.DO.Station();
+                DalXml.DO.Station exampleS = new DalXml.DO.Station();
 
 
                 exampleS.Id = i + 1;
@@ -228,7 +231,7 @@ namespace DalObject
 
             for (int i = 0; i < 10; i++)
             {
-                DalApi.DO.Customer exampleC = new DalApi.DO.Customer();
+                DalXml.DO.Customer exampleC = new DalXml.DO.Customer();
                 exampleC.Id = i + 1;
 
                 exampleC.Longitude = r.Next(LONGBEGIN, LONGEND) + r.NextDouble();
@@ -246,7 +249,7 @@ namespace DalObject
             //INITIALIZE PARCELS
             for (int i = 0; i < 10; i++)
             {
-                DalApi.DO.Parcel exampleP = new DalApi.DO.Parcel();
+                DalXml.DO.Parcel exampleP = new DalXml.DO.Parcel();
                 exampleP.Id = thisConfig.parcelSerialNumber++;
                 exampleP.SenderId = listCustomer[r.Next(0, 10)].Id;
                 do
@@ -254,8 +257,8 @@ namespace DalObject
                     exampleP.ReceiverId = listCustomer[r.Next(0, 10)].Id;
                 } while (exampleP.ReceiverId == exampleP.SenderId);
 
-                exampleP.Weight = (DalApi.DO.WeightCategories)r.Next(1, 4);
-                exampleP.Priority = (DalApi.DO.Priorities)r.Next(1, 4);
+                exampleP.Weight = (DalXml.DO.WeightCategories)r.Next(1, 4);
+                exampleP.Priority = (DalXml.DO.Priorities)r.Next(1, 4);
                 int month = r.Next(1, 13);
                 int day = r.Next(1, 29);
                 int year = r.Next(2020, 2022);
@@ -295,13 +298,13 @@ namespace DalObject
         //{
 
         //}
-        public void eraseDroneCharge(DalApi.DO.DroneCharge thisDroneCharge)
+        public void eraseDroneCharge(DalXml.DO.DroneCharge thisDroneCharge)
         {
             foreach (var item in listDroneCharge)
             {
                 if (item.DroneId == thisDroneCharge.DroneId)
                 {
-                    DalApi.DO.DroneCharge copy = new DalApi.DO.DroneCharge();
+                    DalXml.DO.DroneCharge copy = new DalXml.DO.DroneCharge();
                     copy.Exists = false;
                     listDroneCharge.Remove(thisDroneCharge);
                     listDroneCharge.Add(copy);
@@ -322,7 +325,7 @@ namespace DalObject
             {
                 if (item.Id == _id && item.Exists)
                 {
-                    DalApi.DO.Drone copy = item;
+                    DalXml.DO.Drone copy = item;
                     listDrone.Remove(copy);
                     copy.Model = _model;
                     listDrone.Add(copy);
@@ -330,7 +333,7 @@ namespace DalObject
                 }
             }
             //if not found --> exception
-            throw new DalApi.DO.EXItemNotFoundException();
+            throw new DalXml.DO.EXItemNotFoundException();
         }
         public void modifyCust(int _id, string _name = "", string _phone = "")
         {
@@ -338,7 +341,7 @@ namespace DalObject
             {
                 if (item.Id == _id && item.Exists)
                 {
-                    DalApi.DO.Customer copy = item;
+                    DalXml.DO.Customer copy = item;
                     listCustomer.Remove(copy);
                     if (_name != "")
                         copy.Name = _name;
@@ -349,7 +352,7 @@ namespace DalObject
                 }
             }
             //if not found --> exception
-            throw new DalApi.DO.EXItemNotFoundException();
+            throw new DalXml.DO.EXItemNotFoundException();
 
         }
         public void modifyStation(int _id, int _name = 0, int _totalChargeSlots = 0)
@@ -358,7 +361,7 @@ namespace DalObject
             {
                 if (item.Id == _id && item.Exists)
                 {
-                    DalApi.DO.Station copy = item;
+                    DalXml.DO.Station copy = item;
                     listStation.Remove(copy);
                     if (_name != 0)
                         copy.Name = _name;
@@ -369,7 +372,7 @@ namespace DalObject
                 }
             }
             //if not found --> exception
-            throw new DalApi.DO.EXItemNotFoundException();
+            throw new DalXml.DO.EXItemNotFoundException();
 
         }
 
@@ -380,7 +383,7 @@ namespace DalObject
             {
                 if (item.Id == parcelId && item.Exists)
                 {
-                    DalApi.DO.Parcel copy = item;
+                    DalXml.DO.Parcel copy = item;
                     listParcel.Remove(copy);
                     copy.DroneId = droneId;
                     listParcel.Add(copy);
@@ -396,7 +399,7 @@ namespace DalObject
             {
                 if (item.Id == parcelId && item.Exists)
                 {
-                    DalApi.DO.Parcel copy = item;
+                    DalXml.DO.Parcel copy = item;
                     listParcel.Remove(copy);
                     copy.Pickup = DateTime.Now;
                     listParcel.Add(copy);
@@ -411,7 +414,7 @@ namespace DalObject
             {
                 if (item.Id == parcelId && item.Exists)
                 {
-                    DalApi.DO.Parcel copy = item;
+                    DalXml.DO.Parcel copy = item;
                     listParcel.Remove(copy);
                     copy.Delivered = DateTime.Now;
                     listParcel.Add(copy);
@@ -423,13 +426,17 @@ namespace DalObject
 
 
 
-        public IEnumerable<DalApi.DO.Drone> getSpecificDroneList(Predicate<DalApi.DO.Drone> property)
+        public IEnumerable<DalXml.DO.Drone> getSpecificDroneList(Predicate<DalXml.DO.Drone> property)
         {
             return listDrone.FindAll(property);
         }
 
 
     }
+
+    }
+
+    
 
 }
 

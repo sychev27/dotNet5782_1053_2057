@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DalApi
+namespace DalXml
 {
     namespace DO
     {
@@ -22,11 +22,11 @@ namespace DalApi
             //DateTime pickup;
             //DateTime delivered;
 
-            public Parcel(/*int _id, */int _senderId,int _targetId,DalApi.DO.WeightCategories _weight,
-                          DalApi.DO.Priorities _priority) //DateTime _requested = DateTime.MinValue,
+            public Parcel(/*int _id, */int _senderId,int _targetId,DalXml.DO.WeightCategories _weight,
+                          DalXml.DO.Priorities _priority) //DateTime _requested = DateTime.MinValue,
                          // DateTime _scheduled = DateTime.MinValue)// DateTime _pickup, DateTime _delivered)
             {
-                Id = DalObject.DataSource.thisConfig.parcelSerialNumber++; 
+                Id = DalObject.DalApi.DataSource.thisConfig.parcelSerialNumber++; 
                 SenderId = _senderId;
                 ReceiverId = _targetId;
                 Weight = _weight;
@@ -42,8 +42,8 @@ namespace DalApi
             public int Id { get; set; }
             public int SenderId { get; set; }
             public int ReceiverId { get; set; }
-            public DalApi.DO.WeightCategories Weight { get; set; }
-            public DalApi.DO.Priorities Priority { get; set; }
+            public DalXml.DO.WeightCategories Weight { get; set; }
+            public DalXml.DO.Priorities Priority { get; set; }
             public DateTime? Requested { get; set; } //when we receive request for the parcel
             public int DroneId { get; set; }
             public DateTime ?Scheduled { get; set; }

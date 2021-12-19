@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 
 
-namespace DalApi
+namespace DalXml
 {
     namespace DO
     {
         public struct Drone
         {
             
-            public Drone(int _id, string _model, DalApi.DO.WeightCategories _maxWeight)/*,
+            public Drone(int _id, string _model, DalXml.DO.WeightCategories _maxWeight)/*,
                  IDAL.DO.DroneStatus _status = 0,  double _battery = 0 )*/
             {
                 Id = _id;
@@ -27,7 +27,7 @@ namespace DalApi
 
             public int Id { get; set; }
             public string Model { get; set; }
-            public DalApi.DO.WeightCategories MaxWeight { get; set; }
+            public DalXml.DO.WeightCategories MaxWeight { get; set; }
             public bool Exists { get; set; }
 
             //public IDAL.DO.DroneStatus Status { get; set; }

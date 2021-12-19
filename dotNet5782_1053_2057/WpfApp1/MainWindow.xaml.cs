@@ -21,7 +21,7 @@ namespace WpfApp1
     public partial class MainWindow : Window
     {
 
-        BL.Ibl busiAccess = BLApi.FactoryBL.GetBL();
+        BL.BLApi.Ibl busiAccess = BL.BLApi.FactoryBL.GetBL();
 
 
         public MainWindow()
@@ -33,12 +33,12 @@ namespace WpfApp1
 
         private void btnAddDrone_Click(object sender, RoutedEventArgs e)
         {
-            new DroneWindow(busiAccess, 0).Show();
+            new DroneWindow(busiAccess, 0).ShowDialog();
         }
 
         private void btnOpenDroneList_Click(object sender, RoutedEventArgs e)
         {
-            new DroneListWindow(busiAccess).Show();
+            new DroneListWindow(busiAccess).ShowDialog();
         }
 
         //private void btnUpdateDrone_Click(object sender, RoutedEventArgs e)

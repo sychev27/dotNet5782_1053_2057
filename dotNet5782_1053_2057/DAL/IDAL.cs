@@ -5,48 +5,50 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace DalApi
-{ 
+
+namespace DalObject.DalApi
+{
+
     public interface IDal
     {
-        void Initialize(); 
-        
-        DalApi.DO.Drone getDrone(int _id);
-        DalApi.DO.Customer getCustomer(int _id);
-        DalApi.DO.Parcel getParcel(int _id);
-        DalApi.DO.Station getStation(int _id);
-        DalApi.DO.DroneCharge getDroneCharge(int _droneId);
+        void Initialize();
+
+        DalXml.DO.Drone getDrone(int _id);
+        DalXml.DO.Customer getCustomer(int _id);
+        DalXml.DO.Parcel getParcel(int _id);
+        DalXml.DO.Station getStation(int _id);
+        DalXml.DO.DroneCharge getDroneCharge(int _droneId);
 
 
 
 
 
-        void addCustomer(DalApi.DO.Customer custom);
-        void addDrone(DalApi.DO.Drone drone);
-        void addParcel(DalApi.DO.Parcel parcel);
-        void addStation(DalApi.DO.Station st);
-        void addDroneCharge(DalApi.DO.DroneCharge droneCharge);
+        void addCustomer(DalXml.DO.Customer custom);
+        void addDrone(DalXml.DO.Drone drone);
+        void addParcel(DalXml.DO.Parcel parcel);
+        void addStation(DalXml.DO.Station st);
+        void addDroneCharge(DalXml.DO.DroneCharge droneCharge);
 
-       // int findItem(int id, string itemToFind);
-       // void addItem(string itemToAdd);
-       // void printItem(string _item, int _id);
-       // void printList(string _item);
-       // void assignParcel(int parcelId);
-       // void collectParcel(int parcelId);
-       //  void deliverParcel(int parcelId);
-       // void chargeDrone(int droneId);
-       // void freeDrone(int droneId);
+        // int findItem(int id, string itemToFind);
+        // void addItem(string itemToAdd);
+        // void printItem(string _item, int _id);
+        // void printList(string _item);
+        // void assignParcel(int parcelId);
+        // void collectParcel(int parcelId);
+        //  void deliverParcel(int parcelId);
+        // void chargeDrone(int droneId);
+        // void freeDrone(int droneId);
 
         IEnumerable<double> requestElec();
-        IEnumerable<DalApi.DO.Drone> getDrones();
-        IEnumerable<DalApi.DO.Parcel> getParcels();
-        IEnumerable<DalApi.DO.Station> getStations();
+        IEnumerable<DalXml.DO.Drone> getDrones();
+        IEnumerable<DalXml.DO.Parcel> getParcels();
+        IEnumerable<DalXml.DO.Station> getStations();
 
-        IEnumerable<DalApi.DO.Customer> getCustomers();
-        IEnumerable<DalApi.DO.DroneCharge> getDroneCharges();
+        IEnumerable<DalXml.DO.Customer> getCustomers();
+        IEnumerable<DalXml.DO.DroneCharge> getDroneCharges();
 
 
-        IEnumerable<DalApi.DO.Drone> getSpecificDroneList(Predicate<DalApi.DO.Drone> typeOfDrone);
+        IEnumerable<DalXml.DO.Drone> getSpecificDroneList(Predicate<DalXml.DO.Drone> typeOfDrone);
 
 
 
@@ -58,7 +60,7 @@ namespace DalApi
         public void modifyCust(int _id, string _name, string _phone);
         public void modifyStation(int _id, int _name, int _totalChargeSlots);
 
-        void eraseDroneCharge(DalApi.DO.DroneCharge thisDroneCharge);
+        void eraseDroneCharge(DalXml.DO.DroneCharge thisDroneCharge);
 
 
 

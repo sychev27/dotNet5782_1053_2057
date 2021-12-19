@@ -19,13 +19,13 @@ namespace WpfApp1
     /// </summary>
     public partial class DroneWindow : Window
     {
-        BL.Ibl busiAccess;
+        BL.BLApi.Ibl busiAccess;
         int thisDroneId;
         bool modelTBoxChanged = false;
         
 
         //default constructor is to Add a drone
-        public DroneWindow(BL.Ibl _busiAccess, int num)//to add a Drone
+        public DroneWindow(BL.BLApi.Ibl _busiAccess, int num)//to add a Drone
         {
             InitializeComponent();
             busiAccess = _busiAccess;
@@ -78,7 +78,7 @@ namespace WpfApp1
             string _model = tBoxModelInput.Text;
             int _stationId;
             bool stationIdSuccess = Int32.TryParse(tBoxStationIdInput.Text, out _stationId);
-            DalApi.DO.WeightCategories? weight = (DalApi.DO.WeightCategories)cmbWeightChoice.SelectedIndex;
+            DalXml.DO.WeightCategories? weight = (DalXml.DO.WeightCategories)cmbWeightChoice.SelectedIndex;
 
 
             //(2) Check that Data is Valid
@@ -115,7 +115,7 @@ namespace WpfApp1
             {
                 try
                 {
-                    busiAccess.AddDrone(_id, _model, (DalApi.DO.WeightCategories)weight, _stationId);
+                    busiAccess.AddDrone(_id, _model, (DalXml.DO.WeightCategories)weight, _stationId);
                     MessageBox.Show("Drone Added Successfully", "SUCCESS", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
                     Close();
                 }
@@ -146,7 +146,7 @@ namespace WpfApp1
 
         //TO UPDATE A DRONE...
         
-        public DroneWindow(BL.Ibl _busiAccess, BL.BO.BODrone _bodrone) //CTOR called by DroneListWindow
+        public DroneWindow(BL.BLApi.Ibl _busiAccess, BL.BO.BODrone _bodrone) //CTOR called by DroneListWindow
         {
             InitializeComponent();
             busiAccess = _busiAccess;
