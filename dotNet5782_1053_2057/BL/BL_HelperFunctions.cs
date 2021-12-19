@@ -480,7 +480,7 @@ namespace BL
 
 
             public string GetDroneLocationString(int id) //returns string describing location
-                                                         //helpful for debugging adn user convenience
+                                                         //helpful for debugging, & user convenience
             {
                 global::BL.BO.BODrone bodrone = GetBODrone(id);
                 if (bodrone.DroneStatus == global::BL.BO.Enum.DroneStatus.Charging)
@@ -493,48 +493,65 @@ namespace BL
                 }
                 else if (bodrone.DroneStatus == global::BL.BO.Enum.DroneStatus.InDelivery)
                 {
-                    if (bodrone.ParcelInTransfer != null)
-                    {
-                        if (bodrone.Location == bodrone.ParcelInTransfer.PickupPoint)
-                            return "At Customer " + bodrone.ParcelInTransfer.Sender.Name;
-                        else if (bodrone.Location == bodrone.ParcelInTransfer.DeliveryPoint)
-                            return "At customer " + bodrone.ParcelInTransfer.Recipient.Name;
-                        else
-                        {
-                            foreach (var item in dataAccess.getStations())
-                            {
 
-                            }
-                        }
-                    }
+                    //if already pickuped up pkg
+                    if (bodrone.Location == bodrone.ParcelInTransfer.PickupPoint)
+                        return "At Customer " + bodrone.ParcelInTransfer.Sender.Name;
+                    else if (bodrone.Location == bodrone.ParcelInTransfer.DeliveryPoint)
+                        return "At Customer " + bodrone.ParcelInTransfer.Recipient.Name;
+                    else
+                        return findAllPossibleLoc(bodrone);
+                    
 
                 }
                 else if (bodrone.DroneStatus == global::BL.BO.Enum.DroneStatus.Available)
                 {
-                    //if at station - after charging
-                    foreach (var station in dataAccess.getStations())
-                    {
-                        global::BL.BO.BOLocation stationLoc = new
-                            global::BL.BO.BOLocation(station.Longitude, station.Latitude);
-
-                        if (bodrone.Location == stationLoc)
-                            return "At Station " + station.Id.ToString();
-                    }
-                    //if at customer
-                    foreach (var cust in dataAccess.getCustomers())
-                    {
-                        global::BL.BO.BOLocation custLoc = new
-                            global::BL.BO.BOLocation(cust.Longitude, cust.Latitude);
-
-                        if (bodrone.Location == custLoc)
-                            return "At Station " + cust.Id.ToString();
-                    }
-
+                    return findAllPossibleLoc(bodrone);
                 }
 
                 return "Could not locate..";
             }
 
+
+            private string findAllPossibleLoc(BO.BODrone bodrone)
+            {
+                //if at station - after charging
+                foreach (var station in dataAccess.getStations())
+                {
+                    global::BL.BO.BOLocation stationLoc = new
+                        global::BL.BO.BOLocation(station.Longitude, station.Latitude);
+
+                    if (bodrone.Location == stationLoc)
+                        return "At Station " + station.Id.ToString();
+                }
+                //if at customer
+                foreach (var cust in dataAccess.getCustomers())
+                {
+                    global::BL.BO.BOLocation custLoc = new
+                        global::BL.BO.BOLocation(cust.Longitude, cust.Latitude);
+
+                    if (bodrone.Location == custLoc)
+                        return "At Customer " + cust.Id.ToString();
+                }
+                return "Could not locate..";
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //end of class definition...
         }
     }
 }
+ 

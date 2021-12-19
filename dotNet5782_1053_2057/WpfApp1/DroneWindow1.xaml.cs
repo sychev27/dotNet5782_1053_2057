@@ -35,7 +35,7 @@ namespace WpfApp1
             //(1) Disable irrelevant buttons
             //btnGetDrone.IsEnabled = false;
             btnModifyDroneModel.IsEnabled = false;
-            btnSendDroneToCustomer.IsEnabled = false;
+            btnAssignDroneToParcel.IsEnabled = false;
             btnFreeDroneFromCharge.IsEnabled = false;
             btnPickupPkg.IsEnabled = false;
             btnSendToCharge.IsEnabled = false;
@@ -44,7 +44,7 @@ namespace WpfApp1
             //(2) Hide irrelevant buttons
             //btnGetDrone.Visibility = Visibility.Hidden;
             btnModifyDroneModel.Visibility = Visibility.Hidden;
-            btnSendDroneToCustomer.Visibility = Visibility.Hidden;
+            btnAssignDroneToParcel.Visibility = Visibility.Hidden;
             btnFreeDroneFromCharge.Visibility = Visibility.Hidden;
             btnPickupPkg.Visibility = Visibility.Hidden;
             btnSendToCharge.Visibility = Visibility.Hidden;
@@ -266,9 +266,19 @@ namespace WpfApp1
             displayBODrone(busiAccess.GetBODrone(thisDroneId));
         }
 
-        private void btnSendDroneToCustomer_Click(object sender, RoutedEventArgs e)
+        private void btnAssignDroneToParcel_Click(object sender, RoutedEventArgs e)
         {
-            busiAccess.AssignParcel(thisDroneId);
+            try
+            {
+                busiAccess.AssignParcel(thisDroneId);
+            }
+            catch (BL.BLApi.EXPrintAssignParcelException ex)
+            {
+                MessageBox.Show(ex.ToString(), "Error",
+                    MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
+                
+            }
+
             displayBODrone(busiAccess.GetBODrone(thisDroneId));
         }
 

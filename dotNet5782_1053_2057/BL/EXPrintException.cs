@@ -10,13 +10,21 @@ namespace BL
     {
         public class EXPrintException:Exception
         {
-            private string str;
-
-            public EXPrintException(string _str) { str = _str; }
+            public string MsgToPrint { get; set; }
+       
+            public EXPrintException(string _str) { MsgToPrint = _str; }
+            public override string ToString()
+            {
+                return MsgToPrint;
+            }
             public  void Print()
             {
-                Console.WriteLine(str + "/n");
+                Console.WriteLine(MsgToPrint + "/n");
             }
+        }
+        public class EXPrintAssignParcelException: EXPrintException
+        {
+            public EXPrintAssignParcelException(string _str) : base(_str) { }
         }
     }
 }

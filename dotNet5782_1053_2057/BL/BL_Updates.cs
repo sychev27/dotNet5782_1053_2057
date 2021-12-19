@@ -115,8 +115,11 @@ namespace BL
             }
 
 
-            //UPDATE ACTIONS
 
+
+
+
+            //UPDATE ACTIONS
             public void AssignParcel(int droneId)  //drone determines its parcel based on algorithm
             {
                 global::BL.BO.BODrone droneCopy = new global::BL.BO.BODrone();
@@ -125,23 +128,21 @@ namespace BL
                 {
                     droneCopy = GetBODrone(droneId);
                 }
-                //if(copy.Id != droneId)
-                //    throw exception//not found!
                 catch (EXNotFoundPrintException)
                 {
                     throw new EXNotFoundPrintException("Drone");
                 }
 
-                ////(2)check if drone is avail
+                //(2)check if drone is avail
                 if (droneCopy.DroneStatus != global::BL.BO.Enum.DroneStatus.Available)
-                    //    throw //exception not available
-                    throw new EXNotFoundPrintException("not available");
+                    //    throw exception not available
+                    throw new EXPrintAssignParcelException("Drone is not available");
 
                 //(3) find closest parcel
                 int closestParcelId = findClosestParcel(droneCopy);
                 if (closestParcelId == -1)
-                    //throw Exception //no closest parcel --> dont assign drone, continue in menu...
-                    throw new EXPrintException("no closest parcel --> dont assign drone, continue in menu...");
+                    //throw exception no closest parcel --> dont assign drone, continue in menu...
+                    throw new EXPrintAssignParcelException("No Parcel meets criteria!");
 
                 //(4) assign parcel to drone
                 droneCopy.DroneStatus = global::BL.BO.Enum.DroneStatus.InDelivery;

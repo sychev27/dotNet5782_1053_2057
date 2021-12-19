@@ -49,9 +49,9 @@
 
             <Button x:Name="btnSendToCharge" Content="Send Drone To Charge" Grid.Column="3" Click="btnSendToCharge_Click" Margin="5,5,5,5" />
             <Button x:Name ="btnFreeDroneFromCharge" Content="Free Drone From Charging" Grid.Column="3" Grid.Row="1" Click="btnFreeDroneFromCharge_Click" Margin="5,5,5,5"/>
-            <Button x:Name="btnPickupPkg"  Content="Pick Up Package" Grid.Column="3" Grid.Row="3" Margin="5,5,5,5" Click="btnPickupPkg_Click"/>
-            <Button x:Name="btnSendDroneToCustomer" Content="Send Drone To Customer" Grid.Column="3" Grid.Row="2" Click="btnSendDroneToCustomer_Click" Margin="5,5,5,5"/>
-            <Button x:Name ="btnDeliverPkg" Content="Deliver Package" Grid.Column="3" Grid.Row="4" Margin="5,5,5,5" Click="btnDeliverPkg_Click"/>
+            <Button x:Name="btnPickupPkg"  Content="Pick Up Parcel" Grid.Column="3" Grid.Row="3" Margin="5,5,5,5" Click="btnPickupPkg_Click"/>
+            <Button x:Name="btnAssignDroneToParcel" Content="Assign Drone To Parcel" Grid.Column="3" Grid.Row="2" Click="btnAssignDroneToParcel_Click" Margin="5,5,5,5"/>
+            <Button x:Name ="btnDeliverPkg" Content="Deliver Parcel" Grid.Column="3" Grid.Row="4" Margin="5,5,5,5" Click="btnDeliverPkg_Click"/>
             <Button x:Name="btnCancel" Content="Cancel" Grid.Row="10" RenderTransformOrigin="0.5,0.5" Click="btnCancel_Click" HorizontalAlignment="Stretch" Margin="5,5,5,5" VerticalAlignment="Stretch" Width="Auto">
                 <Button.RenderTransform>
                     <TransformGroup>
