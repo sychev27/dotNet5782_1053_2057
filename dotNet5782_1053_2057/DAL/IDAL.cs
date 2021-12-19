@@ -4,15 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
-
-namespace DalObject.DalApi
-{
-
+namespace DalXml
+{ 
     public interface IDal
     {
-        void Initialize();
-
+        void Initialize(); 
+        
         DalXml.DO.Drone getDrone(int _id);
         DalXml.DO.Customer getCustomer(int _id);
         DalXml.DO.Parcel getParcel(int _id);
@@ -29,15 +26,15 @@ namespace DalObject.DalApi
         void addStation(DalXml.DO.Station st);
         void addDroneCharge(DalXml.DO.DroneCharge droneCharge);
 
-        // int findItem(int id, string itemToFind);
-        // void addItem(string itemToAdd);
-        // void printItem(string _item, int _id);
-        // void printList(string _item);
-        // void assignParcel(int parcelId);
-        // void collectParcel(int parcelId);
-        //  void deliverParcel(int parcelId);
-        // void chargeDrone(int droneId);
-        // void freeDrone(int droneId);
+       // int findItem(int id, string itemToFind);
+       // void addItem(string itemToAdd);
+       // void printItem(string _item, int _id);
+       // void printList(string _item);
+       // void assignParcel(int parcelId);
+       // void collectParcel(int parcelId);
+       //  void deliverParcel(int parcelId);
+       // void chargeDrone(int droneId);
+       // void freeDrone(int droneId);
 
         IEnumerable<double> requestElec();
         IEnumerable<DalXml.DO.Drone> getDrones();

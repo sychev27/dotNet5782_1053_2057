@@ -1,5 +1,4 @@
-﻿using DalObject.DalApi;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 
@@ -18,24 +17,23 @@ namespace DalXml
 }
 
 
-namespace DalObject
+public static class FactoryDL
 {
+    public static DalXml.IDal GetDL()
+    {
+        return DalObject.DalApi.DataSource.Instance;
+    }
+}
+
+
+
+
+namespace DalObject
+{ 
     namespace DalApi
     {
-        
-        public static class FactoryDL //returns the Data Layer
-        {
-            public static IDal GetDL(string objType)
-            {
-                if (objType == "Object")
-                    return DalObject.DalApi.DataSource.Instance;
-                else
-                    return null; //return XML format....
-            }
-        }
-
-        public sealed class DataSource : IDal
-        {
+        public sealed class DataSource :DalXml.IDal
+    {
         internal class Config
         {
             //ratios for charging the drone; how many units of battery per minute, 

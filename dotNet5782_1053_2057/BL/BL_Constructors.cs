@@ -1,5 +1,4 @@
-﻿using DalObject.DalApi;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -42,7 +41,7 @@ namespace BL
 
             public static BL Instance { get { return NestedClass.instance; } }
 
-            IDal dataAccess = DalObject.DalApi.FactoryDL.GetDL("Object");
+            DalXml.IDal dataAccess = FactoryDL.GetDL();
             Random r = new Random();
 
             internal double empty;

@@ -234,10 +234,7 @@ namespace WpfApp1
             int id;
             Int32.TryParse(tBoxIdInput.Text, out id);
             busiAccess.ModifyDrone(id, tBoxModelInput.Text);
-            MessageBox.Show("Model Changed", "Drone model changed", 
-                MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
-            Close();
-
+           
         }
 
         private void btnSendToCharge_Click(object sender, RoutedEventArgs e)
