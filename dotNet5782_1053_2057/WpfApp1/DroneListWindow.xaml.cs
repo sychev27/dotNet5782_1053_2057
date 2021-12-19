@@ -46,7 +46,11 @@ namespace WpfApp1
        private void btnAddDrone1_Click(object sender, RoutedEventArgs e)
        {
             new DroneWindow(busiAccess, 0).ShowDialog();
-            refreshList();
+            int index = StatusSelector1.SelectedIndex;
+            DronesListView.ItemsSource = busiAccess.GetSpecificDroneListStatus(index);
+            index = StatusSelector2.SelectedIndex;
+            DronesListView.ItemsSource = busiAccess.GetSpecificDroneListWeight(index);
+            //refreshList();
 
         }
 
