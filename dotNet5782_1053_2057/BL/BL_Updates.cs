@@ -17,7 +17,7 @@ namespace BL
                 foreach (var item in dataAccess.getDrones())
                 {
                     if (item.Id == _id)
-                        throw new global::BL.BO.EXAlreadyPrintException("Drone");
+                        throw new EXAlreadyExistsPrintException("Drone");
                 }
 
                 DalXml.DO.Drone newDOdrone = new DalXml.DO.Drone(_id, _model, _maxWeight);
@@ -30,7 +30,7 @@ namespace BL
                 boDrone.Model = _model;
                 boDrone.Battery = r.Next(20, 40) + r.NextDouble();
                 boDrone.DroneStatus = global::BL.BO.Enum.DroneStatus.Charging;
-                boDrone.Location = getStationLocation(_stationId);
+                boDrone.Location = getLocationOfStation(_stationId);
                 boDrone.ParcelInTransfer = createEmptyParcInTrans();
                 listDrone.Add(boDrone);
                 AddDroneCharge(_id, _stationId);
@@ -76,7 +76,7 @@ namespace BL
                 }
                 catch (DalXml.DO.EXItemNotFoundException)
                 {
-                    throw new global::BL.BO.EXNotFoundPrintException("Drone");
+                    throw new EXNotFoundPrintException("Drone");
                 }
                 //update drone in Business layer:
                 foreach (var item in listDrone)
@@ -99,7 +99,7 @@ namespace BL
                 }
                 catch (DalXml.DO.EXItemNotFoundException)
                 {
-                    throw new global::BL.BO.EXNotFoundPrintException("Custumer");
+                    throw new EXNotFoundPrintException("Custumer");
                 }
             }
             public void ModifyStation(int _id, int _name, int _totalChargeSlots)
@@ -110,7 +110,7 @@ namespace BL
                 }
                 catch (DalXml.DO.EXItemNotFoundException)
                 {
-                    throw new global::BL.BO.EXNotFoundPrintException("Station");
+                    throw new EXNotFoundPrintException("Station");
                 }
             }
 
@@ -127,21 +127,21 @@ namespace BL
                 }
                 //if(copy.Id != droneId)
                 //    throw exception//not found!
-                catch (global::BL.BO.EXNotFoundPrintException)
+                catch (EXNotFoundPrintException)
                 {
-                    throw new global::BL.BO.EXNotFoundPrintException("Drone");
+                    throw new EXNotFoundPrintException("Drone");
                 }
 
                 ////(2)check if drone is avail
                 if (droneCopy.DroneStatus != global::BL.BO.Enum.DroneStatus.Available)
                     //    throw //exception not available
-                    throw new global::BL.BO.EXNotFoundPrintException("not available");
+                    throw new EXNotFoundPrintException("not available");
 
                 //(3) find closest parcel
                 int closestParcelId = findClosestParcel(droneCopy);
                 if (closestParcelId == -1)
                     //throw Exception //no closest parcel --> dont assign drone, continue in menu...
-                    throw new global::BL.BO.EXPrintException("no closest parcel --> dont assign drone, continue in menu...");
+                    throw new EXPrintException("no closest parcel --> dont assign drone, continue in menu...");
 
                 //(4) assign parcel to drone
                 droneCopy.DroneStatus = global::BL.BO.Enum.DroneStatus.InDelivery;
@@ -161,19 +161,19 @@ namespace BL
                 {
                     drone = GetBODrone(droneId);
                 }
-                catch (global::BL.BO.EXNotFoundPrintException)
+                catch (EXNotFoundPrintException)
                 {
-                    throw new global::BL.BO.EXNotFoundPrintException("Drone");
+                    throw new EXNotFoundPrintException("Drone");
                 }
                 if (drone.DroneStatus != global::BL.BO.Enum.DroneStatus.InDelivery)
                     //    throw Exception //not in delivery -- return to main menu
-                    throw new global::BL.BO.EXPrintException("Drone is not in delivery");
+                    throw new EXPrintException("Drone is not in delivery");
 
                 foreach (var item in listDrone)
                 {
                     if (item.Id == droneId)
                     {
-                        global::BL.BO.BOLocation custLoc = getCustomerLocation(item.ParcelInTransfer.Sender.Id);
+                        global::BL.BO.BOLocation custLoc = getLocationOfCustomer(item.ParcelInTransfer.Sender.Id);
                         item.Battery -= battNededForDist(item, custLoc);
                         item.Location = custLoc;
                         dataAccess.pickupParcel(item.ParcelInTransfer.Id);
@@ -181,7 +181,7 @@ namespace BL
                     }
                 }
                 //throw Exception //parcel not collected!
-                throw new global::BL.BO.EXPrintException("parcel not collected!");
+                throw new EXPrintException("Parcel not collected!");
             }
 
 
@@ -192,15 +192,15 @@ namespace BL
                 {
                     drone = GetBODrone(droneId);
                 }
-                catch (global::BL.BO.EXNotFoundPrintException) { throw new global::BL.BO.EXNotFoundPrintException("Drone"); }
+                catch (EXNotFoundPrintException) { throw new EXNotFoundPrintException("Drone"); }
                 if (drone.DroneStatus != global::BL.BO.Enum.DroneStatus.InDelivery)
                     //    throw Exception //not in delivery , return to main menu
-                    throw new global::BL.BO.EXPrintException("Drone is not in delivery");
+                    throw new EXPrintException("Drone is not in delivery");
                 foreach (var item in listDrone)
                 {
                     if (item.Id == droneId)
                     {
-                        global::BL.BO.BOLocation custLoc = getCustomerLocation(item.ParcelInTransfer.Recipient.Id);
+                        global::BL.BO.BOLocation custLoc = getLocationOfCustomer(item.ParcelInTransfer.Recipient.Id);
                         item.Battery -= battNededForDist(item, custLoc);
                         item.Location = custLoc;
                         dataAccess.deliverParcel(item.ParcelInTransfer.Id);
@@ -208,7 +208,7 @@ namespace BL
                     }
                 }
                 //throw Exception //parcel not delivered!
-                throw new global::BL.BO.EXPrintException("parcel not delivered!");
+                throw new EXPrintException("parcel not delivered!");
             }
             public void ChargeDrone(int droneId) //sends drone to available station
             {
@@ -217,15 +217,15 @@ namespace BL
                 {
                     drone = GetBODrone(droneId);
                 }
-                catch (global::BL.BO.EXNotFoundPrintException) { throw new global::BL.BO.EXNotFoundPrintException("Drone"); }
+                catch (EXNotFoundPrintException) { throw new EXNotFoundPrintException("Drone"); }
                 if (drone.DroneStatus != global::BL.BO.Enum.DroneStatus.Available)
                     //    throw exception //drone unavailable - return to main menu..
-                    throw new global::BL.BO.EXNotFoundPrintException("not available");
+                    throw new EXNotFoundPrintException("not available");
 
                 global::BL.BO.BOLocation closestStationLoc = getClosestStationLoc(drone.Location, true);
                 if (drone.Battery < battNededForDist(drone, closestStationLoc))
                     //    throw exception // not enough battery to make to closet station
-                    throw new global::BL.BO.EXPrintException("not enough battery to make to closet station!");
+                    throw new EXPrintException("not enough battery to make to closet station!");
 
                 //working on rest of func
                 drone.Battery -= battNededForDist(drone, closestStationLoc);
@@ -235,7 +235,7 @@ namespace BL
                 {
                     AddDroneCharge(drone.Id, this.getStationFromLoc(closestStationLoc).Id);
                 }
-                catch (global::BL.BO.EXNotFoundPrintException) { throw new global::BL.BO.EXNotFoundPrintException("Station"); }
+                catch (EXNotFoundPrintException) { throw new EXNotFoundPrintException("Station"); }
                 //station's available charging slots update automatcially
             }
             public void FreeDrone(int droneId, double minutesInCharge) //frees drone from station.. 
@@ -245,11 +245,11 @@ namespace BL
                 {
                     drone = GetBODrone(droneId);
                 }
-                catch (global::BL.BO.EXNotFoundPrintException) { throw new global::BL.BO.EXNotFoundPrintException("Drone"); }
+                catch (EXNotFoundPrintException) { throw new EXNotFoundPrintException("Drone"); }
 
                 if (drone.DroneStatus != global::BL.BO.Enum.DroneStatus.Charging)
                     //    throw Exception //drone not charging! return to main menu
-                    throw new global::BL.BO.EXPrintException("drone not charging!");
+                    throw new EXPrintException("drone not charging!");
 
                 double batteryGained = chargeRate * minutesInCharge;
                 //update drone...

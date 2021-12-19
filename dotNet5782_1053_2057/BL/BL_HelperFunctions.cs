@@ -59,20 +59,28 @@ namespace BL
                         return item;
                 }
                 //throw exception! //not found;
-                throw new global::BL.BO.EXNotFoundPrintException("Station");
+                throw new EXNotFoundPrintException("Station");
             }
-            global::BL.BO.BOLocation getCustomerLocation(int customerId)
+            global::BL.BO.BOLocation getLocationOfCustomer(int customerId)
             {
                 global::BL.BO.BOLocation loc =
                             new global::BL.BO.BOLocation(dataAccess.getCustomer(customerId).Longitude,
                             dataAccess.getCustomer(customerId).Latitude);
                 return loc;
             }
-            global::BL.BO.BOLocation getStationLocation(int StationId)
+            global::BL.BO.BOLocation getLocationOfStation(int StationId)
             {
-                global::BL.BO.BOLocation loc =
-                            new global::BL.BO.BOLocation(dataAccess.getStation(StationId).Longitude,
+                global::BL.BO.BOLocation loc;
+                try
+                {
+                    loc =  new BO.BOLocation(dataAccess.getStation(StationId).Longitude,
                             dataAccess.getStation(StationId).Latitude);
+                }
+                catch (DalXml.DO.EXItemNotFoundException ex)
+                {
+                    throw new EXNotFoundPrintException ("Station " +StationId.ToString());
+                }
+                
                 return loc;
 
 
@@ -243,13 +251,13 @@ namespace BL
                     {
                         foreach (var parcel in parcels[i, j])
                         {
-                            if (battNeededForJourey(droneCopy, getCustomerLocation(parcel.SenderId),
-                                getCustomerLocation(parcel.ReceiverId)) >= droneCopy.Battery)
+                            if (battNeededForJourey(droneCopy, getLocationOfCustomer(parcel.SenderId),
+                                getLocationOfCustomer(parcel.ReceiverId)) >= droneCopy.Battery)
                             { //if drone can make the journey,
 
                                 //find the closest parcel:
-                                global::BL.BO.BOLocation thisParcLoc = new global::BL.BO.BOLocation(getCustomerLocation(parcel.SenderId).Longitude,
-                                    getCustomerLocation(parcel.SenderId).Latitude);
+                                global::BL.BO.BOLocation thisParcLoc = new global::BL.BO.BOLocation(getLocationOfCustomer(parcel.SenderId).Longitude,
+                                    getLocationOfCustomer(parcel.SenderId).Latitude);
 
                                 if (distance(droneCopy.Location, thisParcLoc) < distance(droneCopy.Location, closestLoc))
                                 {
@@ -282,7 +290,7 @@ namespace BL
                         return item;
                 }
                 //throw exception!!!
-                throw new global::BL.BO.EXNotFoundPrintException("Drone");
+                throw new EXNotFoundPrintException("Drone");
                 //return null;
             }
             public IEnumerable<global::BL.BO.BODrone> GetBODroneList()

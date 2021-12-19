@@ -8,8 +8,9 @@ namespace DalXml
 {
     namespace DO
     {
-         public class EXItemNotFoundException:Exception
+         public class EXItemNotFoundException:Exception 
         {
+            //name of item not found specificed in parallel exception in BL
         }
     }
 }

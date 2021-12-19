@@ -194,7 +194,7 @@ namespace BL
                     if (boDrone.ParcelInTransfer != null)
                         boDrone.DroneStatus = global::BL.BO.Enum.DroneStatus.InDelivery;
                 }
-                catch (global::BL.BO.EXParcInTransNotFoundException exception)
+                catch (EXParcInTransNotFoundException exception)
                 {
                     boDrone.ParcelInTransfer = exception.creatEmptyParcInTrans();
                 }
@@ -218,7 +218,7 @@ namespace BL
                     }
                 }
                 //(2) THROW EXCEPTION IF NOT FOUND
-                if (origParcel.Id == -1) throw new global::BL.BO.EXParcInTransNotFoundException();
+                if (origParcel.Id == -1) throw new EXParcInTransNotFoundException();
 
                 return origParcel.Id;
             }
@@ -233,7 +233,7 @@ namespace BL
                 {
                     thisParc.Sender = createCustInParcel(0);
                 }
-                catch (global::BL.BO.EXCustInParcNotFoundException exception)
+                catch (EXCustInParcNotFoundException exception)
                 {
                     thisParc.Sender = exception.creatEmptyCustInParc();
                 }
@@ -241,7 +241,7 @@ namespace BL
                 {
                     thisParc.Recipient = createCustInParcel(0);
                 }
-                catch (global::BL.BO.EXCustInParcNotFoundException exception)
+                catch (EXCustInParcNotFoundException exception)
                 {
                     thisParc.Recipient = exception.creatEmptyCustInParc();
                 }
@@ -281,9 +281,9 @@ namespace BL
                     }
                 }
                 //(2) THROW EXCEPTION IF NOT FOUND
-                if (origParcel.Id == -1) throw new global::BL.BO.EXParcInTransNotFoundException();
+                if (origParcel.Id == -1) throw new EXParcInTransNotFoundException();
 
-                if (origParcel.SenderId == -1) throw new global::BL.BO.EXParcInTransNotFoundException();
+                if (origParcel.SenderId == -1) throw new EXParcInTransNotFoundException();
 
 
                 //(3) CREATE THIS OBJECT
@@ -295,7 +295,7 @@ namespace BL
                 {
                     thisParc.Sender = createCustInParcel(origParcel.SenderId);
                 }
-                catch (global::BL.BO.EXCustInParcNotFoundException exception)
+                catch (EXCustInParcNotFoundException exception)
                 {
                     thisParc.Sender = exception.creatEmptyCustInParc();
                 }
@@ -303,14 +303,14 @@ namespace BL
                 {
                     thisParc.Recipient = createCustInParcel(origParcel.ReceiverId);
                 }
-                catch (global::BL.BO.EXCustInParcNotFoundException exception)
+                catch (EXCustInParcNotFoundException exception)
                 {
                     thisParc.Recipient = exception.creatEmptyCustInParc();
                 }
 
 
-                thisParc.PickupPoint = getCustomerLocation(origParcel.SenderId);
-                thisParc.DeliveryPoint = getCustomerLocation(origParcel.ReceiverId);
+                thisParc.PickupPoint = getLocationOfCustomer(origParcel.SenderId);
+                thisParc.DeliveryPoint = getLocationOfCustomer(origParcel.ReceiverId);
                 thisParc.TransportDistance = distance(thisParc.PickupPoint, thisParc.DeliveryPoint);
 
                 return thisParc;
@@ -330,7 +330,7 @@ namespace BL
                     }
                 }
                 //throw exception! not found!
-                throw new global::BL.BO.EXCustInParcNotFoundException();
+                throw new EXCustInParcNotFoundException();
 
             }
             global::BL.BO.BOParcelAtCustomer createParcAtCust(DalXml.DO.Parcel origParc, bool Sender)
@@ -363,7 +363,7 @@ namespace BL
                 }
                 catch (DalXml.DO.EXItemNotFoundException)
                 {
-                    throw new global::BL.BO.EXNotFoundPrintException("Station");
+                    throw new EXNotFoundPrintException("Station");
                 }
                 //exception! - if station not found
                 global::BL.BO.BOStation newSt = new global::BL.BO.BOStation();
@@ -392,7 +392,7 @@ namespace BL
                 }
                 catch (DalXml.DO.EXItemNotFoundException)
                 {
-                    throw new global::BL.BO.EXNotFoundPrintException("Customer");
+                    throw new EXNotFoundPrintException("Customer");
                 }
                 //throw exception if not found..
                 newCust.Id = origCust.Id;
@@ -429,7 +429,7 @@ namespace BL
                 //throw exception if not found..
                 catch (DalXml.DO.EXItemNotFoundException)
                 {
-                    throw new global::BL.BO.EXNotFoundPrintException("Parcel");
+                    throw new EXNotFoundPrintException("Parcel");
                 }
                 newParc.Id = origParc.Id;
                 newParc.Priority = (global::BL.BO.Enum.Priorities)origParc.Priority;
