@@ -31,19 +31,11 @@ namespace WpfApp1
 
         
 
-        private void btnAddDrone_Click(object sender, RoutedEventArgs e)
-        {
-            new DroneWindow(busiAccess, 0).ShowDialog();
-        }
 
         private void btnOpenDroneList_Click(object sender, RoutedEventArgs e)
         {
             new DroneListWindow(busiAccess).ShowDialog();
         }
 
-        //private void btnUpdateDrone_Click(object sender, RoutedEventArgs e)
-        //{
-        //    new DroneWindow(busiAccess, '0').Show();
-        //}
     }
 }
