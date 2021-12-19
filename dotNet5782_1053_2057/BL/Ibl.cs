@@ -4,8 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IBL
+namespace BL
 {
+
+    namespace BLApi
+    {
+
+    }
     public interface Ibl
     {
 
@@ -14,12 +19,12 @@ namespace IBL
 
 
 
-        void AddDrone(int _id, string _model, IDAL.DO.WeightCategories _maxWeight, int _stationId = 0);
+        void AddDrone(int _id, string _model, DalApi.DO.WeightCategories _maxWeight, int _stationId = 0);
         void AddCustomer(int _id, string _name, string _phone, double _longitude,
                 double _latitude);
         void AddDroneCharge(int _droneId, int _stationId);
-        void AddParcel(int _senderId, int _targetId, IDAL.DO.WeightCategories _weight,
-                          IDAL.DO.Priorities _priority);// DateTime _requested,
+        void AddParcel(int _senderId, int _targetId, DalApi.DO.WeightCategories _weight,
+                          DalApi.DO.Priorities _priority);// DateTime _requested,
                           //DateTime _scheduled);
         void AddStation(int _id, int _name, double _longitude, double _latitude, int _chargeSlots);
 
@@ -32,16 +37,16 @@ namespace IBL
         void DeliverParcel(int droneId); //drone delivers its pre-determined parcel
         
 
+       
+        BL.BO.BOStation CreateBOStation(int id);
+         BL.BO.BOCustomer CreateBOCustomer(int id);
+         BL.BO.BOParcel CreateBOParcel(int id);
 
-        IBL.BO.BOStation CreateBOStation(int id);
-         IBL.BO.BOCustomer CreateBOCustomer(int id);
-         IBL.BO.BOParcel CreateBOParcel(int id);
-
-         IBL.BO.BODrone GetBODrone(int id);
+         BL.BO.BODrone GetBODrone(int id);
         public int GetStationIdOfBODrone(int droneId);
         string GetBODroneModel(int id);
-        IBL.BO.Enum.WeightCategories GetBoDroneMaxWeight(int id);
-        IEnumerable<IBL.BO.BODrone> GetBODroneList();
+        BL.BO.Enum.WeightCategories GetBoDroneMaxWeight(int id);
+        IEnumerable<BL.BO.BODrone> GetBODroneList();
 
 
 
@@ -50,16 +55,16 @@ namespace IBL
 
 
 
-        IEnumerable<IBL.BO.BOCustomerToList> GetCustToList();
-        IEnumerable<IBL.BO.BOParcelToList> GetParcelToList();
-        IEnumerable<IBL.BO.BOStationToList> GetStationToList();
-        IEnumerable<IBL.BO.BODroneToList> GetDroneToList();
-        IEnumerable<IBL.BO.BOParcelToList> GetParcelsNotYetAssigned();
-        IEnumerable<IBL.BO.BOStationToList> GetStationAvailChargeSlots();
+        IEnumerable<BL.BO.BOCustomerToList> GetCustToList();
+        IEnumerable<BL.BO.BOParcelToList> GetParcelToList();
+        IEnumerable<BL.BO.BOStationToList> GetStationToList();
+        IEnumerable<BL.BO.BODroneToList> GetDroneToList();
+        IEnumerable<BL.BO.BOParcelToList> GetParcelsNotYetAssigned();
+        IEnumerable<BL.BO.BOStationToList> GetStationAvailChargeSlots();
 
 
-        IEnumerable<IBL.BO.BODrone> GetSpecificDroneListStatus(int num);
-        IEnumerable<IBL.BO.BODrone> GetSpecificDroneListWeight(int num);
+        IEnumerable<BL.BO.BODrone> GetSpecificDroneListStatus(int num);
+        IEnumerable<BL.BO.BODrone> GetSpecificDroneListWeight(int num);
 
 
 

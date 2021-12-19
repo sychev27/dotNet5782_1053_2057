@@ -15,7 +15,7 @@ namespace ConsoleUI_BL
             public const string PRCL_TO_ASSIGN = "ParcelsNotYetAssigned";
             public const string CHARGING_STATIONS = "availChargingStations";
 
-        IBL.Ibl busiAccess = new IB.BL();
+        BL.Ibl busiAccess = new BL.BL();
 
 
 

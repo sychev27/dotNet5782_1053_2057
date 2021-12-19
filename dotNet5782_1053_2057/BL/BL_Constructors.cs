@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IB
+namespace BLApi
 {
     public class stringCodes
     {
@@ -19,14 +19,14 @@ namespace IB
 
     public static class FactoryBL
     {
-        public static IBL.Ibl GetBL()
+        public static global::BL.Ibl GetBL()
         {
-            return IB.BL.Instance;
+            return BLApi.BL.Instance;
         }
     }
 
     
-    public partial class BL : IBL.Ibl 
+    public partial class BL : global::BL.Ibl 
     {
         class NestedClass //for Lazy Initialization...
         {
@@ -36,7 +36,7 @@ namespace IB
         
         public static BL Instance {  get { return NestedClass.instance; } }
 
-        IDAL.IDal dataAccess = FactoryDL.GetDL();
+        DalApi.IDal dataAccess = FactoryDL.GetDL();
         Random r = new Random();
 
         internal double empty;
@@ -45,7 +45,7 @@ namespace IB
         internal double heavy;
         internal double chargeRate; // per min
 
-        List<IBL.BO.BODrone> listDrone = new List<IBL.BO.BODrone>();
+        List<global::BL.BO.BODrone> listDrone = new List<global::BL.BO.BODrone>();
 
         //Lazy Initialization...
         //static BL() { }
@@ -63,12 +63,12 @@ namespace IB
             receiveDronesFromData();
 
             //holds temporary list of locations of customers 
-            List<IBL.BO.BOLocation> tempListCust = new List<IBL.BO.BOLocation>();
+            List<global::BL.BO.BOLocation> tempListCust = new List<global::BL.BO.BOLocation>();
             //(for now, tempListCust holds every customer, not just those who have had a parcel delivered to them
 
 
 
-            foreach (IBL.BO.BODrone drone in listDrone)
+            foreach (global::BL.BO.BODrone drone in listDrone)
             {
                 if (drone.Id == -1) //THROW ERROR
                 {
@@ -99,20 +99,20 @@ namespace IB
                 {
                     do //randomly set droneStatus =  "charging" and "available"
                     {
-                        drone.DroneStatus = (IBL.BO.Enum.DroneStatus)r.Next(0, 3);
-                    } while (drone.DroneStatus == IBL.BO.Enum.DroneStatus.InDelivery);
+                        drone.DroneStatus = (global::BL.BO.Enum.DroneStatus)r.Next(0, 3);
+                    } while (drone.DroneStatus == global::BL.BO.Enum.DroneStatus.InDelivery);
 
 
-                    if (drone.DroneStatus == IBL.BO.Enum.DroneStatus.Charging)
+                    if (drone.DroneStatus == global::BL.BO.Enum.DroneStatus.Charging)
                     {
                         //(1) SET LOCATION - to Random Station
-                        List<IDAL.DO.Station> listStation = new List<IDAL.DO.Station>();
+                        List<DalApi.DO.Station> listStation = new List<DalApi.DO.Station>();
                         foreach (var item in dataAccess.getStations())
                             listStation.Add(item);
 
-                        IDAL.DO.Station st = listStation[r.Next(0, listStation.Count)];
+                        DalApi.DO.Station st = listStation[r.Next(0, listStation.Count)];
 
-                        drone.Location = new IBL.BO.BOLocation(st.Longitude, st.Latitude);
+                        drone.Location = new global::BL.BO.BOLocation(st.Longitude, st.Latitude);
 
                         //(2) SET BATTERY - btw 0 to 20%
                         drone.Battery = r.Next(0, 20);
@@ -120,7 +120,7 @@ namespace IB
 
                         AddDroneCharge(drone.Id, st.Id);
                     }
-                    else if (drone.DroneStatus == IBL.BO.Enum.DroneStatus.Available)
+                    else if (drone.DroneStatus == global::BL.BO.Enum.DroneStatus.Available)
                     {
                         //(1) SET LOCATION - to Random Customer's location
                         if (tempListCust.Count == 0) //if not yet full, fill customer list
@@ -128,7 +128,7 @@ namespace IB
                             {
                                 //For now, tempListCust includes every customer,
                                 //not just those who have had a parcel already delivered to them
-                                IBL.BO.BOLocation loc = new IBL.BO.BOLocation(item.Longitude, item.Latitude);
+                                global::BL.BO.BOLocation loc = new global::BL.BO.BOLocation(item.Longitude, item.Latitude);
                                 tempListCust.Add(loc);
                             }
 
@@ -154,30 +154,30 @@ namespace IB
 
         void receiveDronesFromData()
         {
-            IEnumerable<IDAL.DO.Drone> origList = dataAccess.getDrones();
+            IEnumerable<DalApi.DO.Drone> origList = dataAccess.getDrones();
             //receives drones from Data Layer, adds them in listDrone
-            foreach (IDAL.DO.Drone drone in origList)
+            foreach (DalApi.DO.Drone drone in origList)
             {
                 addDroneToBusiLayer(drone);
             }
 
         }
-        void addDroneToBusiLayer(IDAL.DO.Drone drone) //receives IDAL.DO.Drone,
+        void addDroneToBusiLayer(DalApi.DO.Drone drone) //receives IDAL.DO.Drone,
                                                       //creates a corresponding BODrone, saves in BL's list
         {
 
-            IBL.BO.BODrone boDrone = new IBL.BO.BODrone();
+            global::BL.BO.BODrone boDrone = new global::BL.BO.BODrone();
             boDrone.Id = drone.Id;
             switch (drone.MaxWeight)
             {
-                case IDAL.DO.WeightCategories.light:
-                    boDrone.MaxWeight = IBL.BO.Enum.WeightCategories.Light;
+                case DalApi.DO.WeightCategories.light:
+                    boDrone.MaxWeight = global::BL.BO.Enum.WeightCategories.Light;
                     break;
-                case IDAL.DO.WeightCategories.medium:
-                    boDrone.MaxWeight = IBL.BO.Enum.WeightCategories.Medium;
+                case DalApi.DO.WeightCategories.medium:
+                    boDrone.MaxWeight = global::BL.BO.Enum.WeightCategories.Medium;
                     break;
-                case IDAL.DO.WeightCategories.heavy:
-                    boDrone.MaxWeight = IBL.BO.Enum.WeightCategories.Heavy;
+                case DalApi.DO.WeightCategories.heavy:
+                    boDrone.MaxWeight = global::BL.BO.Enum.WeightCategories.Heavy;
                     break;
                 default:
                     break;
@@ -187,9 +187,9 @@ namespace IB
             {
                 boDrone.ParcelInTransfer = createParcInTrans(boDrone.Id);
                 if (boDrone.ParcelInTransfer != null)
-                    boDrone.DroneStatus = IBL.BO.Enum.DroneStatus.InDelivery;
+                    boDrone.DroneStatus = global::BL.BO.Enum.DroneStatus.InDelivery;
             }
-            catch (IBL.BO.EXParcInTransNotFoundException exception)
+            catch (global::BL.BO.EXParcInTransNotFoundException exception)
             {
                 boDrone.ParcelInTransfer = exception.creatEmptyParcInTrans();
             }
@@ -200,10 +200,10 @@ namespace IB
         int getParcIdFromDroneID(int origDroneId)
         {
             //receives ID of its drone. Fetches correct parcel from Data Layer.
-            IEnumerable<IDAL.DO.Parcel> origParcList = dataAccess.getParcels();
+            IEnumerable<DalApi.DO.Parcel> origParcList = dataAccess.getParcels();
 
             //(1)FETCH PARCEL FROM DATA LAYER
-            IDAL.DO.Parcel origParcel = new IDAL.DO.Parcel();
+            DalApi.DO.Parcel origParcel = new DalApi.DO.Parcel();
             origParcel.Id = -1;
             foreach (var item in origParcList)
             {
@@ -213,22 +213,22 @@ namespace IB
                 }
             }
             //(2) THROW EXCEPTION IF NOT FOUND
-            if (origParcel.Id == -1) throw new IBL.BO.EXParcInTransNotFoundException();
+            if (origParcel.Id == -1) throw new global::BL.BO.EXParcInTransNotFoundException();
 
             return origParcel.Id;
         }
-        IBL.BO.BOParcelInTransfer createEmptyParcInTrans()
+        global::BL.BO.BOParcelInTransfer createEmptyParcInTrans()
         {
-            IBL.BO.BOParcelInTransfer thisParc = new IBL.BO.BOParcelInTransfer();
+            global::BL.BO.BOParcelInTransfer thisParc = new global::BL.BO.BOParcelInTransfer();
             thisParc.Id = -1;
             thisParc.Collected = false;
-            thisParc.Priority = (IBL.BO.Enum.Priorities)0;
-            thisParc.MaxWeight = (IBL.BO.Enum.WeightCategories)0;
+            thisParc.Priority = (global::BL.BO.Enum.Priorities)0;
+            thisParc.MaxWeight = (global::BL.BO.Enum.WeightCategories)0;
             try
             {
                 thisParc.Sender = createCustInParcel(0);
             }
-            catch (IBL.BO.EXCustInParcNotFoundException exception)
+            catch (global::BL.BO.EXCustInParcNotFoundException exception)
             {
                 thisParc.Sender = exception.creatEmptyCustInParc();
             }
@@ -236,31 +236,31 @@ namespace IB
             {
                 thisParc.Recipient = createCustInParcel(0);
             }
-            catch (IBL.BO.EXCustInParcNotFoundException exception)
+            catch (global::BL.BO.EXCustInParcNotFoundException exception)
             {
                 thisParc.Recipient = exception.creatEmptyCustInParc();
             }
 
 
-            thisParc.PickupPoint = new IBL.BO.BOLocation(0, 0);
-            thisParc.DeliveryPoint = new IBL.BO.BOLocation(0, 0);
+            thisParc.PickupPoint = new global::BL.BO.BOLocation(0, 0);
+            thisParc.DeliveryPoint = new global::BL.BO.BOLocation(0, 0);
             thisParc.TransportDistance = 0;
 
 
 
             return thisParc;
         }
-        IBL.BO.BOParcelInTransfer createParcInTrans(int origDroneId, int origParcId = -1) //used in Initialization
+        global::BL.BO.BOParcelInTransfer createParcInTrans(int origDroneId, int origParcId = -1) //used in Initialization
         {
             //receives ID of its drone. Fetches correct parcel from Data Layer.
             //Builds the object based on that parcel
 
-            IBL.BO.BOParcelInTransfer thisParc = new IBL.BO.BOParcelInTransfer();
+            global::BL.BO.BOParcelInTransfer thisParc = new global::BL.BO.BOParcelInTransfer();
 
             //(1)FETCH PARCEL FROM DATA LAYER
-            IEnumerable<IDAL.DO.Parcel> origParcList = dataAccess.getParcels();
+            IEnumerable<DalApi.DO.Parcel> origParcList = dataAccess.getParcels();
 
-            IDAL.DO.Parcel origParcel = new IDAL.DO.Parcel();
+            DalApi.DO.Parcel origParcel = new DalApi.DO.Parcel();
             if (origParcId == -1)
                 origParcel.Id = getParcIdFromDroneID(origDroneId);
             else
@@ -276,21 +276,21 @@ namespace IB
                 }
             }
             //(2) THROW EXCEPTION IF NOT FOUND
-            if (origParcel.Id == -1) throw new IBL.BO.EXParcInTransNotFoundException();
+            if (origParcel.Id == -1) throw new global::BL.BO.EXParcInTransNotFoundException();
 
-            if (origParcel.SenderId == -1) throw new IBL.BO.EXParcInTransNotFoundException();
+            if (origParcel.SenderId == -1) throw new global::BL.BO.EXParcInTransNotFoundException();
 
 
             //(3) CREATE THIS OBJECT
             thisParc.Id = origParcel.Id;
             thisParc.Collected = (origParcel.Pickup == DateTime.MinValue) ? false : true;
-            thisParc.Priority = (IBL.BO.Enum.Priorities)origParcel.Priority;
-            thisParc.MaxWeight = (IBL.BO.Enum.WeightCategories)origParcel.Weight;
+            thisParc.Priority = (global::BL.BO.Enum.Priorities)origParcel.Priority;
+            thisParc.MaxWeight = (global::BL.BO.Enum.WeightCategories)origParcel.Weight;
             try
             {
                 thisParc.Sender = createCustInParcel(origParcel.SenderId);
             }
-            catch (IBL.BO.EXCustInParcNotFoundException exception)
+            catch (global::BL.BO.EXCustInParcNotFoundException exception)
             {
                 thisParc.Sender = exception.creatEmptyCustInParc();
             }
@@ -298,7 +298,7 @@ namespace IB
             {
                 thisParc.Recipient = createCustInParcel(origParcel.ReceiverId);
             }
-            catch (IBL.BO.EXCustInParcNotFoundException exception)
+            catch (global::BL.BO.EXCustInParcNotFoundException exception)
             {
                 thisParc.Recipient = exception.creatEmptyCustInParc();
             }
@@ -313,26 +313,26 @@ namespace IB
         }
 
 
-        IBL.BO.BOCustomerInParcel createCustInParcel(int origCustId)
+        global::BL.BO.BOCustomerInParcel createCustInParcel(int origCustId)
         {
-            IEnumerable<IDAL.DO.Customer> origCustomers = dataAccess.getCustomers();
+            IEnumerable<DalApi.DO.Customer> origCustomers = dataAccess.getCustomers();
             foreach (var item in origCustomers)
             {
                 if (origCustId == item.Id)
                 {
-                    IBL.BO.BOCustomerInParcel ans = new IBL.BO.BOCustomerInParcel(item.Id, item.Name);
+                    global::BL.BO.BOCustomerInParcel ans = new global::BL.BO.BOCustomerInParcel(item.Id, item.Name);
                     return ans;
                 }
             }
                 //throw exception! not found!
-                throw new IBL.BO.EXCustInParcNotFoundException();
+                throw new global::BL.BO.EXCustInParcNotFoundException();
 
         }
-        IBL.BO.BOParcelAtCustomer createParcAtCust(IDAL.DO.Parcel origParc, bool Sender)
+        global::BL.BO.BOParcelAtCustomer createParcAtCust(DalApi.DO.Parcel origParc, bool Sender)
         {
-            IBL.BO.BOParcelAtCustomer newParcAtCust = new IBL.BO.BOParcelAtCustomer();
+            global::BL.BO.BOParcelAtCustomer newParcAtCust = new global::BL.BO.BOParcelAtCustomer();
             newParcAtCust.Id = origParc.Id;
-            newParcAtCust.MaxWeight = (IBL.BO.Enum.WeightCategories)origParc.Weight;
+            newParcAtCust.MaxWeight = (global::BL.BO.Enum.WeightCategories)origParc.Weight;
             if (Sender == true) //if the Parcel is being held by a Sender, this field holds the Receiver
             {
                 newParcAtCust.OtherSide = createCustInParcel(origParc.ReceiverId);
@@ -343,65 +343,65 @@ namespace IB
             }
 
             //newParcAtCust.ParcelStatus = (IBL.BO.Enum.ParcelStatus) ?? FINISH !!
-            newParcAtCust.Priority = (IBL.BO.Enum.Priorities)origParc.Priority;
+            newParcAtCust.Priority = (global::BL.BO.Enum.Priorities)origParc.Priority;
 
             return newParcAtCust;
         }
 
 
-        public IBL.BO.BOStation CreateBOStation(int id)
+        public global::BL.BO.BOStation CreateBOStation(int id)
         {
-            IDAL.DO.Station origSt = new IDAL.DO.Station();
+            DalApi.DO.Station origSt = new DalApi.DO.Station();
             try
             {
                 origSt = dataAccess.getStation(id);
             }
-            catch (IDAL.DO.EXItemNotFoundException)
+            catch (DalApi.DO.EXItemNotFoundException)
             {
-                throw new IBL.BO.EXNotFoundPrintException("Station");
+                throw new global::BL.BO.EXNotFoundPrintException("Station");
             }
             //exception! - if station not found
-            IBL.BO.BOStation newSt = new IBL.BO.BOStation();
+            global::BL.BO.BOStation newSt = new global::BL.BO.BOStation();
             newSt.Id = origSt.Id;
             newSt.Name = origSt.Name;
-            newSt.Location = new IBL.BO.BOLocation(origSt.Longitude, origSt.Latitude);
+            newSt.Location = new global::BL.BO.BOLocation(origSt.Longitude, origSt.Latitude);
             newSt.ChargeSlots = origSt.ChargeSlots;
-            newSt.ListDroneCharge = new List<IBL.BO.BODroneInCharge>();
+            newSt.ListDroneCharge = new List<global::BL.BO.BODroneInCharge>();
 
             foreach (var item in dataAccess.getDroneCharges()) //create BODroneInCharge and add to list
             {
-                IBL.BO.BODroneInCharge d = new IBL.BO.BODroneInCharge();
+                global::BL.BO.BODroneInCharge d = new global::BL.BO.BODroneInCharge();
                 d.Id = item.DroneId;
                 d.Battery = GetBODrone(d.Id).Battery;
                 newSt.ListDroneCharge.Add(d);
             }
             return newSt;
         }
-        public IBL.BO.BOCustomer CreateBOCustomer(int id)
+        public global::BL.BO.BOCustomer CreateBOCustomer(int id)
         {
-            IBL.BO.BOCustomer newCust = new IBL.BO.BOCustomer();
-            IDAL.DO.Customer origCust = new IDAL.DO.Customer();
+            global::BL.BO.BOCustomer newCust = new global::BL.BO.BOCustomer();
+            DalApi.DO.Customer origCust = new DalApi.DO.Customer();
             try
             {
                 origCust = dataAccess.getCustomer(id);
             }
-            catch(IDAL.DO.EXItemNotFoundException)
+            catch(DalApi.DO.EXItemNotFoundException)
             {
-                throw new IBL.BO.EXNotFoundPrintException("Customer");
+                throw new global::BL.BO.EXNotFoundPrintException("Customer");
             }
             //throw exception if not found..
             newCust.Id = origCust.Id;
-            newCust.Location = new IBL.BO.BOLocation(origCust.Longitude, origCust.Latitude);
+            newCust.Location = new global::BL.BO.BOLocation(origCust.Longitude, origCust.Latitude);
             newCust.Name = origCust.Name;
             newCust.Phone = origCust.Phone;
 
-            newCust.Sent = new List<IBL.BO.BOParcelAtCustomer>();
+            newCust.Sent = new List<global::BL.BO.BOParcelAtCustomer>();
             foreach (var item in dataAccess.getParcels())
             {
                 if (item.SenderId == newCust.Id)
                     newCust.Sent.Add(createParcAtCust(item, false));
             }
-            newCust.Received = new List<IBL.BO.BOParcelAtCustomer>();
+            newCust.Received = new List<global::BL.BO.BOParcelAtCustomer>();
             {
                 foreach (var item in dataAccess.getParcels())
                 {
@@ -413,27 +413,27 @@ namespace IB
         }
 
 
-        public IBL.BO.BOParcel CreateBOParcel(int id)
+        public global::BL.BO.BOParcel CreateBOParcel(int id)
         {
-            IBL.BO.BOParcel newParc = new IBL.BO.BOParcel();
-            IDAL.DO.Parcel origParc = new IDAL.DO.Parcel();
+            global::BL.BO.BOParcel newParc = new global::BL.BO.BOParcel();
+            DalApi.DO.Parcel origParc = new DalApi.DO.Parcel();
             try
             {
                 origParc = dataAccess.getParcel(id);
             }
             //throw exception if not found..
-            catch(IDAL.DO.EXItemNotFoundException)
+            catch(DalApi.DO.EXItemNotFoundException)
             {
-                throw new IBL.BO.EXNotFoundPrintException("Parcel");
+                throw new global::BL.BO.EXNotFoundPrintException("Parcel");
             }
             newParc.Id = origParc.Id;
-            newParc.Priority = (IBL.BO.Enum.Priorities)origParc.Priority;
-            newParc.Sender = new IBL.BO.BOCustomerInParcel(
+            newParc.Priority = (global::BL.BO.Enum.Priorities)origParc.Priority;
+            newParc.Sender = new global::BL.BO.BOCustomerInParcel(
                 origParc.SenderId, dataAccess.getCustomer(origParc.SenderId).Name);
-            newParc.Receiver = new IBL.BO.BOCustomerInParcel(
+            newParc.Receiver = new global::BL.BO.BOCustomerInParcel(
                 origParc.ReceiverId, dataAccess.getCustomer(origParc.ReceiverId).Name);
 
-            newParc.WeightCategory = (IBL.BO.Enum.WeightCategories)origParc.Weight;
+            newParc.WeightCategory = (global::BL.BO.Enum.WeightCategories)origParc.Weight;
             newParc.timeOfDelivery = origParc.Delivered;
             newParc.timeOfCollection = origParc.Pickup;
             //newParc.timeOfAssignment = 
@@ -444,10 +444,10 @@ namespace IB
         }
 
         
-        public IBL.BO.BOCustomerToList createBOCustToList(int _id)
+        public global::BL.BO.BOCustomerToList createBOCustToList(int _id)
         {
-            IBL.BO.BOCustomerToList newCustToList = new IBL.BO.BOCustomerToList();
-            IDAL.DO.Customer origCust = dataAccess.getCustomer(_id);
+            global::BL.BO.BOCustomerToList newCustToList = new global::BL.BO.BOCustomerToList();
+            DalApi.DO.Customer origCust = dataAccess.getCustomer(_id);
             newCustToList.Id = origCust.Id;
             newCustToList.CustomerName = origCust.Name;
             newCustToList.Phone = origCust.Phone;
@@ -475,10 +475,10 @@ namespace IB
             }
             return newCustToList;
         }
-        public IBL.BO.BODroneToList createBODroneToList(int _id)
+        public global::BL.BO.BODroneToList createBODroneToList(int _id)
         {
-            IBL.BO.BODroneToList newDroneToList = new IBL.BO.BODroneToList();
-            IBL.BO.BODrone origBODrone = GetBODrone(_id);
+            global::BL.BO.BODroneToList newDroneToList = new global::BL.BO.BODroneToList();
+            global::BL.BO.BODrone origBODrone = GetBODrone(_id);
             newDroneToList.Id = origBODrone.Id;
             newDroneToList.Model = origBODrone.Model;
             newDroneToList.MaxWeight = origBODrone.MaxWeight;
@@ -490,33 +490,33 @@ namespace IB
             newDroneToList.IdOfParcelCarrying = origBODrone.ParcelInTransfer.Id;
             return newDroneToList;
         }
-        public IBL.BO.BOParcelToList createBOParcToList(int _id)
+        public global::BL.BO.BOParcelToList createBOParcToList(int _id)
         {
-            IBL.BO.BOParcelToList newParcToList = new IBL.BO.BOParcelToList();
-            IDAL.DO.Parcel origParcel = dataAccess.getParcel(_id);
+            global::BL.BO.BOParcelToList newParcToList = new global::BL.BO.BOParcelToList();
+            DalApi.DO.Parcel origParcel = dataAccess.getParcel(_id);
 
             newParcToList.Id = origParcel.Id;
             newParcToList.NameReceiver = dataAccess.getCustomer(origParcel.ReceiverId).Name;
             newParcToList.NameSender = dataAccess.getCustomer(origParcel.SenderId).Name;
-            newParcToList.Weight = (IBL.BO.Enum.WeightCategories)origParcel.Weight;
-            newParcToList.Priority = (IBL.BO.Enum.Priorities)origParcel.Priority;
+            newParcToList.Weight = (global::BL.BO.Enum.WeightCategories)origParcel.Weight;
+            newParcToList.Priority = (global::BL.BO.Enum.Priorities)origParcel.Priority;
 
             if (origParcel.Delivered != null) //if delivered
-                newParcToList.ParcelStatus = IBL.BO.Enum.ParcelStatus.delivered;
+                newParcToList.ParcelStatus = global::BL.BO.Enum.ParcelStatus.delivered;
             else if (origParcel.Pickup != null) // if collected
-                newParcToList.ParcelStatus = IBL.BO.Enum.ParcelStatus.collected;
+                newParcToList.ParcelStatus = global::BL.BO.Enum.ParcelStatus.collected;
             else if (origParcel.DroneId != -1)
-                newParcToList.ParcelStatus = IBL.BO.Enum.ParcelStatus.assigned;
+                newParcToList.ParcelStatus = global::BL.BO.Enum.ParcelStatus.assigned;
             else
-                newParcToList.ParcelStatus = IBL.BO.Enum.ParcelStatus.created;
+                newParcToList.ParcelStatus = global::BL.BO.Enum.ParcelStatus.created;
 
 
             return newParcToList;
         }
-        public IBL.BO.BOStationToList createBOStationToList(int _id)
+        public global::BL.BO.BOStationToList createBOStationToList(int _id)
         {
-            IBL.BO.BOStationToList newStationToList = new IBL.BO.BOStationToList();
-            IDAL.DO.Station origStation = dataAccess.getStation(_id);
+            global::BL.BO.BOStationToList newStationToList = new global::BL.BO.BOStationToList();
+            DalApi.DO.Station origStation = dataAccess.getStation(_id);
 
             newStationToList.Id = origStation.Id;
             newStationToList.NameStation = origStation.Name;

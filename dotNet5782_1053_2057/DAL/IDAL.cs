@@ -4,27 +4,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IDAL
+
+namespace DalApi
 { 
     public interface IDal
     {
         void Initialize(); 
         
-        IDAL.DO.Drone getDrone(int _id);
-        IDAL.DO.Customer getCustomer(int _id);
-        IDAL.DO.Parcel getParcel(int _id);
-        IDAL.DO.Station getStation(int _id);
-        IDAL.DO.DroneCharge getDroneCharge(int _droneId);
+        DalApi.DO.Drone getDrone(int _id);
+        DalApi.DO.Customer getCustomer(int _id);
+        DalApi.DO.Parcel getParcel(int _id);
+        DalApi.DO.Station getStation(int _id);
+        DalApi.DO.DroneCharge getDroneCharge(int _droneId);
 
 
 
 
 
-        void addCustomer(IDAL.DO.Customer custom);
-        void addDrone(IDAL.DO.Drone drone);
-        void addParcel(IDAL.DO.Parcel parcel);
-        void addStation(IDAL.DO.Station st);
-        void addDroneCharge(IDAL.DO.DroneCharge droneCharge);
+        void addCustomer(DalApi.DO.Customer custom);
+        void addDrone(DalApi.DO.Drone drone);
+        void addParcel(DalApi.DO.Parcel parcel);
+        void addStation(DalApi.DO.Station st);
+        void addDroneCharge(DalApi.DO.DroneCharge droneCharge);
 
        // int findItem(int id, string itemToFind);
        // void addItem(string itemToAdd);
@@ -37,15 +38,15 @@ namespace IDAL
        // void freeDrone(int droneId);
 
         IEnumerable<double> requestElec();
-        IEnumerable<IDAL.DO.Drone> getDrones();
-        IEnumerable<IDAL.DO.Parcel> getParcels();
-        IEnumerable<IDAL.DO.Station> getStations();
+        IEnumerable<DalApi.DO.Drone> getDrones();
+        IEnumerable<DalApi.DO.Parcel> getParcels();
+        IEnumerable<DalApi.DO.Station> getStations();
 
-        IEnumerable<IDAL.DO.Customer> getCustomers();
-        IEnumerable<IDAL.DO.DroneCharge> getDroneCharges();
+        IEnumerable<DalApi.DO.Customer> getCustomers();
+        IEnumerable<DalApi.DO.DroneCharge> getDroneCharges();
 
 
-        IEnumerable<IDAL.DO.Drone> getSpecificDroneList(Predicate<IDAL.DO.Drone> typeOfDrone);
+        IEnumerable<DalApi.DO.Drone> getSpecificDroneList(Predicate<DalApi.DO.Drone> typeOfDrone);
 
 
 
@@ -57,7 +58,7 @@ namespace IDAL
         public void modifyCust(int _id, string _name, string _phone);
         public void modifyStation(int _id, int _name, int _totalChargeSlots);
 
-        void eraseDroneCharge(IDAL.DO.DroneCharge thisDroneCharge);
+        void eraseDroneCharge(DalApi.DO.DroneCharge thisDroneCharge);
 
 
 

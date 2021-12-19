@@ -4,14 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IDAL
+
+
+
+namespace DalApi
 {
     namespace DO
     {
         public struct Drone
         {
             
-            public Drone(int _id, string _model, IDAL.DO.WeightCategories _maxWeight)/*,
+            public Drone(int _id, string _model, DalApi.DO.WeightCategories _maxWeight)/*,
                  IDAL.DO.DroneStatus _status = 0,  double _battery = 0 )*/
             {
                 Id = _id;
@@ -24,7 +27,7 @@ namespace IDAL
 
             public int Id { get; set; }
             public string Model { get; set; }
-            public IDAL.DO.WeightCategories MaxWeight { get; set; }
+            public DalApi.DO.WeightCategories MaxWeight { get; set; }
             public bool Exists { get; set; }
 
             //public IDAL.DO.DroneStatus Status { get; set; }

@@ -19,15 +19,15 @@ namespace WpfApp1
     /// </summary>
     public partial class DroneListWindow : Window
     {
-        IBL.Ibl busiAccess;
-        public DroneListWindow(IBL.Ibl busiAccess1)
+        BL.Ibl busiAccess;
+        public DroneListWindow(BL.Ibl busiAccess1)
         {
             InitializeComponent();
             busiAccess = busiAccess1;
 
             DronesListView.ItemsSource = busiAccess.GetBODroneList();
-            StatusSelector1.ItemsSource = Enum.GetValues(typeof(IBL.BO.Enum.DroneStatus));
-            StatusSelector2.ItemsSource = Enum.GetValues(typeof(IBL.BO.Enum.WeightCategories));
+            StatusSelector1.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.DroneStatus));
+            StatusSelector2.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.WeightCategories));
 
         }
 
@@ -45,8 +45,12 @@ namespace WpfApp1
 
        private void btnAddDrone1_Click(object sender, RoutedEventArgs e)
        {
-         new DroneWindow(busiAccess,0).Show();
-         //Close();
+            new DroneWindow(busiAccess, 0).ShowDialog();
+            //refresh the info...
+            DronesListView.ItemsSource = null;
+            DronesListView.ItemsSource = busiAccess.GetBODroneList();
+
+
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
@@ -56,7 +60,7 @@ namespace WpfApp1
 
         private void DronesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            IBL.BO.BODrone drone = DronesListView.SelectedItem as IBL.BO.BODrone;
+            BL.BO.BODrone drone = DronesListView.SelectedItem as BL.BO.BODrone;
             new DroneWindow(busiAccess, drone).Show();
         }
 

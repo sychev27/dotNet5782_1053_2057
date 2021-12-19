@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IBL
+namespace BL
 {
     namespace BO
     {
@@ -12,11 +12,11 @@ namespace IBL
         {
             public int Id { get; set; }
             public string Model { get; set; }
-            public IBL.BO.Enum.WeightCategories MaxWeight { get; set; }
+            public BL.BO.Enum.WeightCategories MaxWeight { get; set; }
             public double Battery { get; set; }
-            public IBL.BO.Enum.DroneStatus DroneStatus { get; set; }
-            public IBL.BO.BOParcelInTransfer ParcelInTransfer{ get; set;}
-            public IBL.BO.BOLocation Location{ get; set;}
+            public BL.BO.Enum.DroneStatus DroneStatus { get; set; }
+            public BL.BO.BOParcelInTransfer ParcelInTransfer{ get; set;}
+            public BL.BO.BOLocation Location{ get; set;}
 
 
             public override string ToString()

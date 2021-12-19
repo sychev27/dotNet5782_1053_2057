@@ -36,7 +36,7 @@ namespace ConsoleUI_BL
             {
                 Console.WriteLine(busiAccess.GetBODrone(_id).ToString() + "\n");
             }
-            catch(IBL.BO.EXNotFoundPrintException exception)
+            catch(BL.BO.EXNotFoundPrintException exception)
             {
                 exception.printException();
             }
@@ -47,7 +47,7 @@ namespace ConsoleUI_BL
             {
                 Console.WriteLine(busiAccess.CreateBOCustomer(_id).ToString() + "\n");
             }
-            catch (IBL.BO.EXNotFoundPrintException exception) 
+            catch (BL.BO.EXNotFoundPrintException exception) 
             {
                 exception.printException();
             }
@@ -59,7 +59,7 @@ namespace ConsoleUI_BL
             {
                 Console.WriteLine(busiAccess.CreateBOStation(_id).ToString() + "\n");
             }
-            catch(IBL.BO.EXNotFoundPrintException exception)
+            catch(BL.BO.EXNotFoundPrintException exception)
             {
                 exception.printException();
             }
@@ -70,7 +70,7 @@ namespace ConsoleUI_BL
             {
                 Console.WriteLine(busiAccess.CreateBOParcel(_id).ToString() + "\n");
             }
-            catch (IBL.BO.EXNotFoundPrintException exception)
+            catch (BL.BO.EXNotFoundPrintException exception)
             {
                 exception.printException();
             }

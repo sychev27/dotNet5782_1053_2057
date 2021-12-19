@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IBL
+namespace BL
 {
     namespace BO
     {
@@ -12,7 +12,7 @@ namespace IBL
         {
             public int Id { get; set; }
             public string Model { get; set; }
-            public IBL.BO.Enum.WeightCategories MaxWeight { get; set; }
+            public BL.BO.Enum.WeightCategories MaxWeight { get; set; }
             public double Battery { get; set; }
             public BOLocation Location { get; set; }
             public int IdOfParcelCarrying { get; set; }

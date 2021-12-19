@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IBL
+namespace BL
 {
     namespace BO
     {
@@ -13,13 +13,13 @@ namespace IBL
             public int Id { get; set;  }
             public string NameSender { get; set;  }
             public string NameReceiver { get; set;  }
-            public IBL.BO.Enum.WeightCategories Weight { get; set; }
-            public IBL.BO.Enum.Priorities Priority { get; set;}
-            public IBL.BO.Enum.ParcelStatus ParcelStatus { get; set; }
+            public BL.BO.Enum.WeightCategories Weight { get; set; }
+            public BL.BO.Enum.Priorities Priority { get; set;}
+            public BL.BO.Enum.ParcelStatus ParcelStatus { get; set; }
             public override string ToString()
             {
                 string res = "Parcel " + Id + "From " + NameSender + " to " + NameReceiver + "\n";
-                res += (IBL.BO.Enum.WeightCategories)Weight + " Priority: " + Priority;
+                res += (BL.BO.Enum.WeightCategories)Weight + " Priority: " + Priority;
 
                 res += "\n";
                 return res;

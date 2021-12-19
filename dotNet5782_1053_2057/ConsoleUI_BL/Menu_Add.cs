@@ -57,7 +57,7 @@ namespace ConsoleUI_BL
             ////int num1 = 1;
             //int.TryParse(Console.ReadLine(), out num1);
 
-            busiAccess.AddDrone(id, model, (IDAL.DO.WeightCategories)num, stationId);
+            busiAccess.AddDrone(id, model, (DalApi.DO.WeightCategories)num, stationId);
         }
         public void inputCustomer() //receives customer from user and adds to database
         {
@@ -100,8 +100,8 @@ namespace ConsoleUI_BL
             int num1 = 1;
             int.TryParse(Console.ReadLine(), out num1);
 
-            busiAccess.AddParcel(senderId, targetId, (IDAL.DO.WeightCategories)num,
-            (IDAL.DO.Priorities)num1);
+            busiAccess.AddParcel(senderId, targetId, (DalApi.DO.WeightCategories)num,
+            (DalApi.DO.Priorities)num1);
 
         }
         public void inputStation() //receives station from user and adds to database

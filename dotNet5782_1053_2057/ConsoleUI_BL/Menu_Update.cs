@@ -71,7 +71,7 @@ namespace ConsoleUI_BL
             {
                 busiAccess.ModifyDrone(_id, _model);
             }
-            catch(IBL.BO.EXNotFoundPrintException exception)
+            catch(BL.BO.EXNotFoundPrintException exception)
             {
                 exception.printException();
             }
@@ -92,7 +92,7 @@ namespace ConsoleUI_BL
             {
                 busiAccess.ModifyCust(_id, _name, _phone);
             }
-            catch(IBL.BO.EXNotFoundPrintException exception)
+            catch(BL.BO.EXNotFoundPrintException exception)
             {
                 exception.printException();
             }
@@ -112,7 +112,7 @@ namespace ConsoleUI_BL
             {
                 busiAccess.ModifyStation(_id, _name, _numChargingSlots);
             }
-            catch(IBL.BO.EXNotFoundPrintException exception)
+            catch(BL.BO.EXNotFoundPrintException exception)
             {
                 exception.printException();
             }
@@ -141,14 +141,14 @@ namespace ConsoleUI_BL
                     {
                         busiAccess.AssignParcel(id);
                     }
-                    catch(IBL.BO.EXNotFoundPrintException exception)
+                    catch(BL.BO.EXNotFoundPrintException exception)
                     {
                         if (exception.ItemName != "not available")
                             exception.printException();
                         else
                             exception.printNotAvailableException();
                     }
-                    catch(IBL.BO.EXPrintException exception) {exception.Print();}
+                    catch(BL.BO.EXPrintException exception) {exception.Print();}
                     break;
                 case 2:
                     Console.WriteLine("Enter the ID of the drone you want to collect:\n");
@@ -157,8 +157,8 @@ namespace ConsoleUI_BL
                     {
                         busiAccess.PickupParcel(id);
                     }
-                    catch (IBL.BO.EXNotFoundPrintException exception) {exception.printException();}
-                    catch (IBL.BO.EXPrintException exception){exception.Print();}
+                    catch (BL.BO.EXNotFoundPrintException exception) {exception.printException();}
+                    catch (BL.BO.EXPrintException exception){exception.Print();}
                     break;
                 case 3:
                     Console.WriteLine("Enter the ID of the drone you want to deliver:\n ");
@@ -167,8 +167,8 @@ namespace ConsoleUI_BL
                     {
                         busiAccess.DeliverParcel(id);
                     }
-                    catch (IBL.BO.EXNotFoundPrintException exception) { exception.printException();}
-                    catch (IBL.BO.EXPrintException exception) { exception.Print();}
+                    catch (BL.BO.EXNotFoundPrintException exception) { exception.printException();}
+                    catch (BL.BO.EXPrintException exception) { exception.Print();}
                     break;
                 case 4:
                     Console.WriteLine("Enter the ID of the drone you want to charge:\n ");
@@ -177,14 +177,14 @@ namespace ConsoleUI_BL
                     {
                         busiAccess.ChargeDrone(id);
                     }
-                    catch (IBL.BO.EXNotFoundPrintException exception)
+                    catch (BL.BO.EXNotFoundPrintException exception)
                     {
                         if (exception.ItemName != "not available")
                             exception.printException();
                         else
                             exception.printNotAvailableException();
                     }
-                    catch (IBL.BO.EXPrintException exception) { exception.Print();}
+                    catch (BL.BO.EXPrintException exception) { exception.Print();}
 
                     break;
                 case 5:
@@ -197,8 +197,8 @@ namespace ConsoleUI_BL
                     {
                         busiAccess.FreeDrone(id, minutesCharged);
                     }
-                    catch (IBL.BO.EXNotFoundPrintException exception) { exception.printException(); }
-                    catch (IBL.BO.EXPrintException exception) { exception.Print(); }
+                    catch (BL.BO.EXNotFoundPrintException exception) { exception.printException(); }
+                    catch (BL.BO.EXPrintException exception) { exception.Print(); }
                     break;
                 default:
                     break;

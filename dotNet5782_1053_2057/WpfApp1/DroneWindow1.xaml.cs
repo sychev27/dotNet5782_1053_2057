@@ -19,18 +19,18 @@ namespace WpfApp1
     /// </summary>
     public partial class DroneWindow : Window
     {
-        IBL.Ibl busiAccess;
+        BL.Ibl busiAccess;
         int thisDroneId;
         bool modelTBoxChanged = false;
         
 
         //default constructor is to Add a drone
-        public DroneWindow(IBL.Ibl _busiAccess, int num)//to add a Drone
+        public DroneWindow(BL.Ibl _busiAccess, int num)//to add a Drone
         {
             InitializeComponent();
             busiAccess = _busiAccess;
 
-            cmbWeightChoice.ItemsSource = Enum.GetValues(typeof(IBL.BO.Enum.WeightCategories));
+            cmbWeightChoice.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.WeightCategories));
 
             //(1) Disable irrelevant buttons
             //btnGetDrone.IsEnabled = false;
@@ -78,7 +78,7 @@ namespace WpfApp1
             string _model = tBoxModelInput.Text;
             int _stationId;
             bool stationIdSuccess = Int32.TryParse(tBoxStationIdInput.Text, out _stationId);
-            IDAL.DO.WeightCategories? weight = (IDAL.DO.WeightCategories)cmbWeightChoice.SelectedIndex;
+            DalApi.DO.WeightCategories? weight = (DalApi.DO.WeightCategories)cmbWeightChoice.SelectedIndex;
 
 
             //(2) Check that Data is Valid
@@ -115,11 +115,11 @@ namespace WpfApp1
             {
                 try
                 {
-                    busiAccess.AddDrone(_id, _model, (IDAL.DO.WeightCategories)weight, _stationId);
+                    busiAccess.AddDrone(_id, _model, (DalApi.DO.WeightCategories)weight, _stationId);
                     MessageBox.Show("Drone Added Successfully", "SUCCESS", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
                     Close();
                 }
-                catch (IBL.BO.EXAlreadyPrintException exception)
+                catch (BL.BO.EXAlreadyPrintException exception)
                 {
                     MessageBox.Show(exception.printException(), "Error Message", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
                 }
@@ -146,7 +146,7 @@ namespace WpfApp1
 
         //TO UPDATE A DRONE...
         
-        public DroneWindow(IBL.Ibl _busiAccess, IBL.BO.BODrone _bodrone) //CTOR called by DroneListWindow
+        public DroneWindow(BL.Ibl _busiAccess, BL.BO.BODrone _bodrone) //CTOR called by DroneListWindow
         {
             InitializeComponent();
             busiAccess = _busiAccess;
@@ -156,7 +156,7 @@ namespace WpfApp1
             tBoxIdInput.BorderBrush = Brushes.Transparent;
             tBoxStationIdInput.IsReadOnly = true;
             tBoxStationIdInput.BorderBrush = Brushes.Transparent;
-            cmbWeightChoice.ItemsSource = Enum.GetValues(typeof(IBL.BO.Enum.WeightCategories));
+            cmbWeightChoice.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.WeightCategories));
 
             btnAddDrone.IsEnabled = false;
             btnAddDrone.Visibility = Visibility.Hidden;
@@ -169,7 +169,7 @@ namespace WpfApp1
 
 
 
-        private void displayBODrone(IBL.BO.BODrone bodrone)
+        private void displayBODrone(BL.BO.BODrone bodrone)
         {
             thisDroneId = bodrone.Id;
 
