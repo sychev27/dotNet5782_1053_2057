@@ -23,14 +23,14 @@ namespace DalObject
     namespace DalApi
     {
         
-        public static class FactoryDL
+        public static class FactoryDL //returns the Data Layer
         {
             public static IDal GetDL(string objType)
             {
                 if (objType == "Object")
                     return DalObject.DalApi.DataSource.Instance;
                 else
-                    return null;
+                    return null; //return XML format....
             }
         }
 
