@@ -293,6 +293,25 @@ namespace BL
                 throw new EXNotFoundPrintException("Drone");
                 //return null;
             }
+
+            public global::BL.BO.BOCustomer GetBOCustomer(int _id)
+            {
+                IEnumerable<DalXml.DO.Customer> origList = dataAccess.getCustomers();
+                foreach (var item in origList)
+                {
+                    if (_id == item.Id)
+                    {
+                        global::BL.BO.BOCustomer boCustomer = new global::BL.BO.BOCustomer();
+                        boCustomer.Id = item.Id;
+                        boCustomer.Name = item.Name;
+                        boCustomer.Phone = item.Phone;
+                        boCustomer.Location = new BO.BOLocation (item.Latitude, item.Longitude);
+                        return boCustomer;
+                    }
+                }
+                //throw exception!!!
+                throw new EXNotFoundPrintException("Customer");
+            }
             public IEnumerable<global::BL.BO.BODrone> GetBODroneList()
             {
                 return listDrone;
