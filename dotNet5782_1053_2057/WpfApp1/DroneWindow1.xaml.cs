@@ -250,19 +250,40 @@ namespace WpfApp1
 
         private void btnSendToCharge_Click(object sender, RoutedEventArgs e)
         {
-            busiAccess.ChargeDrone(thisDroneId);
+            try
+            {
+                busiAccess.ChargeDrone(thisDroneId);
+            }
+            catch (BL.BLApi.EXDroneUnavailableException ex)
+            {
+                errorMsg(ex.ToString());
+            }
             displayBODrone(busiAccess.GetBODrone(thisDroneId));
         }
 
         private void btnFreeDroneFromCharge_Click(object sender, RoutedEventArgs e)
         {
-            busiAccess.FreeDrone(thisDroneId, 0);
-            displayBODrone(busiAccess.GetBODrone(thisDroneId));
+            try
+            {
+                busiAccess.FreeDrone(thisDroneId, DateTime.Now);
+            }
+            catch (BL.BLApi.EXMiscException ex)
+            {
+                errorMsg(ex.ToString());
+            }
+             displayBODrone(busiAccess.GetBODrone(thisDroneId));
         }
 
         private void btnPickupPkg_Click(object sender, RoutedEventArgs e)
         {
-            busiAccess.PickupParcel(thisDroneId);
+            try
+            {
+                busiAccess.PickupParcel(thisDroneId);
+            }
+            catch (BL.BLApi.EXMiscException ex)
+            {
+                errorMsg(ex.ToString());
+            }
             displayBODrone(busiAccess.GetBODrone(thisDroneId));
         }
 
@@ -272,13 +293,14 @@ namespace WpfApp1
             {
                 busiAccess.AssignParcel(thisDroneId);
             }
-            catch (BL.BLApi.EXPrintAssignParcelException ex)
+            catch (BL.BLApi.EXNoAppropriateParcel ex)
             {
-                MessageBox.Show(ex.ToString(), "Error",
-                    MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
-                
+                errorMsg(ex.ToString());
             }
-
+            catch (BL.BLApi.EXDroneUnavailableException ex)
+            {
+                errorMsg(ex.ToString());
+            }
             displayBODrone(busiAccess.GetBODrone(thisDroneId));
         }
 
@@ -299,6 +321,12 @@ namespace WpfApp1
         }
 
 
+
+        private void errorMsg(string msg)
+        {
+            MessageBox.Show(msg, "Error",
+                   MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
+        }
 
 
 

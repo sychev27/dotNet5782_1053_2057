@@ -18,10 +18,12 @@ namespace DalXml
                 DroneId = _droneId;
                 StationId = _stationId;
                 Exists = true;
+                timeBeganCharging = DateTime.Now;
             }
             public int DroneId { get; set; }
             public int StationId { get; set; }
             public bool Exists { get; set; }
+            public DateTime timeBeganCharging { get; set; }
 
         }
 

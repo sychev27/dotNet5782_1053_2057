@@ -261,16 +261,18 @@ namespace DalObject
                 int month = r.Next(1, 13);
                 int day = r.Next(1, 29);
                 int year = r.Next(2020, 2022);
-                exampleP.Requested = new DateTime(year, month, day);
+                exampleP.TimeRequested = new DateTime(year, month, day);
 
                 exampleP.Exists = true;
 
-                if (i <= 5)
-                    exampleP.DroneId = r.Next(1, 6);
+                //if (i <= 5)
+                //    exampleP.DroneId = r.Next(1, 6);
                // exampleP.Pickup = exampleP.Requested + new TimeSpan(r.Next(1, 7),0,0,0) ;   //AddDays(r.Next(1, 7));
                 //exampleP.Delivered = exampleP.Pickup.AddDays(r.Next(1, 3));
 
-                exampleP.Scheduled = exampleP.Requested + new TimeSpan(r.Next(1, 7), 0, 0, 0);
+                exampleP.TimeScheduled = exampleP.TimeRequested + new TimeSpan(r.Next(1, 7), 0, 0, 0);
+
+                //no Parcel is collectd/delivered already in Initialization
 
                 listParcel.Add(exampleP);
                 //thisConfig.indexAvailParcel++;
@@ -301,13 +303,14 @@ namespace DalObject
         {
             foreach (var item in listDroneCharge)
             {
-                if (item.DroneId == thisDroneCharge.DroneId)
+                if (item.DroneId == thisDroneCharge.DroneId
+                        && item.StationId == thisDroneCharge.StationId)
                 {
                     DalXml.DO.DroneCharge copy = new DalXml.DO.DroneCharge();
                     copy.Exists = false;
                     listDroneCharge.Remove(thisDroneCharge);
                     listDroneCharge.Add(copy);
-
+                    break;
                 }
             }
 
@@ -400,7 +403,7 @@ namespace DalObject
                 {
                     DalXml.DO.Parcel copy = item;
                     listParcel.Remove(copy);
-                    copy.Pickup = DateTime.Now;
+                    copy.TimePickedUp = DateTime.Now;
                     listParcel.Add(copy);
                     return;
                 }
@@ -415,7 +418,7 @@ namespace DalObject
                 {
                     DalXml.DO.Parcel copy = item;
                     listParcel.Remove(copy);
-                    copy.Delivered = DateTime.Now;
+                    copy.TimeDelivered = DateTime.Now;
                     listParcel.Add(copy);
                     return;
                 }
