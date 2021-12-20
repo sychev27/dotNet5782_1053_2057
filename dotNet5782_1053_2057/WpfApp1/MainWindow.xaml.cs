@@ -37,5 +37,9 @@ namespace WpfApp1
             new DroneListWindow(busiAccess).ShowDialog();
         }
 
+        private void btnCustomerLists_Click(object sender, RoutedEventArgs e)
+        {
+            new CustomerListWindow(busiAccess).ShowDialog();
+        }
     }
 }
