@@ -11,17 +11,6 @@ namespace DalXml
 
         public struct Parcel
         {
-            //int id;
-            //int senderId;
-            //int targetId;
-            //IDAL.DO.WeightCategories weight;
-            //IDAL.DO.Priorities priority;
-            //DateTime requested;
-            //int droneId;
-            //DateTime scheduled;
-            //DateTime pickup;
-            //DateTime delivered;
-
             public Parcel(/*int _id, */int _senderId,int _targetId,DalXml.DO.WeightCategories _weight,
                           DalXml.DO.Priorities _priority) //DateTime _requested = DateTime.MinValue,
                          // DateTime _scheduled = DateTime.MinValue)// DateTime _pickup, DateTime _delivered)
@@ -31,11 +20,11 @@ namespace DalXml
                 ReceiverId = _targetId;
                 Weight = _weight;
                 Priority =_priority;
-                Requested = null; //when we receive request for the parcel
+                TimeRequested = null; //when we receive request for the parcel
                 DroneId = -1;             //null...
-                Scheduled = null;
-                Pickup = null;     //null...
-                Delivered = null; //null...
+                TimeScheduled = null;
+                TimePickedUp = null;     //null...
+                TimeDelivered = null; //null...
                 Exists = true;
             }
 
@@ -44,11 +33,11 @@ namespace DalXml
             public int ReceiverId { get; set; }
             public DalXml.DO.WeightCategories Weight { get; set; }
             public DalXml.DO.Priorities Priority { get; set; }
-            public DateTime? Requested { get; set; } //when we receive request for the parcel
+            public DateTime? TimeRequested { get; set; } //when we receive request for the parcel
             public int DroneId { get; set; }
-            public DateTime ?Scheduled { get; set; }
-            public DateTime? Pickup { get; set; }
-            public DateTime? Delivered { get; set; }
+            public DateTime ? TimeScheduled { get; set; }
+            public DateTime? TimePickedUp { get; set; } //from Sender
+            public DateTime? TimeDelivered { get; set; } //at Receipient 
             public bool Exists { get; set; }
 
             public override string ToString()
@@ -59,11 +48,11 @@ namespace DalXml
                     "ReceiverId: " + ReceiverId + "\n" +
                     "Weight: " + Weight + "\n" +
                     "Priority: " + Priority + "\n" +
-                    "Requested: " + Requested + "\n" +
+                    "Requested: " + TimeRequested + "\n" +
                     "DroneId: " + DroneId + "\n" +
-                    "Scheduled: " + Scheduled + "\n" +
-                    "Pickup: " + Pickup + "\n" +
-                    "Delivered: " + Delivered + "\n";
+                    "Scheduled: " + TimeScheduled + "\n" +
+                    "Pickup: " + TimePickedUp + "\n" +
+                    "Delivered: " + TimeDelivered + "\n";
                 return res;
             }
 

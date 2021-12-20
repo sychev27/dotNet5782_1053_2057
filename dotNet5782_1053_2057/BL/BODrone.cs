@@ -15,10 +15,10 @@ namespace BL
             public BL.BO.Enum.WeightCategories MaxWeight { get; set; }
             public double Battery { get; set; }
             public BL.BO.Enum.DroneStatus DroneStatus { get; set; }
-            public BL.BO.BOParcelInTransfer ParcelInTransfer{ get; set;}
+            public BL.BO.BOParcelInTransfer ParcelInTransfer { get; set;}
             public BL.BO.BOLocation Location{ get; set;}
 
-
+            
             public override string ToString()
             {
                 string res = "Drone " + Id + " Model: " + Model + " \n";

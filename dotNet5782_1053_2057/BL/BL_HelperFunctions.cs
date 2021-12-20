@@ -133,34 +133,31 @@ namespace BL
 
                 return distance;
             }
-            double battNededForDist(global::BL.BO.BODrone drone, global::BL.BO.BOLocation finish, global::BL.BO.BOLocation start = null)
-            {
-                //if start definition is not defined, calculate based on drone's current location
-                if (start == null)
-                    start = drone.Location;
 
+            double battNededForDist(global::BL.BO.BOLocation start, global::BL.BO.BOLocation finish, BO.Enum.WeightCategories? weight = null)
+            {
+                
                 double dist = distance(start, finish);
-                if (drone.ParcelInTransfer.Collected)
+
+                if (weight != null)
                 {
-                    if (drone.ParcelInTransfer.MaxWeight == global::BL.BO.Enum.WeightCategories.Light)
+                    if (weight == global::BL.BO.Enum.WeightCategories.Light)
                         return dist * light;
-                    if (drone.ParcelInTransfer.MaxWeight == global::BL.BO.Enum.WeightCategories.Medium)
+                    if (weight == global::BL.BO.Enum.WeightCategories.Medium)
                         return dist * medium;
-                    if (drone.ParcelInTransfer.MaxWeight == global::BL.BO.Enum.WeightCategories.Heavy)
+                    if (weight == global::BL.BO.Enum.WeightCategories.Heavy)
                         return dist * heavy;
                 }
                 return dist * empty;
             }
             double battNeededForJourey(global::BL.BO.BODrone drone, global::BL.BO.BOLocation Sender,
-                global::BL.BO.BOLocation Receiver)
+                global::BL.BO.BOLocation Receiver, BO.Enum.WeightCategories weight)
             {
                 double totalBattery = 0;
 
-                totalBattery += battNededForDist(drone, Sender);                            //drone -> Sender
-                totalBattery += battNededForDist(drone, Receiver, Sender);                  //Sender -> Receiver
-                totalBattery += battNededForDist(drone, getClosestStationLoc(Receiver), Receiver);//Receiver -> Station
-
-                //error in logic, assumes that Drone is traveling without package...
+                totalBattery += battNededForDist(drone.Location, Sender, weight);                            //drone -> Sender
+                totalBattery += battNededForDist(Sender, Receiver, weight);                  //Sender -> Receiver
+                totalBattery += battNededForDist(Receiver, getClosestStationLoc(Receiver));//Receiver -> Station
 
                 return totalBattery;
 
@@ -187,7 +184,7 @@ namespace BL
                 //(2) organize into 3 groups (by Priority), each group with 3 sub groups (by weight)
                 //(3) Traverse the parcels, beginning from best choice. if we can make the journey, take the parcel
 
-                //2D array:
+                //Initialize our 2D array:
                 //first dimension - organized by Parcel Priority
                 //second dimesion - organized by weight category - index 0: light, index 1: medium, index 2: heavy
                 List<DalXml.DO.Parcel>[,] parcels = new List<DalXml.DO.Parcel>[3, 3];
@@ -205,10 +202,11 @@ namespace BL
                 foreach (var origParcel in dataAccess.getParcels())
                 {
                     //(1) Take Relevant Parcels
-                    if ((int)origParcel.Weight <= (int)droneCopy.MaxWeight && (origParcel.DroneId == 0)) //if drone can hold parcel
+                    if ((origParcel.DroneId == 0) 
+                        && (int)origParcel.Weight <= (int)droneCopy.MaxWeight) //if drone can hold parcel
                     {
                         //(2) Fill our 3 Arrays...each with 3 sub groups
-                        switch (origParcel.Priority)
+                        switch ((DalXml.DO.Priorities)origParcel.Priority)
                         {
                             case DalXml.DO.Priorities.regular:
                                 if (origParcel.Weight == DalXml.DO.WeightCategories.light)
@@ -252,7 +250,7 @@ namespace BL
                         foreach (var parcel in parcels[i, j])
                         {
                             if (battNeededForJourey(droneCopy, getLocationOfCustomer(parcel.SenderId),
-                                getLocationOfCustomer(parcel.ReceiverId)) >= droneCopy.Battery)
+                                getLocationOfCustomer(parcel.ReceiverId), (BO.Enum.WeightCategories)parcel.Weight) <= droneCopy.Battery)
                             { //if drone can make the journey,
 
                                 //find the closest parcel:
@@ -499,7 +497,7 @@ namespace BL
 
 
             public string GetDroneLocationString(int id) //returns string describing location
-                                                         //helpful for debugging adn user convenience
+                                                         //helpful for debugging, & user convenience
             {
                 global::BL.BO.BODrone bodrone = GetBODrone(id);
                 if (bodrone.DroneStatus == global::BL.BO.Enum.DroneStatus.Charging)
@@ -512,48 +510,61 @@ namespace BL
                 }
                 else if (bodrone.DroneStatus == global::BL.BO.Enum.DroneStatus.InDelivery)
                 {
-                    if (bodrone.ParcelInTransfer != null)
-                    {
-                        if (bodrone.Location == bodrone.ParcelInTransfer.PickupPoint)
-                            return "At Customer " + bodrone.ParcelInTransfer.Sender.Name;
-                        else if (bodrone.Location == bodrone.ParcelInTransfer.DeliveryPoint)
-                            return "At customer " + bodrone.ParcelInTransfer.Recipient.Name;
-                        else
-                        {
-                            foreach (var item in dataAccess.getStations())
-                            {
 
-                            }
-                        }
-                    }
+                    //if already pickuped up pkg
+                    if (bodrone.Location == bodrone.ParcelInTransfer.PickupPoint)
+                        return "At Customer " + bodrone.ParcelInTransfer.Sender.Name;
+                    else if (bodrone.Location == bodrone.ParcelInTransfer.DeliveryPoint)
+                        return "At Customer " + bodrone.ParcelInTransfer.Recipient.Name;
+                    else
+                        return findAllPossibleLoc(bodrone);
+                    
 
                 }
                 else if (bodrone.DroneStatus == global::BL.BO.Enum.DroneStatus.Available)
                 {
-                    //if at station - after charging
-                    foreach (var station in dataAccess.getStations())
-                    {
-                        global::BL.BO.BOLocation stationLoc = new
-                            global::BL.BO.BOLocation(station.Longitude, station.Latitude);
-
-                        if (bodrone.Location == stationLoc)
-                            return "At Station " + station.Id.ToString();
-                    }
-                    //if at customer
-                    foreach (var cust in dataAccess.getCustomers())
-                    {
-                        global::BL.BO.BOLocation custLoc = new
-                            global::BL.BO.BOLocation(cust.Longitude, cust.Latitude);
-
-                        if (bodrone.Location == custLoc)
-                            return "At Station " + cust.Id.ToString();
-                    }
-
+                    return findAllPossibleLoc(bodrone);
                 }
 
                 return "Could not locate..";
             }
 
+
+            private string findAllPossibleLoc(BO.BODrone bodrone)
+            {
+                //if at station - after charging
+                foreach (var station in dataAccess.getStations())
+                {
+                    if (bodrone.Location.Longitude == station.Longitude
+                        && bodrone.Location.Latitude == station.Latitude)
+                        return "At Station " + station.Id.ToString();
+                }
+                //if at customer
+                foreach (var cust in dataAccess.getCustomers())
+                {
+                    if (bodrone.Location.Longitude == cust.Longitude
+                      && bodrone.Location.Latitude == cust.Latitude)
+                        return "At Customer " + cust.Name;
+                }
+                return "Could not locate..";
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            //end of class definition...
         }
     }
 }
+ 

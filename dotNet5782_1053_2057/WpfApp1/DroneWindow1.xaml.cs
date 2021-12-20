@@ -35,7 +35,7 @@ namespace WpfApp1
             //(1) Disable irrelevant buttons
             //btnGetDrone.IsEnabled = false;
             btnModifyDroneModel.IsEnabled = false;
-            btnSendDroneToCustomer.IsEnabled = false;
+            btnAssignDroneToParcel.IsEnabled = false;
             btnFreeDroneFromCharge.IsEnabled = false;
             btnPickupPkg.IsEnabled = false;
             btnSendToCharge.IsEnabled = false;
@@ -44,7 +44,7 @@ namespace WpfApp1
             //(2) Hide irrelevant buttons
             //btnGetDrone.Visibility = Visibility.Hidden;
             btnModifyDroneModel.Visibility = Visibility.Hidden;
-            btnSendDroneToCustomer.Visibility = Visibility.Hidden;
+            btnAssignDroneToParcel.Visibility = Visibility.Hidden;
             btnFreeDroneFromCharge.Visibility = Visibility.Hidden;
             btnPickupPkg.Visibility = Visibility.Hidden;
             btnSendToCharge.Visibility = Visibility.Hidden;
@@ -194,7 +194,7 @@ namespace WpfApp1
             cmbWeightChoice.IsEnabled = false;
 
             tBlockStatusInfo.Text = bodrone.DroneStatus.ToString();
-            if (bodrone.ParcelInTransfer.Id == -1)
+            if (bodrone.ParcelInTransfer.Id == -1 || bodrone.ParcelInTransfer == null)
                 tBlockDeliveryInfo.Text = "Not yet carrying Parcel";
             else 
                 tBlockDeliveryInfo.Text = bodrone.ParcelInTransfer.ToString();
@@ -250,31 +250,78 @@ namespace WpfApp1
 
         private void btnSendToCharge_Click(object sender, RoutedEventArgs e)
         {
-            busiAccess.ChargeDrone(thisDroneId);
+            try
+            {
+                busiAccess.ChargeDrone(thisDroneId);
+            }
+            catch (BL.BLApi.EXDroneUnavailableException ex)
+            {
+                errorMsg(ex.ToString());
+            }
             displayBODrone(busiAccess.GetBODrone(thisDroneId));
         }
 
         private void btnFreeDroneFromCharge_Click(object sender, RoutedEventArgs e)
         {
-            busiAccess.FreeDrone(thisDroneId, 0);
-            displayBODrone(busiAccess.GetBODrone(thisDroneId));
+            try
+            {
+                busiAccess.FreeDrone(thisDroneId, DateTime.Now);
+            }
+            catch (BL.BLApi.EXMiscException ex) //if drone is not charging
+            {
+                errorMsg(ex.ToString());
+            }
+             displayBODrone(busiAccess.GetBODrone(thisDroneId));
         }
 
         private void btnPickupPkg_Click(object sender, RoutedEventArgs e)
         {
-            busiAccess.PickupParcel(thisDroneId);
+            try
+            {
+                busiAccess.PickupParcel(thisDroneId);
+            }
+            catch (BL.BLApi.EXDroneNotAssignedParcel ex)
+            {
+                errorMsg(ex.ToString());
+            }
+            catch (BL.BLApi.EXParcelAlreadyCollected ex)
+            {
+                errorMsg(ex.ToString());
+            }
             displayBODrone(busiAccess.GetBODrone(thisDroneId));
         }
 
-        private void btnSendDroneToCustomer_Click(object sender, RoutedEventArgs e)
+        private void btnAssignDroneToParcel_Click(object sender, RoutedEventArgs e)
         {
-            busiAccess.AssignParcel(thisDroneId);
+            try
+            {
+                busiAccess.AssignParcel(thisDroneId);
+            }
+            catch (BL.BLApi.EXNoAppropriateParcel ex)
+            {
+                errorMsg(ex.ToString());
+            }
+            catch (BL.BLApi.EXDroneUnavailableException ex)
+            {
+                errorMsg(ex.ToString());
+            }
             displayBODrone(busiAccess.GetBODrone(thisDroneId));
         }
 
         private void btnDeliverPkg_Click(object sender, RoutedEventArgs e)
         {
-            busiAccess.DeliverParcel(thisDroneId);
+            try
+            {
+                busiAccess.DeliverParcel(thisDroneId);
+            }
+            catch (BL.BLApi.EXDroneNotAssignedParcel ex)
+            {
+                errorMsg(ex.ToString());
+            }
+            catch (BL.BLApi.EXParcelNotCollected ex)
+            {
+                errorMsg(ex.ToString());
+            }
             displayBODrone(busiAccess.GetBODrone(thisDroneId));
         }
 
@@ -289,6 +336,12 @@ namespace WpfApp1
         }
 
 
+
+        private void errorMsg(string msg)
+        {
+            MessageBox.Show(msg, "Error",
+                   MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
+        }
 
 
 

@@ -67,6 +67,7 @@ namespace BL
 
                 receiveDronesFromData();
 
+                
                 //holds temporary list of locations of customers 
                 List<global::BL.BO.BOLocation> tempListCust = new List<global::BL.BO.BOLocation>();
                 //(for now, tempListCust holds every customer, not just those who have had a parcel delivered to them
@@ -75,11 +76,6 @@ namespace BL
 
                 foreach (global::BL.BO.BODrone drone in listDrone)
                 {
-                    if (drone.Id == -1) //THROW ERROR
-                    {
-                        continue;
-                    }
-
                     if (drone.ParcelInTransfer.Id != -1 && drone.ParcelInTransfer != null)
                     {
                         //IF DRONE ALREADY ASSIGNED A PARCEL
@@ -95,7 +91,12 @@ namespace BL
                         }
                         //(2) SET BATTERY - to min needed to get to destination
 
-                        double minBatteryNeeded = battNededForDist(drone, drone.ParcelInTransfer.DeliveryPoint);
+                        double minBatteryNeeded = battNeededForJourey(drone, 
+                        getLocationOfCustomer(drone.ParcelInTransfer.Sender.Id),
+                        getLocationOfCustomer(drone.ParcelInTransfer.Recipient.Id), 
+                        drone.ParcelInTransfer.ParcelWeight);
+
+
                         double battery = r.Next((int)minBatteryNeeded + 1, 100);
                         battery += r.NextDouble();
                         drone.Battery = battery;
@@ -119,8 +120,9 @@ namespace BL
 
                             drone.Location = new global::BL.BO.BOLocation(st.Longitude, st.Latitude);
 
-                            //(2) SET BATTERY - btw 0 to 20%
-                            drone.Battery = r.Next(0, 20);
+                            //(2) SET BATTERY - btw 50 to 100%
+                            drone.Battery = r.Next(50, 100);
+                            //drone.Battery = 2000;
                             drone.Battery += r.NextDouble();
 
                             AddDroneCharge(drone.Id, st.Id);
@@ -140,12 +142,28 @@ namespace BL
                             drone.Location = tempListCust[r.Next(0, tempListCust.Count())];
 
                             //(2) SET BATTERY - battNeeded to 100%
-                            double minBatteryNeeded = battNededForDist(drone, getClosestStationLoc(drone.Location));
+                            double minBatteryNeeded = battNededForDist(drone.Location, getClosestStationLoc(drone.Location));
                             double battery = r.Next((int)minBatteryNeeded + 1, 100);
                             battery += r.NextDouble();
                             drone.Battery = battery;
 
                         }
+                        try
+                        {
+                            AssignParcel(drone.Id);
+                        }
+                        catch (EXNoAppropriateParcel)
+                        {
+                            continue;
+                        }
+                        catch (EXDroneUnavailableException)
+                        {
+                            continue;
+                        }
+
+
+
+
 
                     }
                     //end of foreach
@@ -193,6 +211,7 @@ namespace BL
                     boDrone.ParcelInTransfer = createParcInTrans(boDrone.Id);
                     if (boDrone.ParcelInTransfer != null)
                         boDrone.DroneStatus = global::BL.BO.Enum.DroneStatus.InDelivery;
+                    
                 }
                 catch (EXParcInTransNotFoundException exception)
                 {
@@ -222,13 +241,15 @@ namespace BL
 
                 return origParcel.Id;
             }
+
+
             global::BL.BO.BOParcelInTransfer createEmptyParcInTrans()
             {
                 global::BL.BO.BOParcelInTransfer thisParc = new global::BL.BO.BOParcelInTransfer();
                 thisParc.Id = -1;
                 thisParc.Collected = false;
                 thisParc.Priority = (global::BL.BO.Enum.Priorities)0;
-                thisParc.MaxWeight = (global::BL.BO.Enum.WeightCategories)0;
+                thisParc.ParcelWeight = (global::BL.BO.Enum.WeightCategories)0;
                 try
                 {
                     thisParc.Sender = createCustInParcel(0);
@@ -255,31 +276,34 @@ namespace BL
 
                 return thisParc;
             }
-            global::BL.BO.BOParcelInTransfer createParcInTrans(int origDroneId, int origParcId = -1) //used in Initialization
+            BO.BOParcelInTransfer createParcInTrans(int origDroneId, int origParcId = -1) //used in Initialization
             {
                 //receives ID of its drone. Fetches correct parcel from Data Layer.
                 //Builds the object based on that parcel
 
-                global::BL.BO.BOParcelInTransfer thisParc = new global::BL.BO.BOParcelInTransfer();
+                BO.BOParcelInTransfer thisParc = new BO.BOParcelInTransfer();
 
-                //(1)FETCH PARCEL FROM DATA LAYER
+                //(1)FETCH SPECIFIC PARCEL FROM DATA LAYER
                 IEnumerable<DalXml.DO.Parcel> origParcList = dataAccess.getParcels();
 
                 DalXml.DO.Parcel origParcel = new DalXml.DO.Parcel();
-                if (origParcId == -1)
+                //assume origParcel it's proper ID
+                if (origParcId == -1) //if caller of this function did not sent Parcel's Id as a parameter
                     origParcel.Id = getParcIdFromDroneID(origDroneId);
                 else
                     origParcel.Id = origParcId;
 
                 origParcel.SenderId = -1;
 
-                foreach (var item in origParcList)
+                foreach (var item in origParcList) //sets "origParcel" acc to Parcel saved in data Layer
                 {
                     if (item.Id == origParcel.Id)
                     {
                         origParcel = item; break;
                     }
                 }
+
+
                 //(2) THROW EXCEPTION IF NOT FOUND
                 if (origParcel.Id == -1) throw new EXParcInTransNotFoundException();
 
@@ -288,9 +312,10 @@ namespace BL
 
                 //(3) CREATE THIS OBJECT
                 thisParc.Id = origParcel.Id;
-                thisParc.Collected = (origParcel.Pickup == DateTime.MinValue) ? false : true;
+                //thisParc.Collected = (origParcel.TimePickedUp == null) ? false : true;
+                thisParc.Collected = false;
                 thisParc.Priority = (global::BL.BO.Enum.Priorities)origParcel.Priority;
-                thisParc.MaxWeight = (global::BL.BO.Enum.WeightCategories)origParcel.Weight;
+                thisParc.ParcelWeight = (global::BL.BO.Enum.WeightCategories)origParcel.Weight;
                 try
                 {
                     thisParc.Sender = createCustInParcel(origParcel.SenderId);
@@ -439,8 +464,8 @@ namespace BL
                     origParc.ReceiverId, dataAccess.getCustomer(origParc.ReceiverId).Name);
 
                 newParc.WeightCategory = (global::BL.BO.Enum.WeightCategories)origParc.Weight;
-                newParc.timeOfDelivery = origParc.Delivered;
-                newParc.timeOfCollection = origParc.Pickup;
+                newParc.timeOfDelivery = origParc.TimeDelivered;
+                newParc.timeOfCollection = origParc.TimePickedUp;
                 //newParc.timeOfAssignment = 
                 //newParc.timeOfCreation =
 
@@ -465,16 +490,16 @@ namespace BL
                 {
                     if (item.SenderId == newCustToList.Id) //if sent this parcel
                     {
-                        if (item.Delivered == DateTime.MinValue)//if not delivered
+                        if (item.TimeDelivered == DateTime.MinValue)//if not delivered
                             newCustToList.numParcelsSentNotDelivered++;
-                        else if (item.Delivered != DateTime.MinValue) //it deliverd
+                        else if (item.TimeDelivered != DateTime.MinValue) //it deliverd
                             newCustToList.numParcelsSentDelivered++;
                     }
                     else if (item.ReceiverId == newCustToList.Id)
                     {
-                        if (item.Delivered == DateTime.MinValue) //if not delivered
+                        if (item.TimeDelivered == DateTime.MinValue) //if not delivered
                             newCustToList.numParcelsOnWayToCustomer++;
-                        else if (item.Delivered != DateTime.MinValue) //if delivered
+                        else if (item.TimeDelivered != DateTime.MinValue) //if delivered
                             newCustToList.numParcelsRecieved++;
                     }
                 }
@@ -506,9 +531,9 @@ namespace BL
                 newParcToList.Weight = (global::BL.BO.Enum.WeightCategories)origParcel.Weight;
                 newParcToList.Priority = (global::BL.BO.Enum.Priorities)origParcel.Priority;
 
-                if (origParcel.Delivered != null) //if delivered
+                if (origParcel.TimeDelivered != null) //if delivered
                     newParcToList.ParcelStatus = global::BL.BO.Enum.ParcelStatus.delivered;
-                else if (origParcel.Pickup != null) // if collected
+                else if (origParcel.TimePickedUp != null) // if collected
                     newParcToList.ParcelStatus = global::BL.BO.Enum.ParcelStatus.collected;
                 else if (origParcel.DroneId != -1)
                     newParcToList.ParcelStatus = global::BL.BO.Enum.ParcelStatus.assigned;

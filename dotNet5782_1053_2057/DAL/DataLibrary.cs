@@ -38,11 +38,11 @@ namespace DalObject
         {
             //ratios for charging the drone; how many units of battery per minute, 
             //according to weigth of the Parcel (heavier parcels require more battery
-            internal static double empty = 0.4;
-            internal static double light = 0.5;
-            internal static double mediuim =0.6;
-            internal static double heavy = 0.7;
-            internal static double chargeRate = 5.5; // per minute
+            internal static double empty = 0.1;
+            internal static double light = 0.2;
+            internal static double mediuim =0.3;
+            internal static double heavy = 0.4;
+            internal static double chargeRate = 15.5; // per minute
             internal int parcelSerialNumber = 1;
         }
 
@@ -261,16 +261,18 @@ namespace DalObject
                 int month = r.Next(1, 13);
                 int day = r.Next(1, 29);
                 int year = r.Next(2020, 2022);
-                exampleP.Requested = new DateTime(year, month, day);
+                exampleP.TimeRequested = new DateTime(year, month, day);
 
                 exampleP.Exists = true;
 
-                if (i <= 5)
-                    exampleP.DroneId = r.Next(1, 6);
+                //if (i <= 5)
+                //    exampleP.DroneId = r.Next(1, 6);
                // exampleP.Pickup = exampleP.Requested + new TimeSpan(r.Next(1, 7),0,0,0) ;   //AddDays(r.Next(1, 7));
                 //exampleP.Delivered = exampleP.Pickup.AddDays(r.Next(1, 3));
 
-                exampleP.Scheduled = exampleP.Requested + new TimeSpan(r.Next(1, 7), 0, 0, 0);
+                exampleP.TimeScheduled = exampleP.TimeRequested + new TimeSpan(r.Next(1, 7), 0, 0, 0);
+
+                //no Parcel is collectd/delivered already in Initialization
 
                 listParcel.Add(exampleP);
                 //thisConfig.indexAvailParcel++;
@@ -301,13 +303,14 @@ namespace DalObject
         {
             foreach (var item in listDroneCharge)
             {
-                if (item.DroneId == thisDroneCharge.DroneId)
+                if (item.DroneId == thisDroneCharge.DroneId
+                        && item.StationId == thisDroneCharge.StationId)
                 {
                     DalXml.DO.DroneCharge copy = new DalXml.DO.DroneCharge();
                     copy.Exists = false;
                     listDroneCharge.Remove(thisDroneCharge);
                     listDroneCharge.Add(copy);
-
+                    break;
                 }
             }
 
@@ -400,13 +403,14 @@ namespace DalObject
                 {
                     DalXml.DO.Parcel copy = item;
                     listParcel.Remove(copy);
-                    copy.Pickup = DateTime.Now;
+                    copy.TimePickedUp = DateTime.Now;
                     listParcel.Add(copy);
                     return;
                 }
             }
             //if not found --> exception
         }
+
         public void deliverParcel(int parcelId)
         {
             foreach (var item in listParcel )
@@ -415,7 +419,7 @@ namespace DalObject
                 {
                     DalXml.DO.Parcel copy = item;
                     listParcel.Remove(copy);
-                    copy.Delivered = DateTime.Now;
+                    copy.TimeDelivered = DateTime.Now;
                     listParcel.Add(copy);
                     return;
                 }
