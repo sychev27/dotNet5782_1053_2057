@@ -32,7 +32,18 @@ namespace BL
         {
             public EXDroneUnavailableException() : base("Drone is not available") { }
         }
-
+        public class EXDroneNotAssignedParcel : EXMiscException
+        { 
+            public EXDroneNotAssignedParcel() : base("Drone is not Assigned a parcel") { }
+        }
+        public class EXParcelAlreadyCollected : EXMiscException
+        {
+            public EXParcelAlreadyCollected() : base("Parcel already collected by drone!") { }
+        }
+        public class EXParcelNotCollected : EXMiscException
+        {
+            public EXParcelNotCollected() : base("Parcel not yet collected") { }
+        }
 
     }
 }

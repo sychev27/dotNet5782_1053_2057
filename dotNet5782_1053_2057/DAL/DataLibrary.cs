@@ -38,11 +38,11 @@ namespace DalObject
         {
             //ratios for charging the drone; how many units of battery per minute, 
             //according to weigth of the Parcel (heavier parcels require more battery
-            internal static double empty = 0.4;
-            internal static double light = 0.5;
-            internal static double mediuim =0.6;
-            internal static double heavy = 0.7;
-            internal static double chargeRate = 5.5; // per minute
+            internal static double empty = 0.1;
+            internal static double light = 0.2;
+            internal static double mediuim =0.3;
+            internal static double heavy = 0.4;
+            internal static double chargeRate = 15.5; // per minute
             internal int parcelSerialNumber = 1;
         }
 
@@ -410,6 +410,7 @@ namespace DalObject
             }
             //if not found --> exception
         }
+
         public void deliverParcel(int parcelId)
         {
             foreach (var item in listParcel )

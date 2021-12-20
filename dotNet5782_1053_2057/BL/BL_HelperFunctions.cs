@@ -133,32 +133,31 @@ namespace BL
 
                 return distance;
             }
-            double battNededForDist(global::BL.BO.BODrone drone, global::BL.BO.BOLocation finish, global::BL.BO.BOLocation start = null)
-            {
-                //if start definition is not defined, calculate based on drone's current location
-                if (start == null)
-                    start = drone.Location;
 
+            double battNededForDist(global::BL.BO.BOLocation start, global::BL.BO.BOLocation finish, BO.Enum.WeightCategories? weight = null)
+            {
+                
                 double dist = distance(start, finish);
-                if (drone.ParcelInTransfer.Collected)
+
+                if (weight != null)
                 {
-                    if (drone.ParcelInTransfer.MaxWeight == global::BL.BO.Enum.WeightCategories.Light)
+                    if (weight == global::BL.BO.Enum.WeightCategories.Light)
                         return dist * light;
-                    if (drone.ParcelInTransfer.MaxWeight == global::BL.BO.Enum.WeightCategories.Medium)
+                    if (weight == global::BL.BO.Enum.WeightCategories.Medium)
                         return dist * medium;
-                    if (drone.ParcelInTransfer.MaxWeight == global::BL.BO.Enum.WeightCategories.Heavy)
+                    if (weight == global::BL.BO.Enum.WeightCategories.Heavy)
                         return dist * heavy;
                 }
                 return dist * empty;
             }
             double battNeededForJourey(global::BL.BO.BODrone drone, global::BL.BO.BOLocation Sender,
-                global::BL.BO.BOLocation Receiver)
+                global::BL.BO.BOLocation Receiver, BO.Enum.WeightCategories weight)
             {
                 double totalBattery = 0;
 
-                totalBattery += battNededForDist(drone, Sender);                            //drone -> Sender
-                totalBattery += battNededForDist(drone, Receiver, Sender);                  //Sender -> Receiver
-                totalBattery += battNededForDist(drone, getClosestStationLoc(Receiver), Receiver);//Receiver -> Station
+                totalBattery += battNededForDist(drone.Location, Sender, weight);                            //drone -> Sender
+                totalBattery += battNededForDist(Sender, Receiver, weight);                  //Sender -> Receiver
+                totalBattery += battNededForDist(Receiver, getClosestStationLoc(Receiver));//Receiver -> Station
 
                 return totalBattery;
 
@@ -251,7 +250,7 @@ namespace BL
                         foreach (var parcel in parcels[i, j])
                         {
                             if (battNeededForJourey(droneCopy, getLocationOfCustomer(parcel.SenderId),
-                                getLocationOfCustomer(parcel.ReceiverId)) <= droneCopy.Battery)
+                                getLocationOfCustomer(parcel.ReceiverId), (BO.Enum.WeightCategories)parcel.Weight) <= droneCopy.Battery)
                             { //if drone can make the journey,
 
                                 //find the closest parcel:
@@ -526,7 +525,7 @@ namespace BL
                 {
                     if (bodrone.Location.Longitude == cust.Longitude
                       && bodrone.Location.Latitude == cust.Latitude)
-                        return "At Customer " + cust.Id.ToString();
+                        return "At Customer " + cust.Name;
                 }
                 return "Could not locate..";
             }

@@ -91,7 +91,12 @@ namespace BL
                         }
                         //(2) SET BATTERY - to min needed to get to destination
 
-                        double minBatteryNeeded = battNededForDist(drone, drone.ParcelInTransfer.DeliveryPoint);
+                        double minBatteryNeeded = battNeededForJourey(drone, 
+                        getLocationOfCustomer(drone.ParcelInTransfer.Sender.Id),
+                        getLocationOfCustomer(drone.ParcelInTransfer.Recipient.Id), 
+                        drone.ParcelInTransfer.ParcelWeight);
+
+
                         double battery = r.Next((int)minBatteryNeeded + 1, 100);
                         battery += r.NextDouble();
                         drone.Battery = battery;
@@ -117,6 +122,7 @@ namespace BL
 
                             //(2) SET BATTERY - btw 50 to 100%
                             drone.Battery = r.Next(50, 100);
+                            //drone.Battery = 2000;
                             drone.Battery += r.NextDouble();
 
                             AddDroneCharge(drone.Id, st.Id);
@@ -136,7 +142,7 @@ namespace BL
                             drone.Location = tempListCust[r.Next(0, tempListCust.Count())];
 
                             //(2) SET BATTERY - battNeeded to 100%
-                            double minBatteryNeeded = battNededForDist(drone, getClosestStationLoc(drone.Location));
+                            double minBatteryNeeded = battNededForDist(drone.Location, getClosestStationLoc(drone.Location));
                             double battery = r.Next((int)minBatteryNeeded + 1, 100);
                             battery += r.NextDouble();
                             drone.Battery = battery;
@@ -243,7 +249,7 @@ namespace BL
                 thisParc.Id = -1;
                 thisParc.Collected = false;
                 thisParc.Priority = (global::BL.BO.Enum.Priorities)0;
-                thisParc.MaxWeight = (global::BL.BO.Enum.WeightCategories)0;
+                thisParc.ParcelWeight = (global::BL.BO.Enum.WeightCategories)0;
                 try
                 {
                     thisParc.Sender = createCustInParcel(0);
@@ -306,9 +312,10 @@ namespace BL
 
                 //(3) CREATE THIS OBJECT
                 thisParc.Id = origParcel.Id;
-                thisParc.Collected = (origParcel.TimePickedUp == DateTime.MinValue) ? false : true;
+                //thisParc.Collected = (origParcel.TimePickedUp == null) ? false : true;
+                thisParc.Collected = false;
                 thisParc.Priority = (global::BL.BO.Enum.Priorities)origParcel.Priority;
-                thisParc.MaxWeight = (global::BL.BO.Enum.WeightCategories)origParcel.Weight;
+                thisParc.ParcelWeight = (global::BL.BO.Enum.WeightCategories)origParcel.Weight;
                 try
                 {
                     thisParc.Sender = createCustInParcel(origParcel.SenderId);

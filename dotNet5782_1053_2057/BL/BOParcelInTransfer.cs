@@ -16,7 +16,7 @@ namespace BL
             public bool Collected { get; set; } //true = collected, in transit
                                                 //false = not yet collected
             public BL.BO.Enum.Priorities Priority { get; set; }
-            public BL.BO.Enum.WeightCategories MaxWeight { get; set; }
+            public BL.BO.Enum.WeightCategories ParcelWeight { get; set; }
             public BL.BO.BOCustomerInParcel Sender { get; set; }
             public BL.BO.BOCustomerInParcel Recipient { get; set; }
             public BL.BO.BOLocation PickupPoint { get; set; }

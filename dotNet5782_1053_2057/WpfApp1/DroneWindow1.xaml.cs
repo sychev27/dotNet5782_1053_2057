@@ -194,7 +194,7 @@ namespace WpfApp1
             cmbWeightChoice.IsEnabled = false;
 
             tBlockStatusInfo.Text = bodrone.DroneStatus.ToString();
-            if (bodrone.ParcelInTransfer.Id == -1)
+            if (bodrone.ParcelInTransfer.Id == -1 || bodrone.ParcelInTransfer == null)
                 tBlockDeliveryInfo.Text = "Not yet carrying Parcel";
             else 
                 tBlockDeliveryInfo.Text = bodrone.ParcelInTransfer.ToString();
@@ -267,7 +267,7 @@ namespace WpfApp1
             {
                 busiAccess.FreeDrone(thisDroneId, DateTime.Now);
             }
-            catch (BL.BLApi.EXMiscException ex)
+            catch (BL.BLApi.EXMiscException ex) //if drone is not charging
             {
                 errorMsg(ex.ToString());
             }
@@ -280,7 +280,11 @@ namespace WpfApp1
             {
                 busiAccess.PickupParcel(thisDroneId);
             }
-            catch (BL.BLApi.EXMiscException ex)
+            catch (BL.BLApi.EXDroneNotAssignedParcel ex)
+            {
+                errorMsg(ex.ToString());
+            }
+            catch (BL.BLApi.EXParcelAlreadyCollected ex)
             {
                 errorMsg(ex.ToString());
             }
@@ -306,7 +310,18 @@ namespace WpfApp1
 
         private void btnDeliverPkg_Click(object sender, RoutedEventArgs e)
         {
-            busiAccess.DeliverParcel(thisDroneId);
+            try
+            {
+                busiAccess.DeliverParcel(thisDroneId);
+            }
+            catch (BL.BLApi.EXDroneNotAssignedParcel ex)
+            {
+                errorMsg(ex.ToString());
+            }
+            catch (BL.BLApi.EXParcelNotCollected ex)
+            {
+                errorMsg(ex.ToString());
+            }
             displayBODrone(busiAccess.GetBODrone(thisDroneId));
         }
 

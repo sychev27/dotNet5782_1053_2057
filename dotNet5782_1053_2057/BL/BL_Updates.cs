@@ -139,7 +139,7 @@ namespace BL
                     throw new EXDroneUnavailableException();
 
                 //(3) find closest parcel
-                int closestParcelId = findClosestParcel(droneCopy);
+                int closestParcelId = findClosestParcel(droneCopy); //check if enough batt to make journey
                 if (closestParcelId == -1)
                     //throw exception no closest parcel --> dont assign drone, continue in menu...
                     throw new EXNoAppropriateParcel();
@@ -163,24 +163,26 @@ namespace BL
                     throw new EXNotFoundPrintException("Drone");
                 }
                 if (drone.DroneStatus != global::BL.BO.Enum.DroneStatus.InDelivery)
-                    throw new EXMiscException("Drone is not in delivery");
+                    throw new EXDroneNotAssignedParcel();
+                if (drone.ParcelInTransfer.Collected)
+                    throw new EXParcelAlreadyCollected();
 
-                foreach (var item in listDrone)
+                foreach (var bodrone in listDrone)
                 {
-                    if (item.Id == droneId)
+                    if (bodrone.Id == droneId)
                     {
-                        global::BL.BO.BOLocation custLoc = getLocationOfCustomer(item.ParcelInTransfer.Sender.Id);
-                        item.Battery -= battNededForDist(item, custLoc);
-                        item.Location = custLoc;
-                        dataAccess.pickupParcel(item.ParcelInTransfer.Id);
+                        BO.BOLocation custLoc = getLocationOfCustomer(bodrone.ParcelInTransfer.Sender.Id);
+                        bodrone.Battery -= battNededForDist(bodrone.Location, custLoc, 
+                            bodrone.ParcelInTransfer.ParcelWeight);
+                        bodrone.Location = custLoc;
+                        dataAccess.pickupParcel(bodrone.ParcelInTransfer.Id);
+                        bodrone.ParcelInTransfer.Collected = true;
                         return;
                     }
                 }
                 //throw Exception //parcel not collected!
                 throw new EXMiscException("Parcel not collected!");
             }
-
-
             public void DeliverParcel(int droneId) //drone delivers its pre-determined parcel
             {
                 global::BL.BO.BODrone drone = new global::BL.BO.BODrone();
@@ -189,17 +191,25 @@ namespace BL
                     drone = GetBODrone(droneId);
                 }
                 catch (EXNotFoundPrintException) { throw new EXNotFoundPrintException("Drone"); }
+                
                 if (drone.DroneStatus != global::BL.BO.Enum.DroneStatus.InDelivery)
-                    //    throw Exception //not in delivery , return to main menu
-                    throw new EXMiscException("Drone is not in delivery");
-                foreach (var item in listDrone)
+                     throw new EXDroneNotAssignedParcel();
+                if (!drone.ParcelInTransfer.Collected)
+                    throw new EXParcelNotCollected();
+
+
+                //Deliver the Parcel, updating the bodrone's details accordingly
+                foreach (var bodrone in listDrone)
                 {
-                    if (item.Id == droneId)
+                    if (bodrone.Id == droneId)
                     {
-                        global::BL.BO.BOLocation custLoc = getLocationOfCustomer(item.ParcelInTransfer.Recipient.Id);
-                        item.Battery -= battNededForDist(item, custLoc);
-                        item.Location = custLoc;
-                        dataAccess.deliverParcel(item.ParcelInTransfer.Id);
+                        global::BL.BO.BOLocation custLoc = getLocationOfCustomer(bodrone.ParcelInTransfer.Recipient.Id);
+                        bodrone.Battery -= battNededForDist(bodrone.Location, custLoc,
+                            bodrone.ParcelInTransfer.ParcelWeight);
+                        bodrone.Location = custLoc;
+                        bodrone.DroneStatus = BO.Enum.DroneStatus.Available;
+                        dataAccess.deliverParcel(bodrone.ParcelInTransfer.Id);
+                        bodrone.ParcelInTransfer = createEmptyParcInTrans(); 
                         return;
                     }
                 }
@@ -219,12 +229,11 @@ namespace BL
                     throw new EXDroneUnavailableException();
 
                 global::BL.BO.BOLocation closestStationLoc = getClosestStationLoc(drone.Location, true);
-                if (drone.Battery < battNededForDist(drone, closestStationLoc))
-                    //    throw exception // not enough battery to make to closet station
+                if (drone.Battery < battNededForDist(drone.Location, closestStationLoc))
                     throw new EXMiscException("not enough battery to make to closet station!");
 
                 
-                drone.Battery -= battNededForDist(drone, closestStationLoc);
+                drone.Battery -= battNededForDist(drone.Location, closestStationLoc);
                 drone.Location = closestStationLoc;
                 drone.DroneStatus = global::BL.BO.Enum.DroneStatus.Charging;
                 try
@@ -260,15 +269,16 @@ namespace BL
                 
                 double minutesInCharge = ts.TotalMinutes;
                 double batteryGained = chargeRate * minutesInCharge;
-
-
+                
                 //update drone...
-                foreach (var item in listDrone)
+                foreach (var bodrone in listDrone)
                 {
-                    if (item.Id == droneId)
+                    if (bodrone.Id == droneId)
                     {
-                        item.Battery += batteryGained;
-                        item.DroneStatus = BO.Enum.DroneStatus.Available;
+                        bodrone.Battery += batteryGained;
+                        if (bodrone.Battery > 100)
+                            bodrone.Battery = 100;
+                        bodrone.DroneStatus = BO.Enum.DroneStatus.Available;
                     }
                 }
 
