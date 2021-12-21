@@ -30,8 +30,8 @@ namespace WpfApp1
             tBlockLatitude.Visibility = Visibility.Hidden;
             tBlockLongiInfo.Visibility = Visibility.Hidden;
             tBlockLongitude.Visibility = Visibility.Hidden;
-           // btnModifyCustomer.IsEnabled = false;
-            //btnModifyCustomer.Visibility = Visibility.Hidden;
+            btnModifyCustomer.IsEnabled = false;
+            btnModifyCustomer.Visibility = Visibility.Hidden;
         }
 
         public CustomerWindow(BL.BLApi.Ibl _busiAccess)
