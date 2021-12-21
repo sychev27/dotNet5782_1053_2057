@@ -19,9 +19,42 @@ namespace WpfApp1
     /// </summary>
     public partial class CustomerListWindow : Window
     {
-        public CustomerListWindow()
+        BL.BLApi.Ibl busiAccess;
+        public CustomerListWindow(BL.BLApi.Ibl busiAccess1)
         {
             InitializeComponent();
+            busiAccess = busiAccess1;
+        }
+
+        private void btnAddCustomer1_Click(object sender, RoutedEventArgs e)
+        {
+            new CustomerWindow().ShowDialog(); 
+        }
+
+        private void Selector1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void Selector2_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void CustomerListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void btnCloseList_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+
+        }
+
+        private void btnRefreshList_Click(object sender, RoutedEventArgs e)
+        {
+            new CustomerWindow(busiAccess).ShowDialog();
         }
     }
 }
