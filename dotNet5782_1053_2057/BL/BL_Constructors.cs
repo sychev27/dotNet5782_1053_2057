@@ -379,7 +379,7 @@ namespace BL
             }
 
 
-            public global::BL.BO.BOStation CreateBOStation(int id)
+            private global::BL.BO.BOStation CreateBOStation(int id)
             {
                 DalXml.DO.Station origSt = new DalXml.DO.Station();
                 try
@@ -407,7 +407,7 @@ namespace BL
                 }
                 return newSt;
             }
-            public global::BL.BO.BOCustomer CreateBOCustomer(int id)
+            private global::BL.BO.BOCustomer CreateBOCustomer(int id)
             {
                 global::BL.BO.BOCustomer newCust = new global::BL.BO.BOCustomer();
                 DalXml.DO.Customer origCust = new DalXml.DO.Customer();
@@ -443,7 +443,7 @@ namespace BL
             }
 
 
-            public global::BL.BO.BOParcel CreateBOParcel(int id)
+            private global::BL.BO.BOParcel CreateBOParcel(int id)
             {
                 global::BL.BO.BOParcel newParc = new global::BL.BO.BOParcel();
                 DalXml.DO.Parcel origParc = new DalXml.DO.Parcel();
@@ -474,7 +474,7 @@ namespace BL
             }
 
 
-            public global::BL.BO.BOCustomerToList createBOCustToList(int _id)
+            private global::BL.BO.BOCustomerToList createBOCustToList(int _id)
             {
                 global::BL.BO.BOCustomerToList newCustToList = new global::BL.BO.BOCustomerToList();
                 DalXml.DO.Customer origCust = dataAccess.getCustomer(_id);
@@ -505,7 +505,7 @@ namespace BL
                 }
                 return newCustToList;
             }
-            public global::BL.BO.BODroneToList createBODroneToList(int _id)
+            private global::BL.BO.BODroneToList createBODroneToList(int _id)
             {
                 global::BL.BO.BODroneToList newDroneToList = new global::BL.BO.BODroneToList();
                 global::BL.BO.BODrone origBODrone = GetBODrone(_id);
@@ -520,7 +520,7 @@ namespace BL
                 newDroneToList.IdOfParcelCarrying = origBODrone.ParcelInTransfer.Id;
                 return newDroneToList;
             }
-            public global::BL.BO.BOParcelToList createBOParcToList(int _id)
+            private global::BL.BO.BOParcelToList createBOParcToList(int _id)
             {
                 global::BL.BO.BOParcelToList newParcToList = new global::BL.BO.BOParcelToList();
                 DalXml.DO.Parcel origParcel = dataAccess.getParcel(_id);
@@ -543,7 +543,7 @@ namespace BL
 
                 return newParcToList;
             }
-            public global::BL.BO.BOStationToList createBOStationToList(int _id)
+            private global::BL.BO.BOStationToList createBOStationToList(int _id)
             {
                 global::BL.BO.BOStationToList newStationToList = new global::BL.BO.BOStationToList();
                 DalXml.DO.Station origStation = dataAccess.getStation(_id);
