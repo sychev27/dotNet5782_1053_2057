@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,12 +21,16 @@ namespace WpfApp1
     public partial class DroneListWindow : Window
     {
         BL.BLApi.Ibl busiAccess;
-        public DroneListWindow(BL.BLApi.Ibl busiAccess1)
+        private ObservableCollection<BL.BO.BODrone> droneList = new ObservableCollection<BL.BO.BODrone>();
+        //btnAddCustomer.IsEnabled = false;
+        // btnAddCustomer.Visibility = Visibility.Hidden;
+        public DroneListWindow(BL.BLApi.Ibl busiAccess1) 
         {
             InitializeComponent();
             busiAccess = busiAccess1;
-
-            DronesListView.ItemsSource = busiAccess.GetBODroneList();
+            droneList = busiAccess.GetBODroneList() as ObservableCollection<BL.BO.BODrone>;
+            DataContext = droneList;
+            //DronesListView.ItemsSource = busiAccess.GetBODroneList();
             StatusSelector1.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.DroneStatus));
             StatusSelector2.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.WeightCategories));
 
