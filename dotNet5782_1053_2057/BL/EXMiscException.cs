@@ -23,6 +23,11 @@ namespace BL
                 Console.WriteLine(MsgToPrint + "/n");
             }
         }
+
+
+
+
+
         public class EXNoAppropriateParcel: EXMiscException
         {
             public EXNoAppropriateParcel() : base("No parcel is appropriate") { }

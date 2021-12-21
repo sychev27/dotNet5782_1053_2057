@@ -58,7 +58,7 @@ namespace DalXml
         public void modifyStation(int _id, int _name, int _totalChargeSlots);
 
         void eraseDroneCharge(DalXml.DO.DroneCharge thisDroneCharge);
-
+        void EraseDrone(int droneId);
 
 
 

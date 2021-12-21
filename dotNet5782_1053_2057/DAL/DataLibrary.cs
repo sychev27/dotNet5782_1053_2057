@@ -282,24 +282,32 @@ namespace DalObject
 
         }
 
-       
+           public void EraseDrone(int droneId)
+            {
+                foreach (var item in listDrone)
+                {
+                    if (item.Id == droneId)
+                    {
+                        DalXml.DO.Drone copy = item;
+                        listDrone.Remove(item);
+                        copy.Exists = false;
+                        listDrone.Add(copy);
+                        return;
+                    }
+                    
+                }
+            }
 
-        //public void eraseDrone(int id)
-        //{
-        //    
 
-        //}
+            //public void eraseCustomer(int id)
+            //{
 
+            //}
+            //public void eraseStation(int id)
+            //{
 
-        //public void eraseCustomer(int id)
-        //{
-
-        //}
-        //public void eraseStation(int id)
-        //{
-
-        //}
-        public void eraseDroneCharge(DalXml.DO.DroneCharge thisDroneCharge)
+            //}
+            public void eraseDroneCharge(DalXml.DO.DroneCharge thisDroneCharge)
         {
             foreach (var item in listDroneCharge)
             {
@@ -307,6 +315,7 @@ namespace DalObject
                         && item.StationId == thisDroneCharge.StationId)
                 {
                     DalXml.DO.DroneCharge copy = new DalXml.DO.DroneCharge();
+                    copy = item;
                     copy.Exists = false;
                     listDroneCharge.Remove(thisDroneCharge);
                     listDroneCharge.Add(copy);

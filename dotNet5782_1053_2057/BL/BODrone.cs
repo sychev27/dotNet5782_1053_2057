@@ -10,6 +10,10 @@ namespace BL
     {
         public class BODrone
         {
+            public BODrone()
+            {
+                Exists = true;
+            }
             public int Id { get; set; }
             public string Model { get; set; }
             public BL.BO.Enum.WeightCategories MaxWeight { get; set; }
@@ -17,11 +21,14 @@ namespace BL
             public BL.BO.Enum.DroneStatus DroneStatus { get; set; }
             public BL.BO.BOParcelInTransfer ParcelInTransfer { get; set;}
             public BL.BO.BOLocation Location{ get; set;}
-
-            
+            public bool Exists { get; set; }
             public override string ToString()
             {
-                string res = "Drone " + Id + " Model: " + Model + " \n";
+
+
+                string res = "";
+                if (!Exists) res += "DELETED --";
+                res += "Drone " + Id + " Model: " + Model + " \n";
                 res += "Battery: " + Battery + " \nStatus: " + DroneStatus + "\n";
                 res += "MaxWeight: " + MaxWeight + "\n";
 

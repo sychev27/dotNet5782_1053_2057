@@ -30,7 +30,7 @@ namespace BL
             public int GetStationIdOfBODrone(int droneId);
             string GetBODroneModel(int id);
             BO.Enum.WeightCategories GetBoDroneMaxWeight(int id);
-            IEnumerable<BO.BODrone> GetBODroneList();
+            IEnumerable<BO.BODrone> GetBODroneList(bool getDeleted = false);
 
 
             string GetDroneLocationString(int id);//returns string describing drone's location
@@ -66,6 +66,7 @@ namespace BL
 
 
             //Erase
+            void EraseDrone(int droneId);
 
             //end of interface
         }

@@ -40,6 +40,7 @@ namespace WpfApp1
             btnPickupPkg.IsEnabled = false;
             btnSendToCharge.IsEnabled = false;
             btnDeliverPkg.IsEnabled = false;
+            btnEraseDrone.IsEnabled = false;
 
             //(2) Hide irrelevant buttons
             //btnGetDrone.Visibility = Visibility.Hidden;
@@ -343,10 +344,10 @@ namespace WpfApp1
                    MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
         }
 
-
-
-
-
-
+        private void btnEraseDrone_Click(object sender, RoutedEventArgs e)
+        {
+            busiAccess.EraseDrone(thisDroneId);
+            Close();
+        }
     }
 }

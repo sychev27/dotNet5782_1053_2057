@@ -169,7 +169,7 @@ namespace BL
 
                 foreach (var bodrone in listDrone)
                 {
-                    if (bodrone.Id == droneId)
+                    if (bodrone.Exists && bodrone.Id == droneId)
                     {
                         BO.BOLocation custLoc = getLocationOfCustomer(bodrone.ParcelInTransfer.Sender.Id);
                         bodrone.Battery -= battNededForDist(bodrone.Location, custLoc, 
@@ -201,7 +201,7 @@ namespace BL
                 //Deliver the Parcel, updating the bodrone's details accordingly
                 foreach (var bodrone in listDrone)
                 {
-                    if (bodrone.Id == droneId)
+                    if (bodrone.Exists && bodrone.Id == droneId)
                     {
                         global::BL.BO.BOLocation custLoc = getLocationOfCustomer(bodrone.ParcelInTransfer.Recipient.Id);
                         bodrone.Battery -= battNededForDist(bodrone.Location, custLoc,
@@ -273,7 +273,7 @@ namespace BL
                 //update drone...
                 foreach (var bodrone in listDrone)
                 {
-                    if (bodrone.Id == droneId)
+                    if (bodrone.Exists && bodrone.Id == droneId)
                     {
                         bodrone.Battery += batteryGained;
                         if (bodrone.Battery > 100)
@@ -289,6 +289,19 @@ namespace BL
                 catch (DalXml.DO.EXItemNotFoundException) { return; }
             }
 
+
+
+            //ERASE:
+            public void EraseDrone(int droneId)
+            {
+                foreach (var item in listDrone)
+                {
+                    if (item.Id == droneId)
+                        item.Exists = false;
+                    dataAccess.EraseDrone(droneId);
+                    return;
+                }
+            }
 
         }
 
