@@ -50,5 +50,11 @@ namespace BL
             }
         }
 
+
+        public class EXDroneNotFound : EXNotFoundPrintException
+        {
+            public EXDroneNotFound() : base("Drone") { }
+        }
+
     }
 }

@@ -288,7 +288,7 @@ namespace BL
                         return item;
                 }
                 //throw exception!!!
-                throw new EXNotFoundPrintException("Drone");
+                throw new EXDroneNotFound() ;
                 //return null;
             }
 
