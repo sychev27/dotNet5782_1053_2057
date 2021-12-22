@@ -190,6 +190,7 @@ namespace BL
             {
 
                 global::BL.BO.BODrone boDrone = new global::BL.BO.BODrone();
+                boDrone.Exists = drone.Exists;
                 boDrone.Id = drone.Id;
                 switch (drone.MaxWeight)
                 {

@@ -6,8 +6,30 @@
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="LoginWindow" Height="450" Width="800">
-    <Grid>
-        <Button x:Name="btnOpenMain" Content="Open Main Window" HorizontalAlignment="Left" Height="71" Margin="562,53,0,0" VerticalAlignment="Top" Width="128" Click="btnOpenMain_Click"/>
+    <Grid x:Name="grdOuter">
+        <Button x:Name="btnOpenMain" Content="Open Main Window" HorizontalAlignment="Left" Height="71" Margin="639,48,0,0" VerticalAlignment="Top" Width="128" Click="btnOpenMain_Click"/>
+        <Grid HorizontalAlignment="Left" Height="239" Margin="147,0,0,0" VerticalAlignment="Center" Width="440">
+            <Grid x:Name="grdInner" Margin="72,100,46,21">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height ="*"/>
+                    <RowDefinition Height ="*"/>
+                    <RowDefinition Height ="*"/>
+                 </Grid.RowDefinitions>
+
+
+            </Grid>
+
+        </Grid>
+
+
+
+
+
 
     </Grid>
 </Window>

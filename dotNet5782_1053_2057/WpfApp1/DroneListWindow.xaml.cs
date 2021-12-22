@@ -72,12 +72,16 @@ namespace WpfApp1
             refreshList();
          }
 
-        private void refreshList()
+        private void refreshList(bool getDeleted = false)
         {
             DronesListView.ItemsSource = null;
-            DronesListView.ItemsSource = busiAccess.GetBODroneList();
+            DronesListView.ItemsSource = busiAccess.GetBODroneList(getDeleted);
 
         }
 
+        private void chkBoxGetErased_Checked(object sender, RoutedEventArgs e)
+        {
+            refreshList(true);
+        }
     }
 }

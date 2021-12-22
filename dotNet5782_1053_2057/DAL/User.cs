@@ -14,7 +14,7 @@ namespace DalXml
             {
                 Username = _username;
                 Password = _password;
-                Id = _id;
+                Id = _id; //if employee, id = -1
             }
             public int Id { get; set; }
             public string Username { get; set; }

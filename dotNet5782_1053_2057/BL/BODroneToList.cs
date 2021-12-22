@@ -10,16 +10,23 @@ namespace BL
     {
         public class BODroneToList
         {
+            public BODroneToList()
+            {
+                Exists = true;
+            }
             public int Id { get; set; }
             public string Model { get; set; }
             public BL.BO.Enum.WeightCategories MaxWeight { get; set; }
             public double Battery { get; set; }
             public BOLocation Location { get; set; }
             public int IdOfParcelCarrying { get; set; }
+            public bool Exists { get; set; }
 
             public override string ToString()
             {
-                string res = "Drone " + Id + " Model: " + Model + " \n";
+                string res = "";
+                if (!Exists) res += "DELETED --";
+                res += "Drone " + Id + " Model: " + Model + " \n";
                 res += "Battery: " + Battery + " Location " + Location + "\n";
                 if (IdOfParcelCarrying != 0 && IdOfParcelCarrying != -1)
                     res += "carrying parcel " + IdOfParcelCarrying + "\n";
