@@ -24,7 +24,7 @@
             <ComboBox Grid.Column="3" Name="StatusSelector2" HorizontalAlignment="Stretch" Margin="4,6,6,4" VerticalAlignment="Stretch" Width="190" SelectionChanged="StatusSelector2_SelectionChanged"/>
 
         </Grid>
-        <ListView x:Name="DronesListView" Margin="0,58,0,62" Grid.RowSpan="2" ItemsSource="{Binding}" MouseDoubleClick="DronesListView_MouseDoubleClick">
+        <ListView x:Name="DronesListView" Margin="0,58,0,62" Grid.RowSpan="2" ItemsSource="{Binding UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="DronesListView_MouseDoubleClick">
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>

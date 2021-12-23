@@ -26,35 +26,6 @@ namespace WpfApp1
             busiAccess = busiAccess1;
         }
 
-        private void btnAddCustomer1_Click(object sender, RoutedEventArgs e)
-        {
-            new CustomerWindow().ShowDialog(); 
-        }
 
-        private void Selector1_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void Selector2_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void CustomerListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        private void btnCloseList_Click(object sender, RoutedEventArgs e)
-        {
-            Close();
-
-        }
-
-        private void btnRefreshList_Click(object sender, RoutedEventArgs e)
-        {
-            new CustomerWindow(busiAccess).ShowDialog();
-        }
     }
 }
