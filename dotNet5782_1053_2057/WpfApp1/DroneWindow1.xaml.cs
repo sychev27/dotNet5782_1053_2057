@@ -213,7 +213,7 @@ namespace WpfApp1
         {
             foreach (var item in listTBlock)
             {
-                item.Foreground = new SolidColorBrush(Colors.Black);
+                item.Foreground = new SolidColorBrush(color);
             }
         }
         
