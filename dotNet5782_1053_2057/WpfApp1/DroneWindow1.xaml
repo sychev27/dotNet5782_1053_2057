@@ -62,7 +62,7 @@
                     </TransformGroup>
                 </Button.RenderTransform>
             </Button>
-            <Button x:Name="btnEraseDrone" Content="Erase This Drone" Grid.Column="2" HorizontalAlignment="Left" Margin="17,0,0,10" Grid.Row="10" Width="110" Height="20" VerticalAlignment="Bottom" Click="btnEraseDrone_Click"/>
+            <Button x:Name="btnEraseDrone" Content="Erase This Drone" Grid.Column="2" HorizontalAlignment="Left" Margin="17,5,0,10" Grid.Row="10" Width="110" Click="btnEraseDrone_Click"/>
 
 
             <Grid.ColumnDefinitions>

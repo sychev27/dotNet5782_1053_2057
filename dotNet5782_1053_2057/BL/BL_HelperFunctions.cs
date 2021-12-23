@@ -294,7 +294,7 @@ namespace BL
 
             public BO.BOCustomer GetBOCustomer(int _id)
             {
-                IEnumerable<DalXml.DO.Customer> origList = dataAccess.getCustomers();
+                ObservableCollection<DalXml.DO.Customer> origList = dataAccess.getCustomers();
                 foreach (var item in origList)
                 {
                     if (_id == item.Id)
@@ -433,11 +433,10 @@ namespace BL
 
 
 
-
             //for printing these lists:
-            public IEnumerable<BO.BOCustomerToList> GetCustToList()
+            public ObservableCollection<BO.BOCustomerToList> GetCustToList()
             {
-                List<BO.BOCustomerToList> res = new List<BO.BOCustomerToList>();
+                ObservableCollection<BO.BOCustomerToList> res = new ObservableCollection<BO.BOCustomerToList>();
                 foreach (var item in dataAccess.getCustomers())
                 {
                     res.Add(createBOCustToList(item.Id));

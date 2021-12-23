@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 
 namespace DalXml
@@ -49,9 +50,10 @@ namespace DalObject
         //interanl fields:
         internal static List<DalXml.DO.Station> listStation = new List<DalXml.DO.Station>();
         internal static List<DalXml.DO.DroneCharge> listDroneCharge = new List<DalXml.DO.DroneCharge>();
-        internal static List<DalXml.DO.Drone> listDrone = new List<DalXml.DO.Drone>();
+        internal static ObservableCollection<DalXml.DO.Drone> listDrone = new ObservableCollection<DalXml.DO.Drone>();
         internal static List<DalXml.DO.Parcel> listParcel = new List<DalXml.DO.Parcel>();
-        internal static List<DalXml.DO.Customer> listCustomer = new List<DalXml.DO.Customer>();
+        internal static ObservableCollection<DalXml.DO.Customer> listCustomer = new ObservableCollection<DalXml.DO.Customer>();
+
 
         internal static List<DalXml.DO.User> listUser = new List<DalXml.DO.User>(); //holds list of username and passwords
 
@@ -149,7 +151,7 @@ namespace DalObject
             return lst;
         }
 
-        public IEnumerable<DalXml.DO.Drone> getDrones()
+        public ObservableCollection<DalXml.DO.Drone> getDrones()
         {
             return listDrone;
         }
@@ -161,7 +163,7 @@ namespace DalObject
         {
             return listStation;
         }
-        public IEnumerable<DalXml.DO.Customer> getCustomers()
+        public ObservableCollection<DalXml.DO.Customer> getCustomers()
         {
             return listCustomer;
         }
@@ -440,10 +442,17 @@ namespace DalObject
 
 
 
-        public IEnumerable<DalXml.DO.Drone> getSpecificDroneList(Predicate<DalXml.DO.Drone> property)
-        {
-            return listDrone.FindAll(property);
-        }
+        //public IEnumerable<DalXml.DO.Drone> getSpecificDroneList(Predicate<DalXml.DO.Drone> property)
+        //{
+        //        List<DalXml.DO.Drone> lst = new List<DalXml.DO.Drone>();
+        //        foreach (var item in listDrone)
+
+
+        //        {
+        //            lst.Add
+        //        }
+        //    return listDrone.FindAll(property);
+        //}
 
 
     }

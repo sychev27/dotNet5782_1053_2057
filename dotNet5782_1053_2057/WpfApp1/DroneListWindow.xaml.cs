@@ -88,6 +88,10 @@ namespace WpfApp1
         {
             refreshList(true);
         }
+        private void chkBoxGetErased_UnChecked(object sender, RoutedEventArgs e)
+        {
+            refreshList();
+        }
 
         private ObservableCollection<BL.BO.BODrone> getBODronesAsObservable()
         {
