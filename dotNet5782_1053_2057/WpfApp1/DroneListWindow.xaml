@@ -19,7 +19,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <TextBox  Grid.Column="0" HorizontalAlignment="Stretch" Margin="4,6,6,4" Text="Drone Status:" TextWrapping="Wrap" VerticalAlignment="Stretch" Width="190" FontSize="22"/>
-            <ComboBox Grid.Column="1" Name="StatusSelector1" HorizontalAlignment="Stretch" Margin="4,6,6,4" VerticalAlignment="Stretch" Width="190" SelectionChanged="StatusSelector1_SelectionChanged"/>
+            <ComboBox Grid.Column="1" Name="StatusSelector1" HorizontalAlignment="Stretch" Margin="4,6,6,4" ItemsSource="{Binding UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Stretch" Width="190" SelectionChanged="StatusSelector1_SelectionChanged"/>
             <TextBox  Grid.Column="2" HorizontalAlignment="Stretch" Margin="4,6,6,4" Text="Drone Max Weight:" TextWrapping="Wrap" VerticalAlignment="Stretch" Width="190" FontSize="20"/>
             <ComboBox Grid.Column="3" Name="StatusSelector2" HorizontalAlignment="Stretch" Margin="4,6,6,4" VerticalAlignment="Stretch" Width="190" SelectionChanged="StatusSelector2_SelectionChanged"/>
 

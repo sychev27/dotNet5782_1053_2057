@@ -31,7 +31,8 @@ namespace WpfApp1
             InitializeComponent();
 
             //DronesListView.ItemsSource = busiAccess.GetBODroneList();
-            StatusSelector1.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.DroneStatus));
+            StatusSelector1.DataContext = Enum.GetValues(typeof(BL.BO.Enum.DroneStatus));
+           // StatusSelector1.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.DroneStatus));
             StatusSelector2.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.WeightCategories));
 
         }

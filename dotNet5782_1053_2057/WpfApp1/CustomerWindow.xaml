@@ -23,6 +23,16 @@
         <Button x:Name ="btnAddCustomer" Content="Add Customer" Grid.Row="5" Click = "btnAddCustomer_Click" Grid.Column="1" HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Margin="5,5,5,5" Width="Auto" FontSize="15"/>
         <Button x:Name="btnCancel1" Content="Cancel" Grid.Row="5" RenderTransformOrigin="0.5,0.5" Click="btnCancel1_Click" HorizontalAlignment="Stretch" Margin="5,5,5,5" VerticalAlignment="Stretch" Width="Auto" FontSize="15"/>
         <Button x:Name ="btnModifyCustomer" Content="Modify" Grid.Column="2" Grid.Row="1" Click="btnModifyCustomer_Click" HorizontalAlignment="Stretch" Margin="5,5,5,5"  Width="Auto" FontSize="15"/>
+        <ListBox x:Name="ParcelList" Grid.Column="3" Grid.RowSpan="4" Grid.Row="1" Margin="5,5,5,5" RenderTransformOrigin="0.5,0.5">
+            <ListBox.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleX="0"/>
+                    <RotateTransform Angle="0"/>
+                    <TranslateTransform X="0"/>
+                </TransformGroup>
+            </ListBox.RenderTransform>
+        </ListBox>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="45*"/>

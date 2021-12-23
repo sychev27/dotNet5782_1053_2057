@@ -34,7 +34,7 @@ namespace WpfApp1
             btnModifyCustomer.Visibility = Visibility.Hidden;
         }
 
-        public CustomerWindow(BL.BLApi.Ibl _busiAccess)
+        public CustomerWindow(BL.BLApi.Ibl _busiAccess,BL.BO.BOCustomer customer)
         {
             InitializeComponent();
             busiAccess = _busiAccess;
@@ -45,7 +45,7 @@ namespace WpfApp1
 
             btnAddCustomer.IsEnabled = false;
             btnAddCustomer.Visibility = Visibility.Hidden;
-            displayBOCustomer(busiAccess.GetBOCustomer(1));
+            displayBOCustomer(customer);
         }
 
         private void displayBOCustomer(BL.BO.BOCustomer bocustumer)
@@ -58,6 +58,7 @@ namespace WpfApp1
             tBoxPhoneInput.Text = bocustumer.Phone;
             tBlockLongiInfo.Text = bocustumer.Location.Longitude.ToString();
             tBlockLatitInfo.Text = bocustumer.Location.Latitude.ToString();
+            //ParcelList.ItemsSource = bocustumer.
 
             //  tBlockCurrentLocationInfo.Text = busiAccess.GetDroneLocationString(bodrone.Id);
 
