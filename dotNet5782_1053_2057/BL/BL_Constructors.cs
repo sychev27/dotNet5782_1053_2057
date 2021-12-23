@@ -436,14 +436,14 @@ namespace BL
                 foreach (var item in dataAccess.getParcels())
                 {
                     if (item.SenderId == newCust.Id)
-                        newCust.ListOfParcSent.Add(createParcAtCust(item, false));
+                        newCust.ListOfParcSent.Add(createParcAtCust(item, true));
                 }
                 newCust.ListOfParcReceived = new List<BO.BOParcelAtCustomer>();
                 {
                     foreach (var item in dataAccess.getParcels())
                     {
                         if (item.ReceiverId == newCust.Id)
-                            newCust.ListOfParcReceived.Add(createParcAtCust(item, true));
+                            newCust.ListOfParcReceived.Add(createParcAtCust(item, false));
                     }
                 }
                 return newCust;

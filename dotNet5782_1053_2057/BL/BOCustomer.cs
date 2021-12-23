@@ -14,8 +14,8 @@ namespace BL
             public string Name { get; set; }
             public string Phone { get; set; }
             public BOLocation Location { get; set; }
-            public IEnumerable<BOParcelAtCustomer> ListOfParcSent { get; set; }
-            public IEnumerable<BOParcelAtCustomer> ListOfParcReceived { get; set; }
+            public List<BOParcelAtCustomer> ListOfParcSent { get; set; }
+            public List<BOParcelAtCustomer> ListOfParcReceived { get; set; }
             
 
             public override string ToString()
