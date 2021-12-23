@@ -8,7 +8,7 @@ namespace BL
 {
     namespace BLApi
     {
-        public partial class BL : global::BL.BLApi.Ibl
+        public partial class BL : Ibl
         {
 
             //ADD

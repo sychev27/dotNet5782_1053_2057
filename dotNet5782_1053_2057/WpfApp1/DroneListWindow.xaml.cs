@@ -21,9 +21,8 @@ namespace WpfApp1
     public partial class DroneListWindow : Window
     {
         BL.BLApi.Ibl busiAccess;
-        private ObservableCollection<BL.BO.BODrone> droneList = new ObservableCollection<BL.BO.BODrone>();
-        //btnAddCustomer.IsEnabled = false;
-        // btnAddCustomer.Visibility = Visibility.Hidden;
+        //private ObservableCollection<BL.BO.BODrone> droneList = getBODronesAsObservable();
+        
         public DroneListWindow(BL.BLApi.Ibl busiAccess1) 
         {
             busiAccess = busiAccess1;
@@ -53,10 +52,10 @@ namespace WpfApp1
        {
             new DroneWindow(busiAccess, 0).ShowDialog();
             int index = StatusSelector1.SelectedIndex;
-           // DronesListView.ItemsSource = busiAccess.GetSpecificDroneListStatus(index);
+            DronesListView.ItemsSource = busiAccess.GetSpecificDroneListStatus(index);
             index = StatusSelector2.SelectedIndex;
-            //DronesListView.ItemsSource = busiAccess.GetSpecificDroneListWeight(index);
-            //refreshList();
+            DronesListView.ItemsSource = busiAccess.GetSpecificDroneListWeight(index);
+
 
         }
 
@@ -89,5 +88,18 @@ namespace WpfApp1
         {
             refreshList(true);
         }
+
+        private ObservableCollection<BL.BO.BODrone> getBODronesAsObservable()
+        {
+            ObservableCollection<BL.BO.BODrone> res = new ObservableCollection<BL.BO.BODrone>();
+            foreach (var item in busiAccess.GetBODroneList())
+            {
+                res.Add(item);
+            }
+            return res;
+        }
+
+
+
     }
 }
