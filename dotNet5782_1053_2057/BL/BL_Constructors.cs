@@ -51,12 +51,17 @@ namespace BL
             internal double heavy;
             internal double chargeRate; // per min
 
-            List<global::BL.BO.BODrone> listDrone = new List<global::BL.BO.BODrone>();
+            //List<BO.BODrone> listDrone = new List<BO.BODrone>();
+            ObservableCollection<BO.BODrone> listDrone = new ObservableCollection<BO.BODrone>();
+
+
+
+
             //Lazy Initialization...
             //static BL() { }
             private BL() //Private CTOR - implementing Singleton Design Pattern
             {
-                //dataAccess.Initialize();
+           
 
                 IEnumerable<double> elecInfo = dataAccess.requestElec();
                 empty = elecInfo.First();
@@ -69,12 +74,12 @@ namespace BL
 
                 
                 //holds temporary list of locations of customers 
-                List<global::BL.BO.BOLocation> tempListCust = new List<global::BL.BO.BOLocation>();
+                List<BO.BOLocation> tempListCust = new List<BO.BOLocation>();
                 //(for now, tempListCust holds every customer, not just those who have had a parcel delivered to them
 
 
 
-                foreach (global::BL.BO.BODrone drone in listDrone)
+                foreach (BO.BODrone drone in listDrone)
                 {
                     if (drone.ParcelInTransfer.Id != -1 && drone.ParcelInTransfer != null)
                     {
@@ -105,11 +110,11 @@ namespace BL
                     {
                         do //randomly set droneStatus =  "charging" and "available"
                         {
-                            drone.DroneStatus = (global::BL.BO.Enum.DroneStatus)r.Next(0, 3);
-                        } while (drone.DroneStatus == global::BL.BO.Enum.DroneStatus.InDelivery);
+                            drone.DroneStatus = (BO.Enum.DroneStatus)r.Next(0, 3);
+                        } while (drone.DroneStatus == BO.Enum.DroneStatus.InDelivery);
 
 
-                        if (drone.DroneStatus == global::BL.BO.Enum.DroneStatus.Charging)
+                        if (drone.DroneStatus == BO.Enum.DroneStatus.Charging)
                         {
                             //(1) SET LOCATION - to Random Station
                             List<DalXml.DO.Station> listStation = new List<DalXml.DO.Station>();
@@ -118,7 +123,7 @@ namespace BL
 
                             DalXml.DO.Station st = listStation[r.Next(0, listStation.Count)];
 
-                            drone.Location = new global::BL.BO.BOLocation(st.Longitude, st.Latitude);
+                            drone.Location = new BO.BOLocation(st.Longitude, st.Latitude);
 
                             //(2) SET BATTERY - btw 50 to 100%
                             drone.Battery = r.Next(50, 100);
@@ -127,7 +132,7 @@ namespace BL
 
                             AddDroneCharge(drone.Id, st.Id);
                         }
-                        else if (drone.DroneStatus == global::BL.BO.Enum.DroneStatus.Available)
+                        else if (drone.DroneStatus == BO.Enum.DroneStatus.Available)
                         {
                             //(1) SET LOCATION - to Random Customer's location
                             if (tempListCust.Count == 0) //if not yet full, fill customer list
@@ -135,7 +140,7 @@ namespace BL
                                 {
                                     //For now, tempListCust includes every customer,
                                     //not just those who have had a parcel already delivered to them
-                                    global::BL.BO.BOLocation loc = new global::BL.BO.BOLocation(item.Longitude, item.Latitude);
+                                    BO.BOLocation loc = new BO.BOLocation(item.Longitude, item.Latitude);
                                     tempListCust.Add(loc);
                                 }
 
@@ -189,19 +194,19 @@ namespace BL
                                                           //creates a corresponding BODrone, saves in BL's list
             {
 
-                global::BL.BO.BODrone boDrone = new global::BL.BO.BODrone();
+                BO.BODrone boDrone = new BO.BODrone();
                 boDrone.Exists = drone.Exists;
                 boDrone.Id = drone.Id;
                 switch (drone.MaxWeight)
                 {
                     case DalXml.DO.WeightCategories.light:
-                        boDrone.MaxWeight = global::BL.BO.Enum.WeightCategories.Light;
+                        boDrone.MaxWeight = BO.Enum.WeightCategories.Light;
                         break;
                     case DalXml.DO.WeightCategories.medium:
-                        boDrone.MaxWeight = global::BL.BO.Enum.WeightCategories.Medium;
+                        boDrone.MaxWeight = BO.Enum.WeightCategories.Medium;
                         break;
                     case DalXml.DO.WeightCategories.heavy:
-                        boDrone.MaxWeight = global::BL.BO.Enum.WeightCategories.Heavy;
+                        boDrone.MaxWeight = BO.Enum.WeightCategories.Heavy;
                         break;
                     default:
                         break;
@@ -211,7 +216,7 @@ namespace BL
                 {
                     boDrone.ParcelInTransfer = createParcInTrans(boDrone.Id);
                     if (boDrone.ParcelInTransfer != null)
-                        boDrone.DroneStatus = global::BL.BO.Enum.DroneStatus.InDelivery;
+                        boDrone.DroneStatus = BO.Enum.DroneStatus.InDelivery;
                     
                 }
                 catch (EXParcInTransNotFoundException exception)
@@ -244,13 +249,13 @@ namespace BL
             }
 
 
-            global::BL.BO.BOParcelInTransfer createEmptyParcInTrans()
+            BO.BOParcelInTransfer createEmptyParcInTrans()
             {
-                global::BL.BO.BOParcelInTransfer thisParc = new global::BL.BO.BOParcelInTransfer();
+                BO.BOParcelInTransfer thisParc = new BO.BOParcelInTransfer();
                 thisParc.Id = -1;
                 thisParc.Collected = false;
-                thisParc.Priority = (global::BL.BO.Enum.Priorities)0;
-                thisParc.ParcelWeight = (global::BL.BO.Enum.WeightCategories)0;
+                thisParc.Priority = (BO.Enum.Priorities)0;
+                thisParc.ParcelWeight = (BO.Enum.WeightCategories)0;
                 try
                 {
                     thisParc.Sender = createCustInParcel(0);
@@ -269,8 +274,8 @@ namespace BL
                 }
 
 
-                thisParc.PickupPoint = new global::BL.BO.BOLocation(0, 0);
-                thisParc.DeliveryPoint = new global::BL.BO.BOLocation(0, 0);
+                thisParc.PickupPoint = new BO.BOLocation(0, 0);
+                thisParc.DeliveryPoint = new BO.BOLocation(0, 0);
                 thisParc.TransportDistance = 0;
 
 
@@ -315,8 +320,8 @@ namespace BL
                 thisParc.Id = origParcel.Id;
                 //thisParc.Collected = (origParcel.TimePickedUp == null) ? false : true;
                 thisParc.Collected = false;
-                thisParc.Priority = (global::BL.BO.Enum.Priorities)origParcel.Priority;
-                thisParc.ParcelWeight = (global::BL.BO.Enum.WeightCategories)origParcel.Weight;
+                thisParc.Priority = (BO.Enum.Priorities)origParcel.Priority;
+                thisParc.ParcelWeight = (BO.Enum.WeightCategories)origParcel.Weight;
                 try
                 {
                     thisParc.Sender = createCustInParcel(origParcel.SenderId);
@@ -344,14 +349,14 @@ namespace BL
             }
 
 
-            global::BL.BO.BOCustomerInParcel createCustInParcel(int origCustId)
+            BO.BOCustomerInParcel createCustInParcel(int origCustId)
             {
                 IEnumerable<DalXml.DO.Customer> origCustomers = dataAccess.getCustomers();
                 foreach (var item in origCustomers)
                 {
                     if (origCustId == item.Id)
                     {
-                        global::BL.BO.BOCustomerInParcel ans = new global::BL.BO.BOCustomerInParcel(item.Id, item.Name);
+                        BO.BOCustomerInParcel ans = new BO.BOCustomerInParcel(item.Id, item.Name);
                         return ans;
                     }
                 }
@@ -359,11 +364,11 @@ namespace BL
                 throw new EXCustInParcNotFoundException();
 
             }
-            global::BL.BO.BOParcelAtCustomer createParcAtCust(DalXml.DO.Parcel origParc, bool Sender)
+            BO.BOParcelAtCustomer createParcAtCust(DalXml.DO.Parcel origParc, bool Sender)
             {
-                global::BL.BO.BOParcelAtCustomer newParcAtCust = new global::BL.BO.BOParcelAtCustomer();
+                BO.BOParcelAtCustomer newParcAtCust = new BO.BOParcelAtCustomer();
                 newParcAtCust.Id = origParc.Id;
-                newParcAtCust.MaxWeight = (global::BL.BO.Enum.WeightCategories)origParc.Weight;
+                newParcAtCust.MaxWeight = (BO.Enum.WeightCategories)origParc.Weight;
                 if (Sender == true) //if the Parcel is being held by a Sender, this field holds the Receiver
                 {
                     newParcAtCust.OtherSide = createCustInParcel(origParc.ReceiverId);
@@ -374,13 +379,13 @@ namespace BL
                 }
 
                 //newParcAtCust.ParcelStatus = (IBL.BO.Enum.ParcelStatus) ?? FINISH !!
-                newParcAtCust.Priority = (global::BL.BO.Enum.Priorities)origParc.Priority;
+                newParcAtCust.Priority = (BO.Enum.Priorities)origParc.Priority;
 
                 return newParcAtCust;
             }
 
 
-            private global::BL.BO.BOStation CreateBOStation(int id)
+            private BO.BOStation CreateBOStation(int id)
             {
                 DalXml.DO.Station origSt = new DalXml.DO.Station();
                 try
@@ -392,25 +397,25 @@ namespace BL
                     throw new EXNotFoundPrintException("Station");
                 }
                 //exception! - if station not found
-                global::BL.BO.BOStation newSt = new global::BL.BO.BOStation();
+                BO.BOStation newSt = new BO.BOStation();
                 newSt.Id = origSt.Id;
                 newSt.Name = origSt.Name;
-                newSt.Location = new global::BL.BO.BOLocation(origSt.Longitude, origSt.Latitude);
+                newSt.Location = new BO.BOLocation(origSt.Longitude, origSt.Latitude);
                 newSt.ChargeSlots = origSt.ChargeSlots;
-                newSt.ListDroneCharge = new List<global::BL.BO.BODroneInCharge>();
+                newSt.ListDroneCharge = new List<BO.BODroneInCharge>();
 
                 foreach (var item in dataAccess.getDroneCharges()) //create BODroneInCharge and add to list
                 {
-                    global::BL.BO.BODroneInCharge d = new global::BL.BO.BODroneInCharge();
+                    BO.BODroneInCharge d = new BO.BODroneInCharge();
                     d.Id = item.DroneId;
                     d.Battery = GetBODrone(d.Id).Battery;
                     newSt.ListDroneCharge.Add(d);
                 }
                 return newSt;
             }
-            private global::BL.BO.BOCustomer CreateBOCustomer(int id)
+            private BO.BOCustomer CreateBOCustomer(int id)
             {
-                global::BL.BO.BOCustomer newCust = new global::BL.BO.BOCustomer();
+                BO.BOCustomer newCust = new BO.BOCustomer();
                 DalXml.DO.Customer origCust = new DalXml.DO.Customer();
                 try
                 {
@@ -422,17 +427,17 @@ namespace BL
                 }
                 //throw exception if not found..
                 newCust.Id = origCust.Id;
-                newCust.Location = new global::BL.BO.BOLocation(origCust.Longitude, origCust.Latitude);
+                newCust.Location = new BO.BOLocation(origCust.Longitude, origCust.Latitude);
                 newCust.Name = origCust.Name;
                 newCust.Phone = origCust.Phone;
 
-                newCust.Sent = new List<global::BL.BO.BOParcelAtCustomer>();
+                newCust.Sent = new List<BO.BOParcelAtCustomer>();
                 foreach (var item in dataAccess.getParcels())
                 {
                     if (item.SenderId == newCust.Id)
                         newCust.Sent.Add(createParcAtCust(item, false));
                 }
-                newCust.Received = new List<global::BL.BO.BOParcelAtCustomer>();
+                newCust.Received = new List<BO.BOParcelAtCustomer>();
                 {
                     foreach (var item in dataAccess.getParcels())
                     {
@@ -444,9 +449,9 @@ namespace BL
             }
 
 
-            private global::BL.BO.BOParcel CreateBOParcel(int id)
+            private BO.BOParcel CreateBOParcel(int id)
             {
-                global::BL.BO.BOParcel newParc = new global::BL.BO.BOParcel();
+                BO.BOParcel newParc = new BO.BOParcel();
                 DalXml.DO.Parcel origParc = new DalXml.DO.Parcel();
                 try
                 {
@@ -458,13 +463,13 @@ namespace BL
                     throw new EXNotFoundPrintException("Parcel");
                 }
                 newParc.Id = origParc.Id;
-                newParc.Priority = (global::BL.BO.Enum.Priorities)origParc.Priority;
-                newParc.Sender = new global::BL.BO.BOCustomerInParcel(
+                newParc.Priority = (BO.Enum.Priorities)origParc.Priority;
+                newParc.Sender = new BO.BOCustomerInParcel(
                     origParc.SenderId, dataAccess.getCustomer(origParc.SenderId).Name);
-                newParc.Receiver = new global::BL.BO.BOCustomerInParcel(
+                newParc.Receiver = new BO.BOCustomerInParcel(
                     origParc.ReceiverId, dataAccess.getCustomer(origParc.ReceiverId).Name);
 
-                newParc.WeightCategory = (global::BL.BO.Enum.WeightCategories)origParc.Weight;
+                newParc.WeightCategory = (BO.Enum.WeightCategories)origParc.Weight;
                 newParc.timeOfDelivery = origParc.TimeDelivered;
                 newParc.timeOfCollection = origParc.TimePickedUp;
                 //newParc.timeOfAssignment = 
@@ -475,9 +480,9 @@ namespace BL
             }
 
 
-            private global::BL.BO.BOCustomerToList createBOCustToList(int _id)
+            private BO.BOCustomerToList createBOCustToList(int _id)
             {
-                global::BL.BO.BOCustomerToList newCustToList = new global::BL.BO.BOCustomerToList();
+                BO.BOCustomerToList newCustToList = new BO.BOCustomerToList();
                 DalXml.DO.Customer origCust = dataAccess.getCustomer(_id);
                 newCustToList.Id = origCust.Id;
                 newCustToList.CustomerName = origCust.Name;
@@ -506,10 +511,10 @@ namespace BL
                 }
                 return newCustToList;
             }
-            private global::BL.BO.BODroneToList createBODroneToList(int _id)
+            private BO.BODroneToList createBODroneToList(int _id)
             {
-                global::BL.BO.BODroneToList newDroneToList = new global::BL.BO.BODroneToList();
-                global::BL.BO.BODrone origBODrone = GetBODrone(_id);
+                BO.BODroneToList newDroneToList = new BO.BODroneToList();
+                BO.BODrone origBODrone = GetBODrone(_id);
                 newDroneToList.Id = origBODrone.Id;
                 newDroneToList.Model = origBODrone.Model;
                 newDroneToList.MaxWeight = origBODrone.MaxWeight;
@@ -521,32 +526,32 @@ namespace BL
                 newDroneToList.IdOfParcelCarrying = origBODrone.ParcelInTransfer.Id;
                 return newDroneToList;
             }
-            private global::BL.BO.BOParcelToList createBOParcToList(int _id)
+            private BO.BOParcelToList createBOParcToList(int _id)
             {
-                global::BL.BO.BOParcelToList newParcToList = new global::BL.BO.BOParcelToList();
+                BO.BOParcelToList newParcToList = new BO.BOParcelToList();
                 DalXml.DO.Parcel origParcel = dataAccess.getParcel(_id);
 
                 newParcToList.Id = origParcel.Id;
                 newParcToList.NameReceiver = dataAccess.getCustomer(origParcel.ReceiverId).Name;
                 newParcToList.NameSender = dataAccess.getCustomer(origParcel.SenderId).Name;
-                newParcToList.Weight = (global::BL.BO.Enum.WeightCategories)origParcel.Weight;
-                newParcToList.Priority = (global::BL.BO.Enum.Priorities)origParcel.Priority;
+                newParcToList.Weight = (BO.Enum.WeightCategories)origParcel.Weight;
+                newParcToList.Priority = (BO.Enum.Priorities)origParcel.Priority;
 
                 if (origParcel.TimeDelivered != null) //if delivered
-                    newParcToList.ParcelStatus = global::BL.BO.Enum.ParcelStatus.delivered;
+                    newParcToList.ParcelStatus = BO.Enum.ParcelStatus.delivered;
                 else if (origParcel.TimePickedUp != null) // if collected
-                    newParcToList.ParcelStatus = global::BL.BO.Enum.ParcelStatus.collected;
+                    newParcToList.ParcelStatus = BO.Enum.ParcelStatus.collected;
                 else if (origParcel.DroneId != -1)
-                    newParcToList.ParcelStatus = global::BL.BO.Enum.ParcelStatus.assigned;
+                    newParcToList.ParcelStatus = BO.Enum.ParcelStatus.assigned;
                 else
-                    newParcToList.ParcelStatus = global::BL.BO.Enum.ParcelStatus.created;
+                    newParcToList.ParcelStatus = BO.Enum.ParcelStatus.created;
 
 
                 return newParcToList;
             }
-            private global::BL.BO.BOStationToList createBOStationToList(int _id)
+            private BO.BOStationToList createBOStationToList(int _id)
             {
-                global::BL.BO.BOStationToList newStationToList = new global::BL.BO.BOStationToList();
+                BO.BOStationToList newStationToList = new BO.BOStationToList();
                 DalXml.DO.Station origStation = dataAccess.getStation(_id);
 
                 newStationToList.Id = origStation.Id;

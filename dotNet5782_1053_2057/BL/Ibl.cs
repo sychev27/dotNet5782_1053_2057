@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,7 +31,7 @@ namespace BL
             public int GetStationIdOfBODrone(int droneId);
             string GetBODroneModel(int id);
             BO.Enum.WeightCategories GetBoDroneMaxWeight(int id);
-            IEnumerable<BO.BODrone> GetBODroneList(bool getDeleted = false);
+            ObservableCollection<BO.BODrone> GetBODroneList(bool getDeleted = false);
 
 
             string GetDroneLocationString(int id);//returns string describing drone's location
@@ -40,14 +41,14 @@ namespace BL
             IEnumerable<BO.BOCustomerToList> GetCustToList();
             IEnumerable<BO.BOParcelToList> GetParcelToList();
             IEnumerable<BO.BOStationToList> GetStationToList();
-            IEnumerable<BO.BODroneToList> GetDroneToList();
+            ObservableCollection<BO.BODroneToList> GetDroneToList();
             IEnumerable<BO.BOParcelToList> GetParcelsNotYetAssigned();
             IEnumerable<BO.BOStationToList> GetStationAvailChargeSlots();
 
 
 
-            IEnumerable<BO.BODrone> GetSpecificDroneListStatus(int num);
-            IEnumerable<BO.BODrone> GetSpecificDroneListWeight(int num);
+            ObservableCollection<BO.BODrone> GetSpecificDroneListStatus(int num);
+            ObservableCollection<BO.BODrone> GetSpecificDroneListWeight(int num);
 
 
 

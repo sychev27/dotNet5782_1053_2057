@@ -53,6 +53,8 @@ namespace DalObject
         internal static List<DalXml.DO.Parcel> listParcel = new List<DalXml.DO.Parcel>();
         internal static List<DalXml.DO.Customer> listCustomer = new List<DalXml.DO.Customer>();
 
+        internal static List<DalXml.DO.User> listUser = new List<DalXml.DO.User>(); //holds list of username and passwords
+
         internal static Config thisConfig = new Config();
 
         //Internal Class - for Lazy Initialization:
