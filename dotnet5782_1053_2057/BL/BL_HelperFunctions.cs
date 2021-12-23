@@ -284,11 +284,11 @@ namespace BL
             {
                 foreach (var item in listDrone)
                 {
-                    if (_id == item.Id)
+                    if (_id == item.Id && item.Exists)
                         return item;
                 }
                 //throw exception!!!
-                throw new EXNotFoundPrintException("Drone");
+                throw new EXDroneNotFound() ;
                 //return null;
             }
 
@@ -310,10 +310,20 @@ namespace BL
                 //throw exception!!!
                 throw new EXNotFoundPrintException("Customer");
             }
-            public IEnumerable<global::BL.BO.BODrone> GetBODroneList()
+            public IEnumerable<global::BL.BO.BODrone> GetBODroneList(bool getDeleted = false)
             {
-                return listDrone;
+                if (getDeleted)
+                    return listDrone;
+
+                List<BO.BODrone> res = new List<BO.BODrone>();
+                foreach (var item in listDrone)
+                {
+                    if (item.Exists)
+                        res.Add(item);
+                }
+                return res;
             }
+
 
             public IEnumerable<global::BL.BO.BODrone> GetSpecificDroneListStatus(int num)
             {
@@ -489,7 +499,7 @@ namespace BL
 
                 foreach (global::BL.BO.BODrone item in listDrone)
                 {
-                    if (id == item.Id)
+                    if (id == item.Id && item.Exists)
                         return true;
                 }
                 return false;
