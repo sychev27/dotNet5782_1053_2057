@@ -24,6 +24,7 @@ namespace WpfApp1
         {
             InitializeComponent();
             busiAccess = busiAccess1;
+            DataContext = busiAccess.GetCustToList();
         }
 
         private void btnAddCustomer1_Click(object sender, RoutedEventArgs e)
@@ -43,6 +44,10 @@ namespace WpfApp1
 
         private void CustomerListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            BL.BO.BOCustomerToList customer = CustomerListView.SelectedItem as BL.BO.BOCustomerToList;
+            int id = customer.Id;
+            BL.BO.BOCustomer cust =  busiAccess.GetBOCustomer(id);
+            new CustomerWindow(busiAccess, cust).ShowDialog();
 
         }
 
@@ -54,7 +59,7 @@ namespace WpfApp1
 
         private void btnRefreshList_Click(object sender, RoutedEventArgs e)
         {
-            new CustomerWindow(busiAccess).ShowDialog();
+            //new CustomerWindow(busiAccess).ShowDialog();
         }
     }
 

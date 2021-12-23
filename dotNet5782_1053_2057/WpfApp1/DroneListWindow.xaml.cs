@@ -22,8 +22,7 @@ namespace WpfApp1
     {
         BL.BLApi.Ibl busiAccess;
         private ObservableCollection<BL.BO.BODrone> droneList = new ObservableCollection<BL.BO.BODrone>();
-        //btnAddCustomer.IsEnabled = false;
-        // btnAddCustomer.Visibility = Visibility.Hidden;
+
         public DroneListWindow(BL.BLApi.Ibl busiAccess1) 
         {
             busiAccess = busiAccess1;
@@ -32,7 +31,8 @@ namespace WpfApp1
             InitializeComponent();
 
             //DronesListView.ItemsSource = busiAccess.GetBODroneList();
-            StatusSelector1.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.DroneStatus));
+            StatusSelector1.DataContext = Enum.GetValues(typeof(BL.BO.Enum.DroneStatus));
+           // StatusSelector1.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.DroneStatus));
             StatusSelector2.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.WeightCategories));
 
         }
