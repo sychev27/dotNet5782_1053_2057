@@ -297,10 +297,18 @@ namespace BL
                 foreach (var item in listDrone)
                 {
                     if (item.Id == droneId)
-                        item.Exists = false;
-                    dataAccess.EraseDrone(droneId);
-                    return;
+                    {
+                        //updates in BL
+                        //item.Exists = false;
+                        //BO.BODrone copy = item;
+                        //listDrone.Remove(item);
+                        //copy.Exists = false;
+                        //listDrone.Add(copy);
+                        dataAccess.EraseDrone(droneId); //updates in DL
+                        return;
+                    }
                 }
+                throw new EXDroneNotFound();
             }
 
         }
