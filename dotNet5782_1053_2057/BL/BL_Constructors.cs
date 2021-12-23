@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -51,7 +52,6 @@ namespace BL
             internal double chargeRate; // per min
 
             List<global::BL.BO.BODrone> listDrone = new List<global::BL.BO.BODrone>();
-
             //Lazy Initialization...
             //static BL() { }
             private BL() //Private CTOR - implementing Singleton Design Pattern
