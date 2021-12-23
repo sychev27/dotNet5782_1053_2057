@@ -1,34 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace BL
 {
     namespace BLApi
     {
         public partial class BL : global::BL.BLApi.Ibl
         {
-            global::BL.BO.BOLocation getClosestStationLoc(global::BL.BO.BOLocation l, bool needChargeSlot = false)
+            BO.BOLocation getClosestStationLoc(BO.BOLocation l, bool needChargeSlot = false)
             {
                 //if we need the station to have a free spot, then we send a parameter = true.
                 //otherwise, we can ignore this parameter
 
                 IEnumerable<DalXml.DO.Station> stations = dataAccess.getStations();
-                global::BL.BO.BOLocation ans = new global::BL.BO.BOLocation(0, 0);
+                BO.BOLocation ans = new BO.BOLocation(0, 0);
                 if (needChargeSlot == true)
                 {
                     foreach (DalXml.DO.Station st in stations)
                     {
                         if (freeSpots(st) <= 0)
                             continue;
-                        ans = new global::BL.BO.BOLocation(st.Longitude, st.Latitude);
+                        ans = new BO.BOLocation(st.Longitude, st.Latitude);
                         break;
                     }
                 }
                 else
-                    ans = new global::BL.BO.BOLocation(stations.First().Longitude, stations.First().Latitude);
+                    ans = new BO.BOLocation(stations.First().Longitude, stations.First().Latitude);
                 //   if (ans.Latitude == 0 && ans.Longitude == 0)
                 //       throw // exception
                 foreach (DalXml.DO.Station st in stations)
@@ -40,7 +40,7 @@ namespace BL
                     }
 
 
-                    global::BL.BO.BOLocation checkLoc = new global::BL.BO.BOLocation(st.Longitude, st.Latitude);
+                    BO.BOLocation checkLoc = new BO.BOLocation(st.Longitude, st.Latitude);
                     if (distance(l, ans) > distance(l, checkLoc))
                     {
                         ans.Latitude = checkLoc.Latitude;
@@ -50,7 +50,7 @@ namespace BL
                 return ans;
 
             }
-            DalXml.DO.Station getStationFromLoc(global::BL.BO.BOLocation loc)
+            DalXml.DO.Station getStationFromLoc(BO.BOLocation loc)
             {
                 IEnumerable<DalXml.DO.Station> stations = dataAccess.getStations();
                 foreach (var item in stations)
@@ -61,22 +61,22 @@ namespace BL
                 //throw exception! //not found;
                 throw new EXNotFoundPrintException("Station");
             }
-            global::BL.BO.BOLocation getLocationOfCustomer(int customerId)
+            BO.BOLocation getLocationOfCustomer(int customerId)
             {
-                global::BL.BO.BOLocation loc =
-                            new global::BL.BO.BOLocation(dataAccess.getCustomer(customerId).Longitude,
+                BO.BOLocation loc =
+                            new BO.BOLocation(dataAccess.getCustomer(customerId).Longitude,
                             dataAccess.getCustomer(customerId).Latitude);
                 return loc;
             }
-            global::BL.BO.BOLocation getLocationOfStation(int StationId)
+            BO.BOLocation getLocationOfStation(int StationId)
             {
-                global::BL.BO.BOLocation loc;
+                BO.BOLocation loc;
                 try
                 {
                     loc =  new BO.BOLocation(dataAccess.getStation(StationId).Longitude,
                             dataAccess.getStation(StationId).Latitude);
                 }
-                catch (DalXml.DO.EXItemNotFoundException ex)
+                catch (DalXml.DO.EXItemNotFoundException)
                 {
                     throw new EXNotFoundPrintException ("Station " +StationId.ToString());
                 }
@@ -89,7 +89,7 @@ namespace BL
             public int GetStationIdOfBODrone(int droneId)
             {
                 //check if charging
-                global::BL.BO.BODrone drone = GetBODrone(droneId);
+                BO.BODrone drone = GetBODrone(droneId);
                 foreach (DalXml.DO.DroneCharge drCharge in dataAccess.getDroneCharges())
                 {
                     if (drCharge.DroneId == droneId)
@@ -99,7 +99,7 @@ namespace BL
                 //check if assigned at Station
                 foreach (DalXml.DO.Station st in dataAccess.getStations())
                 {
-                    global::BL.BO.BOLocation stLoc = new global::BL.BO.BOLocation(st.Longitude, st.Latitude);
+                    BO.BOLocation stLoc = new BO.BOLocation(st.Longitude, st.Latitude);
                     if (stLoc == drone.Location)
                         return st.Id;
                 }
@@ -109,7 +109,7 @@ namespace BL
 
 
 
-            double distance(global::BL.BO.BOLocation l1, global::BL.BO.BOLocation l2)
+            double distance(BO.BOLocation l1, BO.BOLocation l2)
             {
                 //(1) find diff in radians:
                 double diffLat = l1.Latitude - l2.Latitude;
@@ -134,24 +134,24 @@ namespace BL
                 return distance;
             }
 
-            double battNededForDist(global::BL.BO.BOLocation start, global::BL.BO.BOLocation finish, BO.Enum.WeightCategories? weight = null)
+            double battNededForDist(BO.BOLocation start, BO.BOLocation finish, BO.Enum.WeightCategories? weight = null)
             {
                 
                 double dist = distance(start, finish);
 
                 if (weight != null)
                 {
-                    if (weight == global::BL.BO.Enum.WeightCategories.Light)
+                    if (weight == BO.Enum.WeightCategories.Light)
                         return dist * light;
-                    if (weight == global::BL.BO.Enum.WeightCategories.Medium)
+                    if (weight == BO.Enum.WeightCategories.Medium)
                         return dist * medium;
-                    if (weight == global::BL.BO.Enum.WeightCategories.Heavy)
+                    if (weight == BO.Enum.WeightCategories.Heavy)
                         return dist * heavy;
                 }
                 return dist * empty;
             }
-            double battNeededForJourey(global::BL.BO.BODrone drone, global::BL.BO.BOLocation Sender,
-                global::BL.BO.BOLocation Receiver, BO.Enum.WeightCategories weight)
+            double battNeededForJourey(BO.BODrone drone, BO.BOLocation Sender,
+                BO.BOLocation Receiver, BO.Enum.WeightCategories weight)
             {
                 double totalBattery = 0;
 
@@ -177,7 +177,7 @@ namespace BL
                 return numSpots;
             }
 
-            int findClosestParcel(global::BL.BO.BODrone droneCopy)
+            int findClosestParcel(BO.BODrone droneCopy)
             {
                 //Explanation:
                 //(1) Only take the relevant Parcels (acc to Drone's max weight)
@@ -241,7 +241,7 @@ namespace BL
 
                 //(3) traverse parcels, choose closest parcel
                 int closestParcelId = -1;
-                global::BL.BO.BOLocation closestLoc = new global::BL.BO.BOLocation(0, 0); //distance will be big..
+                BO.BOLocation closestLoc = new BO.BOLocation(0, 0); //distance will be big..
 
                 for (int i = 2; i >= 0; i--) //i iterates thru parcel priority
                 {
@@ -254,7 +254,7 @@ namespace BL
                             { //if drone can make the journey,
 
                                 //find the closest parcel:
-                                global::BL.BO.BOLocation thisParcLoc = new global::BL.BO.BOLocation(getLocationOfCustomer(parcel.SenderId).Longitude,
+                                BO.BOLocation thisParcLoc = new BO.BOLocation(getLocationOfCustomer(parcel.SenderId).Longitude,
                                     getLocationOfCustomer(parcel.SenderId).Latitude);
 
                                 if (distance(droneCopy.Location, thisParcLoc) < distance(droneCopy.Location, closestLoc))
@@ -280,7 +280,7 @@ namespace BL
 
 
 
-            public global::BL.BO.BODrone GetBODrone(int _id)
+            public BO.BODrone GetBODrone(int _id)
             {
                 foreach (var item in listDrone)
                 {
@@ -292,14 +292,14 @@ namespace BL
                 //return null;
             }
 
-            public global::BL.BO.BOCustomer GetBOCustomer(int _id)
+            public BO.BOCustomer GetBOCustomer(int _id)
             {
-                IEnumerable<DalXml.DO.Customer> origList = dataAccess.getCustomers();
+                ObservableCollection<DalXml.DO.Customer> origList = dataAccess.getCustomers();
                 foreach (var item in origList)
                 {
                     if (_id == item.Id)
                     {
-                        global::BL.BO.BOCustomer boCustomer = new global::BL.BO.BOCustomer();
+                        BO.BOCustomer boCustomer = new BO.BOCustomer();
                         boCustomer.Id = item.Id;
                         boCustomer.Name = item.Name;
                         boCustomer.Phone = item.Phone;
@@ -310,12 +310,12 @@ namespace BL
                 //throw exception!!!
                 throw new EXNotFoundPrintException("Customer");
             }
-            public IEnumerable<global::BL.BO.BODrone> GetBODroneList(bool getDeleted = false)
+            public ObservableCollection<BO.BODrone> GetBODroneList(bool getDeleted = false)
             {
                 if (getDeleted)
                     return listDrone;
 
-                List<BO.BODrone> res = new List<BO.BODrone>();
+                ObservableCollection<BO.BODrone> res = new ObservableCollection<BO.BODrone>();
                 foreach (var item in listDrone)
                 {
                     if (item.Exists)
@@ -323,156 +323,166 @@ namespace BL
                 }
                 return res;
             }
+           
 
 
-            public IEnumerable<global::BL.BO.BODrone> GetSpecificDroneListStatus(int num)
+            public ObservableCollection<BO.BODrone> GetSpecificDroneListStatus(int num)
             {
                 switch (num)
                 {
                     case 0:
                         {
-                            Predicate<global::BL.BO.BODrone> res = availableDrone;
-                            return listDrone.FindAll(res);
+                            //Predicate<BO.BODrone> res = availableDrone;
+                            ////return listDrone.FindAll(res);
+                            return new ObservableCollection<BO.BODrone>(GetBODroneList()
+                                .Where(x => x.DroneStatus == BO.Enum.DroneStatus.Available));
                         }
                     case 1:
                         {
-                            Predicate<global::BL.BO.BODrone> res = maintenanceDrone;
-                            return listDrone.FindAll(res);
+                            //Predicate<BO.BODrone> res = maintenanceDrone;
+                            //return listDrone.FindAll(res);
+                            return new ObservableCollection<BO.BODrone>(GetBODroneList()
+                                .Where(x => x.DroneStatus == BO.Enum.DroneStatus.Charging));
                         }
                     case 2:
                         {
-                            Predicate<global::BL.BO.BODrone> res = inDeliveryDrone;
-                            return listDrone.FindAll(res);
+                            //Predicate<BO.BODrone> res = inDeliveryDrone;
+                            //return listDrone.FindAll(res);
+                            return new ObservableCollection<BO.BODrone>(GetBODroneList()
+                                .Where(x => x.DroneStatus == BO.Enum.DroneStatus.InDelivery));
                         }
                     default:
                         return listDrone;
                 }
             }
 
-            public IEnumerable<global::BL.BO.BODrone> GetSpecificDroneListWeight(int num)
+            public ObservableCollection<BO.BODrone> GetSpecificDroneListWeight(int num)
             {
                 switch (num)
                 {
                     case 0:
                         {
-                            Predicate<global::BL.BO.BODrone> res = lightDrone;
-                            return listDrone.FindAll(res);
+                            //Predicate<BO.BODrone> res = lightDrone;
+                            //return listDrone.FindAll(res);
+                            return new ObservableCollection<BO.BODrone>(GetBODroneList()
+                                .Where(x => x.MaxWeight == BO.Enum.WeightCategories.Light));
                         }
                     case 1:
                         {
-                            Predicate<global::BL.BO.BODrone> res = mediumDrone;
-                            return listDrone.FindAll(res);
+                            return new ObservableCollection<BO.BODrone>(GetBODroneList()
+                                .Where(x => x.MaxWeight == BO.Enum.WeightCategories.Medium));
                         }
                     case 2:
                         {
-                            Predicate<global::BL.BO.BODrone> res = heavyDrone;
-                            return listDrone.FindAll(res);
+                            //Predicate<BO.BODrone> res = heavyDrone;
+                            //return listDrone.FindAll(res);
+                            return new ObservableCollection<BO.BODrone>(GetBODroneList()
+                                .Where(x => x.MaxWeight == BO.Enum.WeightCategories.Heavy));
                         }
                     default:
                         return listDrone;
                 }
             }
 
-            private static bool availableDrone(global::BL.BO.BODrone _drone)
+            private static bool availableDrone(BO.BODrone _drone)
             {
-                if (_drone.DroneStatus == global::BL.BO.Enum.DroneStatus.Available)
+                if (_drone.DroneStatus == BO.Enum.DroneStatus.Available)
                     return true;
                 else
                     return false;
             }
 
-            private static bool maintenanceDrone(global::BL.BO.BODrone _drone)
+            private static bool maintenanceDrone(BO.BODrone _drone)
             {
-                if (_drone.DroneStatus == global::BL.BO.Enum.DroneStatus.Charging)
+                if (_drone.DroneStatus == BO.Enum.DroneStatus.Charging)
                     return true;
                 else
                     return false;
             }
-            private static bool inDeliveryDrone(global::BL.BO.BODrone _drone)
+            private static bool inDeliveryDrone(BO.BODrone _drone)
             {
-                if (_drone.DroneStatus == global::BL.BO.Enum.DroneStatus.InDelivery)
-                    return true;
-                else
-                    return false;
-            }
-
-            private static bool heavyDrone(global::BL.BO.BODrone _drone)
-            {
-                if (_drone.MaxWeight == global::BL.BO.Enum.WeightCategories.Heavy)
+                if (_drone.DroneStatus == BO.Enum.DroneStatus.InDelivery)
                     return true;
                 else
                     return false;
             }
 
-            private static bool mediumDrone(global::BL.BO.BODrone _drone)
+            private static bool heavyDrone(BO.BODrone _drone)
             {
-                if (_drone.MaxWeight == global::BL.BO.Enum.WeightCategories.Medium)
+                if (_drone.MaxWeight == BO.Enum.WeightCategories.Heavy)
                     return true;
                 else
                     return false;
             }
 
-            private static bool lightDrone(global::BL.BO.BODrone _drone)
+            private static bool mediumDrone(BO.BODrone _drone)
             {
-                if (_drone.MaxWeight == global::BL.BO.Enum.WeightCategories.Light)
+                if (_drone.MaxWeight == BO.Enum.WeightCategories.Medium)
                     return true;
                 else
                     return false;
             }
 
+            private static bool lightDrone(BO.BODrone _drone)
+            {
+                if (_drone.MaxWeight == BO.Enum.WeightCategories.Light)
+                    return true;
+                else
+                    return false;
+            }
 
 
 
             //for printing these lists:
-            public IEnumerable<global::BL.BO.BOCustomerToList> GetCustToList()
+            public ObservableCollection<BO.BOCustomerToList> GetCustToList()
             {
-                List<global::BL.BO.BOCustomerToList> res = new List<global::BL.BO.BOCustomerToList>();
+                ObservableCollection<BO.BOCustomerToList> res = new ObservableCollection<BO.BOCustomerToList>();
                 foreach (var item in dataAccess.getCustomers())
                 {
                     res.Add(createBOCustToList(item.Id));
                 }
                 return res;
             }
-            public IEnumerable<global::BL.BO.BOParcelToList> GetParcelToList()
+            public IEnumerable<BO.BOParcelToList> GetParcelToList()
             {
-                List<global::BL.BO.BOParcelToList> res = new List<global::BL.BO.BOParcelToList>();
+                List<BO.BOParcelToList> res = new List<BO.BOParcelToList>();
                 foreach (var item in dataAccess.getParcels())
                 {
                     res.Add(createBOParcToList(item.Id));
                 }
                 return res;
             }
-            public IEnumerable<global::BL.BO.BOStationToList> GetStationToList()
+            public IEnumerable<BO.BOStationToList> GetStationToList()
             {
-                List<global::BL.BO.BOStationToList> res = new List<global::BL.BO.BOStationToList>();
+                List<BO.BOStationToList> res = new List<BO.BOStationToList>();
                 foreach (var item in dataAccess.getStations())
                 {
                     res.Add(createBOStationToList(item.Id));
                 }
                 return res;
             }
-            public IEnumerable<global::BL.BO.BODroneToList> GetDroneToList()
+            public ObservableCollection<BO.BODroneToList> GetDroneToList()
             {
-                List<global::BL.BO.BODroneToList> res = new List<global::BL.BO.BODroneToList>();
+                ObservableCollection<BO.BODroneToList> res = new ObservableCollection<BO.BODroneToList>();
                 foreach (var item in listDrone)
                 {
                     res.Add(createBODroneToList(item.Id));
                 }
                 return res;
             }
-            public IEnumerable<global::BL.BO.BOParcelToList> GetParcelsNotYetAssigned()
+            public IEnumerable<BO.BOParcelToList> GetParcelsNotYetAssigned()
             {
-                List<global::BL.BO.BOParcelToList> res = new List<global::BL.BO.BOParcelToList>();
+                List<BO.BOParcelToList> res = new List<BO.BOParcelToList>();
                 foreach (var item in GetParcelToList())
                 {
-                    if (item.ParcelStatus == global::BL.BO.Enum.ParcelStatus.created)
+                    if (item.ParcelStatus == BO.Enum.ParcelStatus.created)
                         res.Add(item);
                 }
                 return res;
             }
-            public IEnumerable<global::BL.BO.BOStationToList> GetStationAvailChargeSlots()
+            public IEnumerable<BO.BOStationToList> GetStationAvailChargeSlots()
             {
-                List<global::BL.BO.BOStationToList> res = new List<global::BL.BO.BOStationToList>();
+                List<BO.BOStationToList> res = new List<BO.BOStationToList>();
                 foreach (var item in dataAccess.getStations())
                 {
                     if (freeSpots(item) > 0)
@@ -486,7 +496,7 @@ namespace BL
                 return GetBODrone(id).Model;
 
             }
-            public global::BL.BO.Enum.WeightCategories GetBoDroneMaxWeight(int id)
+            public BO.Enum.WeightCategories GetBoDroneMaxWeight(int id)
             {
                 return GetBODrone(id).MaxWeight;
             }
@@ -497,7 +507,7 @@ namespace BL
             public bool droneIdExists(int id)
             {
 
-                foreach (global::BL.BO.BODrone item in listDrone)
+                foreach (BO.BODrone item in listDrone)
                 {
                     if (id == item.Id && item.Exists)
                         return true;
@@ -509,8 +519,8 @@ namespace BL
             public string GetDroneLocationString(int id) //returns string describing location
                                                          //helpful for debugging, & user convenience
             {
-                global::BL.BO.BODrone bodrone = GetBODrone(id);
-                if (bodrone.DroneStatus == global::BL.BO.Enum.DroneStatus.Charging)
+                BO.BODrone bodrone = GetBODrone(id);
+                if (bodrone.DroneStatus == BO.Enum.DroneStatus.Charging)
                 {
                     foreach (var item in dataAccess.getDroneCharges())
                     {
@@ -518,7 +528,7 @@ namespace BL
                             return "At Station " + item.StationId.ToString();
                     }
                 }
-                else if (bodrone.DroneStatus == global::BL.BO.Enum.DroneStatus.InDelivery)
+                else if (bodrone.DroneStatus == BO.Enum.DroneStatus.InDelivery)
                 {
 
                     //if already pickuped up pkg
@@ -531,7 +541,7 @@ namespace BL
                     
 
                 }
-                else if (bodrone.DroneStatus == global::BL.BO.Enum.DroneStatus.Available)
+                else if (bodrone.DroneStatus == BO.Enum.DroneStatus.Available)
                 {
                     return findAllPossibleLoc(bodrone);
                 }
