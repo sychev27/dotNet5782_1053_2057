@@ -278,6 +278,22 @@ namespace BL
 
 
 
+            private IEnumerable<BO.BOParcelAtCustomer> getParcelsOfCustomer(int custId, bool Sender)
+            {
+                //if Sender == true; return parcels Customer Sent
+                //else              return parcels Customer Received
+                List<BO.BOParcelAtCustomer> res = new List<BO.BOParcelAtCustomer>();
+                foreach (var item in dataAccess.getParcels())
+                {
+                    if (item.SenderId == custId)
+                        res.Add(createParcAtCust(dataAccess.getParcel(item.SenderId), Sender));
+                }
+
+                return res;
+            }
+
+
+
 
 
             public BO.BODrone GetBODrone(int _id)
@@ -304,6 +320,8 @@ namespace BL
                         boCustomer.Name = item.Name;
                         boCustomer.Phone = item.Phone;
                         boCustomer.Location = new BO.BOLocation (item.Latitude, item.Longitude);
+                        boCustomer.ListOfParcSent = getParcelsOfCustomer(item.Id, true);
+                        boCustomer.ListOfParcReceived = getParcelsOfCustomer(item.Id, false);
                         return boCustomer;
                     }
                 }
