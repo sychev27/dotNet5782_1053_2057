@@ -366,6 +366,7 @@ namespace BL
             }
             BO.BOParcelAtCustomer createParcAtCust(DalXml.DO.Parcel origParc, bool Sender)
             {
+                //see later comments for details
                 BO.BOParcelAtCustomer newParcAtCust = new BO.BOParcelAtCustomer();
                 newParcAtCust.Id = origParc.Id;
                 newParcAtCust.MaxWeight = (BO.Enum.WeightCategories)origParc.Weight;
@@ -431,18 +432,18 @@ namespace BL
                 newCust.Name = origCust.Name;
                 newCust.Phone = origCust.Phone;
 
-                newCust.Sent = new List<BO.BOParcelAtCustomer>();
+                newCust.ListOfParcSent = new List<BO.BOParcelAtCustomer>();
                 foreach (var item in dataAccess.getParcels())
                 {
                     if (item.SenderId == newCust.Id)
-                        newCust.Sent.Add(createParcAtCust(item, false));
+                        newCust.ListOfParcSent.Add(createParcAtCust(item, true));
                 }
-                newCust.Received = new List<BO.BOParcelAtCustomer>();
+                newCust.ListOfParcReceived = new List<BO.BOParcelAtCustomer>();
                 {
                     foreach (var item in dataAccess.getParcels())
                     {
                         if (item.ReceiverId == newCust.Id)
-                            newCust.Received.Add(createParcAtCust(item, true));
+                            newCust.ListOfParcReceived.Add(createParcAtCust(item, false));
                     }
                 }
                 return newCust;

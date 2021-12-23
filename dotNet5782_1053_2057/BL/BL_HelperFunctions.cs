@@ -454,9 +454,9 @@ namespace BL
 
 
             //for printing these lists:
-            public ObservableCollection<BO.BOCustomerToList> GetCustToList()
+            public IEnumerable<global::BL.BO.BOCustomerToList> GetCustToList()
             {
-                ObservableCollection<BO.BOCustomerToList> res = new ObservableCollection<BO.BOCustomerToList>();
+                List<global::BL.BO.BOCustomerToList> res = new List<global::BL.BO.BOCustomerToList>();
                 foreach (var item in dataAccess.getCustomers())
                 {
                     res.Add(createBOCustToList(item.Id));
