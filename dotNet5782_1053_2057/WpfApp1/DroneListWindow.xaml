@@ -34,7 +34,7 @@
         <Button x:Name="btnAddDrone1" Content="Add new drone" HorizontalAlignment="Left" Margin="646,414,0,0" Grid.Row="1" VerticalAlignment="Top" Height="27" Width="138" FontSize="16" Click="btnAddDrone1_Click"/>
         <Button x:Name="btnClose" Content="Close" HorizontalAlignment="Left" Margin="43,415,0,0" Grid.Row="1" VerticalAlignment="Top" Height="26" Width="148" FontSize="18" Click="btnClose_Click"/>
         <Button x:Name="btnRefresh" Content="Refresh" HorizontalAlignment="Left" Height="27" Margin="466,414,0,0" Grid.Row="1" VerticalAlignment="Top" Width="128" Click="btnRefresh_Click"/>
-        <CheckBox x:Name="chkBoxGetErased" Content="Include Erased Drones" HorizontalAlignment="Left" Height="27" Margin="237,414,0,0" Grid.Row="1" VerticalAlignment="Top" Width="140" Checked="chkBoxGetErased_Checked"/>
+        <CheckBox x:Name="chkBoxGetErased" Content="Include Erased Drones" HorizontalAlignment="Left" Height="27" Margin="237,414,0,0" Grid.Row="1" VerticalAlignment="Top" Width="140" Checked="chkBoxGetErased_Checked" Unchecked="chkBoxGetErased_UnChecked"/>
 
 
 

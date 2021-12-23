@@ -87,7 +87,14 @@ namespace WpfApp1
 
         private void chkBoxGetErased_Checked(object sender, RoutedEventArgs e)
         {
-            refreshList(true);
+            //DataContext = busiAccess.GetBODroneList(true);
+            DronesListView.ItemsSource = busiAccess.GetBODroneList(true);
+
+        }
+        private void chkBoxGetErased_UnChecked(object sender, RoutedEventArgs e)
+        {
+            //DataContext = busiAccess.GetBODroneList();
+            DronesListView.ItemsSource = busiAccess.GetBODroneList();
         }
 
         private ObservableCollection<BL.BO.BODrone> getBODronesAsObservable()

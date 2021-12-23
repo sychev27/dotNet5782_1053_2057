@@ -217,12 +217,7 @@ namespace WpfApp1
             }
         }
         
-        //private bool modelTextBoxChanged()
-        //{
-
-        //}
-
-
+        
 
 
 
@@ -347,6 +342,9 @@ namespace WpfApp1
         private void btnEraseDrone_Click(object sender, RoutedEventArgs e)
         {
             busiAccess.EraseDrone(thisDroneId);
+            MessageBox.Show("Drone " +tBoxIdInput.Text + " Erased", "Success",
+                MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
+
             Close();
         }
     }

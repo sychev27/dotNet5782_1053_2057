@@ -38,7 +38,8 @@ namespace BL
 
 
 
-            IEnumerable<BO.BOCustomerToList> GetCustToList();
+
+            ObservableCollection<BO.BOCustomerToList> GetCustToList();
             IEnumerable<BO.BOParcelToList> GetParcelToList();
             IEnumerable<BO.BOStationToList> GetStationToList();
             ObservableCollection<BO.BODroneToList> GetDroneToList();

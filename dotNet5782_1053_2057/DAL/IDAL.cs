@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,15 +38,15 @@ namespace DalXml
        // void freeDrone(int droneId);
 
         IEnumerable<double> requestElec();
-        IEnumerable<DalXml.DO.Drone> getDrones();
+        ObservableCollection<DalXml.DO.Drone> getDrones();
         IEnumerable<DalXml.DO.Parcel> getParcels();
         IEnumerable<DalXml.DO.Station> getStations();
 
-        IEnumerable<DalXml.DO.Customer> getCustomers();
+        ObservableCollection<DalXml.DO.Customer> getCustomers();
         IEnumerable<DalXml.DO.DroneCharge> getDroneCharges();
 
 
-        IEnumerable<DalXml.DO.Drone> getSpecificDroneList(Predicate<DalXml.DO.Drone> typeOfDrone);
+        //IEnumerable<DalXml.DO.Drone> getSpecificDroneList(Predicate<DalXml.DO.Drone> typeOfDrone);
 
 
 
@@ -61,8 +62,6 @@ namespace DalXml
         void EraseDrone(int droneId);
 
 
-
-        //ignore//void addBattery(int droneId, double batteryGained);
 
         void assignDroneToParcel(int droneId, int parcelId);
         void pickupParcel(int parcelId);
