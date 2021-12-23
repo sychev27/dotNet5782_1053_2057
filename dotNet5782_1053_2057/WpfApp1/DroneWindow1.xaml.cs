@@ -344,7 +344,6 @@ namespace WpfApp1
             busiAccess.EraseDrone(thisDroneId);
             MessageBox.Show("Drone " +tBoxIdInput.Text + " Erased", "Success",
                 MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
-
             Close();
         }
     }

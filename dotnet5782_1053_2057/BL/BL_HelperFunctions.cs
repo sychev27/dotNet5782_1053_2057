@@ -278,19 +278,19 @@ namespace BL
 
 
 
-            private IEnumerable<BO.BOParcelAtCustomer> getParcelsOfCustomer(int custId, bool Sender)
-            {
-                //if Sender == true; return parcels Customer Sent
-                //else              return parcels Customer Received
-                List<BO.BOParcelAtCustomer> res = new List<BO.BOParcelAtCustomer>();
-                foreach (var item in dataAccess.getParcels())
-                {
-                    if (item.SenderId == custId)
-                        res.Add(createParcAtCust(dataAccess.getParcel(item.SenderId), Sender));
-                }
+            //private IEnumerable<BO.BOParcelAtCustomer> getParcelsOfCustomer(int custId, bool Sender)
+            //{
+            //    //if Sender == true; return parcels Customer Sent
+            //    //else              return parcels Customer Received
+            //    List<BO.BOParcelAtCustomer> res = new List<BO.BOParcelAtCustomer>();
+            //    foreach (var item in dataAccess.getParcels())
+            //    {
+            //        if (item.SenderId == custId)
+            //            res.Add(createParcAtCust(dataAccess.getParcel(item.SenderId), Sender));
+            //    }
 
-                return res;
-            }
+            //    return res;
+            //}
 
 
 
@@ -313,16 +313,18 @@ namespace BL
                 ObservableCollection<DalXml.DO.Customer> origList = dataAccess.getCustomers();
                 foreach (var item in origList)
                 {
-                    if (_id == item.Id)
+                    if (_id == item.Id && item.Exists)
                     {
-                        BO.BOCustomer boCustomer = new BO.BOCustomer();
-                        boCustomer.Id = item.Id;
-                        boCustomer.Name = item.Name;
-                        boCustomer.Phone = item.Phone;
-                        boCustomer.Location = new BO.BOLocation (item.Latitude, item.Longitude);
-                        boCustomer.ListOfParcSent = getParcelsOfCustomer(item.Id, true);
-                        boCustomer.ListOfParcReceived = getParcelsOfCustomer(item.Id, false);
-                        return boCustomer;
+                        return CreateBOCustomer(_id);
+                        
+                        //BO.BOCustomer boCustomer = new BO.BOCustomer();
+                        //boCustomer.Id = item.Id;
+                        //boCustomer.Name = item.Name;
+                        //boCustomer.Phone = item.Phone;
+                        //boCustomer.Location = new BO.BOLocation (item.Latitude, item.Longitude);
+                        //boCustomer.ListOfParcSent = getParcelsOfCustomer(item.Id, true);
+                        //boCustomer.ListOfParcReceived = getParcelsOfCustomer(item.Id, false);
+                        //return boCustomer;
                     }
                 }
                 //throw exception!!!

@@ -57,7 +57,6 @@ namespace WpfApp1
             index = StatusSelector2.SelectedIndex;
             DronesListView.ItemsSource = busiAccess.GetSpecificDroneListWeight(index);
 
-
         }
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
