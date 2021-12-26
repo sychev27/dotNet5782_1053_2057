@@ -59,5 +59,16 @@ namespace WpfApp1
         {
             new CustomerListWindow(busiAccess).ShowDialog();
         }
+
+        private void btnLogOut_Click(object sender, RoutedEventArgs e)
+        {
+            new LoginWindow().Show();
+            Close();
+        }
+
+        private void btnParcelLists_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

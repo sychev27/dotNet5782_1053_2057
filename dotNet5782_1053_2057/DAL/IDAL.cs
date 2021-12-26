@@ -27,15 +27,6 @@ namespace DalXml
         void addStation(DalXml.DO.Station st);
         void addDroneCharge(DalXml.DO.DroneCharge droneCharge);
 
-       // int findItem(int id, string itemToFind);
-       // void addItem(string itemToAdd);
-       // void printItem(string _item, int _id);
-       // void printList(string _item);
-       // void assignParcel(int parcelId);
-       // void collectParcel(int parcelId);
-       //  void deliverParcel(int parcelId);
-       // void chargeDrone(int droneId);
-       // void freeDrone(int droneId);
 
         IEnumerable<double> requestElec();
         ObservableCollection<DalXml.DO.Drone> getDrones();
@@ -58,11 +49,16 @@ namespace DalXml
         public void modifyCust(int _id, string _name, string _phone);
         public void modifyStation(int _id, int _name, int _totalChargeSlots);
 
-        void eraseDroneCharge(DalXml.DO.DroneCharge thisDroneCharge);
+
+        //Erase:
+        void EraseDroneCharge(DalXml.DO.DroneCharge thisDroneCharge);
         void EraseDrone(int droneId);
+        //void EraseCustomer(int custId);
+        //void EraseStation(int stationId);
+        //void EraseParcel(int parcelId);
 
 
-
+        //Update:
         void assignDroneToParcel(int droneId, int parcelId);
         void pickupParcel(int parcelId);
         void deliverParcel(int parcelId);
