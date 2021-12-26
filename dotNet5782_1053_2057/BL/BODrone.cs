@@ -13,7 +13,7 @@ namespace BL
         {
             public BODrone()
             {
-                _exists = true;
+                Exists = true;
             }
             public int Id { get; set; }
             public string Model { get; set; }
