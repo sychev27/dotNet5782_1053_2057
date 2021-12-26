@@ -597,6 +597,14 @@ namespace BL
 
 
 
+            public int IdOfUser(string _username, string _password)
+            {
+
+                //working on this...
+                return 0;
+            }
+
+
 
 
 
