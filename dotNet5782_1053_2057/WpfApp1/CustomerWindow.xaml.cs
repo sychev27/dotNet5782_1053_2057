@@ -39,14 +39,18 @@ namespace WpfApp1
 
             tBoxCusIdInput.IsReadOnly = true;
             tBoxCusIdInput.BorderBrush = Brushes.Transparent;
+            tBoxLatitInfo.IsReadOnly = true;
+            tBoxLatitInfo.BorderBrush = Brushes.Transparent;
+            tBoxLongiInfo.IsReadOnly = true;
+            tBoxLongiInfo.BorderBrush = Brushes.Transparent;
 
 
             btnAddCustomer.IsEnabled = false;
             btnAddCustomer.Visibility = Visibility.Hidden;
-            displayBOCustomer(customer);
+            displayBOCustomer(busiAccess,customer);
         }
 
-        private void displayBOCustomer(BL.BO.BOCustomer bocustumer)
+        private void displayBOCustomer(BL.BLApi.Ibl _busiAccess,BL.BO.BOCustomer bocustumer)
         {
             thisCustomerId = bocustumer.Id;
 
@@ -56,9 +60,7 @@ namespace WpfApp1
             tBoxPhoneInput.Text = bocustumer.Phone;
             tBoxLongiInfo.Text = bocustumer.Location.Longitude.ToString();
             tBoxLatitInfo.Text = bocustumer.Location.Latitude.ToString();
-            //lstParcelList.ItemsSource = bocustumer.
-
-            //  tBlockCurrentLocationInfo.Text = busiAccess.GetDroneLocationString(bodrone.Id);
+            lstParcelList.ItemsSource = _busiAccess.GetBOParcelAtCustomerList(bocustumer);
 
             //working on a function in BL..
 
@@ -72,11 +74,11 @@ namespace WpfApp1
 
             //(1) Receive Data
             int _id;
-            int _phoneCheck;
+            Int64 _phoneCheck;
             double _longitude;
             double _latitude;
             bool idSuccess = Int32.TryParse(tBoxCusIdInput.Text, out _id);
-            bool phoneSuccess = Int32.TryParse(tBoxCusIdInput.Text, out _phoneCheck);
+            bool phoneSuccess = Int64.TryParse(tBoxPhoneInput.Text, out _phoneCheck);
             bool longSuccess = double.TryParse(tBoxLongiInfo.Text, out _longitude);
             bool latSuccess = double.TryParse(tBoxLatitInfo.Text, out _latitude);
             string _name = tBoxNameInput.Text;
@@ -92,25 +94,28 @@ namespace WpfApp1
                 validData = false;
             }
 
-
+            //check name
             if (tBoxNameInput.Text == null || tBoxNameInput.Text == "")
             {
                 tBlock_chooseName.Foreground = new SolidColorBrush(Colors.Red);
                 validData = false;
             }
 
+            //check phone
             if (tBoxPhoneInput.Text == null || !phoneSuccess || _phoneCheck <= 0)
             {
                 tBlock_choosePhone.Foreground = new SolidColorBrush(Colors.Red);
                 validData = false;
             }
 
+            //check longitude
             if (tBoxLongiInfo.Text == null || !longSuccess || _longitude < 35 || _longitude > 36)
             {
                 tBlockLongitude.Foreground = new SolidColorBrush(Colors.Red);
                 validData = false;
             }
 
+            //check latitude
             if (tBoxLatitInfo.Text == null || !latSuccess || _latitude < 31 || _latitude > 32)
             {
                 tBlockLatitude.Foreground = new SolidColorBrush(Colors.Red);
@@ -147,7 +152,43 @@ namespace WpfApp1
 
         private void btnModifyCustomer_Click(object sender, RoutedEventArgs e)
         {
+            //reset text color
+            changeTBlockColor(Colors.Black, tBlock_choosePhone, tBlock_chooseName);
 
+            //(1) Receive Data
+            int _id;
+            Int64 _phoneCheck;
+            Int32.TryParse(tBoxCusIdInput.Text, out _id);
+            bool phoneSuccess = Int64.TryParse(tBoxPhoneInput.Text, out _phoneCheck);
+            string _phone = tBoxPhoneInput.Text;
+            string _name = tBoxNameInput.Text;
+
+            //(2) Check that Data is Valid
+            bool validData = true;
+
+            //check name
+            if (tBoxNameInput.Text == null || tBoxNameInput.Text == "")
+            {
+                tBlock_chooseName.Foreground = new SolidColorBrush(Colors.Red);
+                validData = false;
+            }
+
+            //check phone
+            if (tBoxPhoneInput.Text == null || !phoneSuccess || _phoneCheck <= 0)
+            {
+                tBlock_choosePhone.Foreground = new SolidColorBrush(Colors.Red);
+                validData = false;
+            }
+
+
+            if (validData)
+            {
+                busiAccess.ModifyCust(_id, _name, _phone);
+                MessageBox.Show("Customer Name and Phone Changed", "SUCCESS", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
+                Close();
+            }
+            else
+                return;
         }
 
         private void changeTBlockColor(Color color, params TextBlock[] listTBlock)

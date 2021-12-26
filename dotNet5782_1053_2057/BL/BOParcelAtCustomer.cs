@@ -16,7 +16,16 @@ namespace BL
             public BL.BO.Enum.ParcelStatus ParcelStatus { get; set; }
             public BOCustomerInParcel OtherSide { get; set; } //for Sender: holds the receiver
                                                               //for Receiver: holds the sender
-            
+
+
+
+            public override string ToString()
+            {
+                string res = "Parcel " + Id;
+
+                return res;
+            }
+
 
 
         }
