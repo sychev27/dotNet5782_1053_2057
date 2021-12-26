@@ -29,7 +29,7 @@ namespace WpfApp1
 
         private void btnAddCustomer1_Click(object sender, RoutedEventArgs e)
         {
-            new CustomerWindow().ShowDialog();
+            new CustomerWindow(busiAccess).ShowDialog();
         }
 
         private void Selector1_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -59,7 +59,14 @@ namespace WpfApp1
 
         private void btnRefreshList_Click(object sender, RoutedEventArgs e)
         {
-            //new CustomerWindow(busiAccess).ShowDialog();
+            refreshList();
+        }
+
+        private void refreshList(bool getDeleted = false)
+        {
+            CustomerListView.ItemsSource = null;
+            CustomerListView.ItemsSource = busiAccess.GetCustToList();
+
         }
     }
 
