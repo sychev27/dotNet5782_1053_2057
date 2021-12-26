@@ -334,8 +334,17 @@ namespace WpfApp1
 
         private void btnEraseDrone_Click(object sender, RoutedEventArgs e)
         {
-            busiAccess.EraseDrone(thisDroneId);
-            MessageBox.Show("Drone " +tBoxIdInput.Text + " Erased", "Success",
+            try
+            {
+                busiAccess.EraseDrone(thisDroneId);
+            }
+            catch (BL.BLApi.EXCantDltDroneWParc ex)
+            {
+                MainWindow.ErrorMsg(ex.ToString());
+                return;
+            }
+
+            MessageBox.Show("Drone " + tBoxIdInput.Text + " Erased", "Success",
                 MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
             Close();
         }

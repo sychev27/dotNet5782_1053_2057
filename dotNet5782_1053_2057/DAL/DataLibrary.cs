@@ -311,7 +311,7 @@ namespace DalObject
             //{
 
             //}
-            public void eraseDroneCharge(DalXml.DO.DroneCharge thisDroneCharge)
+            public void EraseDroneCharge(DalXml.DO.DroneCharge thisDroneCharge)
         {
             foreach (var item in listDroneCharge)
             {

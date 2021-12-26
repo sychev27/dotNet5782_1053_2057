@@ -12,7 +12,7 @@ namespace BL
         public class BOParcelInTransfer
         {
 
-            public int Id { get; set; }
+            public int Id { get; set; } // if id == -1, then parcel is empty..
             public bool Collected { get; set; } //true = collected, in transit
                                                 //false = not yet collected
             public BL.BO.Enum.Priorities Priority { get; set; }

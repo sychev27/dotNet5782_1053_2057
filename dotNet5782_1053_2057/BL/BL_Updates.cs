@@ -209,7 +209,7 @@ namespace BL
                         bodrone.Location = custLoc;
                         bodrone.DroneStatus = BO.Enum.DroneStatus.Available;
                         dataAccess.deliverParcel(bodrone.ParcelInTransfer.Id);
-                        bodrone.ParcelInTransfer = createEmptyParcInTrans(); 
+                        bodrone.ParcelInTransfer = createEmptyParcInTrans(); //sets Id as -1
                         return;
                     }
                 }
@@ -284,7 +284,7 @@ namespace BL
 
                 try
                 {
-                    dataAccess.eraseDroneCharge(dataAccess.getDroneCharge(droneId));
+                    dataAccess.EraseDroneCharge(dataAccess.getDroneCharge(droneId));
                 }
                 catch (DalXml.DO.EXItemNotFoundException) { return; }
             }
@@ -294,12 +294,20 @@ namespace BL
             //ERASE:
             public void EraseDrone(int droneId)
             {
+                BO.BODrone copy = GetBODrone(droneId);
+                if(copy.DroneStatus == BO.Enum.DroneStatus.InDelivery)
+                {
+                    //if drone is carrying a Parcel...
+                    throw new EXCantDltDroneWParc();
+                }
+
                 foreach (var item in listDrone)
                 {
                     if (item.Id == droneId)
                     {
                         //updates in BL
-                        //item.Exists = false;
+                        item.Exists = false;
+
                         //BO.BODrone copy = item;
                         //listDrone.Remove(item);
                         //copy.Exists = false;
