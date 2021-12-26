@@ -10,15 +10,15 @@
         <TextBlock x:Name="tBlock_chooseCustomerId" Text=" ID:" Margin="5,5,5,5" FontSize="30"/>
         <TextBlock x:Name="tBlock_chooseName" Grid.Row="1" Text="Name:" Margin="5,5,5,5" FontSize="30"/>
         <TextBlock x:Name="tBlock_choosePhone" Grid.Row="2" Text="Phone:" Margin="5,5,5,5" FontSize="30"/>
-        <TextBlock x:Name="tBlockLongitude" Grid.Row="3" Text="Longitude:" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="30"/>
-        <TextBlock x:Name="tBlockLatitude" Grid.Row="4" Text="Latitude:" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="30"/>
+        <TextBlock x:Name="tBlockLongitude" Grid.Row="3" Text="Longitude: 35-36" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="25"/>
+        <TextBlock x:Name="tBlockLatitude" Grid.Row="4" Text="Latitude: 31-32" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="25"/>
 
 
         <TextBox x:Name ="tBoxCusIdInput" Grid.Column="1" Text="" TextWrapping="Wrap" Margin="5,5,5,5" Height="Auto" VerticalAlignment="Stretch" FontSize="18" />
         <TextBox x:Name ="tBoxNameInput" Grid.Column="1" Grid.Row="1" Text="" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="18" />
         <TextBox x:Name ="tBoxPhoneInput" Grid.Column="1" Grid.Row="2" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="18" />
-        <TextBox x:Name="tBoxLongiInfo" Grid.Column="1" Grid.Row="3" Text="TextBlock" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="18"/>
-        <TextBox x:Name="tBoxLatitInfo" Grid.Column="1" Grid.Row="4" Text="TextBlock" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="18"/>
+        <TextBox x:Name="tBoxLongiInfo" Grid.Column="1" Grid.Row="3" Text="" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="18"/>
+        <TextBox x:Name="tBoxLatitInfo" Grid.Column="1" Grid.Row="4" Text="" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="18"/>
 
         <Button x:Name ="btnAddCustomer" Content="Add Customer" Grid.Row="5" Click = "btnAddCustomer_Click" Grid.Column="1" HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Margin="5,5,5,5" Width="Auto" FontSize="15"/>
         <Button x:Name="btnCancel1" Content="Cancel" Grid.Row="5" RenderTransformOrigin="0.5,0.5" Click="btnCancel1_Click" HorizontalAlignment="Stretch" Margin="5,5,5,5" VerticalAlignment="Stretch" Width="Auto" FontSize="15"/>

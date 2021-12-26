@@ -22,9 +22,10 @@ namespace WpfApp1
         BL.BLApi.Ibl busiAccess;
         int thisCustomerId;
         bool modelTBoxChanged = false;
-        public CustomerWindow()
+        public CustomerWindow(BL.BLApi.Ibl _busiAccess)
         {
             InitializeComponent();
+            busiAccess = _busiAccess;
             //edit buttons and text boxes for Update Window:
             btnModifyCustomer.IsEnabled = false;
             btnModifyCustomer.Visibility = Visibility.Hidden;
@@ -116,7 +117,7 @@ namespace WpfApp1
                 validData = false;
             }
 
-            //(3) Add Drone..
+            //(3) Add Customer..
             if (validData)
             {
                 try
@@ -127,14 +128,8 @@ namespace WpfApp1
                 }
                 catch (BL.BLApi.EXAlreadyExistsPrintException exception)
                 {
-                    //if Drone's Id already exists
+                    //if Customer's Id already exists
                     MessageBox.Show(exception.printException(), "Error Message",
-                        MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
-                }
-                catch (BL.BLApi.EXNotFoundPrintException ex)
-                {
-                    //if Station not found.. (must Add Drone at existing Station...)
-                    MessageBox.Show(ex.ToString(), "Error Message",
                         MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
                 }
             }
