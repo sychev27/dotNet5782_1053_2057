@@ -51,11 +51,11 @@ namespace DalXml
 
 
         //Erase:
-        public void EraseDroneCharge(DalXml.DO.DroneCharge thisDroneCharge);
-        public void EraseDrone(int droneId);
-        public void EraseCustomer(int custId);
-        public void EraseStation(int stationId);
-        public void EraseParcel(int parcelId);
+        void EraseDroneCharge(DalXml.DO.DroneCharge thisDroneCharge);
+        //void EraseDrone(int droneId);
+        //void EraseCustomer(int custId);
+        //void EraseStation(int stationId);
+        //void EraseParcel(int parcelId);
 
 
         //Update:
