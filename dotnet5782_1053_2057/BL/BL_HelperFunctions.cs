@@ -482,6 +482,18 @@ namespace BL
                 }
                 return res;
             }
+
+            public ObservableCollection<BO.BOParcelAtCustomer> GetBOParcelAtCustomerList(BO.BOCustomer customer)
+            {
+                ObservableCollection<BO.BOParcelAtCustomer> lst = new ObservableCollection<BO.BOParcelAtCustomer>();
+                foreach (BO.BOParcelAtCustomer item in customer.ListOfParcReceived)
+                    lst.Add(item);
+                foreach (BO.BOParcelAtCustomer item in customer.ListOfParcSent)
+                    lst.Add(item);
+                return lst;
+            }
+
+
             public ObservableCollection<BO.BODroneToList> GetDroneToList()
             {
                 ObservableCollection<BO.BODroneToList> res = new ObservableCollection<BO.BODroneToList>();
