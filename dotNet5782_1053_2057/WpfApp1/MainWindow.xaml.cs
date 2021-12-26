@@ -18,6 +18,8 @@ namespace WpfApp1
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
+    /// 
+
     public partial class MainWindow : Window
     {
 
@@ -30,7 +32,22 @@ namespace WpfApp1
             InitializeComponent();
         }
 
-        
+        public static void ErrorMsg(string msg)
+        {
+            MessageBox.Show(msg, "Error",
+                   MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
+        }
+        public static void ChangeTextColor(Color color, params TextBlock[] listTBlock)
+        {
+            foreach (var item in listTBlock)
+            {
+                item.Foreground = new SolidColorBrush(Colors.Black);
+            }
+        }
+
+
+
+
 
 
         private void btnOpenDroneList_Click(object sender, RoutedEventArgs e)

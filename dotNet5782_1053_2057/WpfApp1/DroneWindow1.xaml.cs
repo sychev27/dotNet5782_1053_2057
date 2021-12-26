@@ -70,7 +70,7 @@ namespace WpfApp1
         private void btnAddDrone_Click(object sender, RoutedEventArgs e)
         {
             //reset text color
-            changeTBlockColor(Colors.Black, tBlock_chooseDroneId, tBlock_chooseMaxWeight,
+            MainWindow.ChangeTextColor(Colors.Black, tBlock_chooseDroneId, tBlock_chooseMaxWeight,
                 tBlock_chooseModel, tBlock_chooseStation);
             
             //(1) Receive Data
@@ -209,13 +209,6 @@ namespace WpfApp1
 
         }
 
-        private void changeTBlockColor(Color color, params TextBlock[] listTBlock)
-        {
-            foreach (var item in listTBlock)
-            {
-                item.Foreground = new SolidColorBrush(Colors.Black);
-            }
-        }
         
         
 

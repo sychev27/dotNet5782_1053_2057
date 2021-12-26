@@ -56,5 +56,14 @@ namespace BL
             public EXDroneNotFound() : base("Drone") { }
         }
 
+        public class EXUsernameNotFound : EXNotFoundPrintException
+        {
+            public EXUsernameNotFound() : base("User does not exist") { }
+        }
+        public class EXPasswordNotFound : EXNotFoundPrintException
+        {
+            public EXPasswordNotFound() : base("Incorrect Password") { }
+        }
+
     }
 }

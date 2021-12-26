@@ -50,5 +50,10 @@ namespace BL
             public EXParcelNotCollected() : base("Parcel not yet collected") { }
         }
 
+        
+
+
+
+
     }
 }

@@ -38,6 +38,11 @@ namespace BL
 
 
 
+            int IdOfUser(string _username, string _password);
+
+
+
+
 
             ObservableCollection<BO.BOCustomerToList> GetCustToList();
             IEnumerable<BO.BOParcelToList> GetParcelToList();
