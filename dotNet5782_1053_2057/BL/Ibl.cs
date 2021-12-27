@@ -76,6 +76,7 @@ namespace BL
             //Erase
             void EraseDrone(int droneId);
 
+
             //end of interface
         }
     }

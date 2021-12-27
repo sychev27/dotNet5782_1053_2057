@@ -336,7 +336,10 @@ namespace BL
             }
             public void EraseStation(int id)
             {
-                //check if drone's charging!!
+                //check if station has drones charging
+                BO.BOStation st = CreateBOStation(id);
+                if (st.ListDroneCharge.Count != 0)
+                    throw new EXCantDltStationWDroneCharging();
 
                 foreach (var item in dataAccess.getStations())
                 {
@@ -347,7 +350,24 @@ namespace BL
                     }
                 }
             }
+            public void EraseParcel(int id)
+            {
+                //check..
+                BO.BOParcel parc = CreateBOParcel(id);
+                if (parc.timeOfAssignment != null  //if parcel was assigned
+                    && parc.timeOfDelivery != null)    //and not yet delivered
+                    throw new EXCantDltParNotYetDelivered();
 
+
+                foreach (var item in dataAccess.getParcels())
+                {
+                    if (item.Id == id)
+                    {
+                        dataAccess.EraseParcel(id);
+                        return;
+                    }
+                }
+            }
 
 
         }

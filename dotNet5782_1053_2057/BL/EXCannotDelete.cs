@@ -32,6 +32,16 @@ namespace BL
             public EXCantDltDroneWParc() : base("Drone", "it is carrying a parcel") { }
         }
 
+        public class EXCantDltParNotYetDelivered : EXCannotDelete
+        {
+            public EXCantDltParNotYetDelivered() : 
+                base("Parcel", "it is assigned, but not yet delivered") { }
+        }
+        public class EXCantDltStationWDroneCharging : EXCannotDelete
+        {
+            public EXCantDltStationWDroneCharging() : 
+                base("Station", "there are drones charging at this station") { }
+        }
 
 
 
