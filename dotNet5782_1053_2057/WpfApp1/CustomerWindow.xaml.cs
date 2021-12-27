@@ -21,8 +21,9 @@ namespace WpfApp1
     {
         BL.BLApi.Ibl busiAccess;
         int thisCustomerId;
+        bool registerMode;
         
-        public CustomerWindow(BL.BLApi.Ibl _busiAccess) //To Add a Customer
+        public CustomerWindow(BL.BLApi.Ibl _busiAccess, bool register = false) //To Add a Customer
         {
             InitializeComponent();
             busiAccess = _busiAccess;
@@ -33,6 +34,12 @@ namespace WpfApp1
             hideCustomerLogInBtns();
 
             btnEraseCust.IsEnabled = false;
+
+            if (register)
+            {
+                btnAddCustomer.Content = "Register";
+                registerMode = true;
+            }
         }
 
         public CustomerWindow(BL.BLApi.Ibl _busiAccess, BL.BO.BOCustomer customer)
@@ -150,9 +157,8 @@ namespace WpfApp1
                 {
                     busiAccess.AddCustomer(_id, _name, _phone, _longitude, _latitude);
                     MessageBox.Show("Customer Added Successfully", "SUCCESS", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
-                    Close();
                 }
-                catch (BL.BLApi.EXDroneAlreadyExists exception)
+                catch (BL.BLApi.EXCustomerAlreadyExists exception)
                 {
                     //if Customer's Id already exists
                     MessageBox.Show(exception.printException(), "Error Message",
@@ -162,6 +168,13 @@ namespace WpfApp1
             else
                 return;
 
+            if(!registerMode) //if window opened from List...
+                Close();
+            else              // if window opened from LoginWindow
+            {
+                new AddUserWindow(busiAccess, _id).Show();
+                Close();
+            }
 
         }
 
@@ -242,7 +255,7 @@ namespace WpfApp1
 
         private void btnLogOut_Click(object sender, RoutedEventArgs e)
         {
-            new LoginWindow().Show(); 
+            new LoginWindow(busiAccess).Show(); 
             Close();
             
         }

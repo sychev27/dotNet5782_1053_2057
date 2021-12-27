@@ -25,6 +25,10 @@ namespace WpfApp1
         {
             InitializeComponent();
         }
+        public LoginWindow(BL.BLApi.Ibl _busiAccess) : this()
+        {
+            busiAccess = _busiAccess;
+        }
 
         private void btnOpenMain_Click(object sender, RoutedEventArgs e)
         {
@@ -82,11 +86,16 @@ namespace WpfApp1
 
         private void Register_Click(object sender, RoutedEventArgs e)
         {
-
+            //for a new customer
+            new CustomerWindow(busiAccess, true).Show();
+            Close();
         }
 
-
-
-
+        private void btnCreateOnlineAcct_Click(object sender, RoutedEventArgs e)
+        {
+            //for an existing customer, without a Username and Password
+            new AddUserWindow(busiAccess).Show();
+            Close();
+        }
     }
 }

@@ -62,7 +62,7 @@ namespace WpfApp1
 
         private void btnLogOut_Click(object sender, RoutedEventArgs e)
         {
-            new LoginWindow().Show();
+            new LoginWindow(busiAccess).Show();
             Close();
         }
 

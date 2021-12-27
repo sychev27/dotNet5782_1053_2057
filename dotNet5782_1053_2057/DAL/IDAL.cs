@@ -38,6 +38,7 @@ namespace DalXml
         IEnumerable<DalXml.DO.DroneCharge> getDroneCharges();
         int GetIdFromUser(DalXml.DO.User _user);
         IEnumerable<DalXml.DO.User> GetUsers();
+        //DalXml.DO.User GetUser(int _id);  <--delete this
 
 
         //IEnumerable<DalXml.DO.Drone> getSpecificDroneList(Predicate<DalXml.DO.Drone> typeOfDrone);

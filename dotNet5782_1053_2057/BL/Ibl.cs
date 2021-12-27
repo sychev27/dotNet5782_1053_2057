@@ -22,7 +22,7 @@ namespace BL
                                                             //DateTime _scheduled);
             void AddStation(int _id, int _name, double _longitude, double _latitude, int _chargeSlots);
 
-
+            void AddUser(string _username, string _password, int _id = -1);
 
             
             

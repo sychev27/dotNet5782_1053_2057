@@ -8,7 +8,7 @@
         Title="LoginWindow" Height="450" Width="800">
     <Grid x:Name="grdOuter">
         <Button x:Name="btnOpenMain" Content="Open Main Window" HorizontalAlignment="Left" Height="71" Margin="639,48,0,0" VerticalAlignment="Top" Width="128" Click="btnOpenMain_Click"/>
-        <Grid HorizontalAlignment="Center" Height="239" Margin="0,121,0,0" VerticalAlignment="Top" Width="440">
+        <Grid HorizontalAlignment="Center" Height="303" Margin="0,121,0,0" VerticalAlignment="Top" Width="440">
 
 
             <Grid x:Name="grdInner" Margin="26,88,0,21">
@@ -18,6 +18,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height ="0.5*"/>
                     <RowDefinition Height ="*"/>
                     <RowDefinition Height ="*"/>
                     <RowDefinition Height ="*"/>
@@ -27,7 +28,8 @@
                 <TextBox x:Name="tBoxUsernameInput" Grid.Column="1" HorizontalAlignment="Center" Height="20" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Center" Width="88"/>
                 <TextBox x:Name="tBoxPasswordInput" Grid.Column="1" HorizontalAlignment="Center" Height="19" Grid.Row="2" TextWrapping="Wrap" VerticalAlignment="Center" Width="88"/>
                 <Button x:Name="btnSignIn" Content="Sign in" Grid.Column="2" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Center" Height="24" Width="70" Click="btnSignIn_Click"/>
-                <Button x:Name="btnRegister" Content="Don't Have an &#xD;&#xA;Account?&#xA;Register here" Grid.Column="2" HorizontalAlignment="Center" Height="59" VerticalAlignment="Center" Width="87" Click="Register_Click" Grid.RowSpan="2"/>
+                <Button x:Name="btnRegister" Content="Register" HorizontalAlignment="Center" Height="35" VerticalAlignment="Center" Width="86" Click="Register_Click" Grid.Row="3"/>
+                <Button x:Name="btnCreateOnlineAcct" Content="Create Online&#xD;&#xA; Account" Grid.Column="1" HorizontalAlignment="Left" Height="35" Margin="25,0,0,0" Grid.Row="3" VerticalAlignment="Center" Width="103" Click="btnCreateOnlineAcct_Click"/>
 
 
             </Grid>

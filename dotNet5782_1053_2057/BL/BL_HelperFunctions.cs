@@ -294,8 +294,7 @@ namespace BL
 
 
 
-
-
+           
             public BO.BODrone GetBODrone(int _id)
             {
                 foreach (var item in listDrone)
@@ -605,11 +604,6 @@ namespace BL
 
 
 
-
-
-
-
-
             public int GetIdOfUser(string _username, string _password)
             {
                 foreach (var item in dataAccess.GetUsers())
@@ -622,9 +616,11 @@ namespace BL
                 }
                 //if did not find username at all
                 throw new EXUsernameNotFound();
-                
             }
-
+            //public DalXml.DO.User GetUser(int _id)
+            //{
+            //    return dataAccess.GetUser(_id);
+            //}
 
 
 

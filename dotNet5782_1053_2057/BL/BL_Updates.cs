@@ -74,7 +74,8 @@ namespace BL
             {
                 foreach (var item in dataAccess.GetUsers())
                 {
-                    if (item.Username == _username)
+                    if (item.Username == _username
+                        || item.Id == _id)
                         throw new EXUserAlreadyExists();
                 }
 

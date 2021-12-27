@@ -187,7 +187,17 @@ namespace DalObject
             {
                 return listUser;
             }
-
+        
+         //DELETE THIS!   
+         //public DalXml.DO.User GetUser(int _id) 
+         //   {
+         //       foreach (var item in listUser)
+         //       {
+         //           if (item.Id == _id)
+         //               return item;
+         //       }
+         //       throw new DalXml.DO.EXItemNotFoundException();
+         //   }
 
 
 
