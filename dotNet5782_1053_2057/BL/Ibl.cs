@@ -32,6 +32,7 @@ namespace BL
             string GetBODroneModel(int id);
             BO.Enum.WeightCategories GetBoDroneMaxWeight(int id);
             ObservableCollection<BO.BODrone> GetBODroneList(bool getDeleted = false);
+            ObservableCollection<BO.BOParcelAtCustomer> GetBOParcelAtCustomerList(BO.BOCustomer customer);
 
 
             string GetDroneLocationString(int id);//returns string describing drone's location
