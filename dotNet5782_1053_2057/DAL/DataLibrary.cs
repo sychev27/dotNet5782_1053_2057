@@ -124,8 +124,7 @@ namespace DalObject
 
 
         public void addDrone(DalXml.DO.Drone drone)
-        {
-
+        { 
             listDrone.Add(drone);
         }
         public void addCustomer(DalXml.DO.Customer custom)
@@ -144,8 +143,10 @@ namespace DalObject
         {
             listDroneCharge.Add(droneCharge);
         }
-
-
+        public void AddUser(DalXml.DO.User _user)
+            {
+                listUser.Add(_user);
+            }
        public IEnumerable<double> requestElec() {
             List<double> lst = new List<double> {Config.empty, Config.light, Config.mediuim, Config.heavy ,Config.chargeRate};
             return lst;
@@ -173,7 +174,28 @@ namespace DalObject
             return listDroneCharge;
         }
 
-        public void Initialize()   
+         public int GetIdFromUser(DalXml.DO.User _user)
+            {
+                foreach (var item in listUser)
+                {
+                    if (item.Username == _user.Username)
+                        return item.Id;
+                }
+                throw new DalXml.DO.EXItemNotFoundException();
+            }
+         public IEnumerable<DalXml.DO.User> GetUsers()
+            {
+                return listUser;
+            }
+
+
+
+
+
+
+
+
+            public void Initialize()   
         {
             Random r = new Random();
             //coordinates for area of jerusalem
@@ -265,22 +287,27 @@ namespace DalObject
 
                 exampleP.Exists = true;
 
-                //if (i <= 5)
-                //    exampleP.DroneId = r.Next(1, 6);
-               // exampleP.Pickup = exampleP.Requested + new TimeSpan(r.Next(1, 7),0,0,0) ;   //AddDays(r.Next(1, 7));
-                //exampleP.Delivered = exampleP.Pickup.AddDays(r.Next(1, 3));
-
                 exampleP.TimeScheduled = exampleP.TimeRequested + new TimeSpan(r.Next(1, 7), 0, 0, 0);
 
-                //no Parcel is collectd/delivered already in Initialization
+                //no Parcel is collectd/delivered  in Initialization
 
                 listParcel.Add(exampleP);
                 //thisConfig.indexAvailParcel++;
             }
 
-
-
-        }
+                //INITIALIZE USERS
+                DalXml.DO.User userEmployee = new DalXml.DO.User();
+                userEmployee.Id = -1; //employee
+                userEmployee.Username = "boss";
+                userEmployee.Password = "boss";
+                listUser.Add(userEmployee);
+                DalXml.DO.User userReuven = new DalXml.DO.User();
+                userReuven.Id = 1; //employee
+                userReuven.Username = "ruv";
+                userReuven.Password = "ruv";
+                listUser.Add(userReuven);
+                //END OF FUNCTION
+            }
 
            
             public void EraseDrone(int droneId)
@@ -441,7 +468,6 @@ namespace DalObject
             }
             //if not found --> exception
         }
-
         public void pickupParcel(int parcelId)
         {
             foreach (var item in listParcel)
@@ -457,7 +483,6 @@ namespace DalObject
             }
             //if not found --> exception
         }
-
         public void deliverParcel(int parcelId)
         {
             foreach (var item in listParcel )
@@ -473,6 +498,18 @@ namespace DalObject
             }
             //if not found --> exception
         }
+
+
+        //User functions
+        
+
+
+
+
+
+
+
+
 
 
 

@@ -39,7 +39,7 @@ namespace BL
 
 
 
-            int IdOfUser(string _username, string _password);
+            int GetIdOfUser(string _username, string _password);
 
 
 
@@ -75,7 +75,9 @@ namespace BL
 
             //Erase
             void EraseDrone(int droneId);
-
+            void EraseCustomer(int id);
+            void EraseStation(int id);
+            void EraseParcel(int id);
 
             //end of interface
         }

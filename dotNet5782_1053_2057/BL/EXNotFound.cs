@@ -58,11 +58,12 @@ namespace BL
 
         public class EXUsernameNotFound : EXNotFoundPrintException
         {
-            public EXUsernameNotFound() : base("User does not exist") { }
+            public EXUsernameNotFound() : base("Username") { }
         }
-        public class EXPasswordNotFound : EXNotFoundPrintException
+        public class EXUserPasswordIncorrect : EXNotFoundPrintException
         {
-            public EXPasswordNotFound() : base("Incorrect Password") { }
+            public EXUserPasswordIncorrect() : base("Incorrect Password") { }
+            public override string ToString() { return ItemName; }
         }
 
     }

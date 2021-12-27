@@ -120,7 +120,7 @@ namespace WpfApp1
                     MessageBox.Show("Drone Added Successfully", "SUCCESS", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
                     Close();
                 }
-                catch (BL.BLApi.EXAlreadyExistsPrintException exception)
+                catch (BL.BLApi.EXDroneAlreadyExists exception)
                 {
                     //if Drone's Id already exists
                     MessageBox.Show(exception.printException(), "Error Message", 

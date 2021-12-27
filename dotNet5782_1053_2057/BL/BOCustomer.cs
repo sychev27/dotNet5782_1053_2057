@@ -14,7 +14,8 @@ namespace BL
             public string Name { get; set; }
             public string Phone { get; set; }
             public BOLocation Location { get; set; }
-            public List<BOParcelAtCustomer> ListOfParcSent { get; set; }
+            //both lists include parcels not yet delivered
+            public List<BOParcelAtCustomer> ListOfParcSent { get; set; } 
             public List<BOParcelAtCustomer> ListOfParcReceived { get; set; }
             
 

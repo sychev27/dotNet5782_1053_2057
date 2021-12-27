@@ -24,8 +24,8 @@
                 </Grid.RowDefinitions>
                 <TextBlock x:Name="tBlockUsername" HorizontalAlignment="Left" Height="20" Grid.Row="1" Text="Username:" TextWrapping="Wrap" VerticalAlignment="Center" Width="87" Margin="9,0,0,0"/>
                 <TextBlock x:Name="tBlockPassword" HorizontalAlignment="Center" Height="19" Grid.Row="2" Text="Password:" TextWrapping="Wrap" VerticalAlignment="Center" Width="87"/>
-                <TextBox x:Name="tBoxUsernameInput" Grid.Column="1" HorizontalAlignment="Center" Height="20" Grid.Row="1" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Center" Width="88"/>
-                <TextBox x:Name="tBoxPasswordInput" Grid.Column="1" HorizontalAlignment="Center" Height="19" Grid.Row="2" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Center" Width="88"/>
+                <TextBox x:Name="tBoxUsernameInput" Grid.Column="1" HorizontalAlignment="Center" Height="20" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Center" Width="88"/>
+                <TextBox x:Name="tBoxPasswordInput" Grid.Column="1" HorizontalAlignment="Center" Height="19" Grid.Row="2" TextWrapping="Wrap" VerticalAlignment="Center" Width="88"/>
                 <Button x:Name="btnSignIn" Content="Sign in" Grid.Column="2" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Center" Height="24" Width="70" Click="btnSignIn_Click"/>
                 <Button x:Name="btnRegister" Content="Don't Have an &#xD;&#xA;Account?&#xA;Register here" Grid.Column="2" HorizontalAlignment="Center" Height="59" VerticalAlignment="Center" Width="87" Click="Register_Click" Grid.RowSpan="2"/>
 

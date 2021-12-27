@@ -21,5 +21,25 @@ namespace BL
                 return ItemName + " already exists!";
             }
         }
+        public class EXDroneAlreadyExists : EXAlreadyExistsPrintException
+        {
+            public EXDroneAlreadyExists() : base("Drone") { }
+        }
+        public class EXCustomerAlreadyExists : EXAlreadyExistsPrintException
+        {
+            public EXCustomerAlreadyExists() : base("Customer") { }
+        }
+        public class EXParcelAlreadyExists : EXAlreadyExistsPrintException
+        {
+            public EXParcelAlreadyExists() : base("Parcel") { }
+        }
+        public class EXStationAlreadyExists : EXAlreadyExistsPrintException
+        {
+            public EXStationAlreadyExists() : base("Station") { }
+        }
+        public class EXUserAlreadyExists : EXAlreadyExistsPrintException
+        {
+            public EXUserAlreadyExists() : base("User") { }
+        }
     }
 }

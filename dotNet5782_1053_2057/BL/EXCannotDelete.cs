@@ -42,8 +42,11 @@ namespace BL
             public EXCantDltStationWDroneCharging() : 
                 base("Station", "there are drones charging at this station") { }
         }
-
-
+        public class EXCantDltCustWParcInDelivery : EXCannotDelete
+        {
+            public EXCantDltCustWParcInDelivery() :
+                base("Customer", "this customer has a parcel assigned or in delivery") { }
+        }
 
 
 

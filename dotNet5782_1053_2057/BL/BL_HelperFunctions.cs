@@ -610,11 +610,19 @@ namespace BL
 
 
 
-            public int IdOfUser(string _username, string _password)
+            public int GetIdOfUser(string _username, string _password)
             {
-
-                //working on this...
-                return 0;
+                foreach (var item in dataAccess.GetUsers())
+                {
+                    if (item.Username == _username)
+                        if (item.Password != _password)
+                            throw new EXUserPasswordIncorrect();
+                        else
+                            return item.Id;
+                }
+                //if did not find username at all
+                throw new EXUsernameNotFound();
+                
             }
 
 

@@ -26,6 +26,7 @@ namespace DalXml
         void addParcel(DalXml.DO.Parcel parcel);
         void addStation(DalXml.DO.Station st);
         void addDroneCharge(DalXml.DO.DroneCharge droneCharge);
+        void AddUser(DalXml.DO.User _user);
 
 
         IEnumerable<double> requestElec();
@@ -35,6 +36,8 @@ namespace DalXml
 
         ObservableCollection<DalXml.DO.Customer> getCustomers();
         IEnumerable<DalXml.DO.DroneCharge> getDroneCharges();
+        int GetIdFromUser(DalXml.DO.User _user);
+        IEnumerable<DalXml.DO.User> GetUsers();
 
 
         //IEnumerable<DalXml.DO.Drone> getSpecificDroneList(Predicate<DalXml.DO.Drone> typeOfDrone);

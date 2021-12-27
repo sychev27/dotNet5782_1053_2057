@@ -24,7 +24,6 @@ namespace WpfApp1
         public LoginWindow()
         {
             InitializeComponent();
-
         }
 
         private void btnOpenMain_Click(object sender, RoutedEventArgs e)
@@ -42,12 +41,12 @@ namespace WpfApp1
 
             //(2) Check that Data is Valid
             bool validData = true;
-            if (_username == null)
+            if (tBoxUsernameInput.Text == null)
             {
                 tBlockUsername.Foreground = new SolidColorBrush(Colors.Red);
                 validData = false;
             }
-            if (_password == null)
+            if (tBoxPasswordInput.Text == null)
             {
                 tBlockPassword.Foreground = new SolidColorBrush(Colors.Red);
                 validData = false;
@@ -57,22 +56,24 @@ namespace WpfApp1
 
             try
             {
-               int _id = busiAccess.IdOfUser(_username, _password);
-                if (_id == -1)
+               int _id = busiAccess.GetIdOfUser(_username, _password);
+               if (_id == -1)
                 {
-                    new MainWindow(busiAccess); //User is Employee
+                    new MainWindow(busiAccess).Show(); //User is Employee
+                    Close();
                 }
-                //else
-                //{
-                //    new CustomerWindow(busiAccess, _id); //User is a Customer
-                //}
+                else
+                {
+                    new CustomerWindow(busiAccess, _id).Show(); //User is a Customer
+                    Close();
+                }
                 Close();
             }
             catch (BL.BLApi.EXUsernameNotFound ex)
             {
                 MainWindow.ErrorMsg(ex.ToString());
             }
-            catch (BL.BLApi.EXPasswordNotFound ex)
+            catch (BL.BLApi.EXUserPasswordIncorrect ex)
             {
                 MainWindow.ErrorMsg(ex.ToString());
             }

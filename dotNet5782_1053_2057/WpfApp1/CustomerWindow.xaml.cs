@@ -21,8 +21,8 @@ namespace WpfApp1
     {
         BL.BLApi.Ibl busiAccess;
         int thisCustomerId;
-        bool modelTBoxChanged = false;
-        public CustomerWindow(BL.BLApi.Ibl _busiAccess)
+        
+        public CustomerWindow(BL.BLApi.Ibl _busiAccess) //To Add a Customer
         {
             InitializeComponent();
             busiAccess = _busiAccess;
@@ -30,9 +30,13 @@ namespace WpfApp1
             btnModifyCustomer.IsEnabled = false;
             btnModifyCustomer.Visibility = Visibility.Hidden;
             lstParcelList.Visibility = Visibility.Hidden;
+            hideCustomerLogInBtns();
+
+            btnEraseCust.IsEnabled = false;
         }
 
-        public CustomerWindow(BL.BLApi.Ibl _busiAccess,BL.BO.BOCustomer customer)
+        public CustomerWindow(BL.BLApi.Ibl _busiAccess, BL.BO.BOCustomer customer)
+            //To Update a Customer (called from Customer List)
         {
             InitializeComponent();
             busiAccess = _busiAccess;
@@ -47,10 +51,27 @@ namespace WpfApp1
 
             btnAddCustomer.IsEnabled = false;
             btnAddCustomer.Visibility = Visibility.Hidden;
-            displayBOCustomer(busiAccess,customer);
+            hideCustomerLogInBtns();
+
+
+            displayBOCustomer(busiAccess, customer);
+
+            btnEraseCust.IsEnabled = false;
         }
 
-        private void displayBOCustomer(BL.BLApi.Ibl _busiAccess,BL.BO.BOCustomer bocustumer)
+
+        public CustomerWindow(BL.BLApi.Ibl _busiAccess, int custId)  :
+            this(_busiAccess, _busiAccess.GetBOCustomer(custId))
+            //called from Customer Log-in
+        {
+            hideCustomerLogInBtns(true);
+        }
+
+
+
+
+
+        private void displayBOCustomer(BL.BLApi.Ibl _busiAccess, BL.BO.BOCustomer bocustumer)
         {
             thisCustomerId = bocustumer.Id;
 
@@ -69,9 +90,9 @@ namespace WpfApp1
         private void btnAddCustomer_Click(object sender, RoutedEventArgs e)
         {
             //reset text color
-            changeTBlockColor(Colors.Black, tBlock_chooseCustomerId, tBlock_chooseName,
+            MainWindow.ChangeTextColor(Colors.Black, tBlock_chooseCustomerId, tBlock_chooseName,
             tBlock_choosePhone, tBlockLongitude, tBlockLatitude);
-
+            
             //(1) Receive Data
             int _id;
             Int64 _phoneCheck;
@@ -127,11 +148,11 @@ namespace WpfApp1
             {
                 try
                 {
-                    busiAccess.AddCustomer(_id,_name,_phone, _longitude, _latitude);
+                    busiAccess.AddCustomer(_id, _name, _phone, _longitude, _latitude);
                     MessageBox.Show("Customer Added Successfully", "SUCCESS", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
                     Close();
                 }
-                catch (BL.BLApi.EXAlreadyExistsPrintException exception)
+                catch (BL.BLApi.EXDroneAlreadyExists exception)
                 {
                     //if Customer's Id already exists
                     MessageBox.Show(exception.printException(), "Error Message",
@@ -153,7 +174,7 @@ namespace WpfApp1
         private void btnModifyCustomer_Click(object sender, RoutedEventArgs e)
         {
             //reset text color
-            changeTBlockColor(Colors.Black, tBlock_choosePhone, tBlock_chooseName);
+            MainWindow.ChangeTextColor(Colors.Black, tBlock_choosePhone, tBlock_chooseName);
 
             //(1) Receive Data
             int _id;
@@ -191,12 +212,39 @@ namespace WpfApp1
                 return;
         }
 
-        private void changeTBlockColor(Color color, params TextBlock[] listTBlock)
+        
+        private void btnEraseCust_Click(object sender, RoutedEventArgs e)
         {
-            foreach (var item in listTBlock)
+            try
             {
-                item.Foreground = new SolidColorBrush(color);
+                busiAccess.EraseCustomer(thisCustomerId);
             }
+            catch (BL.BLApi.EXCantDltCustWParcInDelivery ex)
+            {
+                MainWindow.ErrorMsg(ex.ToString());
+            }
+        }
+
+        private void btnSendParcel_Click(object sender, RoutedEventArgs e)
+        {
+            //open new ParcelWindow(), send the Sender ID.... 
+        }
+
+        private void hideCustomerLogInBtns(bool isCustLogin = false)
+        {
+            //if (true) show the buttons. else: hide them
+            btnLogOut.IsEnabled = isCustLogin;
+            btnLogOut.Visibility = (!isCustLogin)? Visibility.Hidden : Visibility.Visible;
+            btnSendParcel.IsEnabled = isCustLogin;
+            btnSendParcel.Visibility = (!isCustLogin) ? Visibility.Hidden : Visibility.Visible;
+
+        }
+
+        private void btnLogOut_Click(object sender, RoutedEventArgs e)
+        {
+            new LoginWindow().Show(); 
+            Close();
+            
         }
     }
 }

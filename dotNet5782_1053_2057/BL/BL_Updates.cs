@@ -17,7 +17,7 @@ namespace BL
                 foreach (var item in dataAccess.getDrones())
                 {
                     if (item.Id == _id)
-                        throw new EXAlreadyExistsPrintException("Drone");
+                        throw new EXDroneAlreadyExists();
                 }
 
                 DalXml.DO.Drone newDOdrone = new DalXml.DO.Drone(_id, _model, _maxWeight);
@@ -40,6 +40,11 @@ namespace BL
             public void AddCustomer(int _id, string _name, string _phone, double _longitude,
                     double _latitude)
             {
+                foreach (var item in dataAccess.getDrones())
+                {
+                    if (item.Id == _id)
+                        throw new EXCustomerAlreadyExists();
+                }
                 DalXml.DO.Customer newCust = new DalXml.DO.Customer(_id, _name, _phone, _longitude, _latitude);
                 dataAccess.addCustomer(newCust);
             }
@@ -51,15 +56,35 @@ namespace BL
             public void AddParcel(int _senderId, int _targetId, DalXml.DO.WeightCategories _weight,
                              DalXml.DO.Priorities _priority)// DateTime _requested, DateTime _scheduled)
             {
+                //DO NOT WRITE AN EXCEPTION FOR "ALREADY EXISTS!!"
                 DalXml.DO.Parcel dummy = new DalXml.DO.Parcel(_senderId, _targetId, _weight, _priority);
                 dataAccess.addParcel(dummy);
             }
             public void AddStation(int _id, int _name, double _longitude, double _latitude, int _chargeSlots)
             {
+                foreach (var item in dataAccess.getStations())
+                {
+                    if (item.Id == _id)
+                        throw new EXStationAlreadyExists();
+                }
                 DalXml.DO.Station dummy = new DalXml.DO.Station(_id, _name, _longitude, _latitude, _chargeSlots);
                 dataAccess.addStation(dummy);
             }
+            public void AddUser(string _username, string _password, int _id = -1)
+            {
+                foreach (var item in dataAccess.GetUsers())
+                {
+                    if (item.Username == _username)
+                        throw new EXUserAlreadyExists();
+                }
 
+
+                DalXml.DO.User newUser = new DalXml.DO.User();
+                newUser.Id = _id; // id = -1 for employees
+                newUser.Username = _username;
+                newUser.Password = _password;
+                dataAccess.AddUser(newUser);
+            }
 
 
 
@@ -323,16 +348,48 @@ namespace BL
                 }
                 throw new EXDroneNotFound();
             }
-            public void EraseCustomer(int id)
+            public void EraseCustomer(int _id) //FUNCTION NOT COMPLETE!!!!
             {
+               
+                
+                //CHECK IF CUSTOMER HAS A PARCEL IN DELIVERY....throw exception..
+                BO.BOCustomer cust = CreateBOCustomer(_id);
+                //create list of his parcels:
+                List<BO.BOParcelAtCustomer> allOfCustParcels = new List<BO.BOParcelAtCustomer>();
+
+                foreach (var item in cust.ListOfParcReceived)
+                    allOfCustParcels.Add(item);
+                foreach (var item in cust.ListOfParcSent)
+                    allOfCustParcels.Add(item);
+
+                foreach (var item in allOfCustParcels)
+                {
+                    if (item.ParcelStatus == BO.Enum.ParcelStatus.assigned
+                        || item.ParcelStatus == BO.Enum.ParcelStatus.collected)
+                        throw new EXCantDltCustWParcInDelivery();
+                }
+                
+
+                //IF NO PROBLEMS, DELETE CUSTOMER
+                //delete his/her parcels which are assigned:
+                foreach (var item in allOfCustParcels)
+                {
+
+                }
+
+                //delete Customer from Data Layer
                 foreach (var item in dataAccess.getCustomers())
                 {
-                    if (item.Id == id)
+                    if (item.Id == _id)
                     {
-                        dataAccess.EraseCustomer(id);
+                        dataAccess.EraseCustomer(_id);
                         return;
                     }
                 }
+
+
+
+                //erase customer from userlist!
             }
             public void EraseStation(int id)
             {
