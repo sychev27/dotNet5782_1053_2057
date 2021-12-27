@@ -6,9 +6,9 @@
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
         Title="LoginWindow" Height="450" Width="800">
-    <Grid x:Name="grdOuter">
+    <Grid x:Name="grdOuter" HorizontalAlignment="Stretch" Height="Auto" Margin="0,0,0,0" VerticalAlignment="Stretch" Width="Auto">
         <Button x:Name="btnOpenMain" Content="Open Main Window" HorizontalAlignment="Left" Height="71" Margin="639,48,0,0" VerticalAlignment="Top" Width="128" Click="btnOpenMain_Click"/>
-        <Grid HorizontalAlignment="Center" Height="303" Margin="0,121,0,0" VerticalAlignment="Top" Width="440">
+        <Grid HorizontalAlignment="Center" Height="359" Margin="0,65,0,0" VerticalAlignment="Top" Width="440">
 
 
             <Grid x:Name="grdInner" Margin="26,88,0,21">
@@ -23,17 +23,17 @@
                     <RowDefinition Height ="*"/>
                     <RowDefinition Height ="*"/>
                 </Grid.RowDefinitions>
-                <TextBlock x:Name="tBlockUsername" HorizontalAlignment="Left" Height="20" Grid.Row="1" Text="Username:" TextWrapping="Wrap" VerticalAlignment="Center" Width="87" Margin="9,0,0,0"/>
-                <TextBlock x:Name="tBlockPassword" HorizontalAlignment="Center" Height="19" Grid.Row="2" Text="Password:" TextWrapping="Wrap" VerticalAlignment="Center" Width="87"/>
-                <TextBox x:Name="tBoxUsernameInput" Grid.Column="1" HorizontalAlignment="Center" Height="20" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Center" Width="88"/>
-                <TextBox x:Name="tBoxPasswordInput" Grid.Column="1" HorizontalAlignment="Center" Height="19" Grid.Row="2" TextWrapping="Wrap" VerticalAlignment="Center" Width="88"/>
-                <Button x:Name="btnSignIn" Content="Sign in" Grid.Column="2" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Center" Height="24" Width="70" Click="btnSignIn_Click"/>
-                <Button x:Name="btnRegister" Content="Register" HorizontalAlignment="Center" Height="35" VerticalAlignment="Center" Width="86" Click="Register_Click" Grid.Row="3"/>
-                <Button x:Name="btnCreateOnlineAcct" Content="Create Online&#xD;&#xA; Account" Grid.Column="1" HorizontalAlignment="Left" Height="35" Margin="25,0,0,0" Grid.Row="3" VerticalAlignment="Center" Width="103" Click="btnCreateOnlineAcct_Click"/>
+                <TextBlock x:Name="tBlockUsername" Grid.Row="1" Text="Username:" TextWrapping="Wrap" Margin="5,5,5,5"/>
+                <TextBlock x:Name="tBlockPassword" Grid.Row="2" Text="Password:" TextWrapping="Wrap" Margin="5,5,5,5"/>
+                <TextBox x:Name="tBoxUsernameInput" Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" Margin="5,5,5,5"/>
+                <TextBox x:Name="tBoxPasswordInput" Grid.Column="1" Grid.Row="2" TextWrapping="Wrap" Margin="5,5,5,5"/>
+                <Button x:Name="btnSignIn" Content="Sign in" Grid.Column="2" Grid.Row="2" Click="btnSignIn_Click" Margin="5,5,5,5"/>
+                <Button x:Name="btnRegister" Content="Register" Click="Register_Click" Grid.Row="3" Margin="5,5,5,5"/>
+                <Button x:Name="btnCreateOnlineAcct" Content="Create Online&#xD;&#xA; Account" Margin ="5,5,5,5" Grid.Column="1" Grid.Row="3" Click="btnCreateOnlineAcct_Click"/>
 
 
             </Grid>
-            <TextBlock HorizontalAlignment="Left" Height="59" Margin="64,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="299"><Run Text="Welcome to our Project!"/><LineBreak/><Run Text="Please Sign in"/></TextBlock>
+            <TextBlock x:Name="tBlockWelcomeMsg" TextAlignment="Center" FontSize="30" Height="94" Margin="26,10,10,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="Welcome to our Project!"/><LineBreak/><Run Text="Please Sign in"/></TextBlock>
 
         </Grid>
 
