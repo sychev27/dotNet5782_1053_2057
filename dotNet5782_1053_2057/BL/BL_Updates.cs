@@ -305,19 +305,50 @@ namespace BL
                 {
                     if (item.Id == droneId)
                     {
-                        //updates in BL
+                        //UPDATES IN BL
                         item.Exists = false;
 
                         //BO.BODrone copy = item;
                         //listDrone.Remove(item);
                         //copy.Exists = false;
                         //listDrone.Add(copy);
-                        dataAccess.EraseDrone(droneId); //updates in DL
+
+                        //UPDATES IN DL
+                        dataAccess.EraseDrone(droneId); 
+                        if(item.DroneStatus == BO.Enum.DroneStatus.Charging)
+                            dataAccess.EraseDroneCharge(dataAccess.getDroneCharge(droneId));
+                       
                         return;
                     }
                 }
                 throw new EXDroneNotFound();
             }
+            public void EraseCustomer(int id)
+            {
+                foreach (var item in dataAccess.getCustomers())
+                {
+                    if (item.Id == id)
+                    {
+                        dataAccess.EraseCustomer(id);
+                        return;
+                    }
+                }
+            }
+            public void EraseStation(int id)
+            {
+                //check if drone's charging!!
+
+                foreach (var item in dataAccess.getStations())
+                {
+                    if (item.Id == id)
+                    {
+                        dataAccess.EraseStation(id);
+                        return;
+                    }
+                }
+            }
+
+
 
         }
 

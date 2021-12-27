@@ -55,14 +55,10 @@ namespace BL
             ObservableCollection<BO.BODrone> listDrone = new ObservableCollection<BO.BODrone>();
 
 
-
-
             //Lazy Initialization...
             //static BL() { }
             private BL() //Private CTOR - implementing Singleton Design Pattern
             {
-           
-
                 IEnumerable<double> elecInfo = dataAccess.requestElec();
                 empty = elecInfo.First();
                 light = elecInfo.ElementAt(1);
@@ -116,6 +112,7 @@ namespace BL
 
                         if (drone.DroneStatus == BO.Enum.DroneStatus.Charging)
                         {
+                            
                             //(1) SET LOCATION - to Random Station
                             List<DalXml.DO.Station> listStation = new List<DalXml.DO.Station>();
                             foreach (var item in dataAccess.getStations())
@@ -124,6 +121,12 @@ namespace BL
                             DalXml.DO.Station st = listStation[r.Next(0, listStation.Count)];
 
                             drone.Location = new BO.BOLocation(st.Longitude, st.Latitude);
+
+                            //add DroneCharge
+                            DalXml.DO.DroneCharge newDrnChrg = new DalXml.DO.DroneCharge();
+                            newDrnChrg.DroneId = drone.Id;
+                            newDrnChrg.StationId = st.Id;
+                            dataAccess.addDroneCharge(newDrnChrg);
 
                             //(2) SET BATTERY - btw 50 to 100%
                             drone.Battery = r.Next(50, 100);

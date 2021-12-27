@@ -67,9 +67,16 @@ namespace WpfApp1
         private void DronesListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             BL.BO.BODrone drone = DronesListView.SelectedItem as BL.BO.BODrone;
-            new DroneWindow(busiAccess, drone).ShowDialog();
-            refreshList();
+            //check if drone is erased:
+            if (drone.Exists)
+                new DroneWindow(busiAccess, drone).ShowDialog();
+            else
+            {
+                MainWindow.ErrorMsg("Drone is deleted"); 
+                //add function to allow user to Restore drone!
+            }
             
+              
         }
 
         private void btnRefresh_Click(object sender, RoutedEventArgs e)

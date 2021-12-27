@@ -184,8 +184,6 @@ namespace DalObject
 
 
 
-
-
             //INITIALIZE DRONE
 
             string[] droneModels = { "Merkava", "Namer" };
@@ -195,10 +193,8 @@ namespace DalObject
                 DalXml.DO.Drone exampleD = new DalXml.DO.Drone();
                 
                 exampleD.Id = i + 1;
-                //exampleD.Battery = r.Next(20, 100);
                 exampleD.MaxWeight = (DalXml.DO.WeightCategories) r.Next(1, 4);
                 exampleD.Model = droneModels[r.Next(0, 2)];
-                //exampleD.Status = (IDAL.DO.DroneStatus)r.Next(0, 3);
                 exampleD.Exists = true;
                 listDrone.Add(exampleD);
                 //thisConfig.indexAvailDrone++;
@@ -286,7 +282,8 @@ namespace DalObject
 
         }
 
-           public void EraseDrone(int droneId)
+           
+            public void EraseDrone(int droneId)
             {
                 foreach (var item in listDrone)
                 {
@@ -301,18 +298,55 @@ namespace DalObject
                     
                 }
             }
+            public void EraseCustomer(int id)
+            {
+                foreach (var item in listCustomer)
+                {
+                    if (item.Id == id)
+                    {
+                        DalXml.DO.Customer copy = item;
+                        listCustomer.Remove(item);
+                        copy.Exists = false;
+                        listCustomer.Add(copy);
+                        return;
+                    }
 
+                }
+            }
+            public void EraseStation(int id)
+            {
+                foreach (var item in listStation)
+                {
+                    if (item.Id == id)
+                    {
+                        DalXml.DO.Station copy = item;
+                        listStation.Remove(item);
+                        copy.Exists = false;
+                        listStation.Add(copy);
+                        return;
+                    }
 
-            //public void eraseCustomer(int id)
-            //{
+                }
+            }
+            public void EraseParcel(int id)
+            {
+                foreach (var item in listParcel)
+                {
+                    if (item.Id == id)
+                    {
+                        DalXml.DO.Parcel copy = item;
+                        listParcel.Remove(item);
+                        copy.Exists = false;
+                        listParcel.Add(copy);
+                        return;
+                    }
 
-            //}
-            //public void eraseStation(int id)
-            //{
-
-            //}
+                }
+            }
             public void EraseDroneCharge(DalXml.DO.DroneCharge thisDroneCharge)
-        {
+            {
+
+                //if item not found, no exception is thrown..
             foreach (var item in listDroneCharge)
             {
                 if (item.DroneId == thisDroneCharge.DroneId

@@ -220,12 +220,6 @@ namespace WpfApp1
 
 
 
-
-
-
-
-
-
         private void btnModifyDroneModel_Click(object sender, RoutedEventArgs e)
         {
             int id;
