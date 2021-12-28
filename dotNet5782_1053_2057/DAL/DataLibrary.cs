@@ -391,8 +391,8 @@ namespace DalObject
                 {
                     DalXml.DO.DroneCharge copy = new DalXml.DO.DroneCharge();
                     copy = item;
-                    copy.Exists = false;
                     listDroneCharge.Remove(thisDroneCharge);
+                    copy.Exists = false;
                     listDroneCharge.Add(copy);
                     break;
                 }

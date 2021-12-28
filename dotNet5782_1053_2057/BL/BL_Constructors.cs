@@ -402,7 +402,7 @@ namespace BL
                 newSt.ChargeSlots = origSt.ChargeSlots;
                 newSt.ListDroneCharge = new List<BO.BODroneInCharge>();
 
-                foreach (var item in dataAccess.getDroneCharges()) //create BODroneInCharge and add to list
+                foreach (var item in GetDroneCharges()) //create BODroneInCharge and add to list
                 {
                     if(item.StationId == newSt.Id)
                     {

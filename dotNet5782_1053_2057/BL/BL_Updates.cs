@@ -308,11 +308,12 @@ namespace BL
                     }
                 }
 
-                try
-                {
-                    dataAccess.EraseDroneCharge(dataAccess.getDroneCharge(droneId));
-                }
-                catch (DalXml.DO.EXItemNotFoundException) { return; }
+                dataAccess.EraseDroneCharge(dataAccess.getDroneCharge(droneId));
+                //try
+                //{
+                //    dataAccess.EraseDroneCharge(dataAccess.getDroneCharge(droneId));
+                //}
+                //catch (DalXml.DO.EXItemNotFoundException) { return; } delete!
             }
 
 
