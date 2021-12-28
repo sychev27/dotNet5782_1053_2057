@@ -413,8 +413,8 @@ namespace BL
             {
                 //check..
                 BO.BOParcel parc = CreateBOParcel(id);
-                if (parc.timeOfAssignment != null  //if parcel was assigned
-                    && parc.timeOfDelivery != null)    //and not yet delivered
+                if (parc.TimeOfAssignment != null  //if parcel was assigned
+                    && parc.TimeOfDelivery != null)    //and not yet delivered
                     throw new EXCantDltParNotYetDelivered();
 
 

@@ -15,18 +15,19 @@ namespace BL
             public BOCustomerInParcel Receiver { get; set; }
             public BL.BO.Enum.WeightCategories WeightCategory { get; set; }
             public BL.BO.Enum.Priorities Priority { get; set; }
-            public DateTime? timeOfCreation { get; set; }
-            public DateTime? timeOfAssignment { get; set; }
-            public DateTime? timeOfCollection { get; set; }
-            public DateTime? timeOfDelivery { get; set; }
+            public DateTime? TimeOfCreation { get; set; } 
+            public DateTime? TimeOfAssignment { get; set; }
+            public DateTime? TimeOfCollection { get; set; }
+            public DateTime? TimeOfDelivery { get; set; }
 
             public override string ToString()
             {
                 string res = "Parcel " + Id + "From " + Sender + " to " + Receiver + "\n";
                 res += (BL.BO.Enum.WeightCategories)WeightCategory + " Priority: " + Priority + "\n";
-                res += "assigned: " + timeOfAssignment.ToString() + "\n";
-                res += "collected: " + timeOfCollection.ToString() + "\n";
-                res += "deliverd: " + timeOfDelivery.ToString() + "\n"; 
+                res += "created: " + TimeOfCreation.ToString() + "\n";
+                res += "assigned: " + TimeOfAssignment.ToString() + "\n";
+                res += "collected: " + TimeOfCollection.ToString() + "\n";
+                res += "deliverd: " + TimeOfDelivery.ToString() + "\n"; 
 
                 res += "\n";
                 return res;

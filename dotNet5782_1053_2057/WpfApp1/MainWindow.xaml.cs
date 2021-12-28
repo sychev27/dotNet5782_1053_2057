@@ -44,7 +44,20 @@ namespace WpfApp1
                 item.Foreground = new SolidColorBrush(Colors.Black);
             }
         }
-
+        public static void ChangeVisibilty(System.Windows.Visibility vis, params TextBlock[] listTBlock )
+        {
+            foreach (var item in listTBlock)
+            {
+                item.Visibility = vis;
+            }
+        }
+        public static void ChangeVisibilty(System.Windows.Visibility vis, params Button[] listButton)
+        {
+            foreach (var item in listButton)
+            {
+                item.Visibility = vis;
+            }
+        }
 
 
 

@@ -481,8 +481,10 @@ namespace BL
                     origParc.ReceiverId, dataAccess.getCustomer(origParc.ReceiverId).Name);
 
                 newParc.WeightCategory = (BO.Enum.WeightCategories)origParc.Weight;
-                newParc.timeOfDelivery = origParc.TimeDelivered;
-                newParc.timeOfCollection = origParc.TimePickedUp;
+                newParc.TimeOfCreation = origParc.TimeCreated;
+                newParc.TimeOfAssignment = origParc.TimeAssigned;
+                newParc.TimeOfDelivery = origParc.TimeDelivered;
+                newParc.TimeOfCollection = origParc.TimePickedUp;
                 //newParc.timeOfAssignment = 
                 //newParc.timeOfCreation =
 

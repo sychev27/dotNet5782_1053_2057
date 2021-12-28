@@ -20,10 +20,26 @@ namespace WpfApp1
     public partial class StationWindow : Window
     {
         BL.BLApi.Ibl busiAccess;
-        public StationWindow(BL.BLApi.Ibl _busiAccess)
+        public StationWindow(BL.BLApi.Ibl _busiAccess) //CTOR - Add Station
         {
             InitializeComponent();
             busiAccess = _busiAccess;
+
+            btnModifyName.IsEnabled = false;
+            btnModifyChargeSlots.IsEnabled = false;
+            lstViewDronesCharging.IsEnabled = false;
+
+            MainWindow.ChangeVisibilty(Visibility.Hidden, btnModifyName, btnModifyChargeSlots);
+            MainWindow.ChangeVisibilty(Visibility.Hidden, tBlockDronesCharging);
+            lstViewDronesCharging.Visibility = Visibility.Hidden;
+
+        }
+        public StationWindow(BL.BLApi.Ibl _busiAccess, int stationId) // CTOR - Update Station
+        {
+            InitializeComponent();
+            busiAccess = _busiAccess;
+            displayStation(stationId);
+
         }
 
         private void btnAddStation_Click(object sender, RoutedEventArgs e)
@@ -65,7 +81,7 @@ namespace WpfApp1
                 tBlockName.Foreground = new SolidColorBrush(Colors.Red);
                 validData = false;
             }
-
+            
             if (tBoxChargeSlotsInput.Text == null || !chargeSlotsSuccess || numChargeSlots <= 0)
             {
                 tBlockChargeSlots.Foreground = new SolidColorBrush(Colors.Red);
@@ -83,7 +99,7 @@ namespace WpfApp1
             }
 
 
-            //(3) Add Drone..
+            //(3) Add Station...
             if (validData)
             {
                 try
@@ -100,6 +116,57 @@ namespace WpfApp1
             }
             else
                 return;
+
+        }
+
+        private void displayStation(int _id)
+        {
+            BL.BO.BOStation st = busiAccess.GetBOStation(_id);
+
+            tBoxIdInput.Text = _id.ToString();
+            tBoxNameInput.Text = st.Name.ToString();
+            tBoxChargeSlotsInput.Text = st.ChargeSlots.ToString();
+            tBoxLongInput.Text = st.Location.Longitude.ToString();
+            tBoxLatInput.Text = st.Location.Latitude.ToString();
+
+            tBoxIdInput.IsEnabled = false;
+            //tBoxNameInput.IsEnabled = false;
+            //tBoxChargeSlotsInput.IsEnabled = false;
+            tBoxLongInput.IsEnabled = false;
+            tBoxLatInput.IsEnabled = false;
+
+            lstViewDronesCharging.ItemsSource = st.ListDroneCharge;
+        }
+
+        private void btnModifyName_Click(object sender, RoutedEventArgs e)
+        {
+            int _name;
+            bool nameSuccess = Int32.TryParse(tBoxNameInput.Text, out _name);
+            //NAME TZARICH IYUN!
+            //check Id
+            if (tBoxNameInput.Text == null || !nameSuccess)
+            {
+                tBlockName.Foreground = new SolidColorBrush(Colors.Red);
+                return;
+            }
+            busiAccess.ModifyStation(Int32.Parse(tBoxIdInput.Text), _name,
+               busiAccess.GetBOStation(Int32.Parse(tBoxIdInput.Text)).ChargeSlots);
+
+        }
+
+        private void btnModifyChargeSlots_Click(object sender, RoutedEventArgs e)
+        {
+            int numChargeSlots;
+            bool chargeSlotsSuccess = Int32.TryParse(tBoxChargeSlotsInput.Text, out numChargeSlots);
+
+            if (tBoxChargeSlotsInput.Text == null || !chargeSlotsSuccess || numChargeSlots <= 0)
+            {
+                tBlockChargeSlots.Foreground = new SolidColorBrush(Colors.Red);
+                return;
+            }
+            busiAccess.ModifyStation(Int32.Parse(tBoxIdInput.Text), 
+                busiAccess.GetBOStation(Int32.Parse(tBoxIdInput.Text)).Name, 
+                numChargeSlots);
 
         }
 

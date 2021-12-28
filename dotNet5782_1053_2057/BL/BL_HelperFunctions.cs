@@ -329,6 +329,21 @@ namespace BL
                 //throw exception!!!
                 throw new EXNotFoundPrintException("Customer");
             }
+
+            public BO.BOStation GetBOStation(int id)
+            {
+                foreach (var item in GetStations())
+                {
+                    if (id == item.Id)
+                        return item;
+                }
+                throw new EXNotFoundPrintException("Station");
+            }
+
+
+
+
+
             public ObservableCollection<BO.BODrone> GetBODroneList(bool getDeleted = false)
             {
                 if (getDeleted)

@@ -293,11 +293,11 @@ namespace DalObject
                 int month = r.Next(1, 13);
                 int day = r.Next(1, 29);
                 int year = r.Next(2020, 2022);
-                exampleP.TimeRequested = new DateTime(year, month, day);
+                exampleP.TimeCreated = new DateTime(year, month, day);
 
                 exampleP.Exists = true;
 
-                exampleP.TimeScheduled = exampleP.TimeRequested + new TimeSpan(r.Next(1, 7), 0, 0, 0);
+                exampleP.TimeAssigned = exampleP.TimeCreated + new TimeSpan(r.Next(1, 7), 0, 0, 0);
 
                 //no Parcel is collectd/delivered  in Initialization
 
@@ -472,6 +472,7 @@ namespace DalObject
                     DalXml.DO.Parcel copy = item;
                     listParcel.Remove(copy);
                     copy.DroneId = droneId;
+                    copy.TimeAssigned = DateTime.Now;
                     listParcel.Add(copy);
                     return;
                 }

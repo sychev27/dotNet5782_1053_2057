@@ -21,9 +21,7 @@ namespace WpfApp1
     {
         BL.BLApi.Ibl busiAccess;
         int thisDroneId;
-        bool modelTBoxChanged = false;
-        
-
+       
         //default constructor is to Add a drone
         public DroneWindow(BL.BLApi.Ibl _busiAccess, int num)//to add a Drone
         {

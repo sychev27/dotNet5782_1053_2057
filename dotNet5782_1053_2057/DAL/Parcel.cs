@@ -20,9 +20,9 @@ namespace DalXml
                 ReceiverId = _targetId;
                 Weight = _weight;
                 Priority =_priority;
-                TimeRequested = null; //when we receive request for the parcel
+                TimeCreated = DateTime.Now; //when we receive request for the parcel
                 DroneId = -1;             //null...
-                TimeScheduled = null;
+                TimeAssigned = null;
                 TimePickedUp = null;     //null...
                 TimeDelivered = null; //null...
                 Exists = true;
@@ -33,9 +33,10 @@ namespace DalXml
             public int ReceiverId { get; set; }
             public DalXml.DO.WeightCategories Weight { get; set; }
             public DalXml.DO.Priorities Priority { get; set; }
-            public DateTime? TimeRequested { get; set; } //when we receive request for the parcel
             public int DroneId { get; set; }
-            public DateTime ? TimeScheduled { get; set; }
+            
+            public DateTime? TimeCreated { get; set; } //when we receive request for the parcel
+            public DateTime ? TimeAssigned { get; set; }
             public DateTime? TimePickedUp { get; set; } //from Sender
             public DateTime? TimeDelivered { get; set; } //at Receipient 
             public bool Exists { get; set; }
@@ -48,9 +49,9 @@ namespace DalXml
                     "ReceiverId: " + ReceiverId + "\n" +
                     "Weight: " + Weight + "\n" +
                     "Priority: " + Priority + "\n" +
-                    "Requested: " + TimeRequested + "\n" +
+                    "Requested: " + TimeCreated + "\n" +
                     "DroneId: " + DroneId + "\n" +
-                    "Scheduled: " + TimeScheduled + "\n" +
+                    "Scheduled: " + TimeAssigned + "\n" +
                     "Pickup: " + TimePickedUp + "\n" +
                     "Delivered: " + TimeDelivered + "\n";
                 return res;
