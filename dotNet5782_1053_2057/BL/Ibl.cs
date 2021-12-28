@@ -28,6 +28,7 @@ namespace BL
             
             BO.BODrone GetBODrone(int id);
             BO.BOCustomer GetBOCustomer(int id);
+            BO.BOParcel GetBOParcel(int id);
             BO.BOStation GetBOStation(int id);
             public int GetStationIdOfBODrone(int droneId);
             string GetBODroneModel(int id);

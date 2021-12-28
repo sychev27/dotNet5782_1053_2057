@@ -39,6 +39,13 @@ namespace WpfApp1
 
         private void btnRefreshList_Click(object sender, RoutedEventArgs e)
         {
+            refreshList();
+        }
+
+        private void refreshList(bool getDeleted = false)
+        {
+            ParcelListView.ItemsSource = null;
+            ParcelListView.ItemsSource = busiAccess.GetParcelToList();
 
         }
 
@@ -49,12 +56,15 @@ namespace WpfApp1
 
         private void PurcelListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
+            BL.BO.BOParcelToList parcel = ParcelListView.SelectedItem as BL.BO.BOParcelToList;
+            int id = parcel.Id;
+            BL.BO.BOParcel parc = busiAccess.GetBOParcel(id);
+            new ParcelWindow(busiAccess,parc).ShowDialog();
         }
 
         private void btnCloseList_Click(object sender, RoutedEventArgs e)
         {
-
+            Close();
         }
     }
 }

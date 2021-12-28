@@ -259,5 +259,13 @@ namespace WpfApp1
             Close();
             
         }
+
+        private void lstParcelList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            BL.BO.BOParcelToList parcel = lstParcelList.SelectedItem as BL.BO.BOParcelToList;
+            int id = parcel.Id;
+            BL.BO.BOParcel parc = busiAccess.GetBOParcel(id);
+            new ParcelWindow(busiAccess, parc).ShowDialog();
+        }
     }
 }

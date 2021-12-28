@@ -81,7 +81,7 @@ namespace WpfApp1
 
         private void btnParcelLists_Click(object sender, RoutedEventArgs e)
         {
-
+            new ParcelListWindow(busiAccess).ShowDialog();
         }
 
         private void btnStationLists_Click(object sender, RoutedEventArgs e)
