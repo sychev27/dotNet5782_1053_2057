@@ -180,6 +180,8 @@ namespace WpfApp1
 
         private void btnCancel1_Click(object sender, RoutedEventArgs e)
         {
+            if (registerMode)
+                new LoginWindow(busiAccess).Show();
             Close();
 
         }
@@ -250,7 +252,12 @@ namespace WpfApp1
             btnLogOut.Visibility = (!isCustLogin)? Visibility.Hidden : Visibility.Visible;
             btnSendParcel.IsEnabled = isCustLogin;
             btnSendParcel.Visibility = (!isCustLogin) ? Visibility.Hidden : Visibility.Visible;
-
+            
+            //(if isCustomer Login  -> hide these buttons!)
+            btnCancel1.IsEnabled = !isCustLogin;
+            btnCancel1.Visibility = (isCustLogin) ? Visibility.Hidden : Visibility.Visible;
+            btnEraseCust.IsEnabled = !isCustLogin;
+            btnEraseCust.Visibility = (isCustLogin) ? Visibility.Hidden : Visibility.Visible;
         }
 
         private void btnLogOut_Click(object sender, RoutedEventArgs e)

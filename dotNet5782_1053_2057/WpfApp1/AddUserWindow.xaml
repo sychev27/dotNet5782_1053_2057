@@ -31,6 +31,7 @@
             <TextBox x:Name="tBoxUsernameInput" Grid.Column="1" Grid.Row="2" TextWrapping="Wrap" Margin="5, 5, 5, 5"/>
             <TextBox  x:Name="tBoxPasswordInput" Grid.Column="1" Grid.Row="3" TextWrapping="Wrap" Margin="5, 5, 5, 5"/>
             <Button x:Name="btnGetMyInfo" Content="Get My Information" Grid.Column="2" Margin="5,5,5,5" Click="btnGetMyInfo_Click" Height="41" VerticalAlignment="Top"/>
+            <Button x:Name="btnCancel" Content="Cancel" HorizontalAlignment="Left" Height="31" Margin="28,0,0,0" Grid.Row="4" VerticalAlignment="Center" Width="122" Click="btnCancel_Click"/>
 
         </Grid>
 
