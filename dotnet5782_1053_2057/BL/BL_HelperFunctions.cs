@@ -90,7 +90,7 @@ namespace BL
             {
                 //check if charging
                 BO.BODrone drone = GetBODrone(droneId);
-                foreach (DalXml.DO.DroneCharge drCharge in dataAccess.getDroneCharges())
+                foreach (DalXml.DO.DroneCharge drCharge in GetDroneCharges())
                 {
                     if (drCharge.DroneId == droneId)
                         return drCharge.StationId;
@@ -169,7 +169,7 @@ namespace BL
             int freeSpots(DalXml.DO.Station st)
             {//returns 0 (or less) if not spots are free...
                 int numSpots = st.ChargeSlots;
-                foreach (DalXml.DO.DroneCharge drCharge in dataAccess.getDroneCharges())
+                foreach (DalXml.DO.DroneCharge drCharge in GetDroneCharges())
                 {
                     if (st.Id == drCharge.StationId)
                         numSpots--;
@@ -481,7 +481,26 @@ namespace BL
                 }
                 return res;
             }
-
+            public IEnumerable<BO.BOStation> GetStations()
+            {
+                List<BO.BOStation> res = new List<BO.BOStation>();
+                foreach (var item in dataAccess.getStations())
+                {
+                    res.Add(CreateBOStation(item.Id));
+                }
+                return res;
+            }
+            private IEnumerable<DalXml.DO.DroneCharge> GetDroneCharges()
+            {
+                List<DalXml.DO.DroneCharge> res = 
+                    new List<DalXml.DO.DroneCharge>();
+                foreach (var item in dataAccess.getDroneCharges())
+                {
+                    if (item.Exists)
+                        res.Add(item);
+                }
+                return res;
+            }
             public ObservableCollection<BO.BOParcelAtCustomer> GetBOParcelAtCustomerList(BO.BOCustomer customer)
             {
                 ObservableCollection<BO.BOParcelAtCustomer> lst = new ObservableCollection<BO.BOParcelAtCustomer>();
@@ -554,7 +573,7 @@ namespace BL
                 BO.BODrone bodrone = GetBODrone(id);
                 if (bodrone.DroneStatus == BO.Enum.DroneStatus.Charging)
                 {
-                    foreach (var item in dataAccess.getDroneCharges())
+                    foreach (var item in GetDroneCharges())
                     {
                         if (item.DroneId == bodrone.Id)
                             return "At Station " + item.StationId.ToString();
