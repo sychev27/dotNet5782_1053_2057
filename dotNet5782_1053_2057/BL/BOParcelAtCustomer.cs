@@ -22,6 +22,7 @@ namespace BL
             public override string ToString()
             {
                 string res = "Parcel " + Id;
+                res += "Status: " + ParcelStatus.ToString();
 
                 return res;
             }

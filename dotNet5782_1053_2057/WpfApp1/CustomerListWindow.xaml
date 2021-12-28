@@ -24,16 +24,29 @@
             <ComboBox Grid.Column="3" Name="Selector2" HorizontalAlignment="Stretch" Margin="4,6,6,4" VerticalAlignment="Stretch" Width="190" SelectionChanged="Selector2_SelectionChanged"/>
 
         </Grid>
-        <ListView x:Name="CustomerListView" Margin="0,58,0,62" Grid.RowSpan="2" ItemsSource="{Binding UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="CustomerListView_MouseDoubleClick">
+        <ListView x:Name="CustomerListView" Margin="0,58,0,62" Grid.RowSpan="2" ItemsSource="{Binding UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="CustomerListView_MouseDoubleClick" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn/>
                 </GridView>
             </ListView.View>
+            
+            <ListView.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Name}" />
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </ListView.GroupStyle>
+
         </ListView>
         <Button x:Name="btnAddCustomer1" Content="Add new customer" HorizontalAlignment="Left" Margin="646,414,0,0" Grid.Row="1" VerticalAlignment="Top" Height="27" Width="138" FontSize="16" Click="btnAddCustomer1_Click"/>
         <Button x:Name="btnCloseList" Content="Close" HorizontalAlignment="Left" Margin="43,415,0,0" Grid.Row="1" VerticalAlignment="Top" Height="26" Width="148" FontSize="18" Click="btnCloseList_Click"/>
         <Button x:Name="btnRefreshList" Content="Refresh" HorizontalAlignment="Left" Height="27" Margin="466,414,0,0" Grid.Row="1" VerticalAlignment="Top" Width="128" Click="btnRefreshList_Click"/>
+        
+        <CheckBox x:Name="chkboxNumParcels" Content="Organize By Num Parcels" HorizontalAlignment="Left" Height="26" Margin="244,415,0,0" Grid.Row="1" VerticalAlignment="Top" Width="150" Checked="chkboxNumParcels_Checked" Unchecked="chkboxNumParcels_Unchecked"/>
 
 
 

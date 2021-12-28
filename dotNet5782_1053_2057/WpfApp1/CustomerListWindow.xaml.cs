@@ -25,6 +25,7 @@ namespace WpfApp1
             InitializeComponent();
             busiAccess = busiAccess1;
             DataContext = busiAccess.GetCustToList();
+
         }
 
         private void btnAddCustomer1_Click(object sender, RoutedEventArgs e)
@@ -46,7 +47,7 @@ namespace WpfApp1
         {
             BL.BO.BOCustomerToList customer = CustomerListView.SelectedItem as BL.BO.BOCustomerToList;
             int id = customer.Id;
-            BL.BO.BOCustomer cust =  busiAccess.GetBOCustomer(id);
+            BL.BO.BOCustomer cust = busiAccess.GetBOCustomer(id);
             new CustomerWindow(busiAccess, cust).ShowDialog();
 
         }
@@ -67,10 +68,37 @@ namespace WpfApp1
             CustomerListView.ItemsSource = null;
             CustomerListView.ItemsSource = busiAccess.GetCustToList();
 
-        }
-    }
+            //if((bool)chkboxNumParcels.IsChecked)
+            //{
+            //    CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(DataContext);
+            //    PropertyGroupDescription groupDescription = new PropertyGroupDescription("NumParcelsSentNotDelivered");
+            //    view.GroupDescriptions.Add(groupDescription);
+            //} 
+            //else
+            //{
+            //    CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(DataContext);
+            //    PropertyGroupDescription groupDescription = new PropertyGroupDescription("NumParcelsSentNotDelivered");
+            //    view.GroupDescriptions.Remove(groupDescription);
+            //}
 
+        }
+
+        private void chkboxNumParcels_Checked(object sender, RoutedEventArgs e)
+        {
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(DataContext);
+            PropertyGroupDescription groupDescription = new PropertyGroupDescription("NumParcelsSentNotDelivered");
+            view.GroupDescriptions.Add(groupDescription);
+        }
+        private void chkboxNumParcels_Unchecked(object sender, RoutedEventArgs e)
+        {
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(DataContext);
+            PropertyGroupDescription groupDescription = new PropertyGroupDescription("NumParcelsSentNotDelivered");
+            view.GroupDescriptions.Remove(groupDescription);
+        }
+
+
+
+//END OF WINDOWS
+    }
 }
 
-
-//this copy!
