@@ -18,8 +18,8 @@ namespace BL
             {
                 string res = "";
                 res += "Station " + Id + " "
-                    + "\nCharging Slots available: " + ChargeSlotsAvailable
-                    + "\nDrones charging at this station: ";
+                    + "\nCharging Slots available: " + ChargeSlotsAvailable.ToString() + "\n"
+                    + ChargeSlotsTaken.ToString() + " drones charging at this station";
                
                 res += "\n";
                 return res;

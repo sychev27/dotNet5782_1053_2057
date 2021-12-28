@@ -23,7 +23,7 @@ namespace WpfApp1
         int thisDroneId;
        
         //default constructor is to Add a drone
-        public DroneWindow(BL.BLApi.Ibl _busiAccess, int num)//to add a Drone
+        public DroneWindow(BL.BLApi.Ibl _busiAccess)//to add a Drone
         {
             InitializeComponent();
             busiAccess = _busiAccess;

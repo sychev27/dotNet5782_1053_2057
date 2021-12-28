@@ -39,6 +39,8 @@ namespace WpfApp1
             InitializeComponent();
             busiAccess = _busiAccess;
             displayStation(stationId);
+            btnAddStation.IsEnabled = false;
+            btnAddStation.Visibility = Visibility.Hidden;
 
         }
 
@@ -151,6 +153,8 @@ namespace WpfApp1
             }
             busiAccess.ModifyStation(Int32.Parse(tBoxIdInput.Text), _name,
                busiAccess.GetBOStation(Int32.Parse(tBoxIdInput.Text)).ChargeSlots);
+            MessageBox.Show("Name Modified", "SUCCESS", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
+            //displayStation(Int32.Parse(tBoxIdInput.Text));
 
         }
 
@@ -167,9 +171,20 @@ namespace WpfApp1
             busiAccess.ModifyStation(Int32.Parse(tBoxIdInput.Text), 
                 busiAccess.GetBOStation(Int32.Parse(tBoxIdInput.Text)).Name, 
                 numChargeSlots);
-
+            MessageBox.Show("Number of Charge Slots Modified", "SUCCESS", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
+            //displayStation(Int32.Parse(tBoxIdInput.Text));
         }
 
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+        private void lstViewDronesCharging_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+           new DroneWindow(busiAccess, 
+               busiAccess.GetBODrone((lstViewDronesCharging.SelectedItem as BL.BO.BODroneInCharge).Id))
+                .ShowDialog();
+        }
 
 
 
