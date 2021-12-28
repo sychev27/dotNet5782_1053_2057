@@ -25,7 +25,7 @@ namespace BL
                     + "\nDrones charging at this station: ";
                 foreach (var item in ListDroneCharge)
                 {
-                    res += " " + item.Id;
+                    res += " Drone " + item.Id;
                 }
                 res += "\n";
                 return res;

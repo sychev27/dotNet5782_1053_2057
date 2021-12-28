@@ -122,13 +122,7 @@ namespace BL
 
                             drone.Location = new BO.BOLocation(st.Longitude, st.Latitude);
 
-                            //add DroneCharge
-                            DalXml.DO.DroneCharge newDrnChrg = new DalXml.DO.DroneCharge();
-                            newDrnChrg.DroneId = drone.Id;
-                            newDrnChrg.StationId = st.Id;
-                            dataAccess.addDroneCharge(newDrnChrg);
-
-                            //(2) SET BATTERY - btw 50 to 100%
+                           //(2) SET BATTERY - btw 50 to 100%
                             drone.Battery = r.Next(50, 100);
                             //drone.Battery = 2000;
                             drone.Battery += r.NextDouble();
@@ -391,7 +385,7 @@ namespace BL
 
             private BO.BOStation CreateBOStation(int id)
             {
-                DalXml.DO.Station origSt = new DalXml.DO.Station();
+                DalXml.DO.Station origSt;
                 try
                 {
                     origSt = dataAccess.getStation(id);
@@ -400,7 +394,7 @@ namespace BL
                 {
                     throw new EXNotFoundPrintException("Station");
                 }
-                //exception! - if station not found
+               
                 BO.BOStation newSt = new BO.BOStation();
                 newSt.Id = origSt.Id;
                 newSt.Name = origSt.Name;
@@ -410,10 +404,23 @@ namespace BL
 
                 foreach (var item in dataAccess.getDroneCharges()) //create BODroneInCharge and add to list
                 {
-                    BO.BODroneInCharge d = new BO.BODroneInCharge();
-                    d.Id = item.DroneId;
-                    d.Battery = GetBODrone(d.Id).Battery;
-                    newSt.ListDroneCharge.Add(d);
+                    if(item.StationId == newSt.Id)
+                    {
+                        try
+                        {
+                            BO.BODrone copy = GetBODrone(item.DroneId);
+                        }
+                        catch (BLApi.EXDroneNotFound)
+                        {
+                            break;
+                        }
+                        
+                        BO.BODroneInCharge d = new BO.BODroneInCharge();
+                        d.Id = item.DroneId;
+                        d.Battery = GetBODrone(d.Id).Battery;
+                        newSt.ListDroneCharge.Add(d);
+                    }
+                    
                 }
                 return newSt;
             }
@@ -565,8 +572,7 @@ namespace BL
 
                 return newStationToList;
             }
-
-
+            
             //end of class
         }
     }

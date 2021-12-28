@@ -283,7 +283,7 @@ namespace BL
                     throw new EXMiscException("drone not charging!");
 
                 DateTime startTime = DateTime.MinValue;
-                foreach (var item in dataAccess.getDroneCharges())
+                foreach (var item in GetDroneCharges())
                 {
                     if (item.DroneId == droneId)
                         startTime = item.timeBeganCharging;

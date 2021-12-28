@@ -26,7 +26,7 @@ namespace WpfApp1
             InitializeComponent();
             busiAccess = _busiAccess;
 
-            LstViewStation.ItemsSource = busiAccess.GetStationToList();// as IEnumerable<BL.BO.BOStationToList>;
+            LstViewStation.ItemsSource = busiAccess.GetStations();// as IEnumerable<BL.BO.BOStationToList>;
             //DataContext = busiAccess.GetBODroneList();
             
             ////StatusSelector1.DataContext = Enum.GetValues(typeof(BL.BO.Enum.DroneStatus));
@@ -39,6 +39,11 @@ namespace WpfApp1
         {
             new MainWindow(busiAccess).Show();
             Close();
+        }
+
+        private void btnRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            LstViewStation.ItemsSource = busiAccess.GetStations();// as IEnumerable<BL.BO.BOStationToList>;
         }
     }
 }
