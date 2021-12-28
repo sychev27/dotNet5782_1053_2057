@@ -70,5 +70,11 @@ namespace WpfApp1
         {
 
         }
+
+        private void btnStationLists_Click(object sender, RoutedEventArgs e)
+        {
+            new StationListWindow(busiAccess).Show();
+            Close();
+        }
     }
 }
