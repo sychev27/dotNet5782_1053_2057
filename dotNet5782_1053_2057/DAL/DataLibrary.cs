@@ -187,17 +187,7 @@ namespace DalObject
             {
                 return listUser;
             }
-        
-         //DELETE THIS!   
-         //public DalXml.DO.User GetUser(int _id) 
-         //   {
-         //       foreach (var item in listUser)
-         //       {
-         //           if (item.Id == _id)
-         //               return item;
-         //       }
-         //       throw new DalXml.DO.EXItemNotFoundException();
-         //   }
+
 
 
 
@@ -256,9 +246,9 @@ namespace DalObject
             string[] customerNames = new string[12] { "Reuven", "Shimon", "Levi",
                 "Yehuda", "Yissachar", "Zevulun", "Asher", "Gad", "Dan", "Naftali",
                 "Yosef", "Binyamin" };
-            string[] customerPhones = new string[10] { "+972-552-2555-18", "+972-525-5534-55",
-                "+972-552-3555-77", "+972-557-1555-80", "+972-557-1555-48", "+972-559-5557-55",
-                "+972-556-5551-37", "+972-545-5586-84", "+972-556-5557-31", "+972-552-2555-13" };
+            string[] customerPhones = new string[10] { "972552255518", "972525553455",
+                "972552355577", "972557155580", "972557155548", "972559555755",
+                "972556555137", "972545558684", "972556555731", "972552255513" };
 
             for (int i = 0; i < 10; i++)
             {
