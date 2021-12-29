@@ -35,6 +35,9 @@ namespace WpfApp1
            // StatusSelector1.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.DroneStatus));
             StatusSelector2.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.WeightCategories));
 
+
+
+
         }
 
         private void StatusSelector1_SelectionChanged(object sender, SelectionChangedEventArgs e)

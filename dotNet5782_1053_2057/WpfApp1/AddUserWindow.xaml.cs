@@ -59,7 +59,7 @@ namespace WpfApp1
             tBlockName.Visibility = vis;
             tBlockNameInput.Visibility = vis;
             tBlockPassword.Visibility = vis;
-            tBlockUserId.Visibility = vis;
+            //tBlockUserId.Visibility = vis;
             tBlockUserName.Visibility = vis;
 
             tBoxPasswordInput.Visibility = vis;
@@ -84,6 +84,12 @@ namespace WpfApp1
                 MainWindow.ErrorMsg(ex.ToString());
             }
 
+        }
+
+        private void btnCancel_Click(object sender, RoutedEventArgs e)
+        {
+            new LoginWindow(busiAccess).Show();
+            Close();
         }
     }
 }
