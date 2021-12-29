@@ -330,6 +330,22 @@ namespace BL
                 throw new EXNotFoundPrintException("Customer");
             }
 
+
+            public BO.BOParcel GetBOParcel(int _id)
+            {
+                IEnumerable<DalXml.DO.Parcel> origList = dataAccess.getParcels();
+                foreach (var item in origList)
+                {
+                    if (_id == item.Id && item.Exists)
+                    {
+                        return CreateBOParcel(_id);
+
+                    }
+                }
+                //throw exception!!!
+                throw new EXNotFoundPrintException("Customer");
+            }
+
             public BO.BOStation GetBOStation(int id)
             {
                 foreach (var item in GetStations())
