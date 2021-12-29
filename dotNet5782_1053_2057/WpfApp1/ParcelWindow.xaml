@@ -8,8 +8,8 @@
         Title="ParcelWindow" Height="450" Width="800">
     <Grid x:Name="OutputAndInputGrid" RenderTransformOrigin="0.46,0.503">
         <TextBlock x:Name="tBlock_chooseParcelId" Text=" ID:" Margin="5,5,5,5" FontSize="22"/>
-        <TextBlock x:Name="tBlock_chooseSenderName" Grid.Row="1" Text="Sender Name:" Margin="5,5,5,5" FontSize="22"/>
-        <TextBlock x:Name="tBlock_chooseReceiverName" Grid.Row="2" Text="Receiver Name:" Margin="5,5,5,5" FontSize="22"/>
+        <TextBlock x:Name="tBlock_chooseSenderId" Grid.Row="1" Text="Sender ID:" Margin="5,5,5,5" FontSize="22"/>
+        <TextBlock x:Name="tBlock_chooseReceiverId" Grid.Row="2" Text="Receiver ID:" Margin="5,5,5,5" FontSize="22"/>
         <TextBlock x:Name="tBlockWeightCategory" Grid.Row="3" Text="W. Category: 35-36" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="22"/>
         <TextBlock x:Name="tBlockPriority" Grid.Row="4" Text="Priority:" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="22"/>
         <TextBlock x:Name="tBlockTimeOfCreation" Grid.Row="5" Text="T. Of Creation:" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="22"/>
@@ -19,10 +19,10 @@
 
 
         <TextBox x:Name ="tBoxParcIdInput" Grid.Column="1" Text="" TextWrapping="Wrap" Margin="5,5,5,5" Height="Auto" VerticalAlignment="Stretch" FontSize="18" />
-        <TextBox x:Name ="tBoxSenderName" Grid.Column="1" Grid.Row="1" Text="" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="18" />
-        <TextBox x:Name ="tBoxReceiverName" Grid.Column="1" Grid.Row="2" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="18" />
-        <TextBox x:Name="tBoxWeightCategory" Grid.Column="1" Grid.Row="3" Text="" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="18"/>
-        <TextBox x:Name="tBoxPriority" Grid.Column="1" Grid.Row="4" Text="" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="18"/>
+        <TextBox x:Name ="tBoxSenderId" Grid.Column="1" Grid.Row="1" Text="" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="18" MouseDoubleClick="tBoxSenderId_MouseDoubleClick" />
+        <TextBox x:Name ="tBoxReceiverId" Grid.Column="1" Grid.Row="2" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="18" MouseDoubleClick="tBoxReceiverId_MouseDoubleClick" />
+        <ComboBox x:Name="cmbWeightCategory" Grid.Column="1" Grid.Row="3" SelectionChanged="cmbWeightCategory_SelectionChanged" Margin="5,5,5,5" FontSize="18"/>
+        <ComboBox x:Name="cmbPriority" Grid.Column="1" Grid.Row="4" SelectionChanged="cmbPriority_SelectionChanged1" Margin="5,5,5,5" FontSize="18"/>
         <TextBox x:Name="tBoxTimeOfCreation" Grid.Column="1" Grid.Row="5" Text="" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="18"/>
         <TextBox x:Name="tBoxTimeOfAssignment" Grid.Column="1" Grid.Row="6" Text="" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="18"/>
         <TextBox x:Name="tBoxTimeOfCollection" Grid.Column="1" Grid.Row="7" Text="" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="18"/>

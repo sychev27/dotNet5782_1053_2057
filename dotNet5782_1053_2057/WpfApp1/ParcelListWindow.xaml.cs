@@ -51,7 +51,7 @@ namespace WpfApp1
 
         private void btnAddParcel_Click(object sender, RoutedEventArgs e)
         {
-
+            new ParcelWindow(busiAccess).ShowDialog();
         }
 
         private void PurcelListView_MouseDoubleClick(object sender, MouseButtonEventArgs e)

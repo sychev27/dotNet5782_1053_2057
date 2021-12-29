@@ -11,8 +11,8 @@ namespace DalXml
 
         public struct Parcel
         {
-            public Parcel(/*int _id, */int _senderId,int _targetId,DalXml.DO.WeightCategories _weight,
-                          DalXml.DO.Priorities _priority) //DateTime _requested = DateTime.MinValue,
+            public Parcel(/*int _id, */int _senderId,int _targetId,DalXml.DO.WeightCategories? _weight,
+                          DalXml.DO.Priorities? _priority) //DateTime _requested = DateTime.MinValue,
                          // DateTime _scheduled = DateTime.MinValue)// DateTime _pickup, DateTime _delivered)
             {
                 Id = DalObject.DalApi.DataSource.thisConfig.parcelSerialNumber++; 
@@ -31,8 +31,8 @@ namespace DalXml
             public int Id { get; set; }
             public int SenderId { get; set; }
             public int ReceiverId { get; set; }
-            public DalXml.DO.WeightCategories Weight { get; set; }
-            public DalXml.DO.Priorities Priority { get; set; }
+            public DalXml.DO.WeightCategories? Weight { get; set; }
+            public DalXml.DO.Priorities? Priority { get; set; }
             public int DroneId { get; set; }
             
             public DateTime? TimeCreated { get; set; } //when we receive request for the parcel

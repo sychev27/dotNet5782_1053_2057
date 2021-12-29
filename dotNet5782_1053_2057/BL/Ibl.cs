@@ -17,8 +17,8 @@ namespace BL
             void AddCustomer(int _id, string _name, string _phone, double _longitude,
                     double _latitude);
             void AddDroneCharge(int _droneId, int _stationId);
-            void AddParcel(int _senderId, int _targetId, DalXml.DO.WeightCategories _weight,
-                              DalXml.DO.Priorities _priority);// DateTime _requested,
+            void AddParcel(int _senderId, int _targetId, DalXml.DO.WeightCategories? _weight,
+                              DalXml.DO.Priorities? _priority);// DateTime _requested,
                                                             //DateTime _scheduled);
             void AddStation(int _id, int _name, double _longitude, double _latitude, int _chargeSlots);
 
