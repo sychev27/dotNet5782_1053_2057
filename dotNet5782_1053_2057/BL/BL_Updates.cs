@@ -53,8 +53,8 @@ namespace BL
                 DalXml.DO.DroneCharge newDroneCharge = new DalXml.DO.DroneCharge(_droneId, _stationId);
                 dataAccess.addDroneCharge(newDroneCharge);
             }
-            public void AddParcel(int _senderId, int _targetId, DalXml.DO.WeightCategories _weight,
-                             DalXml.DO.Priorities _priority)// DateTime _requested, DateTime _scheduled)
+            public void AddParcel(int _senderId, int _targetId, DalXml.DO.WeightCategories? _weight,
+                             DalXml.DO.Priorities? _priority)// DateTime _requested, DateTime _scheduled)
             {
                 //DO NOT WRITE AN EXCEPTION FOR "ALREADY EXISTS!!"
                 DalXml.DO.Parcel dummy = new DalXml.DO.Parcel(_senderId, _targetId, _weight, _priority);

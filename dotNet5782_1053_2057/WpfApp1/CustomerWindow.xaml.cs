@@ -262,7 +262,7 @@ namespace WpfApp1
 
         private void lstParcelList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            BL.BO.BOParcelToList parcel = lstParcelList.SelectedItem as BL.BO.BOParcelToList;
+            BL.BO.BOParcelAtCustomer parcel = lstParcelList.SelectedItem as BL.BO.BOParcelAtCustomer;
             int id = parcel.Id;
             BL.BO.BOParcel parc = busiAccess.GetBOParcel(id);
             new ParcelWindow(busiAccess, parc).ShowDialog();
