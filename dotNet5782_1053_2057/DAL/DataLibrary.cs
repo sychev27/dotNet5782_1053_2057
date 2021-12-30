@@ -87,7 +87,7 @@ namespace DalObject
             for (int i = 0; i < listCustomer.Count; i++)
                 if (listCustomer[i].Id == _id && listCustomer[i].Exists)
                     cust = listCustomer[i];
-            if (cust.Id == 0) throw new DalXml.DO.EXItemNotFoundException();
+            if (cust.Id == 0)  throw new DalXml.DO.EXItemNotFoundException();
             return cust;
         }
         public DalXml.DO.Parcel getParcel(int _id)
