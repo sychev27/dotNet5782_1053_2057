@@ -184,13 +184,16 @@ namespace WpfApp1
             try
             {
                 busiAccess.EraseParcel(Int32.Parse(tBoxParcIdInput.Text));
+                MessageBox.Show("Parcel Erased Successfully", "SUCCESS",
+                        MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
+                Close();
             }
             catch (BL.BLApi.EXCantDltParAlrdyAssgndToDrone ex)
             {
                 MainWindow.ErrorMsg(ex.ToString());
             }
         }
-
+        
         private void tBoxSenderId_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             int _id;
