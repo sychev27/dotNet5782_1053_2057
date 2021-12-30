@@ -6,14 +6,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace DalXml
-{ 
+{
     public interface IDal
     {
-        void Initialize(); 
-        
+        void Initialize();
+
         DalXml.DO.Drone getDrone(int _id);
         DalXml.DO.Customer getCustomer(int _id);
-        DalXml.DO.Parcel getParcel(int _id);
+        DalXml.DO.Parcel GetParcel(int _id);
         DalXml.DO.Station getStation(int _id);
         DalXml.DO.DroneCharge getDroneCharge(int _droneId);
 
@@ -31,7 +31,7 @@ namespace DalXml
 
         IEnumerable<double> requestElec();
         ObservableCollection<DalXml.DO.Drone> getDrones();
-        IEnumerable<DalXml.DO.Parcel> getParcels();
+        ObservableCollection<DalXml.DO.Parcel> GetParcels();
         IEnumerable<DalXml.DO.Station> getStations();
 
         ObservableCollection<DalXml.DO.Customer> getCustomers();
@@ -52,6 +52,8 @@ namespace DalXml
         public void modifyDrone(int _id, string _model);
         public void modifyCust(int _id, string _name, string _phone);
         public void modifyStation(int _id, int _name, int _totalChargeSlots);
+
+        public void modifyParcel(int _id, DalXml.DO.Priorities? _priority);
 
 
         //Erase:

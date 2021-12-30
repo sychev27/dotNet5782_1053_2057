@@ -47,11 +47,11 @@ namespace DalObject
             internal int parcelSerialNumber = 1;
         }
 
-        //interanl fields:
+        //internal fields:
         internal static List<DalXml.DO.Station> listStation = new List<DalXml.DO.Station>();
         internal static List<DalXml.DO.DroneCharge> listDroneCharge = new List<DalXml.DO.DroneCharge>();
         internal static ObservableCollection<DalXml.DO.Drone> listDrone = new ObservableCollection<DalXml.DO.Drone>();
-        internal static List<DalXml.DO.Parcel> listParcel = new List<DalXml.DO.Parcel>();
+        internal static ObservableCollection<DalXml.DO.Parcel> listParcel = new ObservableCollection<DalXml.DO.Parcel>();
         internal static ObservableCollection<DalXml.DO.Customer> listCustomer = new ObservableCollection<DalXml.DO.Customer>();
 
 
@@ -90,7 +90,7 @@ namespace DalObject
             if (cust.Id == 0) throw new DalXml.DO.EXItemNotFoundException();
             return cust;
         }
-        public DalXml.DO.Parcel getParcel(int _id)
+        public DalXml.DO.Parcel GetParcel(int _id)
         {
             DalXml.DO.Parcel parcel = new DalXml.DO.Parcel(0, 0, 0, 0);// DateTime.MinValue,DateTime.MinValue);
             for (int i = 0; i < listParcel.Count; i++)
@@ -156,7 +156,7 @@ namespace DalObject
         {
             return listDrone;
         }
-        public IEnumerable<DalXml.DO.Parcel> getParcels ()
+        public ObservableCollection<DalXml.DO.Parcel> GetParcels ()
         {
             return listParcel;
         }
@@ -219,8 +219,6 @@ namespace DalObject
                 exampleD.Model = droneModels[r.Next(0, 2)];
                 exampleD.Exists = true;
                 listDrone.Add(exampleD);
-                //thisConfig.indexAvailDrone++;
-
             }
 
             //INITIALIZE STATION
@@ -246,9 +244,9 @@ namespace DalObject
             string[] customerNames = new string[12] { "Reuven", "Shimon", "Levi",
                 "Yehuda", "Yissachar", "Zevulun", "Asher", "Gad", "Dan", "Naftali",
                 "Yosef", "Binyamin" };
-            string[] customerPhones = new string[10] { "972552255518", "972525553455",
-                "972552355577", "972557155580", "972557155548", "972559555755",
-                "972556555137", "972545558684", "972556555731", "972552255513" };
+            string[] customerPhones = new string[10] { "0552255518", "0525553455",
+                "0552355577", "0557155580", "0557155548", "0559555755",
+                "0556555137", "0545558684", "0556555731", "0552255513" };
 
             for (int i = 0; i < 10; i++)
             {
@@ -263,37 +261,30 @@ namespace DalObject
                 exampleC.Exists = true;
 
                 listCustomer.Add(exampleC);
-                //thisConfig.indexAvailCustomer++;
             }
 
 
-            //INITIALIZE PARCELS
-            for (int i = 0; i < 10; i++)
-            {
-                DalXml.DO.Parcel exampleP = new DalXml.DO.Parcel();
-                exampleP.Id = thisConfig.parcelSerialNumber++;
-                exampleP.SenderId = listCustomer[r.Next(0, 10)].Id;
-                do
+                //INITIALIZE PARCELS
+                for (int i = 0; i < 10; i++)
                 {
-                    exampleP.ReceiverId = listCustomer[r.Next(0, 10)].Id;
-                } while (exampleP.ReceiverId == exampleP.SenderId);
+                    DalXml.DO.Parcel exampleP = new DalXml.DO.Parcel();
+                    exampleP.Id = thisConfig.parcelSerialNumber++;
+                    exampleP.SenderId = listCustomer[r.Next(0, 10)].Id;
+                    do
+                    {
+                        exampleP.ReceiverId = listCustomer[r.Next(0, 10)].Id;
+                    } while (exampleP.ReceiverId == exampleP.SenderId);
 
-                exampleP.Weight = (DalXml.DO.WeightCategories)r.Next(1, 4);
-                exampleP.Priority = (DalXml.DO.Priorities)r.Next(1, 4);
-                int month = r.Next(1, 13);
-                int day = r.Next(1, 29);
-                int year = r.Next(2020, 2022);
-                exampleP.TimeCreated = new DateTime(year, month, day);
+                    exampleP.Weight = (DalXml.DO.WeightCategories)r.Next(0, 3);
+                    exampleP.Priority = (DalXml.DO.Priorities)r.Next(0, 3);
+                    exampleP.TimeCreated = DateTime.Now;
+                    exampleP.Exists = true;
 
-                exampleP.Exists = true;
 
-                exampleP.TimeAssigned = exampleP.TimeCreated + new TimeSpan(r.Next(1, 7), 0, 0, 0);
+                    //no Parcel is collectd/delivered  in Initialization
 
-                //no Parcel is collectd/delivered  in Initialization
-
-                listParcel.Add(exampleP);
-                //thisConfig.indexAvailParcel++;
-            }
+                    listParcel.Add(exampleP);
+                }
 
                 //INITIALIZE USERS
                 DalXml.DO.User userEmployee = new DalXml.DO.User();
@@ -402,7 +393,7 @@ namespace DalObject
                 if (item.Id == _id && item.Exists)
                 {
                     DalXml.DO.Drone copy = item;
-                    listDrone.Remove(copy);
+                    listDrone.Remove(item);
                     copy.Model = _model;
                     listDrone.Add(copy);
                     return;
@@ -418,7 +409,7 @@ namespace DalObject
                 if (item.Id == _id && item.Exists)
                 {
                     DalXml.DO.Customer copy = item;
-                    listCustomer.Remove(copy);
+                    listCustomer.Remove(item);
                     if (_name != "")
                         copy.Name = _name;
                     if (_phone != "")
@@ -438,7 +429,7 @@ namespace DalObject
                 if (item.Id == _id && item.Exists)
                 {
                     DalXml.DO.Station copy = item;
-                    listStation.Remove(copy);
+                    listStation.Remove(item);
                     if (_name != 0)
                         copy.Name = _name;
                     if (_totalChargeSlots != 0)
@@ -451,9 +442,23 @@ namespace DalObject
             throw new DalXml.DO.EXItemNotFoundException();
 
         }
+        public void modifyParcel(int _id, DalXml.DO.Priorities? _priority)
+            {
+                foreach (var item in listParcel)
+                {
+                    if (item.Id == _id && item.Exists)
+                    {
+                        DalXml.DO.Parcel copy = item;
+                        listParcel.Remove(item);
+                        copy.Priority = _priority;
+                        listParcel.Add(copy);
+                        return;
+                    }
+                }
+            }
 
 
-        public void assignDroneToParcel(int droneId, int parcelId)
+            public void assignDroneToParcel(int droneId, int parcelId)
         {
             foreach (var item in listParcel)
             {

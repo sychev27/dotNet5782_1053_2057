@@ -14,7 +14,8 @@ namespace BL
             //ADD
             public void AddDrone(int _id, string _model, DalXml.DO.WeightCategories _maxWeight, int _stationId)
             {
-                foreach (var item in dataAccess.getDrones())
+                foreach (var item in GetBODroneList(true)) 
+                    //do not allow user to add new drone with previous , even if deleted
                 {
                     if (item.Id == _id)
                         throw new EXDroneAlreadyExists();
@@ -139,7 +140,10 @@ namespace BL
                     throw new EXNotFoundPrintException("Station");
                 }
             }
-
+            public void ModifyParcel(int _id, BO.Enum.Priorities? _priority)
+            {
+                dataAccess.modifyParcel(_id, (DalXml.DO.Priorities)_priority);
+            }
 
 
 
@@ -409,20 +413,21 @@ namespace BL
                     }
                 }
             }
-            public void EraseParcel(int id)
+            public void EraseParcel(int parcelId)
             {
                 //check..
-                BO.BOParcel parc = CreateBOParcel(id);
-                if (parc.TimeOfAssignment != null  //if parcel was assigned
-                    && parc.TimeOfDelivery != null)    //and not yet delivered
-                    throw new EXCantDltParNotYetDelivered();
+                BO.BOParcel parc = CreateBOParcel(parcelId);
+                if (parc.TimeOfAssignment != null)  //if parcel was assigned
+                    //&& parc.TimeOfDelivery != null)    //and not yet delivered
+                    throw new EXCantDltParAlrdyAssgndToDrone(GetDroneIdOfParcel(parcelId));
+                
+              //throw new EXCantDltParNotYetDelivered();
 
-
-                foreach (var item in dataAccess.getParcels())
+                foreach (var item in dataAccess.GetParcels())
                 {
-                    if (item.Id == id)
+                    if (item.Id == parcelId)
                     {
-                        dataAccess.EraseParcel(id);
+                        dataAccess.EraseParcel(parcelId);
                         return;
                     }
                 }

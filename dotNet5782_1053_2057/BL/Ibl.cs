@@ -36,9 +36,8 @@ namespace BL
             ObservableCollection<BO.BODrone> GetBODroneList(bool getDeleted = false);
             ObservableCollection<BO.BOParcelAtCustomer> GetBOParcelAtCustomerList(BO.BOCustomer customer);
             IEnumerable<BO.BOStation> GetStations();
-
-            string GetDroneLocationString(int id);//returns string describing drone's location
-
+            string GetDroneLocationString(int droneId);//returns string describing drone's location
+            int GetDroneIdOfParcel(int parcelId);
 
 
             int GetIdOfUser(string _username, string _password);
@@ -48,7 +47,7 @@ namespace BL
 
 
             ObservableCollection<BO.BOCustomerToList> GetCustToList();
-            IEnumerable<BO.BOParcelToList> GetParcelToList();
+            ObservableCollection<BO.BOParcelToList> GetParcelToList();
             IEnumerable<BO.BOStationToList> GetStationToList();
             ObservableCollection<BO.BODroneToList> GetDroneToList();
             IEnumerable<BO.BOParcelToList> GetParcelsNotYetAssigned();
@@ -66,6 +65,7 @@ namespace BL
             public void ModifyDrone(int _id, string _model);
             public void ModifyCust(int _id, string _name, string _phone);
             public void ModifyStation(int _id, int _name, int _totalChargeSlots);
+            public void ModifyParcel(int _id, BO.Enum.Priorities? _priority);
             
             //UPDATES:
             void ChargeDrone(int droneId); //sends drone to available station

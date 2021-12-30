@@ -19,8 +19,8 @@ namespace BL
             public override string ToString()
             {
                 string res = "Parcel " + Id + "From " + NameSender + " to " + NameReceiver + "\n";
-                res += (BL.BO.Enum.WeightCategories)Weight + " Priority: " + Priority;
-
+                res += Weight.ToString() + " Priority: " + Priority.ToString() + "\n";
+                //res += " " + ParcelStatus;
                 res += "\n";
                 return res;
             }

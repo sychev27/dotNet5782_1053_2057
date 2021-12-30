@@ -10,6 +10,10 @@ namespace BL
     {
         public class BOParcel
         {
+            public BOParcel()
+            {
+                Exists = true;
+            }
             public int Id { get; set; }
             public BOCustomerInParcel Sender { get; set; }
             public BOCustomerInParcel Receiver { get; set; }
@@ -19,6 +23,8 @@ namespace BL
             public DateTime? TimeOfAssignment { get; set; }
             public DateTime? TimeOfCollection { get; set; }
             public DateTime? TimeOfDelivery { get; set; }
+            public bool Exists { get; set; }
+
 
             public override string ToString()
             {
