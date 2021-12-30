@@ -9,7 +9,7 @@ namespace BL
 {
     namespace BO
     {
-        public class BODrone
+        public class BODrone : INotifyPropertyChanged
         {
             public BODrone()
             {
@@ -22,26 +22,28 @@ namespace BL
             public BL.BO.Enum.DroneStatus DroneStatus { get; set; }
             public BL.BO.BOParcelInTransfer ParcelInTransfer { get; set; }
             public BL.BO.BOLocation Location { get; set; }
-            public bool Exists { get; set; }
+            //public bool Exists { get; set; }
 
-            //private bool _exists;
-            //public bool Exists
-            //{
-            //    get { return _exists; }
-            //    set
-            //    {
-            //        _exists = value;
-            //        NotifyPropertyChanged("Test");
-            //    }
-            //}
+            private bool _exists;
 
-            //public PropertyChangedEventHandler PropertyChanged;
 
-            //public void NotifyPropertyChanged(string propertyName)
-            //{
-            //    if (PropertyChanged != null)
-            //        PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            //}
+
+            public event PropertyChangedEventHandler PropertyChanged;
+            public bool Exists
+            {
+                get { return _exists; }
+                set
+                {
+                    _exists = value;
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("Exists"));
+                    }
+                    //PropertyChanged(this, new PropertyChangedEventArgs("Exists"));
+                }
+            }
+
+            
 
 
             public override string ToString()
