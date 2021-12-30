@@ -58,8 +58,16 @@ namespace WpfApp1
         {
             BL.BO.BOParcelToList parcel = ParcelListView.SelectedItem as BL.BO.BOParcelToList;
             int id = parcel.Id;
-            BL.BO.BOParcel parc = busiAccess.GetBOParcel(id);
-            new ParcelWindow(busiAccess,parc).ShowDialog();
+            try
+            {
+                BL.BO.BOParcel parc = busiAccess.GetBOParcel(id);
+                new ParcelWindow(busiAccess, parc).ShowDialog();
+            }
+            catch (BL.BLApi.EXParcelNotFound ex)
+            {
+                MainWindow.ErrorMsg(ex.ToString());
+            }
+            
         }
 
         private void btnCloseList_Click(object sender, RoutedEventArgs e)

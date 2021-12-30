@@ -27,6 +27,7 @@ namespace WpfApp1
         {
             busiAccess = busiAccess1;
             //droneList = busiAccess.GetBODroneList() as ObservableCollection<BL.BO.BODrone>;
+             
             DataContext = busiAccess.GetBODroneList();
             InitializeComponent();
 
@@ -55,10 +56,11 @@ namespace WpfApp1
        private void btnAddDrone1_Click(object sender, RoutedEventArgs e)
        {
             new DroneWindow(busiAccess).ShowDialog();
-            int index = StatusSelector1.SelectedIndex;
-            DronesListView.ItemsSource = busiAccess.GetSpecificDroneListStatus(index);
-            index = StatusSelector2.SelectedIndex;
-            DronesListView.ItemsSource = busiAccess.GetSpecificDroneListWeight(index);
+            //keep previous filters
+            //int index = StatusSelector1.SelectedIndex;
+            //DronesListView.ItemsSource = busiAccess.GetSpecificDroneListStatus(index);
+            //index = StatusSelector2.SelectedIndex;
+            //DronesListView.ItemsSource = busiAccess.GetSpecificDroneListWeight(index);
 
         }
 

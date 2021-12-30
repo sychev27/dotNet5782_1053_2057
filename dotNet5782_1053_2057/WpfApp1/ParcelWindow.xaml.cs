@@ -20,10 +20,7 @@ namespace WpfApp1
     public partial class ParcelWindow : Window
     {
         BL.BLApi.Ibl busiAccess;
-        int thisParcelId;
-        bool registerMode;
-
-
+        
         public ParcelWindow(BL.BLApi.Ibl _busiAccess)
         //To Add a Parcel 
         {
@@ -34,23 +31,16 @@ namespace WpfApp1
 
             btnModifyParcel.IsEnabled = false;
             btnModifyParcel.Visibility = Visibility.Hidden;
-            tBlock_chooseReceiverId.Visibility = Visibility.Hidden;
+            tBlock_chooseParcelId.Visibility = Visibility.Hidden;
             tBlockTimeOfAssignment.Visibility = Visibility.Hidden;
             tBlockTimeOfCollection.Visibility = Visibility.Hidden;
             tBlockTimeOfCreation.Visibility = Visibility.Hidden;
             tBlockTimeOfDelivery.Visibility = Visibility.Hidden;
-            tBoxReceiverId.Visibility = Visibility.Hidden;
+            tBoxParcIdInput.Visibility = Visibility.Hidden;
             tBoxTimeOfAssignment.Visibility = Visibility.Hidden;
             tBoxTimeOfCollection.Visibility = Visibility.Hidden;
             tBoxTimeOfCreation.Visibility = Visibility.Hidden;
             tBoxTimeOfDelivery.Visibility = Visibility.Hidden;
-
-
-
-            //hideCustomerLogInBtns();
-
-
-
 
             btnEraseParce.IsEnabled = false;
         }
@@ -63,48 +53,45 @@ namespace WpfApp1
             cmbWeightCategory.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.WeightCategories));
             cmbPriority.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.Priorities));
 
-            //tBoxCusIdInput.IsReadOnly = true;
-            //tBoxCusIdInput.BorderBrush = Brushes.Transparent;
-            //tBoxLatitInfo.IsReadOnly = true;
-            //tBoxLatitInfo.BorderBrush = Brushes.Transparent;
-            //tBoxLongiInfo.IsReadOnly = true;
-            //tBoxLongiInfo.BorderBrush = Brushes.Transparent;
-
-
             btnAddParcel.IsEnabled = false;
             btnAddParcel.Visibility = Visibility.Hidden;
-            //hideCustomerLogInBtns();
+            
+            displayBOParcel(busiAccess, parcel);
 
-
-            displayBOCustomer(busiAccess, parcel);
-
-            btnEraseParce.IsEnabled = false;
         }
 
-        private void displayBOCustomer(BL.BLApi.Ibl _busiAccess, BL.BO.BOParcel boparcel)
+        private void displayBOParcel(BL.BLApi.Ibl _busiAccess, BL.BO.BOParcel boparcel)
         {
-            thisParcelId = boparcel.Id;
-
-
             tBoxParcIdInput.Text = boparcel.Id.ToString();
             tBoxSenderId.Text = boparcel.Sender.Id.ToString();
+            tBlockNameOfSender.Text = busiAccess.GetBOCustomer(boparcel.Sender.Id).Name;
             tBoxReceiverId.Text = boparcel.Receiver.Id.ToString();
-
+            tBlockNameOfReceiver.Text = busiAccess.GetBOCustomer(boparcel.Receiver.Id).Name;
+            
             cmbWeightCategory.SelectedIndex = (int)boparcel.WeightCategory;
             cmbWeightCategory.IsReadOnly = true;
             cmbWeightCategory.IsEnabled = false;
 
             cmbPriority.SelectedIndex = (int)boparcel.Priority;
-            cmbPriority.IsReadOnly = true;
-            cmbPriority.IsEnabled = false;
+            //cmbPriority.IsReadOnly = true;
+            //cmbPriority.IsEnabled = false;
 
             tBoxTimeOfCreation.Text = boparcel.TimeOfCreation.ToString();
             tBoxTimeOfAssignment.Text = boparcel.TimeOfAssignment.ToString();
+
+            try
+            {
+                tBoxDroneIdOutput.Text = 
+                    busiAccess.GetDroneIdOfParcel(boparcel.Id).ToString();
+                //tBlockNameOfDrone.Text = 
+            }
+            catch (BL.BLApi.EXDroneNotFound)
+            {
+                tBoxDroneIdOutput.Text = "Not yet assigned to a drone";
+            }
+
             tBoxTimeOfCollection.Text = boparcel.TimeOfCollection.ToString();
             tBoxTimeOfDelivery.Text = boparcel.TimeOfDelivery.ToString();
-
-
-            //working on a function in BL..
 
         }
 
@@ -115,26 +102,28 @@ namespace WpfApp1
             tBlockWeightCategory, tBlockPriority);
 
             //(1) Receive Data
-            int parcId;
+            
             int senderId;
-            bool parcIdSuccess = Int32.TryParse(tBoxParcIdInput.Text, out parcId);
-            bool senderIdSuccess = Int32.TryParse(tBoxParcIdInput.Text, out senderId);
+            int receiverId;
+            bool senderIdSuccess = Int32.TryParse(tBoxSenderId.Text, out senderId);
+            bool receiverIdSuccess = Int32.TryParse(tBoxReceiverId.Text, out receiverId);
             DalXml.DO.WeightCategories? weight = (DalXml.DO.WeightCategories)cmbWeightCategory.SelectedIndex;
             DalXml.DO.Priorities? priority = (DalXml.DO.Priorities)cmbPriority.SelectedIndex;
 
             //(2) Check that Data is Valid
             bool validData = true;
-            //check parcelId
-            if (tBoxParcIdInput.Text == null || !parcIdSuccess || parcId <= 0)
-            {
-                tBlock_chooseParcelId.Foreground = new SolidColorBrush(Colors.Red);
-                validData = false;
-            }
-
+            
             //check senderId
-            if (tBoxParcIdInput.Text == null || !senderIdSuccess || senderId <= 0)
+            if (tBoxSenderId.Text == null || !senderIdSuccess || senderId <= 0)
             {
                 tBlock_chooseSenderId.Foreground = new SolidColorBrush(Colors.Red);
+                validData = false;
+            }
+            //check receiver Id
+            if (tBoxReceiverId.Text == null || !receiverIdSuccess || receiverId <= 0
+                || receiverId == senderId)
+            {
+                tBlock_chooseReceiverId.Foreground = new SolidColorBrush(Colors.Red);
                 validData = false;
             }
 
@@ -157,27 +146,21 @@ namespace WpfApp1
             {
                 try
                 {
-                    busiAccess.AddParcel(senderId, parcId, weight,priority);
-                    MessageBox.Show("Parcel Added Successfully", "SUCCESS", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
+                    busiAccess.AddParcel(senderId, receiverId, weight,priority);
+                    MessageBox.Show("Parcel Added Successfully", "SUCCESS", 
+                        MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
                     Close();
                 }
                 catch (BL.BLApi.EXCustomerAlreadyExists exception)
                 {
                     //if Parcels's Id already exists
-                    MessageBox.Show(exception.printException(), "Error Message",
-                        MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+                    MainWindow.ErrorMsg(exception.ToString());
                 }
             }
             else
                 return;
 
-           // if (!registerMode) //if window opened from List...
-             //   Close();
-           // else              // if window opened from LoginWindow
-           // {
-              //  new AddUserWindow(busiAccess, _id).Show();
-               // Close();
-          //  }
+           
 
 
         }
@@ -189,14 +172,28 @@ namespace WpfApp1
 
         private void btnModifyParcel_Click(object sender, RoutedEventArgs e)
         {
-
+            busiAccess.ModifyParcel(Int32.Parse(tBoxParcIdInput.Text),
+                (BL.BO.Enum.Priorities)cmbPriority.SelectedItem);
+            MessageBox.Show("Priority modified successfully", "SUCCESS", 
+                MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
+            
         }
 
         private void btnEraseparc_Click(object sender, RoutedEventArgs e)
         {
-
+            try
+            {
+                busiAccess.EraseParcel(Int32.Parse(tBoxParcIdInput.Text));
+                MessageBox.Show("Parcel Erased Successfully", "SUCCESS",
+                        MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
+                Close();
+            }
+            catch (BL.BLApi.EXCantDltParAlrdyAssgndToDrone ex)
+            {
+                MainWindow.ErrorMsg(ex.ToString());
+            }
         }
-
+        
         private void tBoxSenderId_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             int _id;
@@ -208,7 +205,7 @@ namespace WpfApp1
         private void tBoxReceiverId_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             int _id;
-            Int32.TryParse(tBoxSenderId.Text, out _id);
+            Int32.TryParse(tBoxReceiverId.Text, out _id);
             BL.BO.BOCustomer custumer = busiAccess.GetBOCustomer(_id);
             new CustomerWindow(busiAccess, custumer).ShowDialog();
         }
@@ -221,6 +218,21 @@ namespace WpfApp1
         private void cmbPriority_SelectionChanged1(object sender, SelectionChangedEventArgs e)
         {
 
+        }
+
+        private void tBoxReceiverId_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void tBoxDroneIdOutput_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            int droneId;
+            bool droneIdSuccess = Int32.TryParse(tBoxDroneIdOutput.Text, out droneId);
+            if (droneIdSuccess)
+                new DroneWindow(busiAccess, busiAccess.GetBODrone(droneId)).ShowDialog();
+            else
+                return;
         }
     }
 }

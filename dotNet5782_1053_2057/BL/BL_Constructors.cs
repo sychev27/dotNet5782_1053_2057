@@ -227,7 +227,7 @@ namespace BL
             int getParcIdFromDroneID(int origDroneId)
             {
                 //receives ID of its drone. Fetches correct parcel from Data Layer.
-                IEnumerable<DalXml.DO.Parcel> origParcList = dataAccess.getParcels();
+                IEnumerable<DalXml.DO.Parcel> origParcList = dataAccess.GetParcels();
 
                 //(1)FETCH PARCEL FROM DATA LAYER
                 DalXml.DO.Parcel origParcel = new DalXml.DO.Parcel();
@@ -287,7 +287,7 @@ namespace BL
                 BO.BOParcelInTransfer thisParc = new BO.BOParcelInTransfer();
 
                 //(1)FETCH SPECIFIC PARCEL FROM DATA LAYER
-                IEnumerable<DalXml.DO.Parcel> origParcList = dataAccess.getParcels();
+                IEnumerable<DalXml.DO.Parcel> origParcList = dataAccess.GetParcels();
 
                 DalXml.DO.Parcel origParcel = new DalXml.DO.Parcel();
                 //assume origParcel it's proper ID
@@ -443,14 +443,14 @@ namespace BL
                 newCust.Phone = origCust.Phone;
 
                 newCust.ListOfParcSent = new List<BO.BOParcelAtCustomer>();
-                foreach (var item in dataAccess.getParcels())
+                foreach (var item in dataAccess.GetParcels())
                 {
                     if (item.SenderId == newCust.Id)
                         newCust.ListOfParcSent.Add(createParcAtCust(item, true));
                 }
                 newCust.ListOfParcReceived = new List<BO.BOParcelAtCustomer>();
                 {
-                    foreach (var item in dataAccess.getParcels())
+                    foreach (var item in dataAccess.GetParcels())
                     {
                         if (item.ReceiverId == newCust.Id)
                             newCust.ListOfParcReceived.Add(createParcAtCust(item, false));
@@ -466,7 +466,7 @@ namespace BL
                 DalXml.DO.Parcel origParc = new DalXml.DO.Parcel();
                 try
                 {
-                    origParc = dataAccess.getParcel(id);
+                    origParc = dataAccess.GetParcel(id);
                 }
                 //throw exception if not found..
                 catch (DalXml.DO.EXItemNotFoundException)
@@ -505,7 +505,7 @@ namespace BL
                 newCustToList.NumParcelsSentDelivered = 0;
                 newCustToList.NumParcelsSentNotDelivered = 0;
 
-                foreach (var item in dataAccess.getParcels())
+                foreach (var item in dataAccess.GetParcels())
                 {
                     if (item.SenderId == newCustToList.Id) //if sent this parcel
                     {
@@ -542,7 +542,7 @@ namespace BL
             private BO.BOParcelToList createBOParcToList(int _id)
             {
                 BO.BOParcelToList newParcToList = new BO.BOParcelToList();
-                DalXml.DO.Parcel origParcel = dataAccess.getParcel(_id);
+                DalXml.DO.Parcel origParcel = dataAccess.GetParcel(_id);
 
                 newParcToList.Id = origParcel.Id;
                 newParcToList.NameReceiver = dataAccess.getCustomer(origParcel.ReceiverId).Name;

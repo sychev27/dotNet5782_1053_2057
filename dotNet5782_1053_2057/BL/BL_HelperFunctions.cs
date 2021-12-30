@@ -199,10 +199,10 @@ namespace BL
                 const int REGULAR = 0, FAST = 1, URGENT = 2;
 
 
-                foreach (var origParcel in dataAccess.getParcels())
+                foreach (var origParcel in dataAccess.GetParcels())
                 {
                     //(1) Take Relevant Parcels
-                    if ((origParcel.DroneId == 0) 
+                    if ((origParcel.DroneId == 0 || origParcel.DroneId == null) 
                         && (int)origParcel.Weight <= (int)droneCopy.MaxWeight) //if drone can hold parcel
                     {
                         //(2) Fill our 3 Arrays...each with 3 sub groups
@@ -333,17 +333,16 @@ namespace BL
 
             public BO.BOParcel GetBOParcel(int _id)
             {
-                IEnumerable<DalXml.DO.Parcel> origList = dataAccess.getParcels();
+                IEnumerable<DalXml.DO.Parcel> origList = dataAccess.GetParcels();
                 foreach (var item in origList)
                 {
                     if (_id == item.Id && item.Exists)
                     {
                         return CreateBOParcel(_id);
-
                     }
                 }
                 //throw exception!!!
-                throw new EXNotFoundPrintException("Customer");
+                throw new EXParcelNotFound(); ;
             }
 
             public BO.BOStation GetBOStation(int id)
@@ -356,6 +355,16 @@ namespace BL
                 throw new EXNotFoundPrintException("Station");
             }
 
+            public int GetDroneIdOfParcel(int parcelId)
+            {
+                DalXml.DO.Parcel parc = dataAccess.GetParcel(parcelId);
+                if (!parc.Exists)
+                    throw new EXParcelNotFound();
+                if (parc.DroneId != null)
+                    return (int)parc.DroneId;
+                else
+                    throw new BLApi.EXDroneNotFound();
+            }
 
 
 
@@ -363,7 +372,7 @@ namespace BL
             public ObservableCollection<BO.BODrone> GetBODroneList(bool getDeleted = false)
             {
                 if (getDeleted)
-                    return listDrone;
+                    return listDrone; // without filtering out the deleted drones
 
                 ObservableCollection<BO.BODrone> res = new ObservableCollection<BO.BODrone>();
                 foreach (var item in listDrone)
@@ -373,7 +382,18 @@ namespace BL
                 }
                 return res;
             }
-           
+            private ObservableCollection<DalXml.DO.Parcel> getParcelListFromData(bool getDeleted = false)
+            {
+                if (getDeleted)
+                    return dataAccess.GetParcels();
+                ObservableCollection<DalXml.DO.Parcel> res = new ObservableCollection<DalXml.DO.Parcel>();
+                foreach (var item in dataAccess.GetParcels())
+                {
+                    if (item.Exists)
+                        res.Add(item);
+                }
+                return res;
+            }
 
 
             public ObservableCollection<BO.BODrone> GetSpecificDroneListStatus(int num)
@@ -494,12 +514,13 @@ namespace BL
                 }
                 return res;
             }
-            public IEnumerable<BO.BOParcelToList> GetParcelToList()
+            public ObservableCollection<BO.BOParcelToList> GetParcelToList()
             {
-                List<BO.BOParcelToList> res = new List<BO.BOParcelToList>();
-                foreach (var item in dataAccess.getParcels())
+                ObservableCollection<BO.BOParcelToList> res = new ObservableCollection<BO.BOParcelToList>();
+                foreach (var item in dataAccess.GetParcels())
                 {
-                    res.Add(createBOParcToList(item.Id));
+                    if(item.Exists)
+                        res.Add(createBOParcToList(item.Id));
                 }
                 return res;
             }
@@ -667,11 +688,8 @@ namespace BL
                 //if did not find username at all
                 throw new EXUsernameNotFound();
             }
-            //public DalXml.DO.User GetUser(int _id)
-            //{
-            //    return dataAccess.GetUser(_id);
-            //}
-
+            
+            
 
 
 

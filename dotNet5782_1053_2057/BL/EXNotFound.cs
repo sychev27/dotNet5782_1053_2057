@@ -55,7 +55,10 @@ namespace BL
         {
             public EXDroneNotFound() : base("Drone") { }
         }
-
+        public class EXParcelNotFound : EXNotFoundPrintException
+        {
+            public EXParcelNotFound() : base("Parcel") { }
+        }
         public class EXUsernameNotFound : EXNotFoundPrintException
         {
             public EXUsernameNotFound() : base("Username") { }

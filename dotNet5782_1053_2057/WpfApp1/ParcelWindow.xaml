@@ -13,26 +13,26 @@
         <TextBlock x:Name="tBlockWeightCategory" Grid.Row="3" Text="W. Category: 35-36" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="22"/>
         <TextBlock x:Name="tBlockPriority" Grid.Row="4" Text="Priority:" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="22"/>
         <TextBlock x:Name="tBlockTimeOfCreation" Grid.Row="5" Text="T. Of Creation:" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="22"/>
-        <TextBlock x:Name="tBlockTimeOfAssignment" Grid.Row="6" Text="T. Of Assig.:" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="22"/>
-        <TextBlock x:Name="tBlockTimeOfCollection" Grid.Row="7" Text="T. Of Collect.:" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="22"/>
-        <TextBlock x:Name="tBlockTimeOfDelivery" Grid.Row="8" Text="T. Of Delivery:" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="22"/>
+        <TextBlock x:Name="tBlockTimeOfAssignment" Grid.Row="6" Text="T. Of Assig.:" TextWrapping="Wrap" Margin="5,5,5,8" FontSize="22"/>
+        <TextBlock x:Name="tBlockTimeOfCollection" Grid.Row="8" Text="T. Of Collect.:" TextWrapping="Wrap" Margin="5,2,5,5" FontSize="22"/>
+        <TextBlock x:Name="tBlockTimeOfDelivery" Grid.Row="9" Text="T. Of Delivery:" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="22"/>
 
 
-        <TextBox x:Name ="tBoxParcIdInput" Grid.Column="1" Text="" TextWrapping="Wrap" Margin="5,5,5,5" Height="Auto" VerticalAlignment="Stretch" FontSize="18" />
-        <TextBox x:Name ="tBoxSenderId" Grid.Column="1" Grid.Row="1" Text="" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="18" MouseDoubleClick="tBoxSenderId_MouseDoubleClick" />
-        <TextBox x:Name ="tBoxReceiverId" Grid.Column="1" Grid.Row="2" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="18" MouseDoubleClick="tBoxReceiverId_MouseDoubleClick" />
-        <ComboBox x:Name="cmbWeightCategory" Grid.Column="1" Grid.Row="3" SelectionChanged="cmbWeightCategory_SelectionChanged" Margin="5,5,5,5" FontSize="18"/>
-        <ComboBox x:Name="cmbPriority" Grid.Column="1" Grid.Row="4" SelectionChanged="cmbPriority_SelectionChanged1" Margin="5,5,5,5" FontSize="18"/>
-        <TextBox x:Name="tBoxTimeOfCreation" Grid.Column="1" Grid.Row="5" Text="" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="18"/>
-        <TextBox x:Name="tBoxTimeOfAssignment" Grid.Column="1" Grid.Row="6" Text="" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="18"/>
-        <TextBox x:Name="tBoxTimeOfCollection" Grid.Column="1" Grid.Row="7" Text="" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="18"/>
-        <TextBox x:Name="tBoxTimeOfDelivery" Grid.Column="1" Grid.Row="8" Text="" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="18"/>
+        <TextBox x:Name ="tBoxParcIdInput" Grid.Column="1" Text="" TextWrapping="Wrap" Margin="5,5,5,5" Height="Auto" FontSize="18" Grid.ColumnSpan="2" />
+        <TextBox x:Name ="tBoxSenderId" Grid.Column="1" Grid.Row="1" Text="" TextWrapping="Wrap" Margin="5,5,0,5" FontSize="18" MouseDoubleClick="tBoxSenderId_MouseDoubleClick" />
+        <TextBox x:Name ="tBoxReceiverId" Grid.Column="1" Grid.Row="2" TextWrapping="Wrap" Margin="5,5,0,5" FontSize="18" MouseDoubleClick="tBoxReceiverId_MouseDoubleClick" TextChanged="tBoxReceiverId_TextChanged" />
+        <ComboBox x:Name="cmbWeightCategory" Grid.Column="1" Grid.Row="3" SelectionChanged="cmbWeightCategory_SelectionChanged" Margin="5,5,5,5" FontSize="18" Grid.ColumnSpan="2"/>
+        <ComboBox x:Name="cmbPriority" Grid.Column="1" Grid.Row="4" SelectionChanged="cmbPriority_SelectionChanged1" Margin="5,5,5,5" FontSize="18" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="tBoxTimeOfCreation" Grid.Column="1" Grid.Row="5" Text="" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="18" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="tBoxTimeOfAssignment" Grid.Column="1" Grid.Row="6" Text="" TextWrapping="Wrap" Margin="5,5,5,8" FontSize="18" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="tBoxTimeOfCollection" Grid.Column="1" Grid.Row="8" Text="" TextWrapping="Wrap" Margin="5,2,5,5" FontSize="18" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="tBoxTimeOfDelivery" Grid.Column="1" Grid.Row="9" Text="" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="18" Grid.ColumnSpan="2"/>
 
-        <Button x:Name ="btnAddParcel" Content="Add Parcel" Grid.Row="9" Click = "btnAddParcel_Click" Grid.Column="1" HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Margin="5,5,5,5" Width="Auto" FontSize="15"/>
-        <Button x:Name="btnCancel1" Content="Cancel" Grid.Row="9" RenderTransformOrigin="0.5,0.5" Click="btnCancel1_Click" HorizontalAlignment="Stretch" Margin="5,5,5,5" VerticalAlignment="Stretch" Width="Auto" FontSize="15"/>
-        <Button x:Name ="btnEraseParce" Grid.Column="2" Content="Erase This Parcel" Grid.Row="9" Margin="5,5,5,5" Click="btnEraseparc_Click"/>
-        <Button x:Name ="btnModifyParcel" Content="Modify" Grid.Column="2" Grid.Row="1" Click="btnModifyParcel_Click" HorizontalAlignment="Stretch" Margin="5,5,5,5"  Width="Auto" FontSize="15"/>
-        <ListBox x:Name="lstParcelList" Grid.Column="3" Grid.RowSpan="4" Grid.Row="1" Margin="5,5,5,5" RenderTransformOrigin="0.5,0.5">
+        <Button x:Name ="btnAddParcel" Content="Add Parcel" Grid.Row="10" Click = "btnAddParcel_Click" Grid.Column="1" Height="Auto" Margin="5,5,5,5" Width="Auto" FontSize="15" Grid.ColumnSpan="2"/>
+        <Button x:Name="btnCancel1" Content="Cancel" Grid.Row="10" RenderTransformOrigin="0.5,0.5" Click="btnCancel1_Click" Margin="5,5,5,5" Width="Auto" FontSize="15"/>
+        <Button x:Name ="btnEraseParce" Grid.Column="3" Content="Erase This Parcel" Grid.Row="10" Margin="5,5,5,5" Click="btnEraseparc_Click"/>
+        <Button x:Name ="btnModifyParcel" Content="Modify Priority" Grid.Column="3" Grid.Row="4" Click="btnModifyParcel_Click" Margin="5,4,5,5"  Width="Auto" FontSize="15"/>
+        <ListBox x:Name="lstParcelList" Grid.Column="4" Grid.RowSpan="4" Grid.Row="1" Margin="5,5,5,5" RenderTransformOrigin="0.5,0.5">
             <ListBox.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -42,25 +42,32 @@
                 </TransformGroup>
             </ListBox.RenderTransform>
         </ListBox>
-        
+        <TextBlock x:Name="tBlockDroneId" Grid.Row="7" Text="Drone Carrying Parcel" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="15"/>
+        <TextBox x:Name="tBoxDroneIdOutput" Grid.Column="1" Grid.Row="7" Text="" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="18" MouseDoubleClick="tBoxDroneIdOutput_MouseDoubleClick"/>
+        <TextBlock x:Name="tBlockNameOfSender" Grid.Column="2" Grid.Row="1" Text="" TextWrapping="Wrap" Margin="5,5,5,5"/>
+        <TextBlock x:Name="tBlockNameOfReceiver" Grid.Column="2" Grid.Row="2" Text="" TextWrapping="Wrap" Margin="5,5,5,5"/>
+        <TextBlock x:Name="tBlockNameOfDrone" Grid.Column="2" Grid.Row="7" Text="" TextWrapping="Wrap" Margin="5,5,5,5"/>
+
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="45*"/>
-            <ColumnDefinition Width="61*"/>
-            <ColumnDefinition Width="40*"/>
-            <ColumnDefinition Width="75*"/>
+            <ColumnDefinition Width="163*"/>
+            <ColumnDefinition Width="118*"/>
+            <ColumnDefinition Width="103*"/>
+            <ColumnDefinition Width="145*"/>
+            <ColumnDefinition Width="271*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height ="*"/>
-            <RowDefinition Height ="*"/>
-            <RowDefinition Height ="*"/>
-            <RowDefinition Height ="*"/>
-            <RowDefinition Height ="*"/>
-            <RowDefinition Height ="*"/>
-            <RowDefinition Height ="*"/>
-            <RowDefinition Height ="*"/>
-            <RowDefinition Height ="*"/>
-            <RowDefinition Height ="*"/>
+            <RowDefinition Height ="43*"/>
+            <RowDefinition Height ="43*"/>
+            <RowDefinition Height ="43*"/>
+            <RowDefinition Height ="43*"/>
+            <RowDefinition Height ="43*"/>
+            <RowDefinition Height ="43*"/>
+            <RowDefinition Height ="47*"/>
+            <RowDefinition Height="47*"/>
+            <RowDefinition Height="42*"/>
+            <RowDefinition Height ="43*"/>
+            <RowDefinition Height ="43*"/>
 
         </Grid.RowDefinitions>
 

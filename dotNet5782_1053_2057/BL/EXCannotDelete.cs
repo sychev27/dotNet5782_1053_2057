@@ -37,6 +37,12 @@ namespace BL
             public EXCantDltParNotYetDelivered() : 
                 base("Parcel", "it is assigned, but not yet delivered") { }
         }
+        public class EXCantDltParAlrdyAssgndToDrone : EXCannotDelete
+        {
+            public EXCantDltParAlrdyAssgndToDrone(int droneId) :
+                base("Parcel", "it is already assigned to a Drone " + droneId.ToString())
+            { }
+        }
         public class EXCantDltStationWDroneCharging : EXCannotDelete
         {
             public EXCantDltStationWDroneCharging() : 
