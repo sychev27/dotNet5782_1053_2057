@@ -8,23 +8,23 @@ namespace DalXml
 
     namespace DO
     {
-        public enum WeightCategories { light, medium, heavy };
+      //  public enum WeightCategories { light, medium, heavy };
         // public enum DroneStatus         { available, work_in_progress, sent};
         //work_in_progress - this Drone is charging...
-        public enum Priorities { regular, fast, urgent };
+       // public enum Priorities { regular, fast, urgent };
         
     }
 
 }
 
 
-public static class FactoryDL
-{
-    public static DalXml.IDal GetDL()
-    {
-        return DalObject.DalApi.DataSource.Instance;
-    }
-}
+//public static class FactoryDL
+//{
+  //  public static DalXml.IDal GetDL()
+    //{
+      //  return DalObject.DalApi.DataSource.Instance;
+    //}
+//}
 
 
 
