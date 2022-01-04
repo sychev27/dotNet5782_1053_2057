@@ -31,6 +31,8 @@ namespace WpfApp1
             DataContext = busiAccess.GetBODroneList();
             InitializeComponent();
 
+
+
             //DronesListView.ItemsSource = busiAccess.GetBODroneList();
             StatusSelector1.DataContext = Enum.GetValues(typeof(BL.BO.Enum.DroneStatus));
            // StatusSelector1.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.DroneStatus));
@@ -105,7 +107,7 @@ namespace WpfApp1
         private void chkBoxGetErased_UnChecked(object sender, RoutedEventArgs e)
         {
             //DataContext = busiAccess.GetBODroneList();
-            DronesListView.ItemsSource = busiAccess.GetBODroneList();
+            DataContext = busiAccess.GetBODroneList();
         }
 
         private ObservableCollection<BL.BO.BODrone> getBODronesAsObservable()

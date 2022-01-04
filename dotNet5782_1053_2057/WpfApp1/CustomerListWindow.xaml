@@ -4,8 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
+        xmlns:converters="clr-namespace:WpfApp1.Converters"
         mc:Ignorable="d"
         Title="CustomerListWindow" Height="539" Width="842">
+
+    <Window.Resources>
+        <converters:BoolToVisibilty x:Key="myConverter">
+            
+        </converters:BoolToVisibilty>
+    </Window.Resources>
+    
     <Grid Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="50*"/>
@@ -27,17 +35,23 @@
         <ListView x:Name="CustomerListView" Margin="0,58,0,62" Grid.RowSpan="2" ItemsSource="{Binding UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="CustomerListView_MouseDoubleClick" >
             <ListView.View>
                 <GridView>
-                    <GridViewColumn/>
+                    <!--<GridViewColumn>
+                        <GridViewColumnHeader  Content="Header text" 
+                                          
+                        </GridViewColumnHeader>
+                    </GridViewColumn>-->
                 </GridView>
             </ListView.View>
-            
+
             <ListView.GroupStyle>
                 <GroupStyle>
                     <GroupStyle.HeaderTemplate>
-                        <DataTemplate>
+                        <DataTemplate >
                             <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Name}" />
+
                         </DataTemplate>
                     </GroupStyle.HeaderTemplate>
+                    
                 </GroupStyle>
             </ListView.GroupStyle>
 

@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Collections.ObjectModel;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.ComponentModel;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
@@ -20,11 +22,15 @@ namespace WpfApp1
     public partial class ParcelListWindow : Window
     {
         BL.BLApi.Ibl busiAccess;
+        public ICollectionView parcelListCollection { get; set; }
         public ParcelListWindow(BL.BLApi.Ibl busiAccess1)
         {
             InitializeComponent();
             busiAccess = busiAccess1;
-            DataContext = busiAccess.GetParcelToList();
+            //DataContext = busiAccess.GetParcelToList();
+            parcelListCollection = (CollectionView)CollectionViewSource.GetDefaultView(busiAccess.GetParcelToList());
+            ParcelListView.ItemsSource = parcelListCollection;
+
         }
 
         private void Selector2_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -74,5 +80,37 @@ namespace WpfApp1
         {
             Close();
         }
+
+        private void chkboxShowErased_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void chkboxByPriority_Unchecked(object sender, RoutedEventArgs e)
+        {
+            refreshGrouping();
+        }
+        private void chkboxByPriority_Checked(object sender, RoutedEventArgs e)
+        {
+            refreshGrouping();
+            //if (chkboxSortPriority.IsChecked == null) return;
+            if ((bool)chkboxSortPriority.IsChecked)
+                parcelListCollection.GroupDescriptions.
+                    Add(new PropertyGroupDescription(nameof(BL.BO.BOParcelToList.Priority)));
+           
+        }
+
+
+        private void refreshGrouping()
+        {
+            var itemToRemove = parcelListCollection.GroupDescriptions.OfType<PropertyGroupDescription>()
+     .FirstOrDefault(groupPropDescrip => groupPropDescrip.PropertyName == nameof(BL.BO.BOParcelToList.Priority));
+
+            if (itemToRemove != null)
+            {
+                parcelListCollection.GroupDescriptions.Remove(itemToRemove);
+            }
+        }
+
     }
 }

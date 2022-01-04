@@ -7,6 +7,12 @@
         mc:Ignorable="d"
         Title="ParcelWindow" Height="450" Width="800">
     <Grid x:Name="OutputAndInputGrid" RenderTransformOrigin="0.46,0.503">
+
+        <Grid.Resources>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        </Grid.Resources>
+
+
         <TextBlock x:Name="tBlock_chooseParcelId" Text=" ID:" Margin="5,5,5,5" FontSize="22"/>
         <TextBlock x:Name="tBlock_chooseSenderId" Grid.Row="1" Text="Sender ID:" Margin="5,5,5,5" FontSize="22"/>
         <TextBlock x:Name="tBlock_chooseReceiverId" Grid.Row="2" Text="Receiver ID:" Margin="5,5,5,5" FontSize="22"/>
@@ -14,7 +20,7 @@
         <TextBlock x:Name="tBlockPriority" Grid.Row="4" Text="Priority:" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="22"/>
         <TextBlock x:Name="tBlockTimeOfCreation" Grid.Row="5" Text="T. Of Creation:" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="22"/>
         <TextBlock x:Name="tBlockTimeOfAssignment" Grid.Row="6" Text="T. Of Assig.:" TextWrapping="Wrap" Margin="5,5,5,8" FontSize="22"/>
-        <TextBlock x:Name="tBlockTimeOfCollection" Grid.Row="8" Text="T. Of Collect.:" TextWrapping="Wrap" Margin="5,2,5,5" FontSize="22"/>
+        <TextBlock x:Name="tBlockTimeOfCollection" Grid.Row="8" Text="T. Of Collect.:" TextWrapping="Wrap" Margin="5,2,5,5" FontSize="22" Visibility="{Binding ElementName=chkboxHideTime, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter} }" />
         <TextBlock x:Name="tBlockTimeOfDelivery" Grid.Row="9" Text="T. Of Delivery:" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="22"/>
 
 
@@ -47,6 +53,7 @@
         <TextBlock x:Name="tBlockNameOfSender" Grid.Column="2" Grid.Row="1" Text="" TextWrapping="Wrap" Margin="5,5,5,5"/>
         <TextBlock x:Name="tBlockNameOfReceiver" Grid.Column="2" Grid.Row="2" Text="" TextWrapping="Wrap" Margin="5,5,5,5"/>
         <TextBlock x:Name="tBlockNameOfDrone" Grid.Column="2" Grid.Row="7" Text="" TextWrapping="Wrap" Margin="5,5,5,5"/>
+        <CheckBox x:Name="chkboxHideTime" Content="test - show time" Grid.Column="3" IsChecked="True" HorizontalAlignment="Left" Height="31" Margin="16,2,0,0" Grid.Row="8" VerticalAlignment="Top" Width="119"/>
 
 
         <Grid.ColumnDefinitions>

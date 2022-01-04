@@ -16,7 +16,8 @@ namespace BL
                 Exists = true;
             }
             public int Id { get; set; }
-            public string Model { get; set; }
+            
+            private string _model;
             public BL.BO.Enum.WeightCategories MaxWeight { get; set; }
             public double Battery { get; set; }
             public BL.BO.Enum.DroneStatus DroneStatus { get; set; }
@@ -39,11 +40,23 @@ namespace BL
                     {
                         PropertyChanged(this, new PropertyChangedEventArgs("Exists"));
                     }
-                    //PropertyChanged(this, new PropertyChangedEventArgs("Exists"));
+                    
                 }
             }
 
-            
+            public string Model
+            {
+                get { return _model; }
+                set
+                {
+                    _model = value;
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("Model"));
+                    }
+                }
+            }
+
 
 
             public override string ToString()

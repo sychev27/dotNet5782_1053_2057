@@ -73,8 +73,13 @@ namespace WpfApp1
             cmbWeightCategory.IsEnabled = false;
 
             cmbPriority.SelectedIndex = (int)boparcel.Priority;
-            //cmbPriority.IsReadOnly = true;
-            //cmbPriority.IsEnabled = false;
+            
+            if(boparcel.TimeOfDelivery != null)
+            {
+                cmbPriority.IsReadOnly = true;
+                cmbPriority.IsEnabled = false;
+                btnModifyParcel.IsEnabled = false;
+            }
 
             tBoxTimeOfCreation.Text = boparcel.TimeOfCreation.ToString();
             tBoxTimeOfAssignment.Text = boparcel.TimeOfAssignment.ToString();
@@ -83,7 +88,6 @@ namespace WpfApp1
             {
                 tBoxDroneIdOutput.Text = 
                     busiAccess.GetDroneIdOfParcel(boparcel.Id).ToString();
-                //tBlockNameOfDrone.Text = 
             }
             catch (BL.BLApi.EXDroneNotFound)
             {
