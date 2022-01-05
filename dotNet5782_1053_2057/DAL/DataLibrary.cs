@@ -8,8 +8,8 @@ namespace DalXml
 
     namespace DO
     {
-      //  public enum WeightCategories { light, medium, heavy };
-        // public enum DroneStatus         { available, work_in_progress, sent};
+        //public enum WeightCategories { light, medium, heavy };
+        //public enum DroneStatus         { available, work_in_progress, sent};
         //work_in_progress - this Drone is charging...
        // public enum Priorities { regular, fast, urgent };
         
@@ -72,17 +72,15 @@ namespace DalObject
             Initialize();
         }
 
-
-
-
-        public DalXml.DO.Drone getDrone(int _id) {
+        public DalXml.DO.Drone GetDrone(int _id) {
             DalXml.DO.Drone  drone = new DalXml.DO.Drone(0,"",0);
             for (int i = 0; i < listDrone.Count; i++)
                 if (listDrone[i].Id == _id  && listDrone[i].Exists)
                     drone = listDrone[i];
             return drone;
         }
-        public DalXml.DO.Customer getCustomer(int _id) {
+
+        public DalXml.DO.Customer GetCustomer(int _id) {
             DalXml.DO.Customer cust = new DalXml.DO.Customer(0, "", "", 0, 0);
             for (int i = 0; i < listCustomer.Count; i++)
                 if (listCustomer[i].Id == _id && listCustomer[i].Exists)
@@ -99,7 +97,7 @@ namespace DalObject
             if (parcel.Id == 0) throw new DalXml.DO.EXItemNotFoundException();
             return parcel;
         }
-        public DalXml.DO.Station getStation(int _id)
+        public DalXml.DO.Station GetStation(int _id)
         {
             DalXml.DO.Station st = new DalXml.DO.Station(0, 0, 0, 0, 0);
             for (int i = 0; i < listStation.Count; i++)
@@ -108,7 +106,7 @@ namespace DalObject
             if (st.Id == 0) throw new DalXml.DO.EXItemNotFoundException();
             return st;
         }
-        public DalXml.DO.DroneCharge getDroneCharge(int _droneId)
+        public DalXml.DO.DroneCharge GetDroneCharge(int _droneId)
         {
             DalXml.DO.DroneCharge dc = new DalXml.DO.DroneCharge(0, 0);
             foreach (var item in listDroneCharge)
@@ -119,27 +117,23 @@ namespace DalObject
             throw new DalXml.DO.EXItemNotFoundException();
         }
 
-
-
-
-
-        public void addDrone(DalXml.DO.Drone drone)
+        public void AddDrone(DalXml.DO.Drone drone)
         { 
             listDrone.Add(drone);
         }
-        public void addCustomer(DalXml.DO.Customer custom)
+        public void AddCustomer(DalXml.DO.Customer custom)
         {
             listCustomer.Add(custom);
         }
-        public void addParcel(DalXml.DO.Parcel parcel)
+        public void AddParcel(DalXml.DO.Parcel parcel)
         {
             listParcel.Add(parcel);
         }
-        public void addStation(DalXml.DO.Station st)
+        public void AddStation(DalXml.DO.Station st)
         {
             listStation.Add(st);
         }
-        public void addDroneCharge(DalXml.DO.DroneCharge droneCharge)
+        public void AddDroneCharge(DalXml.DO.DroneCharge droneCharge)
         {
             listDroneCharge.Add(droneCharge);
         }
@@ -147,29 +141,29 @@ namespace DalObject
             {
                 listUser.Add(_user);
             }
-       public IEnumerable<double> requestElec() {
+       public IEnumerable<double> RequestElec() {
             List<double> lst = new List<double> {Config.empty, Config.light, Config.mediuim, Config.heavy ,Config.chargeRate};
             return lst;
         }
 
-        public ObservableCollection<DalXml.DO.Drone> getDrones()
+        public IEnumerable<DalXml.DO.Drone> GetDrones()
         {
             return listDrone;
         }
-        public ObservableCollection<DalXml.DO.Parcel> GetParcels ()
+        public IEnumerable<DalXml.DO.Parcel> GetParcels ()
         {
             return listParcel;
         }
-        public IEnumerable<DalXml.DO.Station> getStations()
+        public IEnumerable<DalXml.DO.Station> GetStations()
         {
             return listStation;
         }
-        public ObservableCollection<DalXml.DO.Customer> getCustomers()
+        public IEnumerable<DalXml.DO.Customer> GetCustomers()
         {
             return listCustomer;
         }
 
-        public IEnumerable<DalXml.DO.DroneCharge> getDroneCharges()
+        public IEnumerable<DalXml.DO.DroneCharge> GetDroneCharges()
         {
             return listDroneCharge;
         }
@@ -187,13 +181,6 @@ namespace DalObject
             {
                 return listUser;
             }
-
-
-
-
-
-
-
 
             public void Initialize()   
         {
@@ -381,12 +368,7 @@ namespace DalObject
 
         }
 
-
-
-
-
-
-        public void modifyDrone(int _id, string _model) //changes drone model
+        public void ModifyDrone(int _id, string _model) //changes drone model
         {
             foreach (var item in listDrone)
             {
@@ -402,7 +384,7 @@ namespace DalObject
             //if not found --> exception
             throw new DalXml.DO.EXItemNotFoundException();
         }
-        public void modifyCust(int _id, string _name = "", string _phone = "")
+        public void ModifyCust(int _id, string _name = "", string _phone = "")
         {
             foreach (var item in listCustomer )
             {
@@ -422,7 +404,7 @@ namespace DalObject
             throw new DalXml.DO.EXItemNotFoundException();
 
         }
-        public void modifyStation(int _id, int _name = 0, int _totalChargeSlots = 0)
+        public void ModifyStation(int _id, int _name = 0, int _totalChargeSlots = 0)
         {
             foreach (var item in listStation)
             {
@@ -442,7 +424,7 @@ namespace DalObject
             throw new DalXml.DO.EXItemNotFoundException();
 
         }
-        public void modifyParcel(int _id, DalXml.DO.Priorities? _priority)
+        public void ModifyParcel(int _id, DalXml.DO.Priorities? _priority)
             {
                 foreach (var item in listParcel)
                 {
@@ -458,7 +440,7 @@ namespace DalObject
             }
 
 
-            public void assignDroneToParcel(int droneId, int parcelId)
+            public void AssignDroneToParcel(int droneId, int parcelId)
         {
             foreach (var item in listParcel)
             {
@@ -474,7 +456,7 @@ namespace DalObject
             }
             //if not found --> exception
         }
-        public void pickupParcel(int parcelId)
+        public void PickupParcel(int parcelId)
         {
             foreach (var item in listParcel)
             {
@@ -489,7 +471,7 @@ namespace DalObject
             }
             //if not found --> exception
         }
-        public void deliverParcel(int parcelId)
+        public void DeliverParcel(int parcelId)
         {
             foreach (var item in listParcel )
             {
@@ -508,15 +490,6 @@ namespace DalObject
 
         //User functions
         
-
-
-
-
-
-
-
-
-
 
 
         //public IEnumerable<DalXml.DO.Drone> getSpecificDroneList(Predicate<DalXml.DO.Drone> property)

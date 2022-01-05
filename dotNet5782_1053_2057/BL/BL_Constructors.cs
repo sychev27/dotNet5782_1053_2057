@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 
 namespace BL
 {
-
-
     namespace BLApi
     {
         public class stringCodes
@@ -59,7 +57,7 @@ namespace BL
             //static BL() { }
             private BL() //Private CTOR - implementing Singleton Design Pattern
             {
-                IEnumerable<double> elecInfo = dataAccess.requestElec();
+                IEnumerable<double> elecInfo = dataAccess.RequestElec();
                 empty = elecInfo.First();
                 light = elecInfo.ElementAt(1);
                 medium = elecInfo.ElementAt(2);
@@ -115,7 +113,7 @@ namespace BL
                             
                             //(1) SET LOCATION - to Random Station
                             List<DalXml.DO.Station> listStation = new List<DalXml.DO.Station>();
-                            foreach (var item in dataAccess.getStations())
+                            foreach (var item in dataAccess.GetStations())
                                 listStation.Add(item);
 
                             DalXml.DO.Station st = listStation[r.Next(0, listStation.Count)];
@@ -133,7 +131,7 @@ namespace BL
                         {
                             //(1) SET LOCATION - to Random Customer's location
                             if (tempListCust.Count == 0) //if not yet full, fill customer list
-                                foreach (var item in dataAccess.getCustomers())
+                                foreach (var item in dataAccess.GetCustomers())
                                 {
                                     //For now, tempListCust includes every customer,
                                     //not just those who have had a parcel already delivered to them
@@ -179,7 +177,7 @@ namespace BL
 
             void receiveDronesFromData()
             {
-                IEnumerable<DalXml.DO.Drone> origList = dataAccess.getDrones();
+                IEnumerable<DalXml.DO.Drone> origList = dataAccess.GetDrones();
                 //receives drones from Data Layer, adds them in listDrone
                 foreach (DalXml.DO.Drone drone in origList)
                 {
@@ -348,7 +346,7 @@ namespace BL
 
             BO.BOCustomerInParcel createCustInParcel(int origCustId)
             {
-                IEnumerable<DalXml.DO.Customer> origCustomers = dataAccess.getCustomers();
+                IEnumerable<DalXml.DO.Customer> origCustomers = dataAccess.GetCustomers();
                 foreach (var item in origCustomers)
                 {
                     if (origCustId == item.Id)
@@ -388,7 +386,7 @@ namespace BL
                 DalXml.DO.Station origSt;
                 try
                 {
-                    origSt = dataAccess.getStation(id);
+                    origSt = dataAccess.GetStation(id);
                 }
                 catch (DalXml.DO.EXItemNotFoundException)
                 {
@@ -430,7 +428,7 @@ namespace BL
                 DalXml.DO.Customer origCust = new DalXml.DO.Customer();
                 try
                 {
-                    origCust = dataAccess.getCustomer(id);
+                    origCust = dataAccess.GetCustomer(id);
                 }
                 catch (DalXml.DO.EXItemNotFoundException)
                 {
@@ -476,9 +474,9 @@ namespace BL
                 newParc.Id = origParc.Id;
                 newParc.Priority = (BO.Enum.Priorities)origParc.Priority;
                 newParc.Sender = new BO.BOCustomerInParcel(
-                    origParc.SenderId, dataAccess.getCustomer(origParc.SenderId).Name);
+                    origParc.SenderId, dataAccess.GetCustomer(origParc.SenderId).Name);
                 newParc.Receiver = new BO.BOCustomerInParcel(
-                    origParc.ReceiverId, dataAccess.getCustomer(origParc.ReceiverId).Name);
+                    origParc.ReceiverId, dataAccess.GetCustomer(origParc.ReceiverId).Name);
 
                 newParc.WeightCategory = (BO.Enum.WeightCategories)origParc.Weight;
                 newParc.TimeOfCreation = origParc.TimeCreated;
@@ -496,7 +494,7 @@ namespace BL
             private BO.BOCustomerToList createBOCustToList(int _id)
             {
                 BO.BOCustomerToList newCustToList = new BO.BOCustomerToList();
-                DalXml.DO.Customer origCust = dataAccess.getCustomer(_id);
+                DalXml.DO.Customer origCust = dataAccess.GetCustomer(_id);
                 newCustToList.Id = origCust.Id;
                 newCustToList.CustomerName = origCust.Name;
                 newCustToList.Phone = origCust.Phone;
@@ -545,8 +543,8 @@ namespace BL
                 DalXml.DO.Parcel origParcel = dataAccess.GetParcel(_id);
 
                 newParcToList.Id = origParcel.Id;
-                newParcToList.NameReceiver = dataAccess.getCustomer(origParcel.ReceiverId).Name;
-                newParcToList.NameSender = dataAccess.getCustomer(origParcel.SenderId).Name;
+                newParcToList.NameReceiver = dataAccess.GetCustomer(origParcel.ReceiverId).Name;
+                newParcToList.NameSender = dataAccess.GetCustomer(origParcel.SenderId).Name;
                 newParcToList.Weight = (BO.Enum.WeightCategories)origParcel.Weight;
                 newParcToList.Priority = (BO.Enum.Priorities)origParcel.Priority;
 
@@ -565,7 +563,7 @@ namespace BL
             private BO.BOStationToList createBOStationToList(int _id)
             {
                 BO.BOStationToList newStationToList = new BO.BOStationToList();
-                DalXml.DO.Station origStation = dataAccess.getStation(_id);
+                DalXml.DO.Station origStation = dataAccess.GetStation(_id);
 
                 newStationToList.Id = origStation.Id;
                 newStationToList.NameStation = origStation.Name;

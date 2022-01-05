@@ -11,31 +11,26 @@ namespace DalXml
     {
         void Initialize();
 
-        DalXml.DO.Drone getDrone(int _id);
-        DalXml.DO.Customer getCustomer(int _id);
+        DalXml.DO.Drone GetDrone(int _id);
+        DalXml.DO.Customer GetCustomer(int _id);
         DalXml.DO.Parcel GetParcel(int _id);
-        DalXml.DO.Station getStation(int _id);
-        DalXml.DO.DroneCharge getDroneCharge(int _droneId);
+        DalXml.DO.Station GetStation(int _id);
+        DalXml.DO.DroneCharge GetDroneCharge(int _droneId);
 
-
-
-
-
-        void addCustomer(DalXml.DO.Customer custom);
-        void addDrone(DalXml.DO.Drone drone);
-        void addParcel(DalXml.DO.Parcel parcel);
-        void addStation(DalXml.DO.Station st);
-        void addDroneCharge(DalXml.DO.DroneCharge droneCharge);
+        void AddCustomer(DalXml.DO.Customer custom);
+        void AddDrone(DalXml.DO.Drone drone);
+        void AddParcel(DalXml.DO.Parcel parcel);
+        void AddStation(DalXml.DO.Station st);
+        void AddDroneCharge(DalXml.DO.DroneCharge droneCharge);
         void AddUser(DalXml.DO.User _user);
 
+        IEnumerable<double> RequestElec();
+        IEnumerable<DalXml.DO.Drone> GetDrones();
+        IEnumerable<DalXml.DO.Parcel> GetParcels();
+        IEnumerable<DalXml.DO.Station> GetStations();
 
-        IEnumerable<double> requestElec();
-        ObservableCollection<DalXml.DO.Drone> getDrones();
-        ObservableCollection<DalXml.DO.Parcel> GetParcels();
-        IEnumerable<DalXml.DO.Station> getStations();
-
-        ObservableCollection<DalXml.DO.Customer> getCustomers();
-        IEnumerable<DalXml.DO.DroneCharge> getDroneCharges();
+        IEnumerable<DalXml.DO.Customer> GetCustomers();
+        IEnumerable<DalXml.DO.DroneCharge> GetDroneCharges();
         int GetIdFromUser(DalXml.DO.User _user);
         IEnumerable<DalXml.DO.User> GetUsers();
         //DalXml.DO.User GetUser(int _id);  <--delete this
@@ -43,17 +38,11 @@ namespace DalXml
 
         //IEnumerable<DalXml.DO.Drone> getSpecificDroneList(Predicate<DalXml.DO.Drone> typeOfDrone);
 
+        public void ModifyDrone(int _id, string _model);
+        public void ModifyCust(int _id, string _name, string _phone);
+        public void ModifyStation(int _id, int _name, int _totalChargeSlots);
 
-
-
-
-
-
-        public void modifyDrone(int _id, string _model);
-        public void modifyCust(int _id, string _name, string _phone);
-        public void modifyStation(int _id, int _name, int _totalChargeSlots);
-
-        public void modifyParcel(int _id, DalXml.DO.Priorities? _priority);
+        public void ModifyParcel(int _id, DalXml.DO.Priorities? _priority);
 
 
         //Erase:
@@ -65,9 +54,9 @@ namespace DalXml
 
 
         //Update:
-        void assignDroneToParcel(int droneId, int parcelId);
-        void pickupParcel(int parcelId);
-        void deliverParcel(int parcelId);
+        void AssignDroneToParcel(int droneId, int parcelId);
+        void PickupParcel(int parcelId);
+        void DeliverParcel(int parcelId);
     }
 
 

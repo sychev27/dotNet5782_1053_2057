@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Collections.ObjectModel;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,16 +23,14 @@ public static class FactoryDL
 {
     public static DalXml.IDal GetDL()
     {
-        return DalObject.DalApi.DataSource.Instance;
+        return DalXml.DalXml1.Instance;
     }
 }
 
-namespace DAL
-{
-    namespace DalXml1
-    {
 
-        public sealed class DalXml1 //: DalXml.IDal
+    namespace DalXml
+    {
+        public sealed class DalXml1 : IDal
         {
             internal class Config
             {
@@ -76,7 +75,7 @@ namespace DAL
 
             #endregion
 
-            void Initialize()
+            public void Initialize()
             {
                 Random r = new Random();
                 //coordinates for area of jerusalem
@@ -90,11 +89,11 @@ namespace DAL
                 //INITIALIZE DRONE
 
                 string[] droneModels = { "Merkava", "Namer" };
-                List<DalXml.DO.Drone> listDrone = new List<DalXml.DO.Drone>();
+                List<DO.Drone> listDrone = new List<DO.Drone>();
 
                 for (int i = 0; i < 5; i++)
                 {
-                  DalXml.DO.Drone exampleD = new DalXml.DO.Drone();
+                  DO.Drone exampleD = new DO.Drone();
 
                   exampleD.Id = i + 1;
                   exampleD.MaxWeight = (DalXml.DO.WeightCategories)r.Next(1, 4);
@@ -102,7 +101,7 @@ namespace DAL
                   exampleD.Exists = true;
                   listDrone.Add(exampleD);
                 }
-                XMLTools.SaveListToXMLSerializer<DalXml.DO.Drone>(listDrone,dronsPath);
+                DALTools.XMLTools.SaveListToXMLSerializer<DalXml.DO.Drone>(listDrone,dronsPath);
 
                 //INITIALIZE STATION
 
@@ -122,7 +121,7 @@ namespace DAL
                   listStation.Add(exampleS);
                   //thisConfig.indexAvailStation++;
                 }
-                XMLTools.XmlStation xmlStation = new XMLTools.XmlStation();
+                DALTools.XmlStation xmlStation = new DALTools.XmlStation(stationsPath);
                 xmlStation.SaveStationListLinq(listStation);
 
 
@@ -149,7 +148,7 @@ namespace DAL
 
                     listCustomer.Add(exampleC);
                 }
-                XMLTools.SaveListToXMLSerializer<DalXml.DO.Customer>(listCustomer, customersPath);
+                DALTools.XMLTools.SaveListToXMLSerializer<DalXml.DO.Customer>(listCustomer, customersPath);
 
 
                 //INITIALIZE PARCELS
@@ -157,12 +156,12 @@ namespace DAL
 
                 for (int i = 0; i < 10; i++)
                 {
-                    DalXml.DO.Parcel exampleP = new DalXml.DO.Parcel();
+                    DO.Parcel exampleP = new DO.Parcel();
                     exampleP.Id = thisConfig.parcelSerialNumber++;
                     exampleP.SenderId = listCustomer[r.Next(0, 10)].Id;
                     do
                     {
-                        exampleP.ReceiverId = listCustomer[r.Next(0, 10)].Id;
+                      exampleP.ReceiverId = listCustomer[r.Next(0, 10)].Id;
                     } while (exampleP.ReceiverId == exampleP.SenderId);
 
                     exampleP.Weight = (DalXml.DO.WeightCategories)r.Next(0, 3);
@@ -175,7 +174,7 @@ namespace DAL
 
                     listParcel.Add(exampleP);
                 }
-                XMLTools.SaveListToXMLSerializer<DalXml.DO.Parcel>(listParcel, parcelsPath);
+                DALTools.XMLTools.SaveListToXMLSerializer<DalXml.DO.Parcel>(listParcel, parcelsPath);
 
 
                 //INITIALIZE USERS
@@ -190,9 +189,357 @@ namespace DAL
                 userReuven.Username = "ruv";
                 userReuven.Password = "ruv";
                 listUser.Add(userReuven);
-                XMLTools.SaveListToXMLSerializer<DalXml.DO.User>(listUser, usersPath);
+                DALTools.XMLTools.SaveListToXMLSerializer<DalXml.DO.User>(listUser, usersPath);
                 //END OF FUNCTION
             }
+
+        public DO.Drone GetDrone(int _id)
+        {
+            DO.Drone drone = new DO.Drone(0, "", 0);
+            IEnumerable<DO.Drone> listDrone = DALTools.XMLTools.LoadListFromXMLSerializer<DO.Drone>(dronsPath);
+
+            foreach (DO.Drone dr in listDrone)
+                if (dr.Id == _id && dr.Exists)
+                    drone = dr;
+            if (drone.Id == 0) throw new DO.EXItemNotFoundException();
+            return drone;
         }
+
+        public DO.Customer GetCustomer(int _id)
+        {
+            DO.Customer cust = new DO.Customer(0, "", "", 0, 0);
+            IEnumerable<DO.Customer> listCustomer = DALTools.XMLTools.LoadListFromXMLSerializer<DO.Customer>(customersPath);
+
+            foreach (DO.Customer cst in listCustomer)
+                if (cst.Id == _id && cst.Exists)
+                    cust = cst;
+            if (cust.Id == 0) throw new DO.EXItemNotFoundException();
+            return cust;
+        }
+        public DO.Parcel GetParcel(int _id)
+        {
+            DO.Parcel parcel = new DO.Parcel(0, 0, 0, 0);// DateTime.MinValue,DateTime.MinValue);
+            IEnumerable<DO.Parcel> listParcel = DALTools.XMLTools.LoadListFromXMLSerializer<DO.Parcel>(parcelsPath);
+
+            foreach (DO.Parcel prc in listParcel)
+                if (prc.Id == _id && prc.Exists)
+                    parcel = prc;
+            if (parcel.Id == 0) throw new DO.EXItemNotFoundException();
+            return parcel;
+        }
+        public DO.Station GetStation(int _id)
+        {
+            DALTools.XmlStation xmlStation = new DALTools.XmlStation(stationsPath);
+            return xmlStation.GetStation(_id);
+        }
+        public DO.DroneCharge GetDroneCharge(int _droneId)
+        {
+            IEnumerable<DO.DroneCharge> listDroneCharge = DALTools.XMLTools.LoadListFromXMLSerializer<DO.DroneCharge>(droneChargesPath);
+
+            foreach (var item in listDroneCharge)
+            {
+                if (item.DroneId == _droneId && item.Exists)
+                    return item;
+            }
+            throw new DO.EXItemNotFoundException();
+        }
+
+        public void AddDrone(DO.Drone drone)
+        {
+            List<DO.Drone> listDrone = DALTools.XMLTools.LoadListFromXMLSerializer<DO.Drone>(dronsPath) as List<DO.Drone>;
+            listDrone.Add(drone);
+            DALTools.XMLTools.SaveListToXMLSerializer<DO.Drone>(listDrone, dronsPath);
+        }
+        public void AddCustomer(DO.Customer custom)
+        {
+            List<DO.Customer> listCustomer = DALTools.XMLTools.LoadListFromXMLSerializer<DO.Customer>(customersPath) as List<DO.Customer>;
+            listCustomer.Add(custom);
+            DALTools.XMLTools.SaveListToXMLSerializer<DO.Customer>(listCustomer, customersPath);
+        }
+        public void AddParcel(DO.Parcel parcel)
+        {
+            List<DO.Parcel> listParcel = DALTools.XMLTools.LoadListFromXMLSerializer<DO.Parcel>(parcelsPath) as List<DO.Parcel>;
+            listParcel.Add(parcel);
+            DALTools.XMLTools.SaveListToXMLSerializer<DO.Parcel>(listParcel, parcelsPath);
+        }
+        public void AddStation(DO.Station st)
+        {
+            DALTools.XmlStation xmlStation = new DALTools.XmlStation(stationsPath);
+            xmlStation.AddStation(st);
+        }
+        public void AddDroneCharge(DO.DroneCharge droneCharge)
+        {
+            List<DO.DroneCharge> listDroneCharge = DALTools.XMLTools.LoadListFromXMLSerializer<DO.DroneCharge>(droneChargesPath) as List<DO.DroneCharge>;
+            listDroneCharge.Add(droneCharge);
+            DALTools.XMLTools.SaveListToXMLSerializer<DO.DroneCharge>(listDroneCharge, droneChargesPath);
+        }
+        public void AddUser(DO.User _user)
+        {
+            List<DO.User> listUser = DALTools.XMLTools.LoadListFromXMLSerializer<DO.User>(usersPath) as List<DO.User>;
+            listUser.Add(_user);
+            DALTools.XMLTools.SaveListToXMLSerializer<DO.User>(listUser, usersPath);
+        }
+        public IEnumerable<double> RequestElec()
+        {
+            List<double> lst = new List<double> { Config.empty, Config.light, Config.mediuim, Config.heavy, Config.chargeRate };
+            return lst;
+        }
+
+        public IEnumerable<DO.Drone> GetDrones()
+        {
+            return DALTools.XMLTools.LoadListFromXMLSerializer<DO.Drone>(dronsPath);
+        }
+        public IEnumerable<DO.Parcel> GetParcels()
+        {
+            ObservableCollection<DO.Parcel> listParcel = DALTools.XMLTools.LoadListFromXMLSerializer<DO.Parcel>(parcelsPath) as ObservableCollection<DO.Parcel>;
+            return listParcel;
+        }
+        public IEnumerable<DalXml.DO.Station> GetStations()
+        {
+            DALTools.XmlStation xmlStation = new DALTools.XmlStation(stationsPath);
+            return xmlStation.GetStationList();
+        }
+        public IEnumerable<DO.Customer> GetCustomers()
+        {
+            return DALTools.XMLTools.LoadListFromXMLSerializer<DO.Customer>(customersPath);
+        }
+
+        public IEnumerable<DO.DroneCharge> GetDroneCharges()
+        {
+            return DALTools.XMLTools.LoadListFromXMLSerializer<DO.DroneCharge>(droneChargesPath);
+        }
+
+        public int GetIdFromUser(DO.User _user)
+        {
+            IEnumerable<DO.User> listUser = DALTools.XMLTools.LoadListFromXMLSerializer<DO.User>(usersPath);
+            foreach (var item in listUser)
+            {
+                if (item.Username == _user.Username)
+                    return item.Id;
+            }
+            throw new DO.EXItemNotFoundException();
+        }
+
+        public IEnumerable<DO.User> GetUsers()
+        {
+            return DALTools.XMLTools.LoadListFromXMLSerializer<DO.User>(usersPath);
+        }
+
+        public void EraseDrone(int droneId)
+        {
+            List<DO.Drone> listDrone = DALTools.XMLTools.LoadListFromXMLSerializer<DO.Drone>(dronsPath).ToList();
+            foreach (var item in listDrone)
+            {
+                if (item.Id == droneId)
+                {
+                    DO.Drone copy = item;
+                    listDrone.Remove(item);
+                    copy.Exists = false;
+                    listDrone.Add(copy);
+                    DALTools.XMLTools.SaveListToXMLSerializer<DO.Drone>(listDrone, dronsPath);
+                    return;
+                }
+            }
+        }
+        public void EraseCustomer(int id)
+        {
+            List<DO.Customer> listCustomer = DALTools.XMLTools.LoadListFromXMLSerializer<DO.Customer>(customersPath).ToList();
+            foreach (var item in listCustomer)
+            {
+                if (item.Id == id)
+                {
+                    DO.Customer copy = item;
+                    listCustomer.Remove(item);
+                    copy.Exists = false;
+                    listCustomer.Add(copy);
+                    DALTools.XMLTools.SaveListToXMLSerializer<DO.Customer>(listCustomer, customersPath);
+                    return;
+                }
+
+            }
+        }
+        public void EraseStation(int id)
+        {
+            DALTools.XmlStation xmlStation = new DALTools.XmlStation(stationsPath);
+            xmlStation.RemoveStation(id);
+
+        }
+        public void EraseParcel(int id)
+        {
+            List<DO.Parcel> listParcel = DALTools.XMLTools.LoadListFromXMLSerializer<DO.Parcel>(parcelsPath).ToList();
+            foreach (var item in listParcel)
+            {
+                if (item.Id == id)
+                {
+                    DO.Parcel copy = item;
+                    listParcel.Remove(item);
+                    copy.Exists = false;
+                    listParcel.Add(copy);
+                    DALTools.XMLTools.SaveListToXMLSerializer<DO.Parcel>(listParcel, parcelsPath);
+                    return;
+                }
+
+            }
+        }
+        public void EraseDroneCharge(DO.DroneCharge thisDroneCharge)
+        {
+            //if item not found, no exception is thrown..
+            List<DO.DroneCharge> listDroneCharge = DALTools.XMLTools.LoadListFromXMLSerializer<DO.DroneCharge>(droneChargesPath).ToList();
+            foreach (var item in listDroneCharge)
+            {
+                if (item.DroneId == thisDroneCharge.DroneId
+                        && item.StationId == thisDroneCharge.StationId)
+                {
+                    DO.DroneCharge copy = new DO.DroneCharge();
+                    copy = item;
+                    listDroneCharge.Remove(thisDroneCharge);
+                    copy.Exists = false;
+                    listDroneCharge.Add(copy);
+                    DALTools.XMLTools.SaveListToXMLSerializer<DO.DroneCharge>(listDroneCharge, droneChargesPath);
+                    break;
+                }
+            }
+
+        }
+
+        public void ModifyDrone(int _id, string _model) //changes drone model
+        {
+            List<DO.Drone> listDrone = DALTools.XMLTools.LoadListFromXMLSerializer<DO.Drone>(dronsPath).ToList();
+            foreach (var item in listDrone)
+            {
+                if (item.Id == _id && item.Exists)
+                {
+                    DO.Drone copy = item;
+                    listDrone.Remove(item);
+                    copy.Model = _model;
+                    listDrone.Add(copy);
+                    DALTools.XMLTools.SaveListToXMLSerializer<DO.Drone>(listDrone, dronsPath);
+                    return;
+                }
+            }
+            //if not found --> exception
+            throw new DalXml.DO.EXItemNotFoundException();
+        }
+
+        public void ModifyCust(int _id, string _name = "", string _phone = "")
+        {
+            List<DO.Customer> listCustomer = DALTools.XMLTools.LoadListFromXMLSerializer<DO.Customer>(customersPath).ToList();
+            foreach (var item in listCustomer)
+            {
+                if (item.Id == _id && item.Exists)
+                {
+                    DO.Customer copy = item;
+                    listCustomer.Remove(item);
+                    if (_name != "")
+                        copy.Name = _name;
+                    if (_phone != "")
+                        copy.Phone = _phone;
+                    listCustomer.Add(copy);
+                    DALTools.XMLTools.SaveListToXMLSerializer<DO.Customer>(listCustomer, customersPath);
+                    return;
+                }
+            }
+            //if not found --> exception
+            throw new DO.EXItemNotFoundException();
+
+        }
+        public void ModifyStation(int _id, int _name = 0, int _totalChargeSlots = 0)
+        {
+            DALTools.XmlStation xmlStation = new DALTools.XmlStation(stationsPath);
+            if (xmlStation.ModifyStation(_id, _name, _totalChargeSlots))
+                return;
+            else    //if not found --> exception
+                throw new DalXml.DO.EXItemNotFoundException();
+
+        }
+        public void ModifyParcel(int _id, DO.Priorities? _priority)
+        {
+            List<DO.Parcel> listParcel = DALTools.XMLTools.LoadListFromXMLSerializer<DO.Parcel>(parcelsPath).ToList();
+            foreach (var item in listParcel)
+            {
+                if (item.Id == _id && item.Exists)
+                {
+                    DO.Parcel copy = item;
+                    listParcel.Remove(item);
+                    copy.Priority = _priority;
+                    listParcel.Add(copy);
+                    DALTools.XMLTools.SaveListToXMLSerializer<DO.Parcel>(listParcel, parcelsPath);
+                    return;
+                }
+            }
+        }
+
+        public void AssignDroneToParcel(int droneId, int parcelId)
+        {
+            List<DO.Parcel> listParcel = DALTools.XMLTools.LoadListFromXMLSerializer<DO.Parcel>(parcelsPath).ToList();
+            foreach (var item in listParcel)
+            {
+                if (item.Id == parcelId && item.Exists)
+                {
+                    DO.Parcel copy = item;
+                    listParcel.Remove(copy);
+                    copy.DroneId = droneId;
+                    copy.TimeAssigned = DateTime.Now;
+                    listParcel.Add(copy);
+                    DALTools.XMLTools.SaveListToXMLSerializer<DO.Parcel>(listParcel, parcelsPath);
+                    return;
+                }
+            }
+            //if not found --> exception
+        }
+
+        public void PickupParcel(int parcelId)
+        {
+            List<DO.Parcel> listParcel = DALTools.XMLTools.LoadListFromXMLSerializer<DO.Parcel>(parcelsPath).ToList();
+            foreach (var item in listParcel)
+            {
+                if (item.Id == parcelId && item.Exists)
+                {
+                    DO.Parcel copy = item;
+                    listParcel.Remove(copy);
+                    copy.TimePickedUp = DateTime.Now;
+                    listParcel.Add(copy);
+                    DALTools.XMLTools.SaveListToXMLSerializer<DO.Parcel>(listParcel, parcelsPath);
+                    return;
+                }
+            }
+            //if not found --> exception
+        }
+        public void DeliverParcel(int parcelId)
+        {
+            List<DO.Parcel> listParcel = DALTools.XMLTools.LoadListFromXMLSerializer<DO.Parcel>(parcelsPath).ToList();
+            foreach (var item in listParcel)
+            {
+                if (item.Id == parcelId && item.Exists)
+                {
+                    DalXml.DO.Parcel copy = item;
+                    listParcel.Remove(copy);
+                    copy.TimeDelivered = DateTime.Now;
+                    listParcel.Add(copy);
+                    DALTools.XMLTools.SaveListToXMLSerializer<DO.Parcel>(listParcel, parcelsPath);
+                    return;
+                }
+            }
+            //if not found --> exception
+        }
+
+
+        //User functions
+
+
+
+
+        //public IEnumerable<DalXml.DO.Drone> getSpecificDroneList(Predicate<DalXml.DO.Drone> property)
+        //{
+        //        List<DalXml.DO.Drone> lst = new List<DalXml.DO.Drone>();
+        //        foreach (var item in listDrone)
+
+
+        //        {
+        //            lst.Add
+        //        }
+        //    return listDrone.FindAll(property);
+        //}
+
     }
 }
