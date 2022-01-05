@@ -23,6 +23,7 @@ namespace WpfApp1
         BL.BLApi.Ibl busiAccess;
         //private ObservableCollection<BL.BO.BODrone> droneList = getBODronesAsObservable();
         
+
         public DroneListWindow(BL.BLApi.Ibl busiAccess1) 
         {
             busiAccess = busiAccess1;
@@ -93,7 +94,7 @@ namespace WpfApp1
 
         private void refreshList(bool getDeleted = false)
         {
-            DronesListView.ItemsSource = null;
+            //DronesListView.ItemsSource = null;
             DronesListView.ItemsSource = busiAccess.GetBODroneList(getDeleted);
 
         }

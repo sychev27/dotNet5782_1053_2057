@@ -22,7 +22,7 @@ namespace BL
                 }
 
                 DalXml.DO.Drone newDOdrone = new DalXml.DO.Drone(_id, _model, _maxWeight);
-                dataAccess.addDrone(newDOdrone); //adds to DL
+                dataAccess.AddDrone(newDOdrone); //adds to DL
 
                 //adds to BL, assuming the drone is charging at station
                 global::BL.BO.BODrone boDrone = new global::BL.BO.BODrone();
@@ -41,35 +41,35 @@ namespace BL
             public void AddCustomer(int _id, string _name, string _phone, double _longitude,
                     double _latitude)
             {
-                foreach (var item in dataAccess.getDrones())
+                foreach (var item in dataAccess.GetDrones())
                 {
                     if (item.Id == _id)
                         throw new EXCustomerAlreadyExists();
                 }
                 DalXml.DO.Customer newCust = new DalXml.DO.Customer(_id, _name, _phone, _longitude, _latitude);
-                dataAccess.addCustomer(newCust);
+                dataAccess.AddCustomer(newCust);
             }
             public void AddDroneCharge(int _droneId, int _stationId)
             {
                 DalXml.DO.DroneCharge newDroneCharge = new DalXml.DO.DroneCharge(_droneId, _stationId);
-                dataAccess.addDroneCharge(newDroneCharge);
+                dataAccess.AddDroneCharge(newDroneCharge);
             }
             public void AddParcel(int _senderId, int _targetId, DalXml.DO.WeightCategories? _weight,
                              DalXml.DO.Priorities? _priority)// DateTime _requested, DateTime _scheduled)
             {
                 //DO NOT WRITE AN EXCEPTION FOR "ALREADY EXISTS!!"
                 DalXml.DO.Parcel dummy = new DalXml.DO.Parcel(_senderId, _targetId, _weight, _priority);
-                dataAccess.addParcel(dummy);
+                dataAccess.AddParcel(dummy);
             }
             public void AddStation(int _id, int _name, double _longitude, double _latitude, int _chargeSlots)
             {
-                foreach (var item in dataAccess.getStations())
+                foreach (var item in dataAccess.GetStations())
                 {
                     if (item.Id == _id)
                         throw new EXStationAlreadyExists();
                 }
                 DalXml.DO.Station dummy = new DalXml.DO.Station(_id, _name, _longitude, _latitude, _chargeSlots);
-                dataAccess.addStation(dummy);
+                dataAccess.AddStation(dummy);
             }
             public void AddUser(string _username, string _password, int _id = -1)
             {
@@ -99,7 +99,7 @@ namespace BL
             {
                 try
                 {
-                    dataAccess.modifyDrone(_id, _model); //udpates drone in Data Layer
+                    dataAccess.ModifyDrone(_id, _model); //udpates drone in Data Layer
                 }
                 catch (DalXml.DO.EXItemNotFoundException)
                 {
@@ -122,7 +122,7 @@ namespace BL
             {
                 try
                 {
-                    dataAccess.modifyCust(_id, _name, _phone);
+                    dataAccess.ModifyCust(_id, _name, _phone);
                 }
                 catch (DalXml.DO.EXItemNotFoundException)
                 {
@@ -133,7 +133,7 @@ namespace BL
             {
                 try
                 {
-                    dataAccess.modifyStation(_id, _name, _totalChargeSlots);
+                    dataAccess.ModifyStation(_id, _name, _totalChargeSlots);
                 }
                 catch (DalXml.DO.EXItemNotFoundException)
                 {
@@ -142,7 +142,7 @@ namespace BL
             }
             public void ModifyParcel(int _id, BO.Enum.Priorities? _priority)
             {
-                dataAccess.modifyParcel(_id, (DalXml.DO.Priorities)_priority);
+                dataAccess.ModifyParcel(_id, (DalXml.DO.Priorities)_priority);
             }
 
 
@@ -178,7 +178,7 @@ namespace BL
                 droneCopy.DroneStatus = global::BL.BO.Enum.DroneStatus.InDelivery;
                 droneCopy.ParcelInTransfer = createParcInTrans(droneCopy.Id, closestParcelId);
 
-                dataAccess.assignDroneToParcel(droneId, closestParcelId);
+                dataAccess.AssignDroneToParcel(droneId, closestParcelId);
 
             }
             public void PickupParcel(int droneId) //drone collects its pre-determined parcel 
@@ -205,7 +205,7 @@ namespace BL
                         bodrone.Battery -= battNededForDist(bodrone.Location, custLoc, 
                             bodrone.ParcelInTransfer.ParcelWeight);
                         bodrone.Location = custLoc;
-                        dataAccess.pickupParcel(bodrone.ParcelInTransfer.Id);
+                        dataAccess.PickupParcel(bodrone.ParcelInTransfer.Id);
                         bodrone.ParcelInTransfer.Collected = true;
                         return;
                     }
@@ -238,7 +238,7 @@ namespace BL
                             bodrone.ParcelInTransfer.ParcelWeight);
                         bodrone.Location = custLoc;
                         bodrone.DroneStatus = BO.Enum.DroneStatus.Available;
-                        dataAccess.deliverParcel(bodrone.ParcelInTransfer.Id);
+                        dataAccess.DeliverParcel(bodrone.ParcelInTransfer.Id);
                         bodrone.ParcelInTransfer = createEmptyParcInTrans(); //sets Id as -1
                         return;
                     }
@@ -312,7 +312,7 @@ namespace BL
                     }
                 }
 
-                dataAccess.EraseDroneCharge(dataAccess.getDroneCharge(droneId));
+                dataAccess.EraseDroneCharge(dataAccess.GetDroneCharge(droneId));
                 //try
                 //{
                 //    dataAccess.EraseDroneCharge(dataAccess.getDroneCharge(droneId));
@@ -347,7 +347,7 @@ namespace BL
                         //UPDATES IN DL
                         dataAccess.EraseDrone(droneId); 
                         if(item.DroneStatus == BO.Enum.DroneStatus.Charging)
-                            dataAccess.EraseDroneCharge(dataAccess.getDroneCharge(droneId));
+                            dataAccess.EraseDroneCharge(dataAccess.GetDroneCharge(droneId));
                        
                         return;
                     }
@@ -384,7 +384,7 @@ namespace BL
                 }
 
                 //delete Customer from Data Layer
-                foreach (var item in dataAccess.getCustomers())
+                foreach (var item in dataAccess.GetCustomers())
                 {
                     if (item.Id == _id)
                     {
@@ -404,7 +404,7 @@ namespace BL
                 if (st.ListDroneCharge.Count != 0)
                     throw new EXCantDltStationWDroneCharging();
 
-                foreach (var item in dataAccess.getStations())
+                foreach (var item in dataAccess.GetStations())
                 {
                     if (item.Id == id)
                     {
