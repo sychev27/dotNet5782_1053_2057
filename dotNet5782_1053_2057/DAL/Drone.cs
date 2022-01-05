@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,46 +12,60 @@ namespace DalXml
 {
     namespace DO
     {
-        public struct Drone
+        public struct Drone : INotifyPropertyChanged
         {
             
-            public Drone(int _id, string _model, DalXml.DO.WeightCategories _maxWeight)/*,
-                 IDAL.DO.DroneStatus _status = 0,  double _battery = 0 )*/
+            public Drone(int _id, string model, DalXml.DO.WeightCategories _maxWeight)
+                : this()
             {
                 Id = _id;
-                Model = _model;
+                _model = model;
                 MaxWeight = _maxWeight;
-                Exists = true;
-                //Status = _status;
-                //Battery = _battery;
+                _exists = true;
             }
 
             public int Id { get; set; }
-            public string Model { get; set; }
+
+            private string _model; 
             public DalXml.DO.WeightCategories MaxWeight { get; set; }
-            public bool Exists { get; set; }
+            private bool _exists { get; set; }
 
-            //public IDAL.DO.DroneStatus Status { get; set; }
-            //public double Battery { get; set; }
-
-            //public void print()
-            //{
-            //    Console.WriteLine("Drone " + Id + " " + Model + "\n" +
-            //       "MaxWeight: " + MaxWeight + "\n" );
-            //       //Status + "\n" +
-            //       //"Battery: " + Battery + "\n");
-            //}
+           
             public override string ToString()
             {
                 string res = "";
                 res += "Drone " + Id + " " + Model + "\n" +
                    "MaxWeight: " + MaxWeight + "\n" ;
-                //Status + "\n" +
-                //"Battery: " + Battery + "\n");
+               
                 return res;
             }
+            public event PropertyChangedEventHandler PropertyChanged;
+            public bool Exists
+            {
+                get { return _exists; }
+                set
+                {
+                    _exists = value;
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, 
+                            new PropertyChangedEventArgs("Exists"));
+                    }
 
-            
+                }
+            }
+            public string Model
+            {
+                get { return _model; }
+                set
+                {
+                    _model = value;
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this, new PropertyChangedEventArgs("Model"));
+                    }
+                }
+            }
 
 
 

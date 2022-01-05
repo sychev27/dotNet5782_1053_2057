@@ -25,6 +25,9 @@ namespace WpfApp1
             InitializeComponent();
             busiAccess = busiAccess1;
             DataContext = busiAccess.GetCustToList();
+            //CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(DataContext);
+            //PropertyGroupDescription groupDescription = new PropertyGroupDescription("NumParcelsSentNotDelivered");
+            //view.GroupDescriptions.Add(groupDescription);
 
         }
 
@@ -91,14 +94,26 @@ namespace WpfApp1
         }
         private void chkboxNumParcels_Unchecked(object sender, RoutedEventArgs e)
         {
-            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(DataContext);
-            PropertyGroupDescription groupDescription = new PropertyGroupDescription("NumParcelsSentNotDelivered");
-            view.GroupDescriptions.Remove(groupDescription);
+            refreshList();
         }
 
+        //{
+        //    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        //    {
+        //        bool param = bool.Parse(value.ToString());
+        //        if (param == true)
+        //            return Visibility.Visible;
+        //        else
+        //            return Visibility.Collapsed;
+        //    }
 
+        //    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        //    {
+        //        throw new NotImplementedException();
+        //    }
+        //}
 
-//END OF WINDOWS
+        //END OF WINDOWS
     }
 }
 
