@@ -564,45 +564,44 @@ namespace BL
             }
 
 
-            public ObservableCollection<BO.BODroneToList> GetDroneToList()
-            {
-                ObservableCollection<BO.BODroneToList> res = new ObservableCollection<BO.BODroneToList>();
-                foreach (var item in listDrone)
-                {
-                    res.Add(createBODroneToList(item.Id));
-                }
-                return res;
-            }
-            public IEnumerable<BO.BOParcelToList> GetParcelsNotYetAssigned()
-            {
-                List<BO.BOParcelToList> res = new List<BO.BOParcelToList>();
-                foreach (var item in GetParcelToList())
-                {
-                    if (item.ParcelStatus == BO.Enum.ParcelStatus.created)
-                        res.Add(item);
-                }
-                return res;
-            }
-            public ObservableCollection<BO.BOStationToList> GetStationAvailChargeSlots()
-            {
-                List<BO.BOStationToList> res = new List<BO.BOStationToList>();
-                foreach (var item in dataAccess.GetStations())
-                {
-                    if (freeSpots(item) > 0)
-                        res.Add(createBOStationToList(item.Id));
-                }
-                return res;
-            }
+            //public ObservableCollection<BO.BODroneToList> GetDroneToList()
+            //{
+            //    ObservableCollection<BO.BODroneToList> res = new ObservableCollection<BO.BODroneToList>();
+            //    foreach (var item in listDrone)
+            //    {
+            //        res.Add(createBODroneToList(item.Id));
+            //    }
+            //    return res;
+            //}
+            //public IEnumerable<BO.BOParcelToList> GetParcelsNotYetAssigned()
+            //{
+            //    List<BO.BOParcelToList> res = new List<BO.BOParcelToList>();
+            //    foreach (var item in GetParcelToList())
+            //    {
+            //        if (item.ParcelStatus == BO.Enum.ParcelStatus.created)
+            //            res.Add(item);
+            //    }
+            //    return res;
+            //}
+            //public IEnumerable<BO.BOStationToList> GetStationAvailChargeSlots()
+            //{
+            //    List<BO.BOStationToList> res = new List<BO.BOStationToList>();
+            //    foreach (var item in dataAccess.GetStations())
+            //    {
+            //        if (freeSpots(item) > 0)
+            //            res.Add(createBOStationToList(item.Id));
+            //    }
+            //    return res;
+            //}
 
-            public string GetBODroneModel(int id)
-            {
-                return GetBODrone(id).Model;
-
-            }
-            public BO.Enum.WeightCategories GetBoDroneMaxWeight(int id)
-            {
-                return GetBODrone(id).MaxWeight;
-            }
+            //public string GetBODroneModel(int id)
+            //{
+            //    return GetBODrone(id).Model;
+            //}
+            //public BO.Enum.WeightCategories GetBoDroneMaxWeight(int id)
+            //{
+            //    return GetBODrone(id).MaxWeight;
+            //}
 
 
 

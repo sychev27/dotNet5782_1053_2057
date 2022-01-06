@@ -11,21 +11,12 @@ namespace DalXml
     namespace DO
     {
         public enum WeightCategories { light, medium, heavy };
-        // public enum DroneStatus         { available, work_in_progress, sent};
-        //work_in_progress - this Drone is charging...
         public enum Priorities { regular, fast, urgent };
-
     }
 
 }
 
-public static class FactoryDL
-{
-    public static DalXml.IDal GetDL()
-    {
-        return DalXml.DalXml1.Instance;
-    }
-}
+
 
 
     namespace DalXml
@@ -35,7 +26,7 @@ public static class FactoryDL
             internal class Config
             {
                 //ratios for charging the drone; how many units of battery per minute, 
-                //according to weigth of the Parcel (heavier parcels require more battery
+                //according to weight of the Parcel (heavier parcels require more battery
                 internal static double empty = 0.1;
                 internal static double light = 0.2;
                 internal static double mediuim = 0.3;

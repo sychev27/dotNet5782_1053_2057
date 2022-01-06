@@ -58,3 +58,23 @@ namespace DalXml
 
 
 }
+
+namespace DalXml
+{
+    public enum LibTypes {XMLVersion, CodeVersion };
+
+    public static class FactoryDL
+    {
+        public static DalXml.IDal GetDL(LibTypes libraryType)
+        {
+            if (libraryType == LibTypes.XMLVersion)
+                return DalXml.DalXml1.Instance;
+            else if (libraryType == LibTypes.CodeVersion)
+                return DalObject.DalApi.DataSource.Instance;
+            else
+                throw new DalXml.DO.EXItemNotFoundException();
+        }
+    }
+}
+
+

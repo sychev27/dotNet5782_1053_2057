@@ -20,10 +20,10 @@ namespace DalXml
 
 //public static class FactoryDL
 //{
-  //  public static DalXml.IDal GetDL()
-    //{
-      //  return DalObject.DalApi.DataSource.Instance;
-    //}
+//    public static DalXml.IDal GetDL()
+//    {
+//        return DalObject.DalApi.DataSource.Instance;
+//    }
 //}
 
 
