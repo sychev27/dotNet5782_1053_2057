@@ -22,11 +22,11 @@ namespace DALTools
         {
             try
             {
-                FileStream file = new FileStream(dir + filePath, FileMode.Create);
+                FileStream fStream = new FileStream(dir + filePath, FileMode.Create);
                 XmlSerializer x = new XmlSerializer(list.GetType());
-                x.Serialize(file, list);
-                file.Close();
-                file.Dispose();
+                x.Serialize(fStream, list);
+                fStream.Close();
+                fStream.Dispose();
             }
             catch(Exception ex)
             {
