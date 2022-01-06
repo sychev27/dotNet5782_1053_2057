@@ -86,6 +86,10 @@ namespace WpfApp1
 
         }
 
+
+        //<TextBox Grid.Row="0" Text="{Binding EmployeesFilter, UpdateSourceTrigger=PropertyChanged}" />
+
+
         private void chkboxNumParcels_Checked(object sender, RoutedEventArgs e)
         {
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(DataContext);

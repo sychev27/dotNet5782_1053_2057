@@ -40,8 +40,8 @@ namespace BL
 
             public static BL Instance { get { return NestedClass.instance; } }
 
-            DalXml.IDal dataAccess = DalXml.FactoryDL.GetDL(DalXml.LibTypes.CodeVersion);
-            //DalXml.IDal dataAccess = DalXml.FactoryDL.GetDL(DalXml.LibTypes.XMLVersion);
+            //DalXml.IDal dataAccess = DalXml.FactoryDL.GetDL(DalXml.LibTypes.CodeVersion);
+            DalXml.IDal dataAccess = DalXml.FactoryDL.GetDL(DalXml.LibTypes.XMLVersion);
             Random r = new Random();
 
             internal double empty;
