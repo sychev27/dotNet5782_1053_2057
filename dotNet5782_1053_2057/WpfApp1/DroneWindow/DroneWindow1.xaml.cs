@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Threading;
+
 
 namespace WpfApp1
 {
@@ -20,34 +22,26 @@ namespace WpfApp1
     public partial class DroneWindow : Window
     {
         BL.BLApi.Ibl busiAccess;
-        int thisDroneId;
-       
+        //DroneStringViewModel currentDroneViewModel;
+        int thisDroneId; //field to allow window's function to retrieve bodrone from BL 
+        bool simulatorOn;
+        private Object lockThisThread = new Object();
+
+
+
+        delegate void SimulatorFunctions(int droneId = 1000);
+
         //default constructor is to Add a drone
         public DroneWindow(BL.BLApi.Ibl _busiAccess)//to add a Drone
         {
             InitializeComponent();
             busiAccess = _busiAccess;
-
+            simulatorOn = false;
             cmbWeightChoice.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.WeightCategories));
 
-            //(1) Disable irrelevant buttons
-            //btnGetDrone.IsEnabled = false;
-            btnModifyDroneModel.IsEnabled = false;
-            btnAssignDroneToParcel.IsEnabled = false;
-            btnFreeDroneFromCharge.IsEnabled = false;
-            btnPickupPkg.IsEnabled = false;
-            btnSendToCharge.IsEnabled = false;
-            btnDeliverPkg.IsEnabled = false;
-            btnEraseDrone.IsEnabled = false;
-
-            //(2) Hide irrelevant buttons
-            //btnGetDrone.Visibility = Visibility.Hidden;
-            btnModifyDroneModel.Visibility = Visibility.Hidden;
-            btnAssignDroneToParcel.Visibility = Visibility.Hidden;
-            btnFreeDroneFromCharge.Visibility = Visibility.Hidden;
-            btnPickupPkg.Visibility = Visibility.Hidden;
-            btnSendToCharge.Visibility = Visibility.Hidden;
-            btnDeliverPkg.Visibility = Visibility.Hidden;
+            //(1) Disable and Hide irrelevant buttons
+            MainWindow.ChangeVisibilty(Visibility.Hidden, btnModifyDroneModel, btnAssignDroneToParcel, btnFreeDroneFromCharge,
+                btnPickupPkg, btnSendToCharge, btnDeliverPkg, btnEraseDrone, btnSimulator);
 
             //(3) Hide irrelevnat TextBlocks
             tBlockStatus.Visibility = Visibility.Hidden;
@@ -157,6 +151,11 @@ namespace WpfApp1
         {
             InitializeComponent();
             busiAccess = _busiAccess;
+            simulatorOn = false;
+            //updates DroneViewModel to display details
+            thisDroneId = _bodrone.Id; 
+            displayBODrone(thisDroneId);
+            
 
             //edit buttons and text boxes for Update Window:
             tBoxIdInput.IsReadOnly = true;
@@ -164,60 +163,47 @@ namespace WpfApp1
             tBoxStationIdInput.IsReadOnly = true;
             tBoxStationIdInput.BorderBrush = Brushes.Transparent;
             cmbWeightChoice.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.WeightCategories));
-
-            btnAddDrone.IsEnabled = false;
-            btnAddDrone.Visibility = Visibility.Hidden;
-
-            displayBODrone(_bodrone);
-          
-
-        }
-
-
-
-
-        private void displayBODrone(BL.BO.BODrone bodrone)
-        {
-            thisDroneId = bodrone.Id;
-
-
-            tBoxIdInput.Text = bodrone.Id.ToString();
-            tBoxModelInput.Text = bodrone.Model;
-            if (busiAccess.GetStationIdOfBODrone(bodrone.Id) != -1)
-                tBoxStationIdInput.Text = (busiAccess.GetStationIdOfBODrone(bodrone.Id)).ToString();
-            else
-                tBoxStationIdInput.Text = "Drone is not charging at a Station";
-
-            cmbWeightChoice.SelectedIndex = (int)bodrone.MaxWeight;
             cmbWeightChoice.IsReadOnly = true;
             cmbWeightChoice.IsEnabled = false;
-
-            tBlockStatusInfo.Text = bodrone.DroneStatus.ToString();
-            if (bodrone.ParcelInTransfer.Id == -1 || bodrone.ParcelInTransfer == null)
-                tBlockDeliveryInfo.Text = "Not yet carrying Parcel";
-            else 
-                tBlockDeliveryInfo.Text = bodrone.ParcelInTransfer.ToString();
-            tBlockLongInfo.Text = bodrone.Location.Longitude.ToString();
-            tBlockLatinfo.Text = bodrone.Location.Latitude.ToString();
-
-            tBlockCurrentLocationInfo.Text = busiAccess.GetDroneLocationString(bodrone.Id);
-
-            tBlockBatteryInfo.Text = bodrone.Battery.ToString();
-            //working on a function in BL..
-
+            btnAddDrone.IsEnabled = false;
+            btnAddDrone.Visibility = Visibility.Hidden;
+            
         }
+        private void displayBODrone(int _droneId)
+        {
+            lock (lockThisThread)
+            {
+                BL.BO.BODrone bodrone = busiAccess.GetBODrone(_droneId);
+                DataContext = createDroneViewModel(bodrone);
+            }
 
-        
-        
+           
 
+            //delete this... 
 
+        //    tBoxIdInput.Text = bodrone.Id.ToString();
+        //    tBoxModelInput.Text = bodrone.Model;
+        //    if (busiAccess.GetStationIdOfBODrone(bodrone.Id) != -1)
+        //        tBoxStationIdInput.Text = (busiAccess.GetStationIdOfBODrone(bodrone.Id)).ToString();
+        //    else
+        //        tBoxStationIdInput.Text = "Drone is not charging at a Station";
 
+        //    cmbWeightChoice.SelectedIndex = (int)bodrone.MaxWeight;
+        //    cmbWeightChoice.IsReadOnly = true;
+        //    cmbWeightChoice.IsEnabled = false;
 
+        //    tBlockStatusInfo.Text = bodrone.DroneStatus.ToString();
+        //    if (bodrone.ParcelInTransfer.Id == -1 || bodrone.ParcelInTransfer == null)
+        //        tBlockDeliveryInfo.Text = "Not yet carrying Parcel";
+        //    else
+        //        tBlockDeliveryInfo.Text = bodrone.ParcelInTransfer.ToString();
+        //    tBlockLongInfo.Text = bodrone.Location.Longitude.ToString();
+        //    tBlockLatinfo.Text = bodrone.Location.Latitude.ToString();
 
+        //    tBlockCurrentLocationInfo.Text = busiAccess.GetDroneLocationString(bodrone.Id);
 
-
-
-
+        //    tBlockBatteryInfo.Text = bodrone.Battery.ToString();
+        }
         private void btnModifyDroneModel_Click(object sender, RoutedEventArgs e)
         {
             int id;
@@ -225,10 +211,7 @@ namespace WpfApp1
             busiAccess.ModifyDrone(id, tBoxModelInput.Text);
             MessageBox.Show("Drone Model Changed", "SUCCESS", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
             Close();
-
-
         }
-
         private void btnSendToCharge_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -239,9 +222,8 @@ namespace WpfApp1
             {
                 errorMsg(ex.ToString());
             }
-            displayBODrone(busiAccess.GetBODrone(thisDroneId));
+            displayBODrone(thisDroneId);
         }
-
         private void btnFreeDroneFromCharge_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -252,9 +234,8 @@ namespace WpfApp1
             {
                 errorMsg(ex.ToString());
             }
-             displayBODrone(busiAccess.GetBODrone(thisDroneId));
+             displayBODrone(thisDroneId);
         }
-
         private void btnPickupPkg_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -269,7 +250,7 @@ namespace WpfApp1
             {
                 errorMsg(ex.ToString());
             }
-            displayBODrone(busiAccess.GetBODrone(thisDroneId));
+            displayBODrone(thisDroneId);
         }
 
         private void btnAssignDroneToParcel_Click(object sender, RoutedEventArgs e)
@@ -286,7 +267,7 @@ namespace WpfApp1
             {
                 errorMsg(ex.ToString());
             }
-            displayBODrone(busiAccess.GetBODrone(thisDroneId));
+            displayBODrone(thisDroneId);
         }
 
         private void btnDeliverPkg_Click(object sender, RoutedEventArgs e)
@@ -303,7 +284,7 @@ namespace WpfApp1
             {
                 errorMsg(ex.ToString());
             }
-            displayBODrone(busiAccess.GetBODrone(thisDroneId));
+            displayBODrone(thisDroneId);
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
@@ -340,5 +321,69 @@ namespace WpfApp1
                 MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
             Close();
         }
+
+        private void btnSimulator_Click(object sender, RoutedEventArgs e)
+        {
+
+            btnSimulator.Content = "End Simulator";
+            Thread newSimulatorThread = new Thread(beginSimulator);
+            newSimulatorThread.Start();
+        }
+
+        
+        private void beginSimulator()
+        {
+            //SimulatorFunctions availDroneFunc = new SimulatorFunctions(busiAccess.AssignParcel) 
+            //    +  Thread.Sleep + displayBODrone()
+            
+            BL.BO.BODrone thisDrone = busiAccess.GetBODrone(thisDroneId);
+            if(thisDrone.DroneStatus == BL.BO.Enum.DroneStatus.Available)
+            {
+                try
+                {
+                    
+                    busiAccess.AssignParcel(thisDroneId);
+                    Thread.Sleep(2000);
+                    displayBODrone(thisDroneId);
+                    busiAccess.PickupParcel(thisDroneId);
+                    Thread.Sleep(2000);
+                    displayBODrone(thisDroneId);
+                    busiAccess.DeliverParcel(thisDroneId);
+                    Thread.Sleep(2000);
+                    displayBODrone(thisDroneId);
+
+                }
+                catch (BL.BLApi.EXNoAppropriateParcel)
+                {
+                    tBlockBattery.Text = "AHHHHHH";
+                    Thread.Sleep(1000000);
+                }
+            }
+
+
+
+        }
+
+        private WpfApp1.DroneStringViewModel createDroneViewModel(BL.BO.BODrone origDrone)
+        {
+            WpfApp1.DroneStringViewModel newDrone = new WpfApp1.DroneStringViewModel();
+            newDrone.Battery = origDrone.Battery.ToString();
+            newDrone.DroneStatus = origDrone.DroneStatus.ToString();
+            newDrone.Exists = origDrone.Exists;
+            newDrone.Id = origDrone.Id.ToString();
+            newDrone.Longitude = origDrone.Location.Longitude.ToString();
+            newDrone.Latitude = origDrone.Location.Latitude.ToString();
+            newDrone.MaxWeight = origDrone.MaxWeight.ToString();
+            newDrone.Model = origDrone.Model;
+            newDrone.ParcelInTransfer = (origDrone.ParcelInTransfer.Id == -1 || origDrone.ParcelInTransfer == null) ?
+                "Not yet carrying Parcel" : origDrone.ParcelInTransfer.ToString();
+            newDrone.LocationString = busiAccess.GetDroneLocationString(origDrone.Id);
+            int stationId = busiAccess.GetStationIdOfBODrone(origDrone.Id);
+            newDrone.StationId = (stationId != -1) ? stationId.ToString() : "Drone is not charging at a Station";
+            return newDrone;
+        }
+
+
+        //END OF DRONE WINDOW CODE.
     }
 }

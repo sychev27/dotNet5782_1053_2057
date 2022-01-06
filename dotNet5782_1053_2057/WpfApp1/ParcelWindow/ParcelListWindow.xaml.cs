@@ -28,7 +28,6 @@ namespace WpfApp1
             InitializeComponent();
             busiAccess = busiAccess1;
             refreshList();
-            
         }
 
         private void Selector2_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -86,6 +85,7 @@ namespace WpfApp1
             {
                 BL.BO.BOParcel parc = busiAccess.GetBOParcel(id);
                 new ParcelWindow(busiAccess, parc).ShowDialog();
+                refreshList();
             }
             catch (BL.BLApi.EXParcelNotFound ex)
             {

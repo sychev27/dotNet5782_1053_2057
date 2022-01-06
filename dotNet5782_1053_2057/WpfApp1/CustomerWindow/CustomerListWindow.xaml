@@ -4,20 +4,19 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
-        xmlns:converters="clr-namespace:WpfApp1.Converters"
         mc:Ignorable="d"
         Title="CustomerListWindow" Height="539" Width="842">
 
-    <Window.Resources>
-        <converters:BoolToVisibilty x:Key="myConverter">
 
-        </converters:BoolToVisibilty>
+
+    <Window.Resources>
     </Window.Resources>
 
-    <Grid Name="MainGrid">
+    <Grid Name="MainGrid" Margin="0,0,0,-6">
         <Grid.RowDefinitions>
-            <RowDefinition Height="50*"/>
-            <RowDefinition Height="400*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="2*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Name = "UpGrid" Height = "auto" Grid.Row = "0" Width = "auto">
             <Grid.ColumnDefinitions>
@@ -30,7 +29,7 @@
                 <RowDefinition Height="10*"></RowDefinition>
                 <RowDefinition Height="10*"></RowDefinition>
             </Grid.RowDefinitions>
-            <TextBox x:Name="tBoxCustNameInput" Grid.ColumnSpan="2" Grid.Column="1" HorizontalAlignment="Left" Height="28" Margin="40,0,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Center" Width="334"/>
+            <TextBox x:Name="tBoxCustNameInput" Text="{Binding CustomerFilter, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.ColumnSpan="2" Grid.Column="1" HorizontalAlignment="Left" Height="28" Margin="36,0,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Center" Width="334"/>
             <TextBlock x:Name="tBlockEnterCustName" HorizontalAlignment="Left" Height="28" Margin="21,0,0,0" Grid.Row="1" Text="Enter Customer name to filter:" TextWrapping="Wrap" VerticalAlignment="Center" Width="179"/>
 
             <!--<TextBox  Grid.Column="0" HorizontalAlignment="Stretch" Margin="4,6,6,4" Text="Filter:" TextWrapping="Wrap" VerticalAlignment="Stretch" Width="190" FontSize="22"/>
@@ -39,14 +38,15 @@
             <ComboBox Grid.Column="3" Name="Selector2" HorizontalAlignment="Stretch" Margin="4,6,6,4" VerticalAlignment="Stretch" Width="190" SelectionChanged="Selector2_SelectionChanged"/>-->
 
         </Grid>
-        <ListView x:Name="CustomerListView" Margin="0,58,0,62" Grid.RowSpan="2" ItemsSource="{Binding UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="CustomerListView_MouseDoubleClick" >
+        <ListView x:Name="CustomerListView" 
+                  ItemsSource="{Binding UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="CustomerListView_MouseDoubleClick" Grid.Row="1" HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn>
                         <GridViewColumnHeader>
-                            Content="Header text"                  
+                            Content="Header text"
                         </GridViewColumnHeader>
-                    </GridViewColumn> 
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
 
@@ -61,13 +61,22 @@
 
                 </GroupStyle>
             </ListView.GroupStyle>
+            <!--<ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsActive}" Value="False">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.ItemContainerStyle>-->
 
         </ListView>
         <Button x:Name="btnAddCustomer1" Content="Add new customer" HorizontalAlignment="Left" Margin="646,414,0,0" Grid.Row="1" VerticalAlignment="Top" Height="27" Width="138" FontSize="16" Click="btnAddCustomer1_Click"/>
         <Button x:Name="btnCloseList" Content="Close" HorizontalAlignment="Left" Margin="43,415,0,0" Grid.Row="1" VerticalAlignment="Top" Height="26" Width="148" FontSize="18" Click="btnCloseList_Click"/>
         <Button x:Name="btnRefreshList" Content="Refresh" HorizontalAlignment="Left" Height="27" Margin="466,414,0,0" Grid.Row="1" VerticalAlignment="Top" Width="128" Click="btnRefreshList_Click"/>
 
-        <CheckBox x:Name="chkboxNumParcels" Content="Organize By Num Parcels" HorizontalAlignment="Left" Height="26" Margin="244,415,0,0" Grid.Row="1" VerticalAlignment="Top" Width="150" Checked="chkboxNumParcels_Checked" Unchecked="chkboxNumParcels_Unchecked"/>
+        <!--<CheckBox x:Name="chkboxNumParcels" Content="Organize By Num Parcels" HorizontalAlignment="Left" Height="26" Margin="244,415,0,0" Grid.Row="1" VerticalAlignment="Top" Width="150" Checked="chkboxNumParcels_Checked" Unchecked="chkboxNumParcels_Unchecked"/>-->
 
 
 

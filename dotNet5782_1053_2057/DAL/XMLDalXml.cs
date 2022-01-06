@@ -69,17 +69,16 @@ namespace DalXml
             public void Initialize()
             {
                 Random r = new Random();
-                //coordinates for area of jerusalem
+                //coordinates for area of jerusalem (Long: 35-37, Lat: 31-33)
                 const int LONGBEGIN = 35;
-                const int LONGEND = 36;
+                const int LONGEND = 37;
                 const int LATBEGIN = 31;
                 const int LATEND = 32;
 
 
+            //INITIALIZE DRONE
 
-                //INITIALIZE DRONE
-
-                string[] droneModels = { "Merkava", "Namer" };
+            string[] droneModels = { "Merkava", "Namer" };
                 List<DO.Drone> listDrone = new List<DO.Drone>();
 
                 for (int i = 0; i < 5; i++)
@@ -176,7 +175,7 @@ namespace DalXml
                 userEmployee.Password = "boss";
                 listUser.Add(userEmployee);
                 DalXml.DO.User userReuven = new DalXml.DO.User();
-                userReuven.Id = 1; //employee
+                userReuven.Id = 1; //customer reuven
                 userReuven.Username = "ruv";
                 userReuven.Password = "ruv";
                 listUser.Add(userReuven);

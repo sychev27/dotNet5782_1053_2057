@@ -21,7 +21,7 @@ namespace WpfApp1
     {
         BL.BLApi.Ibl busiAccess;
         int thisCustomerId;
-        bool registerMode;
+        bool registerMode; //this is true if the window is opened by a user
         
         public CustomerWindow(BL.BLApi.Ibl _busiAccess, bool register = false) //To Add a Customer
         {
@@ -221,8 +221,10 @@ namespace WpfApp1
             {
                 busiAccess.ModifyCust(_id, _name, _phone);
                 MessageBox.Show("Customer Name and Phone Changed", "SUCCESS", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
-                Close();
-            }
+                if(!registerMode)
+                     Close();
+                //if register mode - let customer continue in this window..
+            }   
             else
                 return;
         }

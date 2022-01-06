@@ -46,7 +46,9 @@ namespace BL
 
 
 
+            IEnumerable<BO.BOCustomer> GetAllBOCustomers();
             IEnumerable<BO.BOCustomerToList> GetCustToList();
+            BO.BOCustomerToList GetOneCustToList(int _id);
             IEnumerable<BO.BOParcelToList> GetParcelToList();
             IEnumerable<BO.BOStationToList> GetStationToList();
            // IEnumerable<BO.BODroneToList> GetDroneToList();

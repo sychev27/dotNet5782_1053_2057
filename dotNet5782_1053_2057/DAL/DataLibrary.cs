@@ -185,11 +185,11 @@ namespace DalObject
             public void Initialize()   
         {
             Random r = new Random();
-            //coordinates for area of jerusalem
+            //coordinates for area of jerusalem (Long: 35-37, Lat: 31-33)
             const int LONGBEGIN = 35;
-            const int LONGEND = 36;
+            const int LONGEND = 37;
             const int LATBEGIN = 31;
-            const int LATEND = 32;
+            const int LATEND = 33;
 
 
 

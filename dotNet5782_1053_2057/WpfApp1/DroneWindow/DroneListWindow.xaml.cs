@@ -21,6 +21,7 @@ namespace WpfApp1
     public partial class DroneListWindow : Window
     {
         BL.BLApi.Ibl busiAccess;
+        
         //private ObservableCollection<BL.BO.BODrone> droneList = getBODronesAsObservable();
         
 
@@ -123,5 +124,17 @@ namespace WpfApp1
 
 
 
+
+
+       
+
+
+
+
+
+
+
+
+        //end of window
     }
 }
