@@ -97,7 +97,8 @@ namespace BL
                 }
 
                 //check if assigned at Station
-                foreach (DalXml.DO.Station st in dataAccess.GetStations())
+                IEnumerable<DalXml.DO.Station> stationList = dataAccess.GetStations();
+                foreach (DalXml.DO.Station st in stationList)//dataAccess.GetStations())
                 {
                     BO.BOLocation stLoc = new BO.BOLocation(st.Longitude, st.Latitude);
                     if (stLoc == drone.Location)
@@ -345,11 +346,11 @@ namespace BL
                 throw new EXParcelNotFound(); ;
             }
 
-            public BO.BOStation GetBOStation(int id)
+            public BO.BOStation GetBOStation(int _stationName)
             {
                 foreach (var item in GetStations())
                 {
-                    if (id == item.Id)
+                    if (_stationName == item.Name)
                         return item;
                 }
                 throw new EXNotFoundPrintException("Station");
@@ -506,8 +507,8 @@ namespace BL
             //for printing these lists:
             public IEnumerable<BO.BOCustomerToList> GetCustToList()
             {
-                ObservableCollection<BO.BOCustomerToList> res = 
-                    new ObservableCollection<BO.BOCustomerToList>();
+                List<BO.BOCustomerToList> res = 
+                    new List<BO.BOCustomerToList>();
                 foreach (var item in dataAccess.GetCustomers())
                 {
                     res.Add(createBOCustToList(item.Id));
@@ -529,7 +530,7 @@ namespace BL
                 List<BO.BOStationToList> res = new List<BO.BOStationToList>();
                 foreach (var item in dataAccess.GetStations())
                 {
-                    res.Add(createBOStationToList(item.Id));
+                    res.Add(createBOStationToList(item.Name));
                 }
                 return res;
             }
@@ -538,7 +539,7 @@ namespace BL
                 List<BO.BOStation> res = new List<BO.BOStation>();
                 foreach (var item in dataAccess.GetStations())
                 {
-                    res.Add(CreateBOStation(item.Id));
+                    res.Add(CreateBOStation(item.Name));
                 }
                 return res;
             }
