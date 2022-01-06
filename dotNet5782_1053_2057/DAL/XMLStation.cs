@@ -76,14 +76,14 @@ namespace DALTools
             return listStations;
         }
 
-        public DalXml.DO.Station GetStation(int _id)
+        public DalXml.DO.Station GetStation(int _name)
         {
             LoadData();
             DalXml.DO.Station station;
             try
             {
                 station = (from s in stationRoot.Elements()
-                           where Convert.ToInt32(s.Element("id").Value) == _id
+                           where Convert.ToInt32(s.Element("name").Value) == _name
                            select new DalXml.DO.Station()
                            {
                                Id = Convert.ToInt32(s.Element("id").Value),

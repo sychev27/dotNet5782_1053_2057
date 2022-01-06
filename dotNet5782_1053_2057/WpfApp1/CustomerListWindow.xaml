@@ -42,11 +42,11 @@
         <ListView x:Name="CustomerListView" Margin="0,58,0,62" Grid.RowSpan="2" ItemsSource="{Binding UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="CustomerListView_MouseDoubleClick" >
             <ListView.View>
                 <GridView>
-                    <!--<GridViewColumn>
-                        <GridViewColumnHeader  Content="Header text" 
-                                          
+                    <GridViewColumn>
+                        <GridViewColumnHeader>
+                            Content="Header text"                  
                         </GridViewColumnHeader>
-                    </GridViewColumn>-->
+                    </GridViewColumn> 
                 </GridView>
             </ListView.View>
 

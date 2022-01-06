@@ -87,7 +87,7 @@ namespace DalXml
                   DO.Drone exampleD = new DO.Drone();
 
                   exampleD.Id = i + 1;
-                  exampleD.MaxWeight = (DalXml.DO.WeightCategories)r.Next(1, 4);
+                  exampleD.MaxWeight = (DalXml.DO.WeightCategories)r.Next(0, 3);
                   exampleD.Model = droneModels[r.Next(0, 2)];
                   exampleD.Exists = true;
                   listDrone.Add(exampleD);
@@ -218,10 +218,10 @@ namespace DalXml
             if (parcel.Id == 0) throw new DO.EXItemNotFoundException();
             return parcel;
         }
-        public DO.Station GetStation(int _id)
+        public DO.Station GetStation(int _name)
         {
             DALTools.XmlStation xmlStation = new DALTools.XmlStation(stationsPath);
-            return xmlStation.GetStation(_id);
+            return xmlStation.GetStation(_name);
         }
         public DO.DroneCharge GetDroneCharge(int _droneId)
         {
@@ -282,10 +282,10 @@ namespace DalXml
         }
         public IEnumerable<DO.Parcel> GetParcels()
         {
-            ObservableCollection<DO.Parcel> listParcel = DALTools.XMLTools.LoadListFromXMLSerializer<DO.Parcel>(parcelsPath) as ObservableCollection<DO.Parcel>;
-            return listParcel;
+            return DALTools.XMLTools.LoadListFromXMLSerializer<DO.Parcel>(parcelsPath);
+      
         }
-        public IEnumerable<DalXml.DO.Station> GetStations()
+        public IEnumerable<DO.Station> GetStations()
         {
             DALTools.XmlStation xmlStation = new DALTools.XmlStation(stationsPath);
             return xmlStation.GetStationList();

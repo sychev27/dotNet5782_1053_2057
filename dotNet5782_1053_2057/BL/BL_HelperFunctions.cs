@@ -97,7 +97,8 @@ namespace BL
                 }
 
                 //check if assigned at Station
-                foreach (DalXml.DO.Station st in dataAccess.GetStations())
+                IEnumerable<DalXml.DO.Station> stationList = dataAccess.GetStations();
+                foreach (DalXml.DO.Station st in stationList)//dataAccess.GetStations())
                 {
                     BO.BOLocation stLoc = new BO.BOLocation(st.Longitude, st.Latitude);
                     if (stLoc == drone.Location)
@@ -506,8 +507,8 @@ namespace BL
             //for printing these lists:
             public IEnumerable<BO.BOCustomerToList> GetCustToList()
             {
-                ObservableCollection<BO.BOCustomerToList> res = 
-                    new ObservableCollection<BO.BOCustomerToList>();
+                List<BO.BOCustomerToList> res = 
+                    new List<BO.BOCustomerToList>();
                 foreach (var item in dataAccess.GetCustomers())
                 {
                     res.Add(createBOCustToList(item.Id));
@@ -529,7 +530,7 @@ namespace BL
                 List<BO.BOStationToList> res = new List<BO.BOStationToList>();
                 foreach (var item in dataAccess.GetStations())
                 {
-                    res.Add(createBOStationToList(item.Id));
+                    res.Add(createBOStationToList(item.Name));
                 }
                 return res;
             }
