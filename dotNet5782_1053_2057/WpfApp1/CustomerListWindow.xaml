@@ -41,12 +41,11 @@
                   ItemsSource="{Binding UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="CustomerListView_MouseDoubleClick" >
             <ListView.View>
                 <GridView>
-                    
-                    <!--<GridViewColumn>
-                        <GridViewColumnHeader  Content="Header text" 
-                                          
+                    <GridViewColumn>
+                        <GridViewColumnHeader>
+                            Content="Header text"                  
                         </GridViewColumnHeader>
-                    </GridViewColumn>-->
+                    </GridViewColumn> 
                 </GridView>
             </ListView.View>
 

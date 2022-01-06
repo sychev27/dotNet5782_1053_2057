@@ -111,11 +111,12 @@ namespace BL
 
                         if (drone.DroneStatus == BO.Enum.DroneStatus.Charging)
                         {
-                            
+
                             //(1) SET LOCATION - to Random Station
-                            List<DalXml.DO.Station> listStation = new List<DalXml.DO.Station>();
-                            foreach (var item in dataAccess.GetStations())
-                                listStation.Add(item);
+                            List<DalXml.DO.Station> listStation = dataAccess.GetStations().ToList();
+                           // List<DalXml.DO.Station> listStation = new List<DalXml.DO.Station>();
+                           // foreach (var item in dataAccess.GetStations())
+                           //     listStation.Add(item);
 
                             DalXml.DO.Station st = listStation[r.Next(0, listStation.Count)];
 
@@ -562,10 +563,10 @@ namespace BL
 
                 return newParcToList;
             }
-            private BO.BOStationToList createBOStationToList(int _id)
+            private BO.BOStationToList createBOStationToList(int _name)
             {
                 BO.BOStationToList newStationToList = new BO.BOStationToList();
-                DalXml.DO.Station origStation = dataAccess.GetStation(_id);
+                DalXml.DO.Station origStation = dataAccess.GetStation(_name);
 
                 newStationToList.Id = origStation.Id;
                 newStationToList.NameStation = origStation.Name;

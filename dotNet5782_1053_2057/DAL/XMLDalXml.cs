@@ -99,7 +99,7 @@ namespace DalXml
                 List<DalXml.DO.Station> listStation = new List<DalXml.DO.Station>();
                 for (int i = 0; i < 2; i++)
                 {
-                  DalXml.DO.Station exampleS = new DalXml.DO.Station();
+                  DO.Station exampleS = new DalXml.DO.Station();
 
 
                   exampleS.Id = i + 1;
@@ -218,10 +218,10 @@ namespace DalXml
             if (parcel.Id == 0) throw new DO.EXItemNotFoundException();
             return parcel;
         }
-        public DO.Station GetStation(int _id)
+        public DO.Station GetStation(int _name)
         {
             DALTools.XmlStation xmlStation = new DALTools.XmlStation(stationsPath);
-            return xmlStation.GetStation(_id);
+            return xmlStation.GetStation(_name);
         }
         public DO.DroneCharge GetDroneCharge(int _droneId)
         {
@@ -283,12 +283,9 @@ namespace DalXml
         public IEnumerable<DO.Parcel> GetParcels()
         {
             return DALTools.XMLTools.LoadListFromXMLSerializer<DO.Parcel>(parcelsPath);
-            
-
-            //ObservableCollection<DO.Parcel> listParcel = DALTools.XMLTools.LoadListFromXMLSerializer<DO.Parcel>(parcelsPath) as ObservableCollection<DO.Parcel>;
-            //return listParcel;
+      
         }
-        public IEnumerable<DalXml.DO.Station> GetStations()
+        public IEnumerable<DO.Station> GetStations()
         {
             DALTools.XmlStation xmlStation = new DALTools.XmlStation(stationsPath);
             return xmlStation.GetStationList();

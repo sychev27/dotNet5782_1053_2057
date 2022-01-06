@@ -48,7 +48,7 @@ namespace WpfApp1
 
         private void LstViewStation_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            new StationWindow(busiAccess, (LstViewStation.SelectedItem as BL.BO.BOStationToList).Id).ShowDialog();
+            new StationWindow(busiAccess, (LstViewStation.SelectedItem as BL.BO.BOStationToList).NameStation).ShowDialog();
         }
 
         private void btnAddStation_Click(object sender, RoutedEventArgs e)
