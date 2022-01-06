@@ -177,7 +177,7 @@ namespace BL
 
 
             void receiveDronesFromData()
-            {
+            { 
                 IEnumerable<DalXml.DO.Drone> origList = dataAccess.GetDrones();
                 //receives drones from Data Layer, adds them in listDrone
                 foreach (DalXml.DO.Drone drone in origList)

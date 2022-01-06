@@ -26,6 +26,7 @@ namespace DALTools
                 XmlSerializer x = new XmlSerializer(list.GetType());
                 x.Serialize(file, list);
                 file.Close();
+                file.Dispose();
             }
             catch(Exception ex)
             {
@@ -37,8 +38,17 @@ namespace DALTools
         {
             try
             {
+                bool isFileOpenAlready = IsFileLocked(new FileInfo(dir + filePath));
+                if(isFileOpenAlready)
+                {
+                    
+                }    
+               
+
+
                 if (File.Exists(dir + filePath))
                 {
+
                     List<T> list;
                     XmlSerializer x = new XmlSerializer(typeof(List<T>));
                     FileStream file = new FileStream(dir + filePath, FileMode.Open);
@@ -49,11 +59,48 @@ namespace DALTools
                 else
                     return new List<T>();
             }
-            catch (Exception ex)
+            catch (Exception x)
             {
-                // throw new DO.XMLFileLoadeCreateException(filePath, $"fail to load xml file: {filePath}", ex);
-                return null;
+                string t = x.Message;
+                throw new Exception();
             }
         }
+
+
+
+
+
+
+
+
+
+       public static bool IsFileLocked(FileInfo file)
+        {
+            try
+            {
+                using (FileStream stream = file.Open(FileMode.Open, FileAccess.Read, FileShare.None))
+                {
+                    stream.Close();
+                }
+            }
+            catch (IOException)
+            {
+                //the file is unavailable because it is:
+                //still being written to
+                //or being processed by another thread
+                //or does not exist (has already been processed)
+                return true;
+            }
+
+            //file is not locked
+            return false;
+        }
+
+
+        //end of class
     }
 }
+
+
+
+

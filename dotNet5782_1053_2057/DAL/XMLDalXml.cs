@@ -112,12 +112,12 @@ namespace DalXml
                   listStation.Add(exampleS);
                   //thisConfig.indexAvailStation++;
                 }
-                DALTools.XmlStation xmlStation = new DALTools.XmlStation(stationsPath);
-                xmlStation.SaveStationListLinq(listStation);
+            DALTools.XmlStation xmlStation = new DALTools.XmlStation(stationsPath);
+            xmlStation.SaveStationListLinq(listStation);
 
 
-                 //INITIALIZE CUSTOMER
-                string[] customerNames = new string[12] { "Reuven", "Shimon", "Levi",
+            //INITIALIZE CUSTOMER
+            string[] customerNames = new string[12] { "Reuven", "Shimon", "Levi",
                 "Yehuda", "Yissachar", "Zevulun", "Asher", "Gad", "Dan", "Naftali",
                 "Yosef", "Binyamin" };
                 string[] customerPhones = new string[10] { "0552255518", "0525553455",
