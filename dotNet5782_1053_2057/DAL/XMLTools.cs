@@ -26,11 +26,12 @@ namespace DALTools
                 XmlSerializer x = new XmlSerializer(list.GetType());
                 x.Serialize(fStream, list);
                 fStream.Close();
-                fStream.Dispose();
+              
             }
-            catch(Exception ex)
+            catch (Exception x)
             {
-          //      throw new DAL.XMLFileLoadCreateException(filePath, $"file to create xml file: {filePath}", ex);
+                string t = x.Message;
+                throw new Exception();
             }
         }
 

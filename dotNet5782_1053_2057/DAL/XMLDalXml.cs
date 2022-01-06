@@ -87,7 +87,7 @@ namespace DalXml
                   DO.Drone exampleD = new DO.Drone();
 
                   exampleD.Id = i + 1;
-                  exampleD.MaxWeight = (DalXml.DO.WeightCategories)r.Next(1, 4);
+                  exampleD.MaxWeight = (DalXml.DO.WeightCategories)r.Next(0, 3);
                   exampleD.Model = droneModels[r.Next(0, 2)];
                   exampleD.Exists = true;
                   listDrone.Add(exampleD);
@@ -282,8 +282,11 @@ namespace DalXml
         }
         public IEnumerable<DO.Parcel> GetParcels()
         {
-            ObservableCollection<DO.Parcel> listParcel = DALTools.XMLTools.LoadListFromXMLSerializer<DO.Parcel>(parcelsPath) as ObservableCollection<DO.Parcel>;
-            return listParcel;
+            return DALTools.XMLTools.LoadListFromXMLSerializer<DO.Parcel>(parcelsPath);
+            
+
+            //ObservableCollection<DO.Parcel> listParcel = DALTools.XMLTools.LoadListFromXMLSerializer<DO.Parcel>(parcelsPath) as ObservableCollection<DO.Parcel>;
+            //return listParcel;
         }
         public IEnumerable<DalXml.DO.Station> GetStations()
         {
