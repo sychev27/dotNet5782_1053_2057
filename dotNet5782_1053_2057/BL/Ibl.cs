@@ -48,7 +48,7 @@ namespace BL
 
             ObservableCollection<BO.BOCustomerToList> GetCustToList();
             ObservableCollection<BO.BOParcelToList> GetParcelToList();
-            ObservableCollection<BO.BOStationToList> GetStationToList();
+            IEnumerable<BO.BOStationToList> GetStationToList();
             ObservableCollection<BO.BODroneToList> GetDroneToList();
             IEnumerable<BO.BOParcelToList> GetParcelsNotYetAssigned();
             ObservableCollection<BO.BOStationToList> GetStationAvailChargeSlots();

@@ -524,7 +524,7 @@ namespace BL
                 }
                 return res;
             }
-            public ObservableCollection<BO.BOStationToList> GetStationToList()
+            public IEnumerable<BO.BOStationToList> GetStationToList()
             {
                 List<BO.BOStationToList> res = new List<BO.BOStationToList>();
                 foreach (var item in dataAccess.GetStations())

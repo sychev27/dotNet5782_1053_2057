@@ -53,7 +53,7 @@ namespace DalObject
         internal static ObservableCollection<DalXml.DO.Drone> listDrone = new ObservableCollection<DalXml.DO.Drone>();
         internal static ObservableCollection<DalXml.DO.Parcel> listParcel = new ObservableCollection<DalXml.DO.Parcel>();
         internal static ObservableCollection<DalXml.DO.Customer> listCustomer = new ObservableCollection<DalXml.DO.Customer>();
-
+            
 
         internal static List<DalXml.DO.User> listUser = new List<DalXml.DO.User>(); //holds list of username and passwords
 
@@ -373,7 +373,7 @@ namespace DalObject
 
 
 
-        public void modifyDrone(int _id, string _model) //changes drone model
+        public void ModifyDrone(int _id, string _model) //changes drone model
         {
             foreach (var item in listDrone)
             {
