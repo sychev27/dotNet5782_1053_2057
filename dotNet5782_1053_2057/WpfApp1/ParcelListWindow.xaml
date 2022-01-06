@@ -4,13 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
-        xmlns:converters="clr-namespace:WpfApp1.Converters"
         mc:Ignorable="d"
         Title="ParcelListWindow" Height="539" Width="842">
     <Window.Resources>
-        <!--<converters:BoolToVisibilty x:Key="myConverter"/>-->
-        <!--<CollectionViewSource x:Key="myViewSource" Source="{Binding Path=Priority}"/>-->
-
     </Window.Resources>
 
     <Grid Name="MainGrid">
@@ -43,9 +39,8 @@
                 <GroupStyle>
                     <GroupStyle.HeaderTemplate>
                         <DataTemplate >
-                            <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Name}" />
-                            <!--Visibility="{Binding ElementName=chkboxShowErased, Path=IsChecked, 
-                                Converter={StaticResource myConverter} }"-->
+                            <TextBlock Foreground="Gray"  FontWeight="Bold" FontSize="14" Text="{Binding Name}" />
+                            
                         </DataTemplate>
                     </GroupStyle.HeaderTemplate>
 

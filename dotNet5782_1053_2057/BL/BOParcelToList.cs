@@ -28,7 +28,7 @@ namespace BL
                 if (!Exists) res += "DELETED --\n";
                 res += "Parcel " + Id + "From " + NameSender + " to " + NameReceiver + "\n";
                 res += Weight.ToString() + " Priority: " + Priority.ToString() + "\n";
-                //res += " " + ParcelStatus;
+                res += "Status: " + ParcelStatus;
                 res += "\n";
                 return res;
             }
