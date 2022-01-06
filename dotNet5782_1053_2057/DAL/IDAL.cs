@@ -17,10 +17,6 @@ namespace DalXml
         DalXml.DO.Station GetStation(int _id);
         DalXml.DO.DroneCharge GetDroneCharge(int _droneId);
 
-
-
-
-
         void AddCustomer(DalXml.DO.Customer custom);
         void AddDrone(DalXml.DO.Drone drone);
         void AddParcel(DalXml.DO.Parcel parcel);
@@ -28,13 +24,12 @@ namespace DalXml
         void AddDroneCharge(DalXml.DO.DroneCharge droneCharge);
         void AddUser(DalXml.DO.User _user);
 
-
         IEnumerable<double> RequestElec();
-        ObservableCollection<DalXml.DO.Drone> GetDrones();
-        ObservableCollection<DalXml.DO.Parcel> GetParcels();
-        ObservableCollection<DalXml.DO.Station> GetStations();
+        IEnumerable<DalXml.DO.Drone> GetDrones();
+        IEnumerable<DalXml.DO.Parcel> GetParcels();
+        IEnumerable<DalXml.DO.Station> GetStations();
 
-        ObservableCollection<DalXml.DO.Customer> GetCustomers();
+        IEnumerable<DalXml.DO.Customer> GetCustomers();
         IEnumerable<DalXml.DO.DroneCharge> GetDroneCharges();
         int GetIdFromUser(DalXml.DO.User _user);
         IEnumerable<DalXml.DO.User> GetUsers();

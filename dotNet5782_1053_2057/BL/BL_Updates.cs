@@ -145,10 +145,6 @@ namespace BL
                 dataAccess.ModifyParcel(_id, (DalXml.DO.Priorities)_priority);
             }
 
-
-
-
-
             //UPDATE ACTIONS
             public void AssignParcel(int droneId)  //drone determines its parcel based on algorithm
             {

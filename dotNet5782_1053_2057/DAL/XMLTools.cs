@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 using System.Xml.Linq;
 using System.IO;
 
-namespace DAL
+namespace DALTools
 {
     class XMLTools
     {
@@ -55,27 +55,6 @@ namespace DAL
                 // throw new DO.XMLFileLoadeCreateException(filePath, $"fail to load xml file: {filePath}", ex);
                 return null;
             }
-
         }
-
-        public class XmlStation
-        {
-            XElement stationRoot;
-            string stationsPath = @"StationsXml.xml";
-            public void SaveStationListLinq(List<DalXml.DO.Station> stationList)
-            {
-                stationRoot = new XElement("stations",
-                                           from p in stationList
-                                           select new XElement("station",
-                                           new XElement("id", p.Id),
-                                           new XElement("name", p.Name),
-                                           new XElement("longitude", p.Longitude),
-                                           new XElement("latitude", p.Latitude),
-                                           new XElement("chargeSlots", p.ChargeSlots),
-                                           new XElement("exists", p.Exists)));
-                stationRoot.Save(stationsPath);
-            }
-        }
-
     }
 }

@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 
 namespace BL
 {
-
-
     namespace BLApi
     {
         public class stringCodes

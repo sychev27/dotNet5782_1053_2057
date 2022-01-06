@@ -8,8 +8,8 @@ namespace DalXml
 
     namespace DO
     {
-      //  public enum WeightCategories { light, medium, heavy };
-        // public enum DroneStatus         { available, work_in_progress, sent};
+        //public enum WeightCategories { light, medium, heavy };
+        //public enum DroneStatus         { available, work_in_progress, sent};
         //work_in_progress - this Drone is charging...
        // public enum Priorities { regular, fast, urgent };
         
@@ -72,9 +72,6 @@ namespace DalObject
             Initialize();
         }
 
-
-
-
         public DalXml.DO.Drone GetDrone(int _id) {
             DalXml.DO.Drone  drone = new DalXml.DO.Drone(0,"",0);
             for (int i = 0; i < listDrone.Count; i++)
@@ -82,6 +79,7 @@ namespace DalObject
                     drone = listDrone[i];
             return drone;
         }
+
         public DalXml.DO.Customer GetCustomer(int _id) {
             DalXml.DO.Customer cust = new DalXml.DO.Customer(0, "", "", 0, 0);
             for (int i = 0; i < listCustomer.Count; i++)
@@ -119,10 +117,6 @@ namespace DalObject
             throw new DalXml.DO.EXItemNotFoundException();
         }
 
-
-
-
-
         public void AddDrone(DalXml.DO.Drone drone)
         { 
             listDrone.Add(drone);
@@ -152,19 +146,19 @@ namespace DalObject
             return lst;
         }
 
-        public ObservableCollection<DalXml.DO.Drone> GetDrones()
+        public IEnumerable<DalXml.DO.Drone> GetDrones()
         {
             return listDrone;
         }
-        public ObservableCollection<DalXml.DO.Parcel> GetParcels ()
+        public IEnumerable<DalXml.DO.Parcel> GetParcels ()
         {
             return listParcel;
         }
-        public ObservableCollection<DalXml.DO.Station> GetStations()
+        public IEnumerable<DalXml.DO.Station> GetStations()
         {
             return listStation;
         }
-        public ObservableCollection<DalXml.DO.Customer> GetCustomers()
+        public IEnumerable<DalXml.DO.Customer> GetCustomers()
         {
             return listCustomer;
         }
@@ -187,13 +181,6 @@ namespace DalObject
             {
                 return listUser;
             }
-
-
-
-
-
-
-
 
             public void Initialize()   
         {
@@ -386,7 +373,7 @@ namespace DalObject
 
 
 
-        public void ModifyDrone(int _id, string _model) //changes drone model
+        public void modifyDrone(int _id, string _model) //changes drone model
         {
             foreach (var item in listDrone)
             {
@@ -508,15 +495,6 @@ namespace DalObject
 
         //User functions
         
-
-
-
-
-
-
-
-
-
 
 
         //public IEnumerable<DalXml.DO.Drone> getSpecificDroneList(Predicate<DalXml.DO.Drone> property)
