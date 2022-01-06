@@ -213,7 +213,7 @@ namespace DalXml
             IEnumerable<DO.Parcel> listParcel = DALTools.XMLTools.LoadListFromXMLSerializer<DO.Parcel>(parcelsPath);
 
             foreach (DO.Parcel prc in listParcel)
-                if (prc.Id == _id && prc.Exists)
+                if (prc.Id == _id /*&& prc.Exists*/)
                     parcel = prc;
             if (parcel.Id == 0) throw new DO.EXItemNotFoundException();
             return parcel;
