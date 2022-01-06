@@ -15,7 +15,7 @@ namespace BL
                 //if we need the station to have a free spot, then we send a parameter = true.
                 //otherwise, we can ignore this parameter
 
-                IEnumerable<DalXml.DO.Station> stations = dataAccess.getStations();
+                IEnumerable<DalXml.DO.Station> stations = dataAccess.GetStations();
                 BO.BOLocation ans = new BO.BOLocation(0, 0);
                 if (needChargeSlot == true)
                 {
@@ -52,7 +52,7 @@ namespace BL
             }
             DalXml.DO.Station getStationFromLoc(BO.BOLocation loc)
             {
-                IEnumerable<DalXml.DO.Station> stations = dataAccess.getStations();
+                IEnumerable<DalXml.DO.Station> stations = dataAccess.GetStations();
                 foreach (var item in stations)
                 {
                     if (item.Longitude == loc.Longitude && item.Latitude == loc.Latitude)
@@ -64,8 +64,8 @@ namespace BL
             BO.BOLocation getLocationOfCustomer(int customerId)
             {
                 BO.BOLocation loc =
-                            new BO.BOLocation(dataAccess.getCustomer(customerId).Longitude,
-                            dataAccess.getCustomer(customerId).Latitude);
+                            new BO.BOLocation(dataAccess.GetCustomer(customerId).Longitude,
+                            dataAccess.GetCustomer(customerId).Latitude);
                 return loc;
             }
             BO.BOLocation getLocationOfStation(int StationId)
@@ -73,8 +73,8 @@ namespace BL
                 BO.BOLocation loc;
                 try
                 {
-                    loc =  new BO.BOLocation(dataAccess.getStation(StationId).Longitude,
-                            dataAccess.getStation(StationId).Latitude);
+                    loc =  new BO.BOLocation(dataAccess.GetStation(StationId).Longitude,
+                            dataAccess.GetStation(StationId).Latitude);
                 }
                 catch (DalXml.DO.EXItemNotFoundException)
                 {
@@ -97,7 +97,7 @@ namespace BL
                 }
 
                 //check if assigned at Station
-                foreach (DalXml.DO.Station st in dataAccess.getStations())
+                foreach (DalXml.DO.Station st in dataAccess.GetStations())
                 {
                     BO.BOLocation stLoc = new BO.BOLocation(st.Longitude, st.Latitude);
                     if (stLoc == drone.Location)
@@ -309,7 +309,7 @@ namespace BL
 
             public BO.BOCustomer GetBOCustomer(int _id)
             {
-                ObservableCollection<DalXml.DO.Customer> origList = dataAccess.getCustomers();
+                IEnumerable<DalXml.DO.Customer> origList = dataAccess.GetCustomers();
                 foreach (var item in origList)
                 {
                     if (_id == item.Id && item.Exists)
@@ -382,7 +382,7 @@ namespace BL
                 }
                 return res;
             }
-            private ObservableCollection<DalXml.DO.Parcel> getParcelListFromData(bool getDeleted = false)
+            private IEnumerable<DalXml.DO.Parcel> getParcelListFromData(bool getDeleted = false)
             {
                 if (getDeleted)
                     return dataAccess.GetParcels();
@@ -508,7 +508,7 @@ namespace BL
             {
                 ObservableCollection<BO.BOCustomerToList> res = 
                     new ObservableCollection<BO.BOCustomerToList>();
-                foreach (var item in dataAccess.getCustomers())
+                foreach (var item in dataAccess.GetCustomers())
                 {
                     res.Add(createBOCustToList(item.Id));
                 }
@@ -527,7 +527,7 @@ namespace BL
             public IEnumerable<BO.BOStationToList> GetStationToList()
             {
                 List<BO.BOStationToList> res = new List<BO.BOStationToList>();
-                foreach (var item in dataAccess.getStations())
+                foreach (var item in dataAccess.GetStations())
                 {
                     res.Add(createBOStationToList(item.Id));
                 }
@@ -536,7 +536,7 @@ namespace BL
             public IEnumerable<BO.BOStation> GetStations()
             {
                 List<BO.BOStation> res = new List<BO.BOStation>();
-                foreach (var item in dataAccess.getStations())
+                foreach (var item in dataAccess.GetStations())
                 {
                     res.Add(CreateBOStation(item.Id));
                 }
@@ -546,7 +546,7 @@ namespace BL
             {
                 List<DalXml.DO.DroneCharge> res = 
                     new List<DalXml.DO.DroneCharge>();
-                foreach (var item in dataAccess.getDroneCharges())
+                foreach (var item in dataAccess.GetDroneCharges())
                 {
                     if (item.Exists)
                         res.Add(item);
@@ -586,7 +586,7 @@ namespace BL
             public IEnumerable<BO.BOStationToList> GetStationAvailChargeSlots()
             {
                 List<BO.BOStationToList> res = new List<BO.BOStationToList>();
-                foreach (var item in dataAccess.getStations())
+                foreach (var item in dataAccess.GetStations())
                 {
                     if (freeSpots(item) > 0)
                         res.Add(createBOStationToList(item.Id));
@@ -656,14 +656,14 @@ namespace BL
             private string findAllPossibleLoc(BO.BODrone bodrone)
             {
                 //if at station - after charging
-                foreach (var station in dataAccess.getStations())
+                foreach (var station in dataAccess.GetStations())
                 {
                     if (bodrone.Location.Longitude == station.Longitude
                         && bodrone.Location.Latitude == station.Latitude)
                         return "At Station " + station.Id.ToString();
                 }
                 //if at customer
-                foreach (var cust in dataAccess.getCustomers())
+                foreach (var cust in dataAccess.GetCustomers())
                 {
                     if (bodrone.Location.Longitude == cust.Longitude
                       && bodrone.Location.Latitude == cust.Latitude)
