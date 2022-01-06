@@ -31,10 +31,10 @@ namespace BL
             BO.BOParcel GetBOParcel(int id);
             BO.BOStation GetBOStation(int id);
             public int GetStationIdOfBODrone(int droneId);
-            //string GetBODroneModel(int id);
-            //BO.Enum.WeightCategories GetBoDroneMaxWeight(int id);
-            ObservableCollection<BO.BODrone> GetBODroneList(bool getDeleted = false);
-            ObservableCollection<BO.BOParcelAtCustomer> GetBOParcelAtCustomerList(BO.BOCustomer customer);
+           // string GetBODroneModel(int id);
+           // BO.Enum.WeightCategories GetBoDroneMaxWeight(int id);
+            IEnumerable<BO.BODrone> GetBODroneList(bool getDeleted = false);
+            IEnumerable<BO.BOParcelAtCustomer> GetBOParcelAtCustomerList(BO.BOCustomer customer);
             IEnumerable<BO.BOStation> GetStations();
             string GetDroneLocationString(int droneId);//returns string describing drone's location
             int GetDroneIdOfParcel(int parcelId);
@@ -46,17 +46,17 @@ namespace BL
 
 
 
-            ObservableCollection<BO.BOCustomerToList> GetCustToList();
-            ObservableCollection<BO.BOParcelToList> GetParcelToList();
+            IEnumerable<BO.BOCustomerToList> GetCustToList();
+            IEnumerable<BO.BOParcelToList> GetParcelToList();
             IEnumerable<BO.BOStationToList> GetStationToList();
-            //ObservableCollection<BO.BODroneToList> GetDroneToList();
+           // IEnumerable<BO.BODroneToList> GetDroneToList();
             //IEnumerable<BO.BOParcelToList> GetParcelsNotYetAssigned();
             //IEnumerable<BO.BOStationToList> GetStationAvailChargeSlots();
 
 
 
-            ObservableCollection<BO.BODrone> GetSpecificDroneListStatus(int num);
-            ObservableCollection<BO.BODrone> GetSpecificDroneListWeight(int num);
+            IEnumerable<BO.BODrone> GetSpecificDroneListStatus(int num);
+            IEnumerable<BO.BODrone> GetSpecificDroneListWeight(int num);
 
 
 

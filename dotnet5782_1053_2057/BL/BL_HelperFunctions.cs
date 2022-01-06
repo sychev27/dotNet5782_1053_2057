@@ -369,7 +369,7 @@ namespace BL
 
 
 
-            public ObservableCollection<BO.BODrone> GetBODroneList(bool getDeleted = false)
+            public IEnumerable<BO.BODrone> GetBODroneList(bool getDeleted = false)
             {
                 if (getDeleted)
                     return listDrone; // without filtering out the deleted drones
@@ -396,7 +396,7 @@ namespace BL
             }
 
 
-            public ObservableCollection<BO.BODrone> GetSpecificDroneListStatus(int num)
+            public IEnumerable<BO.BODrone> GetSpecificDroneListStatus(int num)
             {
                 switch (num)
                 {
@@ -426,7 +426,7 @@ namespace BL
                 }
             }
 
-            public ObservableCollection<BO.BODrone> GetSpecificDroneListWeight(int num)
+            public IEnumerable<BO.BODrone> GetSpecificDroneListWeight(int num)
             {
                 switch (num)
                 {
@@ -504,7 +504,7 @@ namespace BL
 
 
             //for printing these lists:
-            public ObservableCollection<BO.BOCustomerToList> GetCustToList()
+            public IEnumerable<BO.BOCustomerToList> GetCustToList()
             {
                 ObservableCollection<BO.BOCustomerToList> res = 
                     new ObservableCollection<BO.BOCustomerToList>();
@@ -514,7 +514,7 @@ namespace BL
                 }
                 return res;
             }
-            public ObservableCollection<BO.BOParcelToList> GetParcelToList()
+            public IEnumerable<BO.BOParcelToList> GetParcelToList()
             {
                 ObservableCollection<BO.BOParcelToList> res = new ObservableCollection<BO.BOParcelToList>();
                 foreach (var item in dataAccess.GetParcels())
@@ -553,7 +553,7 @@ namespace BL
                 }
                 return res;
             }
-            public ObservableCollection<BO.BOParcelAtCustomer> GetBOParcelAtCustomerList(BO.BOCustomer customer)
+            public IEnumerable<BO.BOParcelAtCustomer> GetBOParcelAtCustomerList(BO.BOCustomer customer)
             {
                 ObservableCollection<BO.BOParcelAtCustomer> lst = new ObservableCollection<BO.BOParcelAtCustomer>();
                 foreach (BO.BOParcelAtCustomer item in customer.ListOfParcReceived)
