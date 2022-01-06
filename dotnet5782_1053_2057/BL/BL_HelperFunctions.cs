@@ -309,7 +309,7 @@ namespace BL
 
             public BO.BOCustomer GetBOCustomer(int _id)
             {
-                ObservableCollection<DalXml.DO.Customer> origList = dataAccess.GetCustomers();
+                IEnumerable<DalXml.DO.Customer> origList = dataAccess.GetCustomers();
                 foreach (var item in origList)
                 {
                     if (_id == item.Id && item.Exists)
@@ -382,7 +382,7 @@ namespace BL
                 }
                 return res;
             }
-            private ObservableCollection<DalXml.DO.Parcel> getParcelListFromData(bool getDeleted = false)
+            private IEnumerable<DalXml.DO.Parcel> getParcelListFromData(bool getDeleted = false)
             {
                 if (getDeleted)
                     return dataAccess.GetParcels();
@@ -524,10 +524,9 @@ namespace BL
                 }
                 return res;
             }
-            public ObservableCollection<BO.BOStationToList> GetStationToList()
+            public IEnumerable<BO.BOStationToList> GetStationToList()
             {
-                ObservableCollection<BO.BOStationToList> res = 
-                    new ObservableCollection<BO.BOStationToList>();
+                List<BO.BOStationToList> res = new List<BO.BOStationToList>();
                 foreach (var item in dataAccess.GetStations())
                 {
                     res.Add(createBOStationToList(item.Id));
@@ -565,45 +564,44 @@ namespace BL
             }
 
 
-            public ObservableCollection<BO.BODroneToList> GetDroneToList()
-            {
-                ObservableCollection<BO.BODroneToList> res = new ObservableCollection<BO.BODroneToList>();
-                foreach (var item in listDrone)
-                {
-                    res.Add(createBODroneToList(item.Id));
-                }
-                return res;
-            }
-            public IEnumerable<BO.BOParcelToList> GetParcelsNotYetAssigned()
-            {
-                List<BO.BOParcelToList> res = new List<BO.BOParcelToList>();
-                foreach (var item in GetParcelToList())
-                {
-                    if (item.ParcelStatus == BO.Enum.ParcelStatus.created)
-                        res.Add(item);
-                }
-                return res;
-            }
-            public ObservableCollection<BO.BOStationToList> GetStationAvailChargeSlots()
-            {
-                ObservableCollection<BO.BOStationToList> res = new ObservableCollection<BO.BOStationToList>();
-                foreach (var item in dataAccess.GetStations())
-                {
-                    if (freeSpots(item) > 0)
-                        res.Add(createBOStationToList(item.Id));
-                }
-                return res;
-            }
+            //public ObservableCollection<BO.BODroneToList> GetDroneToList()
+            //{
+            //    ObservableCollection<BO.BODroneToList> res = new ObservableCollection<BO.BODroneToList>();
+            //    foreach (var item in listDrone)
+            //    {
+            //        res.Add(createBODroneToList(item.Id));
+            //    }
+            //    return res;
+            //}
+            //public IEnumerable<BO.BOParcelToList> GetParcelsNotYetAssigned()
+            //{
+            //    List<BO.BOParcelToList> res = new List<BO.BOParcelToList>();
+            //    foreach (var item in GetParcelToList())
+            //    {
+            //        if (item.ParcelStatus == BO.Enum.ParcelStatus.created)
+            //            res.Add(item);
+            //    }
+            //    return res;
+            //}
+            //public IEnumerable<BO.BOStationToList> GetStationAvailChargeSlots()
+            //{
+            //    List<BO.BOStationToList> res = new List<BO.BOStationToList>();
+            //    foreach (var item in dataAccess.GetStations())
+            //    {
+            //        if (freeSpots(item) > 0)
+            //            res.Add(createBOStationToList(item.Id));
+            //    }
+            //    return res;
+            //}
 
-            public string GetBODroneModel(int id)
-            {
-                return GetBODrone(id).Model;
-
-            }
-            public BO.Enum.WeightCategories GetBoDroneMaxWeight(int id)
-            {
-                return GetBODrone(id).MaxWeight;
-            }
+            //public string GetBODroneModel(int id)
+            //{
+            //    return GetBODrone(id).Model;
+            //}
+            //public BO.Enum.WeightCategories GetBoDroneMaxWeight(int id)
+            //{
+            //    return GetBODrone(id).MaxWeight;
+            //}
 
 
 
