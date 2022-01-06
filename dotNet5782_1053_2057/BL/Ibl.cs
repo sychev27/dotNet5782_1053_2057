@@ -51,7 +51,7 @@ namespace BL
             IEnumerable<BO.BOStationToList> GetStationToList();
             ObservableCollection<BO.BODroneToList> GetDroneToList();
             IEnumerable<BO.BOParcelToList> GetParcelsNotYetAssigned();
-            IEnumerable<BO.BOStationToList> GetStationAvailChargeSlots();
+            ObservableCollection<BO.BOStationToList> GetStationAvailChargeSlots();
 
 
 

@@ -180,7 +180,7 @@ namespace WpfApp1
                 (BL.BO.Enum.Priorities)cmbPriority.SelectedItem);
             MessageBox.Show("Priority modified successfully", "SUCCESS", 
                 MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
-            
+            Close();   
         }
 
         private void btnEraseparc_Click(object sender, RoutedEventArgs e)

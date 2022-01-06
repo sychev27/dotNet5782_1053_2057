@@ -3,26 +3,28 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel;
 
 namespace DalXml
 {
     namespace DO
     {
 
-        public struct Station
+        public struct Station : INotifyPropertyChanged
         {
 
-            public Station(int _id,int _name,double _longitude,double _latitude, int _chargeSlots)
+            public Station(int _id,int name,double _longitude, double _latitude, 
+                int _chargeSlots) : this()
             {
                 Id = _id;
-                Name = _name;
+                _name = name;
                 Longitude = _longitude;
                 Latitude = _latitude;
                 ChargeSlots = _chargeSlots; //total charge slots 
                 Exists = true;
             }
             public int Id { get; set; }
-            public int Name { get; set; }
+            private int _name { get; set; }
             public double Longitude { get; set; }
             public double Latitude { get; set; }
             public int ChargeSlots { get; set; }
@@ -36,6 +38,21 @@ namespace DalXml
                     "ChargeSlots: " + ChargeSlots + "\n";
                 return res;
             }
+            public event PropertyChangedEventHandler PropertyChanged;
+            public int Name
+            {
+                get { return _name; }
+                set
+                {
+                    _name = value;
+                    if (PropertyChanged != null)
+                    {
+                        PropertyChanged(this,
+                            new PropertyChangedEventArgs("Name"));
+                    }
+
+                }
+            }
 
             //public void print()
             //{
@@ -46,7 +63,7 @@ namespace DalXml
 
 
 
-        
+
 
         }
 

@@ -48,12 +48,12 @@ namespace DalObject
         }
 
         //internal fields:
-        internal static List<DalXml.DO.Station> listStation = new List<DalXml.DO.Station>();
+        internal static ObservableCollection<DalXml.DO.Station> listStation = new ObservableCollection<DalXml.DO.Station>();
         internal static List<DalXml.DO.DroneCharge> listDroneCharge = new List<DalXml.DO.DroneCharge>();
         internal static ObservableCollection<DalXml.DO.Drone> listDrone = new ObservableCollection<DalXml.DO.Drone>();
         internal static ObservableCollection<DalXml.DO.Parcel> listParcel = new ObservableCollection<DalXml.DO.Parcel>();
         internal static ObservableCollection<DalXml.DO.Customer> listCustomer = new ObservableCollection<DalXml.DO.Customer>();
-
+            
 
         internal static List<DalXml.DO.User> listUser = new List<DalXml.DO.User>(); //holds list of username and passwords
 
@@ -90,9 +90,9 @@ namespace DalObject
         }
         public DalXml.DO.Parcel GetParcel(int _id)
         {
-            DalXml.DO.Parcel parcel = new DalXml.DO.Parcel(0, 0, 0, 0);// DateTime.MinValue,DateTime.MinValue);
+            DalXml.DO.Parcel parcel = new DalXml.DO.Parcel(0, 0, 0, 0);
             for (int i = 0; i < listParcel.Count; i++)
-                if (listParcel[i].Id == _id && listParcel[i].Exists)
+                if (listParcel[i].Id == _id /*&& listParcel[i].Exists*/)
                     parcel = listParcel[i];
             if (parcel.Id == 0) throw new DalXml.DO.EXItemNotFoundException();
             return parcel;
@@ -367,6 +367,11 @@ namespace DalObject
             }
 
         }
+
+
+
+
+
 
         public void ModifyDrone(int _id, string _model) //changes drone model
         {

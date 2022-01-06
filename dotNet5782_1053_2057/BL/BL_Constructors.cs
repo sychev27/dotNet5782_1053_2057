@@ -543,6 +543,7 @@ namespace BL
                 DalXml.DO.Parcel origParcel = dataAccess.GetParcel(_id);
 
                 newParcToList.Id = origParcel.Id;
+                newParcToList.Exists = origParcel.Exists;
                 newParcToList.NameReceiver = dataAccess.GetCustomer(origParcel.ReceiverId).Name;
                 newParcToList.NameSender = dataAccess.GetCustomer(origParcel.SenderId).Name;
                 newParcToList.Weight = (BO.Enum.WeightCategories)origParcel.Weight;
@@ -569,6 +570,7 @@ namespace BL
                 newStationToList.NameStation = origStation.Name;
                 newStationToList.ChargeSlotsAvailable = freeSpots(origStation);
                 newStationToList.ChargeSlotsTaken = origStation.ChargeSlots - freeSpots(origStation);
+                newStationToList.Exists = origStation.Exists;
 
                 return newStationToList;
             }

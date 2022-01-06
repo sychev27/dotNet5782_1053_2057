@@ -519,7 +519,7 @@ namespace BL
                 ObservableCollection<BO.BOParcelToList> res = new ObservableCollection<BO.BOParcelToList>();
                 foreach (var item in dataAccess.GetParcels())
                 {
-                    if(item.Exists)
+                    //if(item.Exists)
                         res.Add(createBOParcToList(item.Id));
                 }
                 return res;
@@ -583,7 +583,7 @@ namespace BL
                 }
                 return res;
             }
-            public IEnumerable<BO.BOStationToList> GetStationAvailChargeSlots()
+            public ObservableCollection<BO.BOStationToList> GetStationAvailChargeSlots()
             {
                 List<BO.BOStationToList> res = new List<BO.BOStationToList>();
                 foreach (var item in dataAccess.GetStations())
