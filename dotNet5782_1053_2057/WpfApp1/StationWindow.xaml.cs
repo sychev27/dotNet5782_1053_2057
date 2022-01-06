@@ -34,11 +34,11 @@ namespace WpfApp1
             lstViewDronesCharging.Visibility = Visibility.Hidden;
 
         }
-        public StationWindow(BL.BLApi.Ibl _busiAccess, int stationId) // CTOR - Update Station
+        public StationWindow(BL.BLApi.Ibl _busiAccess, int stationName) // CTOR - Update Station
         {
             InitializeComponent();
             busiAccess = _busiAccess;
-            displayStation(stationId);
+            displayStation(stationName);
             btnAddStation.IsEnabled = false;
             btnAddStation.Visibility = Visibility.Hidden;
 
@@ -121,11 +121,11 @@ namespace WpfApp1
 
         }
 
-        private void displayStation(int _id)
+        private void displayStation(int _stationName)
         {
-            BL.BO.BOStation st = busiAccess.GetBOStation(_id);
+            BL.BO.BOStation st = busiAccess.GetBOStation(_stationName);
 
-            tBoxIdInput.Text = _id.ToString();
+            tBoxIdInput.Text = st.Id.ToString();
             tBoxNameInput.Text = st.Name.ToString();
             tBoxChargeSlotsInput.Text = st.ChargeSlots.ToString();
             tBoxLongInput.Text = st.Location.Longitude.ToString();

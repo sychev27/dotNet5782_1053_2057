@@ -346,11 +346,11 @@ namespace BL
                 throw new EXParcelNotFound(); ;
             }
 
-            public BO.BOStation GetBOStation(int id)
+            public BO.BOStation GetBOStation(int _stationName)
             {
                 foreach (var item in GetStations())
                 {
-                    if (id == item.Id)
+                    if (_stationName == item.Name)
                         return item;
                 }
                 throw new EXNotFoundPrintException("Station");
@@ -539,7 +539,7 @@ namespace BL
                 List<BO.BOStation> res = new List<BO.BOStation>();
                 foreach (var item in dataAccess.GetStations())
                 {
-                    res.Add(CreateBOStation(item.Id));
+                    res.Add(CreateBOStation(item.Name));
                 }
                 return res;
             }

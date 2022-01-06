@@ -99,7 +99,7 @@ namespace DalXml
                 List<DalXml.DO.Station> listStation = new List<DalXml.DO.Station>();
                 for (int i = 0; i < 2; i++)
                 {
-                  DalXml.DO.Station exampleS = new DalXml.DO.Station();
+                  DO.Station exampleS = new DalXml.DO.Station();
 
 
                   exampleS.Id = i + 1;
