@@ -8,21 +8,22 @@
         Title="MainWindow" Height="640" Width="800">
     <Grid Name="MainGrid">
 
-        <Grid x:Name="Main4Btns" HorizontalAlignment="Center" Height="277" VerticalAlignment="Center" Width="466">
+        <Grid x:Name="Main4Btns" HorizontalAlignment="Center" Height="397" VerticalAlignment="Center" Width="466">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="117*"/>
-                <ColumnDefinition Width="117*"/>
+                <ColumnDefinition Width="200*"/>
+                <ColumnDefinition Width="200*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height ="*"/>
-
-                <RowDefinition Height ="*"/>
+                <RowDefinition Height ="100*"/>
+                <RowDefinition Height ="100*"/>
+                <RowDefinition Height = "100*"/>
+                
 
             </Grid.RowDefinitions>
-            <Button x:Name="btnParcelLists" Content="Open Parcel List" Grid.Column="1" Margin="20, 20, 20, 20" Click="btnParcelLists_Click"/>
-            <Button x:Name="btnStationLists" Content="Open Station List" Margin="20, 20, 20, 20" Click="btnStationLists_Click"/>
+            <Button x:Name="btnParcelLists" Content="Open Parcel List" Grid.Column="1" Margin="20,20,20,20" Click="btnParcelLists_Click" Grid.ColumnSpan="2"/>
+            <Button x:Name="btnStationLists" Content="Open Station List" Margin="20,20,20,20" Click="btnStationLists_Click"/>
             <Button x:Name="btnCustomerLists" Content="Open Customer List" Grid.Row="1" Margin="20,20,20,20" Grid.Column="0" Click="btnCustomerLists_Click"/>
-            <Button x:Name="btnOpenDroneList" Content="Open Drone List" Grid.Column="1" Grid.Row="1" Margin="20, 20, 20, 20" Click="btnOpenDroneList_Click">
+            <Button x:Name="btnOpenDroneList" Content="Open Drone List" Grid.Column="1" Grid.Row="1" Margin="20,20,20,20" Click="btnOpenDroneList_Click" Grid.ColumnSpan="2">
                 <Button.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform/>
@@ -32,6 +33,7 @@
                     </TransformGroup>
                 </Button.RenderTransform>
             </Button>
+            <Button x:Name="btnOpenMap" Content="Open Map" Grid.Column="1" HorizontalAlignment="Center" Height="112" Grid.Row="2" VerticalAlignment="Center" Width="193" Click="btnOpenMap_Click" />
         </Grid>
         <Button x:Name="btnLogOut" Content="Log Out" HorizontalAlignment="Left" Height="78" Margin="633,36,0,0" VerticalAlignment="Top" Width="127" Click="btnLogOut_Click"/>
 

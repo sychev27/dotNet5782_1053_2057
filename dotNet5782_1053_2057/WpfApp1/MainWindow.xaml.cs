@@ -86,7 +86,13 @@ namespace WpfApp1
 
         private void btnStationLists_Click(object sender, RoutedEventArgs e)
         {
-            new StationListWindow(busiAccess).Show();
+            new StationListWindow(busiAccess).ShowDialog();
+            Close();
+        }
+
+        private void btnOpenMap_Click(object sender, RoutedEventArgs e)
+        {
+            new MapWindow(busiAccess).ShowDialog();
             Close();
         }
     }

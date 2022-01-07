@@ -330,6 +330,20 @@ namespace BL
                 //throw exception!!!
                 throw new EXNotFoundPrintException("Customer");
             }
+            public IEnumerable<BO.BOCustomer> GetAllBOCustomers()
+            {
+                List<BO.BOCustomer> res = new List<BO.BOCustomer>();
+                foreach (var item in dataAccess.GetCustomers())
+                {
+                    res.Add(CreateBOCustomer(item.Id));
+                }
+                return res;
+            }
+
+            public BO.BOCustomerToList GetOneCustToList(int _id)
+            {
+                return createBOCustToList(_id);
+            }
 
 
             public BO.BOParcel GetBOParcel(int _id)
