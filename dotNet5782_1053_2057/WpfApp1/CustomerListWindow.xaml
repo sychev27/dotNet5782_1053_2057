@@ -12,10 +12,11 @@
     <Window.Resources>
     </Window.Resources>
 
-    <Grid Name="MainGrid">
+    <Grid Name="MainGrid" Margin="0,0,0,-6">
         <Grid.RowDefinitions>
-            <RowDefinition Height="50*"/>
-            <RowDefinition Height="400*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="2*"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid Name = "UpGrid" Height = "auto" Grid.Row = "0" Width = "auto">
             <Grid.ColumnDefinitions>
@@ -37,15 +38,15 @@
             <ComboBox Grid.Column="3" Name="Selector2" HorizontalAlignment="Stretch" Margin="4,6,6,4" VerticalAlignment="Stretch" Width="190" SelectionChanged="Selector2_SelectionChanged"/>-->
 
         </Grid>
-        <ListView x:Name="CustomerListView" Margin="0,58,0,62"  Grid.RowSpan="2" 
-                  ItemsSource="{Binding UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="CustomerListView_MouseDoubleClick" >
+        <ListView x:Name="CustomerListView" 
+                  ItemsSource="{Binding UpdateSourceTrigger=PropertyChanged}" MouseDoubleClick="CustomerListView_MouseDoubleClick" Grid.Row="1" HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn>
                         <GridViewColumnHeader>
-                            Content="Header text"                  
+                            Content="Header text"
                         </GridViewColumnHeader>
-                    </GridViewColumn> 
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
 

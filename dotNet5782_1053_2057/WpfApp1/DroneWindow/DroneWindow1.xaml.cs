@@ -25,7 +25,7 @@ namespace WpfApp1
         //DroneStringViewModel currentDroneViewModel;
         int thisDroneId; //field to allow window's function to retrieve bodrone from BL 
         bool simulatorOn;
-
+        private Object lockThisThread = new Object();
 
 
 
@@ -171,32 +171,38 @@ namespace WpfApp1
         }
         private void displayBODrone(int _droneId)
         {
-            BL.BO.BODrone bodrone = busiAccess.GetBODrone(_droneId);
-            DataContext = createDroneViewModel(bodrone);
+            //lock(lockThisThread)
+            //{
+
+            //}
             
+            BL.BO.BODrone bodrone = busiAccess.GetBODrone(_droneId);
+            //DataContext = createDroneViewModel(bodrone);
+
             //delete this... 
-            //tBoxIdInput.Text = bodrone.Id.ToString();
-            //tBoxModelInput.Text = bodrone.Model;
-            //if (busiAccess.GetStationIdOfBODrone(bodrone.Id) != -1)
-            //    tBoxStationIdInput.Text = (busiAccess.GetStationIdOfBODrone(bodrone.Id)).ToString();
-            //else
-            //    tBoxStationIdInput.Text = "Drone is not charging at a Station";
 
-            //cmbWeightChoice.SelectedIndex = (int)bodrone.MaxWeight;
-            //cmbWeightChoice.IsReadOnly = true;
-            //cmbWeightChoice.IsEnabled = false;
+            tBoxIdInput.Text = bodrone.Id.ToString();
+            tBoxModelInput.Text = bodrone.Model;
+            if (busiAccess.GetStationIdOfBODrone(bodrone.Id) != -1)
+                tBoxStationIdInput.Text = (busiAccess.GetStationIdOfBODrone(bodrone.Id)).ToString();
+            else
+                tBoxStationIdInput.Text = "Drone is not charging at a Station";
 
-            //tBlockStatusInfo.Text = bodrone.DroneStatus.ToString();
-            //if (bodrone.ParcelInTransfer.Id == -1 || bodrone.ParcelInTransfer == null)
-            //    tBlockDeliveryInfo.Text = "Not yet carrying Parcel";
-            //else 
-            //    tBlockDeliveryInfo.Text = bodrone.ParcelInTransfer.ToString();
-            //tBlockLongInfo.Text = bodrone.Location.Longitude.ToString();
-            //tBlockLatinfo.Text = bodrone.Location.Latitude.ToString();
+            cmbWeightChoice.SelectedIndex = (int)bodrone.MaxWeight;
+            cmbWeightChoice.IsReadOnly = true;
+            cmbWeightChoice.IsEnabled = false;
 
-            //tBlockCurrentLocationInfo.Text = busiAccess.GetDroneLocationString(bodrone.Id);
+            tBlockStatusInfo.Text = bodrone.DroneStatus.ToString();
+            if (bodrone.ParcelInTransfer.Id == -1 || bodrone.ParcelInTransfer == null)
+                tBlockDeliveryInfo.Text = "Not yet carrying Parcel";
+            else
+                tBlockDeliveryInfo.Text = bodrone.ParcelInTransfer.ToString();
+            tBlockLongInfo.Text = bodrone.Location.Longitude.ToString();
+            tBlockLatinfo.Text = bodrone.Location.Latitude.ToString();
 
-            //tBlockBatteryInfo.Text = bodrone.Battery.ToString();
+            tBlockCurrentLocationInfo.Text = busiAccess.GetDroneLocationString(bodrone.Id);
+
+            tBlockBatteryInfo.Text = bodrone.Battery.ToString();
         }
         private void btnModifyDroneModel_Click(object sender, RoutedEventArgs e)
         {
@@ -319,8 +325,9 @@ namespace WpfApp1
         private void btnSimulator_Click(object sender, RoutedEventArgs e)
         {
 
-            btnSimulator.Content = "End Simulator"; 
-            beginSimulator();
+            btnSimulator.Content = "End Simulator";
+            Thread newSimulatorThread = new Thread(beginSimulator);
+            newSimulatorThread.Start();
         }
 
         
@@ -348,7 +355,8 @@ namespace WpfApp1
                 }
                 catch (BL.BLApi.EXNoAppropriateParcel)
                 {
-                    Thread.Sleep(5000);
+                    tBlockBattery.Text = "AHHHHHH";
+                    Thread.Sleep(1000000);
                 }
             }
 

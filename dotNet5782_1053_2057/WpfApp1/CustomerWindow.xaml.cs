@@ -21,7 +21,7 @@ namespace WpfApp1
     {
         BL.BLApi.Ibl busiAccess;
         int thisCustomerId;
-        bool registerMode;
+        bool registerMode; //this is true if the window is opened by a user
         
         public CustomerWindow(BL.BLApi.Ibl _busiAccess, bool register = false) //To Add a Customer
         {
