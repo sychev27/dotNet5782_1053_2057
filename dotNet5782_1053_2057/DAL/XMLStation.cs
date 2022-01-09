@@ -41,7 +41,8 @@ namespace DALTools
 
         public void SaveStationListLinq(List<DalXml.DO.Station> stationList)
         {
-            stationRoot.Add(from p in stationList
+            stationRoot = new XElement("stations",
+                            from p in stationList
                             select new XElement("station",
                             new XElement("id", p.Id),
                             new XElement("name", p.Name),
@@ -76,14 +77,14 @@ namespace DALTools
             return listStations;
         }
 
-        public DalXml.DO.Station GetStation(int _name)
+        public DalXml.DO.Station GetStation(int _id)
         {
             LoadData();
             DalXml.DO.Station station;
             try
             {
                 station = (from s in stationRoot.Elements()
-                           where Convert.ToInt32(s.Element("name").Value) == _name
+                           where Convert.ToInt32(s.Element("id").Value) == _id
                            select new DalXml.DO.Station()
                            {
                                Id = Convert.ToInt32(s.Element("id").Value),
