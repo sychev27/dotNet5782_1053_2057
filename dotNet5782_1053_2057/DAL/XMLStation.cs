@@ -137,6 +137,7 @@ namespace DALTools
             stationElement = (from s in stationRoot.Elements()
                               where Convert.ToInt32(s.Element("id").Value) == _id
                               select s).FirstOrDefault();
+            //HERE? CHECK BY NAME?
             if (Convert.ToInt32(stationElement.Element("id").Value) == _id && Convert.ToBoolean(stationElement.Element("exists").Value))
             {
                 if (_name != 0)

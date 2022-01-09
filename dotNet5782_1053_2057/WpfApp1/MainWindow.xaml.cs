@@ -44,7 +44,7 @@ namespace WpfApp1
                 item.Foreground = new SolidColorBrush(Colors.Black);
             }
         }
-        public static void ChangeVisibilty(System.Windows.Visibility vis, params TextBlock[] listTBlock )
+        public static void ChangeVisibilty(System.Windows.Visibility vis, params TextBlock[] listTBlock)
         {
             foreach (var item in listTBlock)
             {
@@ -53,16 +53,22 @@ namespace WpfApp1
         }
         public static void ChangeVisibilty(System.Windows.Visibility vis, params Button[] listButton)
         {
-            foreach (var item in listButton)
-            {
-                item.Visibility = vis;
-            }
+            //function hides or shows buttons, AND updates whether or not they are enabled.
+
+            if (vis == Visibility.Hidden || vis ==  Visibility.Collapsed)
+                foreach (var item in listButton)
+                {
+                    item.IsEnabled = false;
+                    item.Visibility = vis;
+                }
+            else if(vis == Visibility.Visible)
+                foreach (var item in listButton)
+                {
+                    item.IsEnabled = true;
+                    item.Visibility = vis;
+                }
+
         }
-
-
-
-
-
         private void btnOpenDroneList_Click(object sender, RoutedEventArgs e)
         {
             new DroneListWindow(busiAccess).ShowDialog();
@@ -87,13 +93,11 @@ namespace WpfApp1
         private void btnStationLists_Click(object sender, RoutedEventArgs e)
         {
             new StationListWindow(busiAccess).ShowDialog();
-            Close();
         }
 
         private void btnOpenMap_Click(object sender, RoutedEventArgs e)
         {
             new MapWindow(busiAccess).ShowDialog();
-            Close();
         }
     }
 }

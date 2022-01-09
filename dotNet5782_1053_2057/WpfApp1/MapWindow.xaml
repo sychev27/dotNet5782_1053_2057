@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MapWindow" Height="450" Width="800">
     <Grid>
-        <Grid x:Name="gridMap" Margin="35,30,143,30">
+        <Grid x:Name="gridMap" Margin="35,30,10,30">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width = "1*"/>
                 <ColumnDefinition Width = "1*"/>
@@ -30,6 +30,7 @@
                 <ColumnDefinition Width = "1*"/>
                 <ColumnDefinition Width = "1*"/>
                 <ColumnDefinition Width = "1*"/>
+                <ColumnDefinition Width = "5*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height= "1*"/>
@@ -55,8 +56,10 @@
 
                 <RowDefinition Height= "1*"/>
             </Grid.RowDefinitions>
+
+            <TextBox x:Name="tBoxInfo" HorizontalAlignment="Left" Height="207" Margin="12,6,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="112" Grid.Column="21" Grid.RowSpan="12" Grid.Row="2"/>
+            <Button x:Name="btnReturnToMainMenu" Content="Return To Main Menu" Grid.Column="21" HorizontalAlignment="Left" Height="18" Margin="12,8,0,0" Grid.RowSpan="2" VerticalAlignment="Top" Width="123" Click="btnReturnToMainMenu_Click"/>
         </Grid>
-        <TextBox x:Name="tBoxInfo" HorizontalAlignment="Left" Height="207" Margin="678,30,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Width="112"/>
 
     </Grid>
 </Window>

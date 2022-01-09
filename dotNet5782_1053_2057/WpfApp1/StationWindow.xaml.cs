@@ -25,13 +25,12 @@ namespace WpfApp1
             InitializeComponent();
             busiAccess = _busiAccess;
 
-            btnModifyName.IsEnabled = false;
-            btnModifyChargeSlots.IsEnabled = false;
             lstViewDronesCharging.IsEnabled = false;
+            lstViewDronesCharging.Visibility = Visibility.Hidden;
 
             MainWindow.ChangeVisibilty(Visibility.Hidden, btnModifyName, btnModifyChargeSlots);
             MainWindow.ChangeVisibilty(Visibility.Hidden, tBlockDronesCharging);
-            lstViewDronesCharging.Visibility = Visibility.Hidden;
+            
 
         }
         public StationWindow(BL.BLApi.Ibl _busiAccess, int stationName) // CTOR - Update Station

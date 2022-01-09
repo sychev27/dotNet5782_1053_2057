@@ -47,8 +47,8 @@ namespace WpfApp1
             {
                 createInfoBlock(new InfoBlock(item));
             }
-            
 
+            tBoxInfo.Text = "Hover the mouse over a square";
 
         }
 
@@ -77,12 +77,20 @@ namespace WpfApp1
 
         private void displayCustomer(object sender, System.EventArgs e, MapWindow.InfoBlock _InfoBlock)
         {
+            BL.BO.BOCustomer cust = busiAccess.GetBOCustomer(_InfoBlock.Id);
 
-            tBoxInfo.Text = busiAccess.GetOneCustToList(_InfoBlock.Id).ToString();
+            tBoxInfo.Text = busiAccess.GetOneCustToList(_InfoBlock.Id).ToString()
+                + "\n" + "Longitude: " + cust.Location.Longitude.ToString()
+                + "\n" + "Latitude: " + cust.Location.Latitude.ToString();
         }
         private void hideInfo(object sender, System.EventArgs e)
         {
-            tBoxInfo.Text = "";
+            tBoxInfo.Text = "Hover the mouse over a square";
+        }
+
+        private void btnReturnToMainMenu_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

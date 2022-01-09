@@ -49,7 +49,11 @@ namespace BL
         {
             public EXParcelNotCollected() : base("Parcel not yet collected") { }
         }
-
+        public class EXNoStationWithAvailChargingSlots : EXMiscException
+        {
+            public EXNoStationWithAvailChargingSlots() : 
+                base("No Station has available charging slots") { }
+        }
         
 
 

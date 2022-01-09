@@ -10,44 +10,40 @@ namespace BL
     {
         public partial class BL : global::BL.BLApi.Ibl
         {
-            BO.BOLocation getClosestStationLoc(BO.BOLocation l, bool needChargeSlot = false)
+            BO.BOLocation getClosestStationLoc(BO.BOLocation sourceLocation, bool needChargeSlot = false)
             {
-                //if we need the station to have a free spot, then we send a parameter = true.
+                //"needChargeSlots" --> if we need the station to have a free spot,
+                //then we send a parameter = true.
                 //otherwise, we can ignore this parameter
 
-                IEnumerable<DalXml.DO.Station> stations = dataAccess.GetStations();
-                BO.BOLocation ans = new BO.BOLocation(0, 0);
-                if (needChargeSlot == true)
+                BO.BOLocation result = new BO.BOLocation(0, 0); //set to "null" to begin with..
+                
+                IEnumerable<DalXml.DO.Station> list = dataAccess.GetStations();
+
+                foreach (DalXml.DO.Station st in dataAccess.GetStations())
                 {
-                    foreach (DalXml.DO.Station st in stations)
-                    {
-                        if (freeSpots(st) <= 0)
-                            continue;
-                        ans = new BO.BOLocation(st.Longitude, st.Latitude);
-                        break;
-                    }
-                }
-                else
-                    ans = new BO.BOLocation(stations.First().Longitude, stations.First().Latitude);
-                //   if (ans.Latitude == 0 && ans.Longitude == 0)
-                //       throw // exception
-                foreach (DalXml.DO.Station st in stations)
-                {
+                    //skip Stations with no available charging slots...
                     if (needChargeSlot == true) //if we need the station to have a free slot
                     {
                         if (freeSpots(st) <= 0) //if there are no free spots in this station, we continue our loop
                             continue;
                     }
 
-
-                    BO.BOLocation checkLoc = new BO.BOLocation(st.Longitude, st.Latitude);
-                    if (distance(l, ans) > distance(l, checkLoc))
+                    BO.BOLocation checkThisStationLocation = new BO.BOLocation(st.Longitude, st.Latitude);
+                    if (distance(sourceLocation, checkThisStationLocation) < distance(sourceLocation, result))
                     {
-                        ans.Latitude = checkLoc.Latitude;
-                        ans.Longitude = checkLoc.Longitude;
+                        result.Latitude = checkThisStationLocation.Latitude;
+                        result.Longitude = checkThisStationLocation.Longitude;
                     }
                 }
-                return ans;
+                if (result.Latitude == 0 || result.Longitude == 0)
+                    if (needChargeSlot == true)
+                        throw new EXNoStationWithAvailChargingSlots();
+                    else
+                        throw new EXMiscException("Unknown exception - could not locate station");
+
+
+                return result;
 
             }
             DalXml.DO.Station getStationFromLoc(BO.BOLocation loc)
@@ -248,13 +244,13 @@ namespace BL
                 {
                     for (int j = 2; j >= 0; j--) //j iterates thru weight category
                     {
-                        foreach (var parcel in parcels[i, j])
+                        foreach (DalXml.DO.Parcel parcel in parcels[i, j])
                         {
                             if (battNeededForJourey(droneCopy, getLocationOfCustomer(parcel.SenderId),
                                 getLocationOfCustomer(parcel.ReceiverId), (BO.Enum.WeightCategories)parcel.Weight) <= droneCopy.Battery)
                             { //if drone can make the journey,
 
-                                //find the closest parcel:
+                                //if this parcel is closer, replace the "closest Parcel":
                                 BO.BOLocation thisParcLoc = new BO.BOLocation(getLocationOfCustomer(parcel.SenderId).Longitude,
                                     getLocationOfCustomer(parcel.SenderId).Latitude);
 
