@@ -221,8 +221,10 @@ namespace WpfApp1
             {
                 busiAccess.ModifyCust(_id, _name, _phone);
                 MessageBox.Show("Customer Name and Phone Changed", "SUCCESS", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
-                Close();
-            }
+                if(!registerMode)
+                     Close();
+                //if register mode - let customer continue in this window..
+            }   
             else
                 return;
         }
