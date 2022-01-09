@@ -171,38 +171,38 @@ namespace WpfApp1
         }
         private void displayBODrone(int _droneId)
         {
-            //lock(lockThisThread)
-            //{
+            lock (lockThisThread)
+            {
+                BL.BO.BODrone bodrone = busiAccess.GetBODrone(_droneId);
+                DataContext = createDroneViewModel(bodrone);
+            }
 
-            //}
-            
-            BL.BO.BODrone bodrone = busiAccess.GetBODrone(_droneId);
-            //DataContext = createDroneViewModel(bodrone);
+           
 
             //delete this... 
 
-            tBoxIdInput.Text = bodrone.Id.ToString();
-            tBoxModelInput.Text = bodrone.Model;
-            if (busiAccess.GetStationIdOfBODrone(bodrone.Id) != -1)
-                tBoxStationIdInput.Text = (busiAccess.GetStationIdOfBODrone(bodrone.Id)).ToString();
-            else
-                tBoxStationIdInput.Text = "Drone is not charging at a Station";
+        //    tBoxIdInput.Text = bodrone.Id.ToString();
+        //    tBoxModelInput.Text = bodrone.Model;
+        //    if (busiAccess.GetStationIdOfBODrone(bodrone.Id) != -1)
+        //        tBoxStationIdInput.Text = (busiAccess.GetStationIdOfBODrone(bodrone.Id)).ToString();
+        //    else
+        //        tBoxStationIdInput.Text = "Drone is not charging at a Station";
 
-            cmbWeightChoice.SelectedIndex = (int)bodrone.MaxWeight;
-            cmbWeightChoice.IsReadOnly = true;
-            cmbWeightChoice.IsEnabled = false;
+        //    cmbWeightChoice.SelectedIndex = (int)bodrone.MaxWeight;
+        //    cmbWeightChoice.IsReadOnly = true;
+        //    cmbWeightChoice.IsEnabled = false;
 
-            tBlockStatusInfo.Text = bodrone.DroneStatus.ToString();
-            if (bodrone.ParcelInTransfer.Id == -1 || bodrone.ParcelInTransfer == null)
-                tBlockDeliveryInfo.Text = "Not yet carrying Parcel";
-            else
-                tBlockDeliveryInfo.Text = bodrone.ParcelInTransfer.ToString();
-            tBlockLongInfo.Text = bodrone.Location.Longitude.ToString();
-            tBlockLatinfo.Text = bodrone.Location.Latitude.ToString();
+        //    tBlockStatusInfo.Text = bodrone.DroneStatus.ToString();
+        //    if (bodrone.ParcelInTransfer.Id == -1 || bodrone.ParcelInTransfer == null)
+        //        tBlockDeliveryInfo.Text = "Not yet carrying Parcel";
+        //    else
+        //        tBlockDeliveryInfo.Text = bodrone.ParcelInTransfer.ToString();
+        //    tBlockLongInfo.Text = bodrone.Location.Longitude.ToString();
+        //    tBlockLatinfo.Text = bodrone.Location.Latitude.ToString();
 
-            tBlockCurrentLocationInfo.Text = busiAccess.GetDroneLocationString(bodrone.Id);
+        //    tBlockCurrentLocationInfo.Text = busiAccess.GetDroneLocationString(bodrone.Id);
 
-            tBlockBatteryInfo.Text = bodrone.Battery.ToString();
+        //    tBlockBatteryInfo.Text = bodrone.Battery.ToString();
         }
         private void btnModifyDroneModel_Click(object sender, RoutedEventArgs e)
         {
