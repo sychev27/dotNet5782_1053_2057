@@ -14,7 +14,7 @@ namespace DalXml
         DalXml.DO.Drone GetDrone(int _id);
         DalXml.DO.Customer GetCustomer(int _id);
         DalXml.DO.Parcel GetParcel(int _id);
-        DalXml.DO.Station GetStation(int _name);
+        DalXml.DO.Station GetStation(int _id);
         DalXml.DO.DroneCharge GetDroneCharge(int _droneId);
 
         void AddCustomer(DalXml.DO.Customer custom);

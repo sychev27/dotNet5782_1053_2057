@@ -37,7 +37,6 @@ namespace WpfApp1
 
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
-            new MainWindow(busiAccess).Show();
             Close();
         }
 

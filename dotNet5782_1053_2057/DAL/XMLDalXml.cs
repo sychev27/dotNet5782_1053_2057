@@ -217,10 +217,10 @@ namespace DalXml
             if (parcel.Id == 0) throw new DO.EXItemNotFoundException();
             return parcel;
         }
-        public DO.Station GetStation(int _name)
+        public DO.Station GetStation(int _id)
         {
             DALTools.XmlStation xmlStation = new DALTools.XmlStation(stationsPath);
-            return xmlStation.GetStation(_name);
+            return xmlStation.GetStation(_id);
         }
         public DO.DroneCharge GetDroneCharge(int _droneId)
         {
@@ -259,7 +259,10 @@ namespace DalXml
         }
         public void AddDroneCharge(DO.DroneCharge droneCharge)
         {
-            List<DO.DroneCharge> listDroneCharge = DALTools.XMLTools.LoadListFromXMLSerializer<DO.DroneCharge>(droneChargesPath) as List<DO.DroneCharge>;
+            List<DO.DroneCharge> listDroneCharge = DALTools.XMLTools.LoadListFromXMLSerializer<DO.DroneCharge>(droneChargesPath).ToList();
+            foreach (var item in listDroneCharge)  
+                if (item.DroneId == droneCharge.DroneId)
+                    return;
             listDroneCharge.Add(droneCharge);
             DALTools.XMLTools.SaveListToXMLSerializer<DO.DroneCharge>(listDroneCharge, droneChargesPath);
         }

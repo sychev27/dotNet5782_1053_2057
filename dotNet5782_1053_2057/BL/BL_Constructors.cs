@@ -563,10 +563,10 @@ namespace BL
 
                 return newParcToList;
             }
-            private BO.BOStationToList createBOStationToList(int _name)
+            private BO.BOStationToList createBOStationToList(int _id)
             {
                 BO.BOStationToList newStationToList = new BO.BOStationToList();
-                DalXml.DO.Station origStation = dataAccess.GetStation(_name);
+                DalXml.DO.Station origStation = dataAccess.GetStation(_id);
 
                 newStationToList.Id = origStation.Id;
                 newStationToList.NameStation = origStation.Name;
