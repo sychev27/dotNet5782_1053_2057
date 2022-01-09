@@ -540,7 +540,7 @@ namespace BL
                 List<BO.BOStationToList> res = new List<BO.BOStationToList>();
                 foreach (var item in dataAccess.GetStations())
                 {
-                    res.Add(createBOStationToList(item.Name));
+                    res.Add(createBOStationToList(item.Id));
                 }
                 return res;
             }
@@ -549,7 +549,7 @@ namespace BL
                 List<BO.BOStation> res = new List<BO.BOStation>();
                 foreach (var item in dataAccess.GetStations())
                 {
-                    res.Add(CreateBOStation(item.Name));
+                    res.Add(CreateBOStation(item.Id));
                 }
                 return res;
             }
