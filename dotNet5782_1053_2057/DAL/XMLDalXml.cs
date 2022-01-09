@@ -166,7 +166,6 @@ namespace DalXml
                 }
                 DALTools.XMLTools.SaveListToXMLSerializer<DalXml.DO.Parcel>(listParcel, parcelsPath);
 
-
                 //INITIALIZE USERS
                 List<DalXml.DO.User> listUser = new List<DalXml.DO.User>();
                 DalXml.DO.User userEmployee = new DalXml.DO.User();
@@ -180,8 +179,8 @@ namespace DalXml
                 userReuven.Password = "ruv";
                 listUser.Add(userReuven);
                 DALTools.XMLTools.SaveListToXMLSerializer<DalXml.DO.User>(listUser, usersPath);
-                //END OF FUNCTION
-            }
+            //END OF FUNCTION
+        }
 
         public DO.Drone GetDrone(int _id)
         {
@@ -260,7 +259,7 @@ namespace DalXml
         public void AddDroneCharge(DO.DroneCharge droneCharge)
         {
             List<DO.DroneCharge> listDroneCharge = DALTools.XMLTools.LoadListFromXMLSerializer<DO.DroneCharge>(droneChargesPath).ToList();
-            foreach (var item in listDroneCharge)  
+            foreach (var item in listDroneCharge)   //checks if this drone already exists
                 if (item.DroneId == droneCharge.DroneId)
                     return;
             listDroneCharge.Add(droneCharge);
@@ -392,7 +391,6 @@ namespace DalXml
                     break;
                 }
             }
-
         }
 
         public void ModifyDrone(int _id, string _model) //changes drone model

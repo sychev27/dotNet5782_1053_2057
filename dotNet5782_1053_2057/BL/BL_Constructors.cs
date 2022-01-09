@@ -114,15 +114,15 @@ namespace BL
 
                             //(1) SET LOCATION - to Random Station
                             List<DalXml.DO.Station> listStation = dataAccess.GetStations().ToList();
-                           // List<DalXml.DO.Station> listStation = new List<DalXml.DO.Station>();
-                           // foreach (var item in dataAccess.GetStations())
-                           //     listStation.Add(item);
+                            // List<DalXml.DO.Station> listStation = new List<DalXml.DO.Station>();
+                            // foreach (var item in dataAccess.GetStations())
+                            //     listStation.Add(item);
 
                             DalXml.DO.Station st = listStation[r.Next(0, listStation.Count)];
 
                             drone.Location = new BO.BOLocation(st.Longitude, st.Latitude);
 
-                           //(2) SET BATTERY - btw 50 to 100%
+                            //(2) SET BATTERY - btw 50 to 100%
                             drone.Battery = r.Next(50, 100);
                             //drone.Battery = 2000;
                             drone.Battery += r.NextDouble();
