@@ -356,11 +356,11 @@ namespace BL
                 throw new EXParcelNotFound(); ;
             }
 
-            public BO.BOStation GetBOStation(int _stationName)
+            public BO.BOStation GetBOStation(int _stationId)
             {
                 foreach (var item in GetStations())
                 {
-                    if (_stationName == item.Name)
+                    if (_stationId == item.Id)
                         return item;
                 }
                 throw new EXNotFoundPrintException("Station");
@@ -559,7 +559,7 @@ namespace BL
                     new List<DalXml.DO.DroneCharge>();
                 foreach (var item in dataAccess.GetDroneCharges())
                 {
-                    if (item.Exists)
+                    //if (item.Exists)
                         res.Add(item);
                 }
                 return res;

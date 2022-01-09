@@ -29,7 +29,7 @@ namespace BL
             BO.BODrone GetBODrone(int id);
             BO.BOCustomer GetBOCustomer(int id);
             BO.BOParcel GetBOParcel(int id);
-            BO.BOStation GetBOStation(int stationName);
+            BO.BOStation GetBOStation(int stationId);
             public int GetStationIdOfBODrone(int droneId);
            // string GetBODroneModel(int id);
            // BO.Enum.WeightCategories GetBoDroneMaxWeight(int id);
@@ -71,8 +71,9 @@ namespace BL
             
             //UPDATES:
             void ChargeDrone(int droneId); //sends drone to available station
-            void FreeDrone(int droneId, DateTime timeLeftStation); //frees drone from station.. 
-            void AssignParcel(int droneId);  //drone determines its parcel based on algorithm
+            void FreeDrone(int droneId, DateTime timeLeftStation, bool keepCharging = false); //frees drone from station.. 
+                                                                                              //if "keepCharging == true", then keep drone at stationvoid
+            public void AssignParcel(int droneId); //drone determines its parcel based on algorithm
             void PickupParcel(int droneId); //drone collects its pre-determined parcel
             void DeliverParcel(int droneId); //drone delivers its pre-determined parcel
 

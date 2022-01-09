@@ -39,14 +39,12 @@ namespace DALTools
         {
             try
             {
-                bool isFileOpenAlready = IsFileLocked(new FileInfo(dir + filePath));
-                if(isFileOpenAlready)
-                {
+                //bool isFileOpenAlready = IsFileLocked(new FileInfo(dir + filePath));
+                //if(isFileOpenAlready)
+                //{
                     
-                }    
+                //}    
                
-
-
                 if (File.Exists(dir + filePath))
                 {
 

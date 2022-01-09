@@ -25,7 +25,7 @@ namespace BL
                 dataAccess.AddDrone(newDOdrone); //adds to DL
 
                 //adds to BL, assuming the drone is charging at station
-                global::BL.BO.BODrone boDrone = new global::BL.BO.BODrone();
+                BO.BODrone boDrone = new BO.BODrone();
                 boDrone.Id = _id;
                 boDrone.MaxWeight = (global::BL.BO.Enum.WeightCategories)_maxWeight;
                 boDrone.Model = _model;
@@ -269,7 +269,8 @@ namespace BL
                 catch (EXNotFoundPrintException) { throw new EXNotFoundPrintException("Station"); }
                 //station's available charging slots update automatcially
             }
-            public void FreeDrone(int droneId, DateTime timeLeftStation) //frees drone from station.. 
+            public void FreeDrone(int droneId, DateTime timeLeftStation, bool keepCharging = false) //frees drone from station.. 
+                //if "keepCharging == true", then keep drone at station
             {
                 global::BL.BO.BODrone drone;
                 try
@@ -278,7 +279,7 @@ namespace BL
                 }
                 catch (EXNotFoundPrintException) { throw new EXNotFoundPrintException("Drone"); }
 
-                if (drone.DroneStatus != global::BL.BO.Enum.DroneStatus.Charging)
+                if (drone.DroneStatus != BO.Enum.DroneStatus.Charging)
                     //    throw Exception //drone not charging! return to main menu
                     throw new EXMiscException("drone not charging!");
 
@@ -286,7 +287,10 @@ namespace BL
                 foreach (var item in GetDroneCharges())
                 {
                     if (item.DroneId == droneId)
+                    {
                         startTime = item.timeBeganCharging;
+                        break;
+                    }
                 }
                 if (startTime == DateTime.MinValue)
                     return; //throw exception
@@ -304,11 +308,12 @@ namespace BL
                         bodrone.Battery += batteryGained;
                         if (bodrone.Battery > 100)
                             bodrone.Battery = 100;
-                        bodrone.DroneStatus = BO.Enum.DroneStatus.Available;
+                        if(!keepCharging)
+                            bodrone.DroneStatus = BO.Enum.DroneStatus.Available;
                     }
                 }
-
-                dataAccess.EraseDroneCharge(dataAccess.GetDroneCharge(droneId));
+                if(!keepCharging)
+                     dataAccess.EraseDroneCharge(dataAccess.GetDroneCharge(droneId));
                 //try
                 //{
                 //    dataAccess.EraseDroneCharge(dataAccess.getDroneCharge(droneId));
