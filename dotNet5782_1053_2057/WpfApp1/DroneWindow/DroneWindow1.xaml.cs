@@ -25,8 +25,10 @@ namespace WpfApp1
         //DroneStringViewModel currentDroneViewModel;
         int thisDroneId; //field to allow window's function to retrieve bodrone from BL 
         bool simulatorOn;
-        private Object lockThisThread = new Object();
+        private readonly Object lockThisThread = new Object();
 
+
+        const int DELAY_BTW_STEPS = 2000; //wait __ miliseconds between steps of 
 
 
         delegate void SimulatorFunctions(int droneId = 1000);
@@ -171,11 +173,16 @@ namespace WpfApp1
         }
         private void displayBODrone(int _droneId)
         {
-            lock (lockThisThread)
-            {
-                BL.BO.BODrone bodrone = busiAccess.GetBODrone(_droneId);
+            //lock (lockThisThread)
+            //{
+                this.Dispatcher.Invoke(() =>
+                {
+                     BL.BO.BODrone bodrone = busiAccess.GetBODrone(_droneId);
                 DataContext = createDroneViewModel(bodrone);
-            }
+                });
+
+               
+            //}
 
            
 
@@ -252,7 +259,6 @@ namespace WpfApp1
             }
             displayBODrone(thisDroneId);
         }
-
         private void btnAssignDroneToParcel_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -269,7 +275,6 @@ namespace WpfApp1
             }
             displayBODrone(thisDroneId);
         }
-
         private void btnDeliverPkg_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -286,12 +291,10 @@ namespace WpfApp1
             }
             displayBODrone(thisDroneId);
         }
-
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
-
         private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             
@@ -337,28 +340,47 @@ namespace WpfApp1
             //    +  Thread.Sleep + displayBODrone()
             
             BL.BO.BODrone thisDrone = busiAccess.GetBODrone(thisDroneId);
-            if(thisDrone.DroneStatus == BL.BO.Enum.DroneStatus.Available)
+            while(thisDrone.DroneStatus == BL.BO.Enum.DroneStatus.Available)
             {
                 try
                 {
                     
                     busiAccess.AssignParcel(thisDroneId);
-                    Thread.Sleep(2000);
+                    Thread.Sleep(DELAY_BTW_STEPS);
                     displayBODrone(thisDroneId);
                     busiAccess.PickupParcel(thisDroneId);
-                    Thread.Sleep(2000);
+                    Thread.Sleep(DELAY_BTW_STEPS);
                     displayBODrone(thisDroneId);
                     busiAccess.DeliverParcel(thisDroneId);
-                    Thread.Sleep(2000);
+                    Thread.Sleep(DELAY_BTW_STEPS);
                     displayBODrone(thisDroneId);
 
                 }
-                catch (BL.BLApi.EXNoAppropriateParcel)
+                catch (BL.BLApi.EXNoAppropriateParcel) //if cannot reach any other parcel
+                                                 //with current battery power, charge Drone
                 {
-                    tBlockBattery.Text = "AHHHHHH";
-                    Thread.Sleep(1000000);
+                    MainWindow.ChangeTextColor(Colors.GreenYellow, tBlockBattery, tBlockBatteryInfo);
+                    Thread.Sleep(DELAY_BTW_STEPS);
+                    busiAccess.ChargeDrone(thisDroneId);
+                    displayBODrone(thisDroneId);
+                    break;
                 }
             }
+
+            if(thisDrone.DroneStatus == BL.BO.Enum.DroneStatus.Charging)
+            {
+                MainWindow.ChangeTextColor(Colors.GreenYellow, tBlockBattery, tBlockBatteryInfo);
+                //checks battery level every 5 seconds
+                Thread.Sleep(5000);
+                busiAccess.FreeDrone(thisDroneId, DateTime.Now, true);// keep drone charging... 
+                displayBODrone(thisDroneId);
+
+            }
+            
+            
+
+
+
 
 
 

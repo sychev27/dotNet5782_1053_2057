@@ -269,7 +269,8 @@ namespace BL
                 catch (EXNotFoundPrintException) { throw new EXNotFoundPrintException("Station"); }
                 //station's available charging slots update automatcially
             }
-            public void FreeDrone(int droneId, DateTime timeLeftStation) //frees drone from station.. 
+            public void FreeDrone(int droneId, DateTime timeLeftStation, bool keepCharging = false) //frees drone from station.. 
+                //if "keepCharging == true", then keep drone at station
             {
                 global::BL.BO.BODrone drone;
                 try
@@ -304,11 +305,12 @@ namespace BL
                         bodrone.Battery += batteryGained;
                         if (bodrone.Battery > 100)
                             bodrone.Battery = 100;
-                        bodrone.DroneStatus = BO.Enum.DroneStatus.Available;
+                        if(!keepCharging)
+                            bodrone.DroneStatus = BO.Enum.DroneStatus.Available;
                     }
                 }
-
-                dataAccess.EraseDroneCharge(dataAccess.GetDroneCharge(droneId));
+                if(!keepCharging)
+                     dataAccess.EraseDroneCharge(dataAccess.GetDroneCharge(droneId));
                 //try
                 //{
                 //    dataAccess.EraseDroneCharge(dataAccess.getDroneCharge(droneId));

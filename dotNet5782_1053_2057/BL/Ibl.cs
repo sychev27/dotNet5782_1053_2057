@@ -71,9 +71,10 @@ namespace BL
             
             //UPDATES:
             void ChargeDrone(int droneId); //sends drone to available station
-            void FreeDrone(int droneId, DateTime timeLeftStation); //frees drone from station.. 
-            void AssignParcel(int droneId);  //drone determines its parcel based on algorithm
+            void FreeDrone(int droneId, DateTime timeLeftStation, bool keepCharging = false); //frees drone from station.. 
+                //if "keepCharging == true", then keep drone at stationvoid AssignParcel(int droneId); 
             void PickupParcel(int droneId); //drone collects its pre-determined parcel
+            //drone determines its parcel based on algorithm
             void DeliverParcel(int droneId); //drone delivers its pre-determined parcel
 
 
