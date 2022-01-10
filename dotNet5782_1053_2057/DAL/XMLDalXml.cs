@@ -261,7 +261,12 @@ namespace DalXml
             List<DO.DroneCharge> listDroneCharge = DALTools.XMLTools.LoadListFromXMLSerializer<DO.DroneCharge>(droneChargesPath).ToList();
             foreach (var item in listDroneCharge)   //checks if this drone already exists
                 if (item.DroneId == droneCharge.DroneId)
+                {
+                    listDroneCharge.Remove(item);
+                    listDroneCharge.Add(droneCharge);
+                    DALTools.XMLTools.SaveListToXMLSerializer<DO.DroneCharge>(listDroneCharge, droneChargesPath);
                     return;
+                }
             listDroneCharge.Add(droneCharge);
             DALTools.XMLTools.SaveListToXMLSerializer<DO.DroneCharge>(listDroneCharge, droneChargesPath);
         }
@@ -387,7 +392,7 @@ namespace DalXml
                     listDroneCharge.Remove(thisDroneCharge); //FULLY ERASE DRONE CHARGE (unlike other objects)
                     //copy.Exists = false;
                     //listDroneCharge.Add(copy);
-                    //DALTools.XMLTools.SaveListToXMLSerializer<DO.DroneCharge>(listDroneCharge, droneChargesPath);
+                    DALTools.XMLTools.SaveListToXMLSerializer<DO.DroneCharge>(listDroneCharge, droneChargesPath);
                     break;
                 }
             }

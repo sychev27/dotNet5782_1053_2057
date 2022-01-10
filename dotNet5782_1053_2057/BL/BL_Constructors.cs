@@ -129,7 +129,17 @@ namespace BL
 
                             AddDroneCharge(drone.Id, st.Id);
                         }
-                        else if (drone.DroneStatus == BO.Enum.DroneStatus.Available)
+                        else
+                        {
+                            IEnumerable<DalXml.DO.DroneCharge> listDroneCharge = dataAccess.GetDroneCharges();
+
+                            foreach (var item in listDroneCharge)
+                            {
+                                if (item.DroneId == drone.Id /*&& item.Exists*/)
+                                    dataAccess.EraseDroneCharge(item);
+                            }
+                        }
+                        if (drone.DroneStatus == BO.Enum.DroneStatus.Available)
                         {
                             //(1) SET LOCATION - to Random Customer's location
                             if (tempListCust.Count == 0) //if not yet full, fill customer list
