@@ -81,7 +81,7 @@ namespace WpfApp1
                 new DroneWindow(busiAccess, drone).ShowDialog();
             else
             {
-                MainWindow.ErrorMsg("Drone is deleted"); 
+                HelpfulMethods.ErrorMsg("Drone is deleted"); 
                 //add function to allow user to Restore drone!
             }
             

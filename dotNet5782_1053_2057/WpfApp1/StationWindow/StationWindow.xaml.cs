@@ -28,8 +28,8 @@ namespace WpfApp1
             lstViewDronesCharging.IsEnabled = false;
             lstViewDronesCharging.Visibility = Visibility.Hidden;
 
-            MainWindow.ChangeVisibilty(Visibility.Hidden, btnModifyName, btnModifyChargeSlots);
-            MainWindow.ChangeVisibilty(Visibility.Hidden, tBlockDronesCharging);
+            HelpfulMethods.ChangeVisibilty(Visibility.Hidden, btnModifyName, btnModifyChargeSlots);
+            HelpfulMethods.ChangeVisibilty(Visibility.Hidden, tBlockDronesCharging);
             
 
         }
@@ -46,7 +46,7 @@ namespace WpfApp1
         private void btnAddStation_Click(object sender, RoutedEventArgs e)
         {
             //reset text color
-            MainWindow.ChangeTextColor(Colors.Black, tBlockId, tBlockChargeSlots, 
+            HelpfulMethods.ChangeTextColor(Colors.Black, tBlockId, tBlockChargeSlots, 
                 tBlockLong, tBlockLatitude, tBlockName);
 
             //(1) Receive Data
@@ -111,7 +111,7 @@ namespace WpfApp1
                 }
                 catch (BL.BLApi.EXStationAlreadyExists exception)
                 {
-                    MainWindow.ErrorMsg(exception.ToString());
+                    HelpfulMethods.ErrorMsg(exception.ToString());
                 }
                
             }

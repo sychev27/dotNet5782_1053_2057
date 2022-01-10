@@ -89,7 +89,7 @@ namespace WpfApp1
             }
             catch (BL.BLApi.EXParcelNotFound ex)
             {
-                MainWindow.ErrorMsg(ex.ToString());
+                HelpfulMethods.ErrorMsg(ex.ToString());
             }
             
             

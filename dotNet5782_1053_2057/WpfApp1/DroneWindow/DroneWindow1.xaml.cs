@@ -42,7 +42,7 @@ namespace WpfApp1
             cmbWeightChoice.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.WeightCategories));
 
             //(1) Disable and Hide irrelevant buttons
-            MainWindow.ChangeVisibilty(Visibility.Hidden, btnModifyDroneModel, btnAssignDroneToParcel, btnFreeDroneFromCharge,
+            HelpfulMethods.ChangeVisibilty(Visibility.Hidden, btnModifyDroneModel, btnAssignDroneToParcel, btnFreeDroneFromCharge,
                 btnPickupPkg, btnSendToCharge, btnDeliverPkg, btnEraseDrone, btnSimulator);
 
             //(3) Hide irrelevnat TextBlocks
@@ -64,7 +64,7 @@ namespace WpfApp1
         private void btnAddDrone_Click(object sender, RoutedEventArgs e)
         {
             //reset text color
-            MainWindow.ChangeTextColor(Colors.Black, tBlock_chooseDroneId, tBlock_chooseMaxWeight,
+            HelpfulMethods.ChangeTextColor(Colors.Black, tBlock_chooseDroneId, tBlock_chooseMaxWeight,
                 tBlock_chooseModel, tBlock_chooseStation);
             
             //(1) Receive Data
@@ -316,7 +316,7 @@ namespace WpfApp1
             }
             catch (BL.BLApi.EXCantDltDroneWParc ex)
             {
-                MainWindow.ErrorMsg(ex.ToString());
+                HelpfulMethods.ErrorMsg(ex.ToString());
                 return;
             }
 
@@ -359,7 +359,9 @@ namespace WpfApp1
                 catch (BL.BLApi.EXNoAppropriateParcel) //if cannot reach any other parcel
                                                  //with current battery power, charge Drone
                 {
-                    MainWindow.ChangeTextColor(Colors.GreenYellow, tBlockBattery, tBlockBatteryInfo);
+                    tBlockBattery.Foreground = new SolidColorBrush(Colors.Red);
+                    tBlockBatteryInfo.Foreground = new SolidColorBrush(Colors.Red);
+                    //HelpfulMethods.ChangeTextColor(Colors.GreenYellow, tBlockBattery, tBlockBatteryInfo);
                     Thread.Sleep(DELAY_BTW_STEPS);
                     busiAccess.ChargeDrone(thisDroneId);
                     displayBODrone(thisDroneId);
@@ -369,7 +371,9 @@ namespace WpfApp1
 
             if(thisDrone.DroneStatus == BL.BO.Enum.DroneStatus.Charging)
             {
-                MainWindow.ChangeTextColor(Colors.GreenYellow, tBlockBattery, tBlockBatteryInfo);
+                tBlockBattery.Foreground = new SolidColorBrush(Colors.Green);
+                tBlockBatteryInfo.Foreground = new SolidColorBrush(Colors.Green);
+                // HelpfulMethods.ChangeTextColor(Colors.GreenYellow, tBlockBattery, tBlockBatteryInfo);
                 //checks battery level every 5 seconds
                 Thread.Sleep(5000);
                 busiAccess.FreeDrone(thisDroneId, DateTime.Now, true);// keep drone charging... 

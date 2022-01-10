@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -39,6 +40,7 @@ namespace DALTools
             }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void SaveStationListLinq(List<DalXml.DO.Station> stationList)
         {
             stationRoot = new XElement("stations",
@@ -53,6 +55,7 @@ namespace DALTools
             stationRoot.Save(stationsPath);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<DalXml.DO.Station> GetStationList()
         {
             LoadData();
@@ -77,6 +80,7 @@ namespace DALTools
             return listStations;
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public DalXml.DO.Station GetStation(int _id)
         {
             LoadData();
@@ -102,6 +106,7 @@ namespace DALTools
             return station;
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddStation(DalXml.DO.Station _station)
         {
             XElement id = new XElement("id", _station.Id);
@@ -114,6 +119,7 @@ namespace DALTools
             stationRoot.Save(stationsPath);
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public bool RemoveStation(int _id)
         {
             XElement stationElement;
@@ -132,6 +138,7 @@ namespace DALTools
             }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public bool ModifyStation(int _id, int _name = 0, int _totalChargeSlots = 0)
         {
             XElement stationElement;

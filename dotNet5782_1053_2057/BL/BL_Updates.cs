@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,8 @@ namespace BL
         {
 
             //ADD
+
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public void AddDrone(int _id, string _model, DalXml.DO.WeightCategories _maxWeight, int _stationId)
             {
                 foreach (var item in GetBODroneList(true)) 
@@ -38,6 +41,7 @@ namespace BL
                 AddDroneCharge(_id, _stationId);
 
             }
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public void AddCustomer(int _id, string _name, string _phone, double _longitude,
                     double _latitude)
             {
@@ -49,11 +53,13 @@ namespace BL
                 DalXml.DO.Customer newCust = new DalXml.DO.Customer(_id, _name, _phone, _longitude, _latitude);
                 dataAccess.AddCustomer(newCust);
             }
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public void AddDroneCharge(int _droneId, int _stationId)
             {
                 DalXml.DO.DroneCharge newDroneCharge = new DalXml.DO.DroneCharge(_droneId, _stationId);
                 dataAccess.AddDroneCharge(newDroneCharge);
             }
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public void AddParcel(int _senderId, int _targetId, DalXml.DO.WeightCategories? _weight,
                              DalXml.DO.Priorities? _priority)// DateTime _requested, DateTime _scheduled)
             {
@@ -61,6 +67,7 @@ namespace BL
                 DalXml.DO.Parcel dummy = new DalXml.DO.Parcel(_senderId, _targetId, _weight, _priority);
                 dataAccess.AddParcel(dummy);
             }
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public void AddStation(int _id, int _name, double _longitude, double _latitude, int _chargeSlots)
             {
                 foreach (var item in dataAccess.GetStations())
@@ -71,6 +78,7 @@ namespace BL
                 DalXml.DO.Station dummy = new DalXml.DO.Station(_id, _name, _longitude, _latitude, _chargeSlots);
                 dataAccess.AddStation(dummy);
             }
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public void AddUser(string _username, string _password, int _id = -1)
             {
                 foreach (var item in dataAccess.GetUsers())
@@ -95,6 +103,7 @@ namespace BL
 
 
             //Modify
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public void ModifyDrone(int _id, string _model)
             {
                 try
@@ -118,6 +127,7 @@ namespace BL
                     }
                 }
             }
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public void ModifyCust(int _id, string _name, string _phone)
             {
                 try
@@ -129,6 +139,7 @@ namespace BL
                     throw new EXNotFoundPrintException("Custumer");
                 }
             }
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public void ModifyStation(int _id, int _name, int _totalChargeSlots)
             {
                 try
@@ -140,12 +151,16 @@ namespace BL
                     throw new EXNotFoundPrintException("Station");
                 }
             }
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public void ModifyParcel(int _id, BO.Enum.Priorities? _priority)
             {
                 dataAccess.ModifyParcel(_id, (DalXml.DO.Priorities)_priority);
             }
 
+
+
             //UPDATE ACTIONS
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public void AssignParcel(int droneId)  //drone determines its parcel based on algorithm
             {
                 global::BL.BO.BODrone droneCopy = new global::BL.BO.BODrone();
@@ -177,6 +192,7 @@ namespace BL
                 dataAccess.AssignDroneToParcel(droneId, closestParcelId);
 
             }
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public void PickupParcel(int droneId) //drone collects its pre-determined parcel 
             {
                 global::BL.BO.BODrone drone = new global::BL.BO.BODrone();
@@ -209,6 +225,7 @@ namespace BL
                 //throw Exception //parcel not collected!
                 throw new EXMiscException("Parcel not collected!");
             }
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public void DeliverParcel(int droneId) //drone delivers its pre-determined parcel
             {
                 global::BL.BO.BODrone drone = new global::BL.BO.BODrone();
@@ -242,6 +259,7 @@ namespace BL
                 //throw Exception //parcel not delivered!
                 throw new EXMiscException("parcel not delivered!");
             }
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public void ChargeDrone(int droneId) //sends drone to available station
             {
                 global::BL.BO.BODrone drone;
@@ -269,6 +287,7 @@ namespace BL
                 catch (EXNotFoundPrintException) { throw new EXNotFoundPrintException("Station"); }
                 //station's available charging slots update automatcially
             }
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public void FreeDrone(int droneId, DateTime timeLeftStation, bool keepCharging = false) //frees drone from station.. 
                 //if "keepCharging == true", then keep drone at station
             {
@@ -324,6 +343,7 @@ namespace BL
 
 
             //ERASE:
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public void EraseDrone(int droneId)
             {
                 BO.BODrone copy = GetBODrone(droneId);
@@ -355,6 +375,7 @@ namespace BL
                 }
                 throw new EXDroneNotFound();
             }
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public void EraseCustomer(int _id) //FUNCTION NOT COMPLETE!!!!
             {
                
@@ -398,6 +419,7 @@ namespace BL
 
                 //erase customer from userlist!
             }
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public void EraseStation(int id)
             {
                 //check if station has drones charging
@@ -414,6 +436,7 @@ namespace BL
                     }
                 }
             }
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public void EraseParcel(int parcelId)
             {
                 //check..
