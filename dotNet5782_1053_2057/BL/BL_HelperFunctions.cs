@@ -555,14 +555,14 @@ namespace BL
             }
             private IEnumerable<DalXml.DO.DroneCharge> GetDroneCharges()
             {
-                List<DalXml.DO.DroneCharge> res = 
-                    new List<DalXml.DO.DroneCharge>();
-                foreach (var item in dataAccess.GetDroneCharges())
-                {
-                    //if (item.Exists)
-                        res.Add(item);
-                }
-                return res;
+                //List<DalXml.DO.DroneCharge> res = 
+               //     new List<DalXml.DO.DroneCharge>();
+               // foreach (var item in dataAccess.GetDroneCharges())
+                //{
+                //    if (item.Exists)
+                //        res.Add(item);
+                //}
+                return dataAccess.GetDroneCharges();
             }
             public IEnumerable<BO.BOParcelAtCustomer> GetBOParcelAtCustomerList(BO.BOCustomer customer)
             {
