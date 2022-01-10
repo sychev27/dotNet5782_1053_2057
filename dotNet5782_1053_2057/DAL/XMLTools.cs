@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,8 +17,9 @@ namespace DALTools
         {
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
-        }    
-        
+        }
+
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public static void SaveListToXMLSerializer<T>(List<T> list,string filePath)
         {
             try
@@ -35,6 +37,7 @@ namespace DALTools
             }
         }
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public static IEnumerable<T> LoadListFromXMLSerializer<T>(string filePath)
         {
             try
@@ -73,7 +76,7 @@ namespace DALTools
 
 
 
-       public static bool IsFileLocked(FileInfo file)
+       static bool IsFileLocked(FileInfo file)//method is used for debugging only...
         {
             try
             {

@@ -10,8 +10,4 @@
     <ProjectReference Include="..\BL\BL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="LoginAndUserWindows\" />
-  </ItemGroup>
-
 </Project>

@@ -97,7 +97,7 @@ namespace WpfApp1
         private void btnAddCustomer_Click(object sender, RoutedEventArgs e)
         {
             //reset text color
-            MainWindow.ChangeTextColor(Colors.Black, tBlock_chooseCustomerId, tBlock_chooseName,
+            HelpfulMethods.ChangeTextColor(Colors.Black, tBlock_chooseCustomerId, tBlock_chooseName,
             tBlock_choosePhone, tBlockLongitude, tBlockLatitude);
             
             //(1) Receive Data
@@ -189,7 +189,7 @@ namespace WpfApp1
         private void btnModifyCustomer_Click(object sender, RoutedEventArgs e)
         {
             //reset text color
-            MainWindow.ChangeTextColor(Colors.Black, tBlock_choosePhone, tBlock_chooseName);
+            HelpfulMethods.ChangeTextColor(Colors.Black, tBlock_choosePhone, tBlock_chooseName);
 
             //(1) Receive Data
             int _id;
@@ -238,7 +238,7 @@ namespace WpfApp1
             }
             catch (BL.BLApi.EXCantDltCustWParcInDelivery ex)
             {
-                MainWindow.ErrorMsg(ex.ToString());
+                HelpfulMethods.ErrorMsg(ex.ToString());
             }
         }
 

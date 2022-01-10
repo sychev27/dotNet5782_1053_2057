@@ -32,43 +32,6 @@ namespace WpfApp1
             InitializeComponent();
         }
 
-        public static void ErrorMsg(string msg)
-        {
-            MessageBox.Show(msg, "Error",
-                   MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
-        }
-        public static void ChangeTextColor(Color color, params TextBlock[] listTBlock)
-        {
-            foreach (var item in listTBlock)
-            {
-                item.Foreground = new SolidColorBrush(Colors.Black);
-            }
-        }
-        public static void ChangeVisibilty(System.Windows.Visibility vis, params TextBlock[] listTBlock)
-        {
-            foreach (var item in listTBlock)
-            {
-                item.Visibility = vis;
-            }
-        }
-        public static void ChangeVisibilty(System.Windows.Visibility vis, params Button[] listButton)
-        {
-            //function hides or shows buttons, AND updates whether or not they are enabled.
-
-            if (vis == Visibility.Hidden || vis ==  Visibility.Collapsed)
-                foreach (var item in listButton)
-                {
-                    item.IsEnabled = false;
-                    item.Visibility = vis;
-                }
-            else if(vis == Visibility.Visible)
-                foreach (var item in listButton)
-                {
-                    item.IsEnabled = true;
-                    item.Visibility = vis;
-                }
-
-        }
         private void btnOpenDroneList_Click(object sender, RoutedEventArgs e)
         {
             new DroneListWindow(busiAccess).ShowDialog();

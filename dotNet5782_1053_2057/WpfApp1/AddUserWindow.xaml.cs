@@ -45,7 +45,7 @@ namespace WpfApp1
             bool idSuccess = Int32.TryParse(tBoxIdInput.Text, out _id);
             if (tBoxIdInput.Text == null || !idSuccess || _id <= 0)
             {
-                MainWindow.ErrorMsg("Invalid Id number"); return;
+                HelpfulMethods.ErrorMsg("Invalid Id number"); return;
             }
 
             tBlockNameInput.Text = busiAccess.GetBOCustomer(_id).Name;
@@ -81,7 +81,7 @@ namespace WpfApp1
             }
             catch (BL.BLApi.EXUserAlreadyExists ex)
             {
-                MainWindow.ErrorMsg(ex.ToString());
+                HelpfulMethods.ErrorMsg(ex.ToString());
             }
 
         }

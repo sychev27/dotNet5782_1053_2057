@@ -102,7 +102,7 @@ namespace WpfApp1
         private void btnAddParcel_Click(object sender, RoutedEventArgs e)
         {
             //reset text color
-            MainWindow.ChangeTextColor(Colors.Black, tBlock_chooseParcelId, tBlock_chooseSenderId,
+            HelpfulMethods.ChangeTextColor(Colors.Black, tBlock_chooseParcelId, tBlock_chooseSenderId,
             tBlockWeightCategory, tBlockPriority);
 
             //(1) Receive Data
@@ -158,7 +158,7 @@ namespace WpfApp1
                 catch (BL.BLApi.EXCustomerAlreadyExists exception)
                 {
                     //if Parcels's Id already exists
-                    MainWindow.ErrorMsg(exception.ToString());
+                    HelpfulMethods.ErrorMsg(exception.ToString());
                 }
             }
             else
@@ -194,7 +194,7 @@ namespace WpfApp1
             }
             catch (BL.BLApi.EXCantDltParAlrdyAssgndToDrone ex)
             {
-                MainWindow.ErrorMsg(ex.ToString());
+                HelpfulMethods.ErrorMsg(ex.ToString());
             }
         }
         
