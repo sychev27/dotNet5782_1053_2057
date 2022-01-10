@@ -385,10 +385,10 @@ namespace DalXml
                 {
                     DO.DroneCharge copy = new DO.DroneCharge();
                     copy = item;
-                    listDroneCharge.Remove(thisDroneCharge);
-                    copy.Exists = false;
-                    listDroneCharge.Add(copy);
-                    DALTools.XMLTools.SaveListToXMLSerializer<DO.DroneCharge>(listDroneCharge, droneChargesPath);
+                    listDroneCharge.Remove(thisDroneCharge); //FULLY ERASE DRONE CHARGE (unlike other objects)
+                    //copy.Exists = false;
+                    //listDroneCharge.Add(copy);
+                    //DALTools.XMLTools.SaveListToXMLSerializer<DO.DroneCharge>(listDroneCharge, droneChargesPath);
                     break;
                 }
             }

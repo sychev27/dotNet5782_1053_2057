@@ -33,11 +33,11 @@ namespace WpfApp1
             
 
         }
-        public StationWindow(BL.BLApi.Ibl _busiAccess, int stationName) // CTOR - Update Station
+        public StationWindow(BL.BLApi.Ibl _busiAccess, int stationId) // CTOR - Update Station
         {
             InitializeComponent();
             busiAccess = _busiAccess;
-            displayStation(stationName);
+            displayStation(stationId);
             btnAddStation.IsEnabled = false;
             btnAddStation.Visibility = Visibility.Hidden;
 
@@ -120,9 +120,9 @@ namespace WpfApp1
 
         }
 
-        private void displayStation(int _stationName)
+        private void displayStation(int _stationId)
         {
-            BL.BO.BOStation st = busiAccess.GetBOStation(_stationName);
+            BL.BO.BOStation st = busiAccess.GetBOStation(_stationId);
 
             tBoxIdInput.Text = st.Id.ToString();
             tBoxNameInput.Text = st.Name.ToString();

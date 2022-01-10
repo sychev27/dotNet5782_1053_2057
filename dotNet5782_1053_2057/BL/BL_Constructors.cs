@@ -76,32 +76,32 @@ namespace BL
 
                 foreach (BO.BODrone drone in listDrone)
                 {
-                    if (drone.ParcelInTransfer.Id != -1 && drone.ParcelInTransfer != null)
-                    {
-                        //IF DRONE ALREADY ASSIGNED A PARCEL
-                        if (!drone.ParcelInTransfer.Collected) //but not yet COLLECTED
-                        {
-                            //(1) SET LOCATION - to closest station by station
-                            drone.Location = getClosestStationLoc(drone.ParcelInTransfer.PickupPoint);
-                        }
-                        else if (drone.ParcelInTransfer.Collected) // but not yet DELIVERED
-                        {
-                            //(1) SET LOCATION - to Sender's location
-                            drone.Location = drone.ParcelInTransfer.PickupPoint;
-                        }
-                        //(2) SET BATTERY - to min needed to get to destination
+                    //if (drone.ParcelInTransfer.Id != -1 && drone.ParcelInTransfer != null)
+                    //{
+                    //    //IF DRONE ALREADY ASSIGNED A PARCEL
+                    //    if (!drone.ParcelInTransfer.Collected) //but not yet COLLECTED
+                    //    {
+                    //        //(1) SET LOCATION - to closest station by station
+                    //        drone.Location = getClosestStationLoc(drone.ParcelInTransfer.PickupPoint);
+                    //    }
+                    //    else if (drone.ParcelInTransfer.Collected) // but not yet DELIVERED
+                    //    {
+                    //        //(1) SET LOCATION - to Sender's location
+                    //        drone.Location = drone.ParcelInTransfer.PickupPoint;
+                    //    }
+                    //    //(2) SET BATTERY - to min needed to get to destination
 
-                        double minBatteryNeeded = battNeededForJourey(drone, 
-                        getLocationOfCustomer(drone.ParcelInTransfer.Sender.Id),
-                        getLocationOfCustomer(drone.ParcelInTransfer.Recipient.Id), 
-                        drone.ParcelInTransfer.ParcelWeight);
+                    //    double minBatteryNeeded = battNeededForJourey(drone, 
+                    //    getLocationOfCustomer(drone.ParcelInTransfer.Sender.Id),
+                    //    getLocationOfCustomer(drone.ParcelInTransfer.Recipient.Id), 
+                    //    drone.ParcelInTransfer.ParcelWeight);
 
 
-                        double battery = r.Next((int)minBatteryNeeded + 1, 100);
-                        battery += r.NextDouble();
-                        drone.Battery = battery;
-                    }
-                    else //IF DRONE DOES NOT HAVE A PARCEL..
+                    //    double battery = r.Next((int)minBatteryNeeded + 1, 100);
+                    //    battery += r.NextDouble();
+                    //    drone.Battery = battery;
+                    //}
+                    //else //IF DRONE DOES NOT HAVE A PARCEL..
                     {
                         do //randomly set droneStatus =  "charging" and "available"
                         {
