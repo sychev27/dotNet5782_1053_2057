@@ -111,7 +111,7 @@ namespace DalObject
             DalXml.DO.DroneCharge dc = new DalXml.DO.DroneCharge(0, 0);
             foreach (var item in listDroneCharge)
             {
-                if (item.DroneId == _droneId && item.Exists)
+                if (item.DroneId == _droneId /*&& item.Exists*/)
                     return item;
             }
             throw new DalXml.DO.EXItemNotFoundException();
@@ -360,8 +360,8 @@ namespace DalObject
                     DalXml.DO.DroneCharge copy = new DalXml.DO.DroneCharge();
                     copy = item;
                     listDroneCharge.Remove(thisDroneCharge);
-                    copy.Exists = false;
-                    listDroneCharge.Add(copy);
+                    //copy.Exists = false;
+                    //listDroneCharge.Add(copy);
                     break;
                 }
             }

@@ -228,7 +228,7 @@ namespace DalXml
 
             foreach (var item in listDroneCharge)
             {
-                if (item.DroneId == _droneId && item.Exists)
+                if (item.DroneId == _droneId /*&& item.Exists*/)
                     return item;
             }
             throw new DO.EXItemNotFoundException();
