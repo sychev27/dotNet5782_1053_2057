@@ -176,5 +176,6 @@ namespace WpfApp1
         {
             clearGrouping();
         }
+
     }
 }

@@ -25,40 +25,45 @@
             <ComboBox Grid.Column="1" Name="Selector1" HorizontalAlignment="Stretch" Margin="4,6,6,4" VerticalAlignment="Stretch" Width="190" SelectionChanged="Selector1_SelectionChanged"/>
             <TextBox  Grid.Column="2" HorizontalAlignment="Stretch" Margin="4,6,6,4" Text="Filter:" TextWrapping="Wrap" VerticalAlignment="Stretch" Width="190" FontSize="20"/>
             <ComboBox Grid.Column="3" Name="Selector2" HorizontalAlignment="Stretch" Margin="4,6,6,4" VerticalAlignment="Stretch" Width="190" SelectionChanged="Selector2_SelectionChanged"/>
-
         </Grid>
-        <ListView x:Name="ParcelListView" Margin="0,58,0,82" Grid.RowSpan="2" 
-                   ItemsSource="{Binding}" MouseDoubleClick="ParcelListView_MouseDoubleClick">
+        <Grid Name = "BottomGrid" Height = "auto" Grid.Row = "1" Width = "auto" Grid.ColumnSpan="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="400*"/>
+                <RowDefinition Height="50*"/>
+            </Grid.RowDefinitions>
+            <ListView x:Name="ParcelListView" Grid.Row = "0" Grid.ColumnSpan="4"
+                   ItemsSource="{Binding}" MouseDoubleClick="ParcelListView_MouseDoubleClick" HorizontalAlignment="Stretch" Height="Auto" VerticalAlignment="Stretch" Width="Auto">
 
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn/>
-                </GridView>
-            </ListView.View>
-            <ListView.GroupStyle>
-                <GroupStyle>
-                    <GroupStyle.HeaderTemplate>
-                        <DataTemplate >
-                            <TextBlock Foreground="Gray"  FontWeight="Bold" FontSize="14" Text="{Binding Name}" />
-                            
-                        </DataTemplate>
-                    </GroupStyle.HeaderTemplate>
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn/>
+                    </GridView>
+                </ListView.View>
+                <ListView.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.HeaderTemplate>
+                            <DataTemplate >
+                                <TextBlock Foreground="Gray"  FontWeight="Bold" FontSize="14" Text="{Binding Name}" />
 
-                </GroupStyle>
-            </ListView.GroupStyle>
+                            </DataTemplate>
+                        </GroupStyle.HeaderTemplate>
 
-        </ListView>
+                    </GroupStyle>
+                </ListView.GroupStyle>
 
-
-
-        <Button x:Name="btnAdParcel" Content="Add new parcel" HorizontalAlignment="Left" Margin="646,414,0,0" Grid.Row="1" VerticalAlignment="Top" Height="27" Width="138" FontSize="16" Click="btnAddParcel_Click"/>
-        <Button x:Name="btnCloseList" Content="Close" HorizontalAlignment="Left" Margin="10,415,0,0" Grid.Row="1" VerticalAlignment="Top" Height="26" Width="148" FontSize="18" Click="btnCloseList_Click"/>
-        <Button x:Name="btnRefreshList" Content="Refresh" HorizontalAlignment="Left" Height="27" Margin="466,414,0,0" Grid.Row="1" VerticalAlignment="Top" Width="128" Click="btnRefreshList_Click"/>
-        <CheckBox x:Name="chkboxShowErased" Content="Show Erased Parcels" HorizontalAlignment="Left" Height="15" Margin="227,435,0,0" Grid.Row="1" VerticalAlignment="Top" Width="135" Checked="chkboxShowErased_Checked" Unchecked="chkboxShowErased_Unchecked"/>
-        <CheckBox x:Name="chkboxSortPriority" Content="Sort By Priority" HorizontalAlignment="Left" Height="20" Margin="227,415,0,0" Grid.Row="1" VerticalAlignment="Top" Width="147" Unchecked="chkboxByPriority_Unchecked" Checked="chkboxByPriority_Checked" />
-        <CheckBox x:Name="chkboxSortSender" Content="Sort By Sender" HorizontalAlignment="Left" Height="22" Margin="227,388,0,0" Grid.Row="1" VerticalAlignment="Top" Width="111" Checked="chkboxSortSender_Checked" Unchecked="chkboxSortSender_Unchecked"/>
-
-
-
+            </ListView>
+            <Button Grid.Column="0" x:Name="btnAdParcel" Content="Add new parcel" Grid.Row="1" FontSize="18" Margin="7,7,7,7" Click="btnAddParcel_Click"/>
+            <Button Grid.Column="3" x:Name="btnCloseList" Content="Close" Grid.Row="1" FontSize="18" Margin="7,7,7,7" Click="btnCloseList_Click"/>
+            <Button Grid.Column="2" x:Name="btnRefreshList" Content="Refresh" Grid.Row="1" FontSize="18" Margin="7,7,7,7" Click="btnRefreshList_Click"/>
+            <CheckBox Grid.Column="1" x:Name="chkboxShowErased" Content="Show Erased Parcels" HorizontalAlignment="Left" Height="15" Margin="10,0,0,0" Grid.Row="1" VerticalAlignment="Top" Width="135" Checked="chkboxShowErased_Checked" Unchecked="chkboxShowErased_Unchecked"/>
+            <CheckBox Grid.Column="1" x:Name="chkboxSortPriority" Content="Sort By Priority" HorizontalAlignment="Left" Height="15" Margin="10,17,0,0" Grid.Row="1" VerticalAlignment="Top" Width="147" Unchecked="chkboxByPriority_Unchecked" Checked="chkboxByPriority_Checked" />
+            <CheckBox Grid.Column="1" x:Name="chkboxSortSender" Content="Sort By Sender" HorizontalAlignment="Left" Height="15" Margin="10,34,0,0" Grid.Row="1" VerticalAlignment="Top" Width="111" Checked="chkboxSortSender_Checked" Unchecked="chkboxSortSender_Unchecked"/>
+        </Grid>
     </Grid>
 </Window>
