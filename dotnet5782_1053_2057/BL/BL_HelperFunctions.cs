@@ -559,7 +559,7 @@ namespace BL
                     new List<DalXml.DO.DroneCharge>();
                 foreach (var item in dataAccess.GetDroneCharges())
                 {
-                    if (item.Exists)
+                    //if (item.Exists)
                         res.Add(item);
                 }
                 return res;
