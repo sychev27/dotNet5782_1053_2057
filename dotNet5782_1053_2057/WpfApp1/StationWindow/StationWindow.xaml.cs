@@ -27,6 +27,8 @@ namespace WpfApp1
 
             lstViewDronesCharging.IsEnabled = false;
             lstViewDronesCharging.Visibility = Visibility.Hidden;
+            btnEraseStation.IsEnabled = false;
+            btnEraseStation.Visibility = Visibility.Hidden;
 
             HelpfulMethods.ChangeVisibilty(Visibility.Hidden, btnModifyName, btnModifyChargeSlots);
             HelpfulMethods.ChangeVisibilty(Visibility.Hidden, tBlockDronesCharging);
@@ -98,7 +100,6 @@ namespace WpfApp1
                 tBlockLatitude.Foreground = new SolidColorBrush(Colors.Red);
                 validData = false;
             }
-
 
             //(3) Add Station...
             if (validData)
@@ -183,6 +184,11 @@ namespace WpfApp1
            new DroneWindow(busiAccess, 
                busiAccess.GetBODrone((lstViewDronesCharging.SelectedItem as BL.BO.BODroneInCharge).Id))
                 .ShowDialog();
+        }
+
+        private void btnEraseStation_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
 
