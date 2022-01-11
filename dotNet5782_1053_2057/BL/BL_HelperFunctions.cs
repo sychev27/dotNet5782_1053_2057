@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 namespace BL
@@ -82,6 +83,7 @@ namespace BL
 
             }
 
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public int GetStationIdOfBODrone(int droneId)
             {
                 //check if charging
@@ -291,7 +293,7 @@ namespace BL
 
 
 
-           
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public BO.BODrone GetBODrone(int _id)
             {
                 foreach (var item in listDrone)
@@ -304,6 +306,7 @@ namespace BL
                 //return null;
             }
 
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public BO.BOCustomer GetBOCustomer(int _id)
             {
                 IEnumerable<DalXml.DO.Customer> origList = dataAccess.GetCustomers();
@@ -326,6 +329,7 @@ namespace BL
                 //throw exception!!!
                 throw new EXNotFoundPrintException("Customer");
             }
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public IEnumerable<BO.BOCustomer> GetAllBOCustomers()
             {
                 List<BO.BOCustomer> res = new List<BO.BOCustomer>();
@@ -336,12 +340,14 @@ namespace BL
                 return res;
             }
 
+            [MethodImpl(MethodImplOptions.Synchronized)] 
             public BO.BOCustomerToList GetOneCustToList(int _id)
             {
                 return createBOCustToList(_id);
             }
 
 
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public BO.BOParcel GetBOParcel(int _id)
             {
                 IEnumerable<DalXml.DO.Parcel> origList = dataAccess.GetParcels();
@@ -356,6 +362,7 @@ namespace BL
                 throw new EXParcelNotFound(); ;
             }
 
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public BO.BOStation GetBOStation(int _stationId)
             {
                 foreach (var item in GetStations())
@@ -366,6 +373,7 @@ namespace BL
                 throw new EXNotFoundPrintException("Station");
             }
 
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public int GetDroneIdOfParcel(int parcelId)
             {
                 DalXml.DO.Parcel parc = dataAccess.GetParcel(parcelId);
@@ -380,6 +388,7 @@ namespace BL
 
 
 
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public IEnumerable<BO.BODrone> GetBODroneList(bool getDeleted = false)
             {
                 if (getDeleted)
@@ -407,6 +416,7 @@ namespace BL
             }
 
 
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public IEnumerable<BO.BODrone> GetSpecificDroneListStatus(int num)
             {
                 switch (num)
@@ -437,6 +447,7 @@ namespace BL
                 }
             }
 
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public IEnumerable<BO.BODrone> GetSpecificDroneListWeight(int num)
             {
                 switch (num)
@@ -515,6 +526,7 @@ namespace BL
 
 
             //for printing these lists:
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public IEnumerable<BO.BOCustomerToList> GetCustToList()
             {
                 List<BO.BOCustomerToList> res = 
@@ -525,6 +537,7 @@ namespace BL
                 }
                 return res;
             }
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public IEnumerable<BO.BOParcelToList> GetParcelToList()
             {
                 ObservableCollection<BO.BOParcelToList> res = new ObservableCollection<BO.BOParcelToList>();
@@ -535,6 +548,7 @@ namespace BL
                 }
                 return res;
             }
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public IEnumerable<BO.BOStationToList> GetStationToList()
             {
                 List<BO.BOStationToList> res = new List<BO.BOStationToList>();
@@ -544,6 +558,7 @@ namespace BL
                 }
                 return res;
             }
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public IEnumerable<BO.BOStation> GetStations()
             {
                 List<BO.BOStation> res = new List<BO.BOStation>();
@@ -564,6 +579,7 @@ namespace BL
                 //}
                 return dataAccess.GetDroneCharges();
             }
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public IEnumerable<BO.BOParcelAtCustomer> GetBOParcelAtCustomerList(BO.BOCustomer customer)
             {
                 ObservableCollection<BO.BOParcelAtCustomer> lst = new ObservableCollection<BO.BOParcelAtCustomer>();
@@ -617,6 +633,7 @@ namespace BL
 
 
 
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public bool droneIdExists(int id)
             {
 
@@ -629,6 +646,7 @@ namespace BL
             }
 
 
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public string GetDroneLocationString(int id) //returns string describing location
                                                          //helpful for debugging, & user convenience
             {
@@ -685,6 +703,7 @@ namespace BL
 
 
 
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public int GetIdOfUser(string _username, string _password)
             {
                 foreach (var item in dataAccess.GetUsers())

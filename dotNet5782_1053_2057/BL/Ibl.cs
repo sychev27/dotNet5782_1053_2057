@@ -84,6 +84,8 @@ namespace BL
             void EraseStation(int id);
             void EraseParcel(int id);
 
+            //SIMULATOR
+            void BeginSimulator(int droneId, Action<int> updatesToDo, Func<bool> stopSimulator);
             //end of interface
         }
     }

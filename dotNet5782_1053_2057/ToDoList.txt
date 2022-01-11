@@ -1,0 +1,7 @@
+organize files into folders
+
+finish MapWindow
+Finsh Grouping/Filtering
+Show Erased, finish functions.. 
+-add "lock(dal)" in DL -- see page 19
+-add "lock(bl)" 
