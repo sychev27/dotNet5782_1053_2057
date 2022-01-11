@@ -121,20 +121,6 @@ namespace WpfApp1
             }
             return res;
         }
-
-
-
-
-
-       
-
-
-
-
-
-
-
-
         //end of window
     }
 }
