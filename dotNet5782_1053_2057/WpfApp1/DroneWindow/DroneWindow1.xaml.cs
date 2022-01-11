@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.ComponentModel; 
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -24,9 +25,9 @@ namespace WpfApp1
         BL.BLApi.Ibl busiAccess;
         //DroneStringViewModel currentDroneViewModel;
         int thisDroneId; //field to allow window's function to retrieve bodrone from BL 
+        private readonly Object lockThisThread = new Object();     //used to lock threads
+        private readonly BackgroundWorker worker = new BackgroundWorker();
         bool simulatorOn;
-        private readonly Object lockThisThread = new Object();
-
 
         const int DELAY_BTW_STEPS = 2000; //wait __ miliseconds between steps of 
 
@@ -38,7 +39,6 @@ namespace WpfApp1
         {
             InitializeComponent();
             busiAccess = _busiAccess;
-            simulatorOn = false;
             cmbWeightChoice.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.WeightCategories));
 
             //(1) Disable and Hide irrelevant buttons
@@ -153,7 +153,7 @@ namespace WpfApp1
         {
             InitializeComponent();
             busiAccess = _busiAccess;
-            simulatorOn = false;
+            
             //updates DroneViewModel to display details
             thisDroneId = _bodrone.Id; 
             displayBODrone(thisDroneId);
@@ -327,61 +327,108 @@ namespace WpfApp1
 
         private void btnSimulator_Click(object sender, RoutedEventArgs e)
         {
-
+            simulatorOn = true;
             btnSimulator.Content = "End Simulator";
             Thread newSimulatorThread = new Thread(beginSimulator);
             newSimulatorThread.Start();
         }
 
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        private void worker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            //busiAccess.BeginSimulator(thisDroneId, );
+            while (simulatorOn)
+            {
+                int percentage = 5;// busiAccess.GetDroneJourneyPercentage(droneId);
+                worker.ReportProgress(percentage); //reports how much percentage
+                Thread.Sleep(1000);
+            }
+            //finish work...
+        }
+        private void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            displayBODrone(thisDroneId);
+        }
+        private void worker_RunWorkerCompleted(object sender,   RunWorkerCompletedEventArgs e)
+        {
+            HelpfulMethods.ErrorMsg("worker finished");
+            
+        }
         private void beginSimulator()
         {
+            //https://stackoverflow.com/questions/5483565/how-to-use-wpf-background-worker
+            //https://wpf-tutorial.com/misc/multi-threading-with-the-backgroundworker/
+             worker.DoWork += worker_DoWork;
+            worker.RunWorkerCompleted += worker_RunWorkerCompleted;
+            worker.ProgressChanged += worker_ProgressChanged;
+
+            worker.WorkerReportsProgress = true;
+            worker.WorkerSupportsCancellation = true;
+            worker.RunWorkerAsync(1000);             //<- begin backgroundWorker...
+            //use for ex --> worker.CancelAsync();
+
+
             //SimulatorFunctions availDroneFunc = new SimulatorFunctions(busiAccess.AssignParcel) 
             //    +  Thread.Sleep + displayBODrone()
-            
-            BL.BO.BODrone thisDrone = busiAccess.GetBODrone(thisDroneId);
-            while(thisDrone.DroneStatus == BL.BO.Enum.DroneStatus.Available)
-            {
-                try
-                {
-                    
-                    busiAccess.AssignParcel(thisDroneId);
-                    Thread.Sleep(DELAY_BTW_STEPS);
-                    displayBODrone(thisDroneId);
-                    busiAccess.PickupParcel(thisDroneId);
-                    Thread.Sleep(DELAY_BTW_STEPS);
-                    displayBODrone(thisDroneId);
-                    busiAccess.DeliverParcel(thisDroneId);
-                    Thread.Sleep(DELAY_BTW_STEPS);
-                    displayBODrone(thisDroneId);
 
-                }
-                catch (BL.BLApi.EXNoAppropriateParcel) //if cannot reach any other parcel
-                                                 //with current battery power, charge Drone
-                {
-                    tBlockBattery.Foreground = new SolidColorBrush(Colors.Red);
-                    tBlockBatteryInfo.Foreground = new SolidColorBrush(Colors.Red);
-                    //HelpfulMethods.ChangeTextColor(Colors.GreenYellow, tBlockBattery, tBlockBatteryInfo);
-                    Thread.Sleep(DELAY_BTW_STEPS);
-                    busiAccess.ChargeDrone(thisDroneId);
-                    displayBODrone(thisDroneId);
-                    break;
-                }
-            }
+            //BL.BO.BODrone thisDrone = busiAccess.GetBODrone(thisDroneId);
+            //while(thisDrone.DroneStatus == BL.BO.Enum.DroneStatus.Available)
+            //{
+            //    try
+            //    {
 
-            if(thisDrone.DroneStatus == BL.BO.Enum.DroneStatus.Charging)
-            {
-                tBlockBattery.Foreground = new SolidColorBrush(Colors.Green);
-                tBlockBatteryInfo.Foreground = new SolidColorBrush(Colors.Green);
-                // HelpfulMethods.ChangeTextColor(Colors.GreenYellow, tBlockBattery, tBlockBatteryInfo);
-                //checks battery level every 5 seconds
-                Thread.Sleep(5000);
-                busiAccess.FreeDrone(thisDroneId, DateTime.Now, true);// keep drone charging... 
-                displayBODrone(thisDroneId);
+            //        busiAccess.AssignParcel(thisDroneId);
+            //        Thread.Sleep(DELAY_BTW_STEPS);
+            //        displayBODrone(thisDroneId);
+            //        busiAccess.PickupParcel(thisDroneId);
+            //        Thread.Sleep(DELAY_BTW_STEPS);
+            //        displayBODrone(thisDroneId);
+            //        busiAccess.DeliverParcel(thisDroneId);
+            //        Thread.Sleep(DELAY_BTW_STEPS);
+            //        displayBODrone(thisDroneId);
 
-            }
-            
-            
+            //    }
+            //    catch (BL.BLApi.EXNoAppropriateParcel) //if cannot reach any other parcel
+            //                                     //with current battery power, charge Drone
+            //    {
+            //        tBlockBattery.Foreground = new SolidColorBrush(Colors.Red);
+            //        tBlockBatteryInfo.Foreground = new SolidColorBrush(Colors.Red);
+            //        //HelpfulMethods.ChangeTextColor(Colors.GreenYellow, tBlockBattery, tBlockBatteryInfo);
+            //        Thread.Sleep(DELAY_BTW_STEPS);
+            //        busiAccess.ChargeDrone(thisDroneId);
+            //        displayBODrone(thisDroneId);
+            //        break;
+            //    }
+            //}
+
+            //if(thisDrone.DroneStatus == BL.BO.Enum.DroneStatus.Charging)
+            //{
+            //    tBlockBattery.Foreground = new SolidColorBrush(Colors.Green);
+            //    tBlockBatteryInfo.Foreground = new SolidColorBrush(Colors.Green);
+            //    // HelpfulMethods.ChangeTextColor(Colors.GreenYellow, tBlockBattery, tBlockBatteryInfo);
+            //    //checks battery level every 5 seconds
+            //    Thread.Sleep(5000);
+            //    busiAccess.FreeDrone(thisDroneId, DateTime.Now, true);// keep drone charging... 
+            //    displayBODrone(thisDroneId);
+
+            //}
+
+
 
 
 

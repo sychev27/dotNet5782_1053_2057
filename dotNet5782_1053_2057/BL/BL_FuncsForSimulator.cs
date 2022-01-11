@@ -11,6 +11,11 @@ namespace BL
         public partial class BL : Ibl
         {
 
+            //SIMULATOR
+            public void BeginSimulator(int droneId, Action<int> updatesToDo, Func<bool> stopSimulator)
+            {
+                //code..
+            }
 
 
 
