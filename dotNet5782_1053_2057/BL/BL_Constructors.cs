@@ -51,9 +51,9 @@ namespace BL
             internal double heavy;
             internal double chargeRate; // per min
 
-            //List<BO.BODrone> listDrone = new List<BO.BODrone>();
-            ObservableCollection<BO.BODrone> listDrone = new ObservableCollection<BO.BODrone>();
-
+            List<BO.BODrone> listDrone = new List<BO.BODrone>();
+            //ObservableCollection<BO.BODrone> listDrone = new ObservableCollection<BO.BODrone>();
+            Simulator sim; //initialized in the BeginSimulator() function
 
             //Lazy Initialization...
             //static BL() { }

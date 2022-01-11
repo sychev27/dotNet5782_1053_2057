@@ -285,10 +285,11 @@ namespace BL
                     AddDroneCharge(drone.Id, this.getStationFromLoc(closestStationLoc).Id);
                 }
                 catch (EXNotFoundPrintException) { throw new EXNotFoundPrintException("Station"); }
-                //station's available charging slots update automatcially
+                //station's available charging slots update automatically
+
             }
             [MethodImpl(MethodImplOptions.Synchronized)]
-            public void FreeDrone(int droneId, DateTime timeLeftStation, bool keepCharging = false) //frees drone from station.. 
+            public void FreeDrone(int droneId, DateTime timeLeftStation/*, bool keepCharging = false*/) //frees drone from station.. 
                 //if "keepCharging == true", then keep drone at station
             {
                 global::BL.BO.BODrone drone;
@@ -315,7 +316,6 @@ namespace BL
                     return; //throw exception
 
                 TimeSpan ts = timeLeftStation - startTime;
-                
                 double minutesInCharge = ts.TotalMinutes;
                 double batteryGained = chargeRate * minutesInCharge;
                 
@@ -327,11 +327,11 @@ namespace BL
                         bodrone.Battery += batteryGained;
                         if (bodrone.Battery > 100)
                             bodrone.Battery = 100;
-                        if(!keepCharging)
+                        //if(!keepCharging)
                             bodrone.DroneStatus = BO.Enum.DroneStatus.Available;
                     }
                 }
-                if(!keepCharging)
+                //if(!keepCharging)
                      dataAccess.EraseDroneCharge(dataAccess.GetDroneCharge(droneId));
                 //try
                 //{

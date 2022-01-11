@@ -5,3 +5,6 @@ Finsh Grouping/Filtering
 Show Erased, finish functions.. 
 -add "lock(dal)" in DL -- see page 19
 -add "lock(bl)" 
+
+make chargeDrone with thread - non simululator mode
+make observable colleciton list so that can open multiple drone Windows...

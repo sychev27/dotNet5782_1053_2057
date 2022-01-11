@@ -12,12 +12,15 @@ namespace BL
         {
 
             //SIMULATOR
-            public void BeginSimulator(int droneId, Action<int> updatesToDo, Func<bool> stopSimulator)
+            public void BeginSimulator(int droneId/*, Action<int> updatesToDo, Func<bool> stopSimulato*/)
             {
-                //code..
+                sim = new Simulator(this, droneId);
             }
-
-
+            public void StopSimulator(int droneId)
+            {
+                sim.StopSimulator();
+            }
+            
 
 
         }

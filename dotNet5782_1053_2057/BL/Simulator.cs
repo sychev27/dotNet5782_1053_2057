@@ -15,10 +15,37 @@ namespace BL
     {
         readonly int TIMERDELAY = 500;
         readonly double DRONESPEED = 20; //20 kilometers per second
+        int droneId;
+        BL.BLApi.Ibl busiAccess;
+        public Simulator(BL.BLApi.Ibl _busiAccess, int _droneId) //CTOR
+        {
+            //figure out how to stop...
+            //call methods, add flag not to update battery/location - 
+            //call functins. 
 
-        public Simulator() //CTOR
+
+
+        }
+        public void StopSimulator()
         {
 
         }
+
+        void addBattery(int droneId)
+        {
+            BL.BO.BODrone bodrone = busiAccess.GetBODrone(droneId);
+
+        }
+        void moveDroneAlongJourney(int droneId, BO.BOLocation source,
+            BO.BOLocation destination, double seconds)
+        {
+
+        }
+        void stopDroneJourney(int droneId)
+        {
+
+        }
+
+
     }
 }
