@@ -25,8 +25,9 @@ namespace WpfApp1
         BL.BLApi.Ibl busiAccess;
         //DroneStringViewModel currentDroneViewModel;
         int thisDroneId; //field to allow window's function to retrieve bodrone from BL 
-        private readonly Object lockThisThread = new Object();
+        private readonly Object lockThisThread = new Object();     //used to lock threads
         private readonly BackgroundWorker worker = new BackgroundWorker();
+        bool simulatorOn;
 
         const int DELAY_BTW_STEPS = 2000; //wait __ miliseconds between steps of 
 
@@ -326,7 +327,7 @@ namespace WpfApp1
 
         private void btnSimulator_Click(object sender, RoutedEventArgs e)
         {
-
+            simulatorOn = true;
             btnSimulator.Content = "End Simulator";
             Thread newSimulatorThread = new Thread(beginSimulator);
             newSimulatorThread.Start();
@@ -350,29 +351,35 @@ namespace WpfApp1
 
         private void worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            // run all background tasks here
+            //busiAccess.BeginSimulator(thisDroneId, );
+            while (simulatorOn)
+            {
+                int percentage = 5;// busiAccess.GetDroneJourneyPercentage(droneId);
+                worker.ReportProgress(percentage); //reports how much percentage
+                Thread.Sleep(1000);
+            }
+            //finish work...
         }
-        private void worker_ProgressChanged(object sender,
-                                                   ProgressChangedEventArgs e)
+        private void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            //code
+            displayBODrone(thisDroneId);
         }
-        private void worker_RunWorkerCompleted(object sender,
-                                                   RunWorkerCompletedEventArgs e)
+        private void worker_RunWorkerCompleted(object sender,   RunWorkerCompletedEventArgs e)
         {
-            //update ui once worker complete his work
+            HelpfulMethods.ErrorMsg("worker finished");
+            
         }
         private void beginSimulator()
         {
             //https://stackoverflow.com/questions/5483565/how-to-use-wpf-background-worker
             //https://wpf-tutorial.com/misc/multi-threading-with-the-backgroundworker/
-            worker.DoWork += worker_DoWork;
+             worker.DoWork += worker_DoWork;
             worker.RunWorkerCompleted += worker_RunWorkerCompleted;
             worker.ProgressChanged += worker_ProgressChanged;
 
             worker.WorkerReportsProgress = true;
             worker.WorkerSupportsCancellation = true;
-            //use this! ->> worker.RunWorkerAsync();
+            worker.RunWorkerAsync(1000);             //<- begin backgroundWorker...
             //use for ex --> worker.CancelAsync();
 
 
