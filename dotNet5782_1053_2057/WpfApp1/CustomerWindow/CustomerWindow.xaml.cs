@@ -30,7 +30,8 @@ namespace WpfApp1
             //edit buttons and text boxes for Update Window:
             btnModifyCustomer.IsEnabled = false;
             btnModifyCustomer.Visibility = Visibility.Hidden;
-            lstParcelList.Visibility = Visibility.Hidden;
+            lstParcelListSending.Visibility = Visibility.Hidden;
+            lstParcelListReceiving.Visibility = Visibility.Hidden;
             hideCustomerLogInBtns();
 
             btnEraseCust.IsEnabled = false;
@@ -88,7 +89,8 @@ namespace WpfApp1
             tBoxPhoneInput.Text = bocustumer.Phone;
             tBoxLongiInfo.Text = bocustumer.Location.Longitude.ToString();
             tBoxLatitInfo.Text = bocustumer.Location.Latitude.ToString();
-            lstParcelList.ItemsSource = _busiAccess.GetBOParcelAtCustomerList(bocustumer);
+            lstParcelListSending.ItemsSource = bocustumer.ListOfParcSent; //_busiAccess.GetBOParcelAtCustomerList(bocustumer);
+            lstParcelListReceiving.ItemsSource = bocustumer.ListOfParcReceived;
 
             //working on a function in BL..
 
@@ -111,7 +113,6 @@ namespace WpfApp1
             bool latSuccess = double.TryParse(tBoxLatitInfo.Text, out _latitude);
             string _name = tBoxNameInput.Text;
             string _phone = tBoxPhoneInput.Text;
-
 
             //(2) Check that Data is Valid
             bool validData = true;
@@ -254,7 +255,9 @@ namespace WpfApp1
             btnLogOut.Visibility = (!isCustLogin)? Visibility.Hidden : Visibility.Visible;
             btnSendParcel.IsEnabled = isCustLogin;
             btnSendParcel.Visibility = (!isCustLogin) ? Visibility.Hidden : Visibility.Visible;
-            
+            btnAddParcel.IsEnabled = isCustLogin;
+            btnAddParcel.Visibility = (!isCustLogin) ? Visibility.Hidden : Visibility.Visible;
+
             //(if isCustomer Login  -> hide these buttons!)
             btnCancel1.IsEnabled = !isCustLogin;
             btnCancel1.Visibility = (isCustLogin) ? Visibility.Hidden : Visibility.Visible;
@@ -269,12 +272,25 @@ namespace WpfApp1
             
         }
 
-        private void lstParcelList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void lstParcelListSending_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            BL.BO.BOParcelAtCustomer parcel = lstParcelList.SelectedItem as BL.BO.BOParcelAtCustomer;
+            BL.BO.BOParcelAtCustomer parcel = lstParcelListSending.SelectedItem as BL.BO.BOParcelAtCustomer;
             int id = parcel.Id;
             BL.BO.BOParcel parc = busiAccess.GetBOParcel(id);
             new ParcelWindow(busiAccess, parc).ShowDialog();
+        }
+
+        private void lstParcelListReceiving_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            BL.BO.BOParcelAtCustomer parcel = lstParcelListReceiving.SelectedItem as BL.BO.BOParcelAtCustomer;
+            int id = parcel.Id;
+            BL.BO.BOParcel parc = busiAccess.GetBOParcel(id);
+            new ParcelWindow(busiAccess, parc).ShowDialog();
+        }
+
+        private void btnAddParcel_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
