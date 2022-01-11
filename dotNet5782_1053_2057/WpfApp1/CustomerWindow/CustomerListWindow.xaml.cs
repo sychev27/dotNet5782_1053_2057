@@ -123,8 +123,15 @@ namespace WpfApp1
             //refreshList();
         }
 
-        
-      
+        private void chkBoxGetErased_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void chkBoxGetErased_UnChecked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 
 

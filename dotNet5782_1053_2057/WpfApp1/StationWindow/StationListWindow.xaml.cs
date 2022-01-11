@@ -54,5 +54,15 @@ namespace WpfApp1
         {
             new StationWindow(busiAccess).ShowDialog();
         }
+
+        private void chkBoxGetErased_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void chkBoxGetErased_UnChecked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
