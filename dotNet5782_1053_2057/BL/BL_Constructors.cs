@@ -49,11 +49,11 @@ namespace BL
             internal double light;
             internal double medium;
             internal double heavy;
-            internal double chargeRate; // per min
+            internal double chargeRate;// per second
 
             List<BO.BODrone> listDrone = new List<BO.BODrone>();
             //ObservableCollection<BO.BODrone> listDrone = new ObservableCollection<BO.BODrone>();
-            Simulator sim; //initialized in the BeginSimulator() function
+            SimulatorBL sim; //initialized in the BeginSimulator() function
 
             //Lazy Initialization...
             //static BL() { }
@@ -77,33 +77,7 @@ namespace BL
 
                 foreach (BO.BODrone drone in listDrone)
                 {
-                    //if (drone.ParcelInTransfer.Id != -1 && drone.ParcelInTransfer != null)
-                    //{
-                    //    //IF DRONE ALREADY ASSIGNED A PARCEL
-                    //    if (!drone.ParcelInTransfer.Collected) //but not yet COLLECTED
-                    //    {
-                    //        //(1) SET LOCATION - to closest station by station
-                    //        drone.Location = getClosestStationLoc(drone.ParcelInTransfer.PickupPoint);
-                    //    }
-                    //    else if (drone.ParcelInTransfer.Collected) // but not yet DELIVERED
-                    //    {
-                    //        //(1) SET LOCATION - to Sender's location
-                    //        drone.Location = drone.ParcelInTransfer.PickupPoint;
-                    //    }
-                    //    //(2) SET BATTERY - to min needed to get to destination
-
-                    //    double minBatteryNeeded = battNeededForJourey(drone, 
-                    //    getLocationOfCustomer(drone.ParcelInTransfer.Sender.Id),
-                    //    getLocationOfCustomer(drone.ParcelInTransfer.Recipient.Id), 
-                    //    drone.ParcelInTransfer.ParcelWeight);
-
-
-                    //    double battery = r.Next((int)minBatteryNeeded + 1, 100);
-                    //    battery += r.NextDouble();
-                    //    drone.Battery = battery;
-                    //}
-                    //else //IF DRONE DOES NOT HAVE A PARCEL..
-                    {
+                    //assumption that Drone does not have a parcel
                         do //randomly set droneStatus =  "charging" and "available"
                         {
                             drone.DroneStatus = (BO.Enum.DroneStatus)r.Next(0, 3);
@@ -178,14 +152,14 @@ namespace BL
 
 
 
-                    }
-                    //end of foreach
                 }
-
-
+                    //end of foreach
                 //end of Ctor
             }
 
+
+                
+            
 
 
             void receiveDronesFromData()
@@ -350,7 +324,7 @@ namespace BL
 
                 thisParc.PickupPoint = getLocationOfCustomer(origParcel.SenderId);
                 thisParc.DeliveryPoint = getLocationOfCustomer(origParcel.ReceiverId);
-                thisParc.TransportDistance = distance(thisParc.PickupPoint, thisParc.DeliveryPoint);
+                thisParc.TransportDistance = HelpfulMethodsBL.GetDistance(thisParc.PickupPoint, thisParc.DeliveryPoint);
 
                 return thisParc;
 
@@ -592,3 +566,4 @@ namespace BL
         }
     }
 }
+

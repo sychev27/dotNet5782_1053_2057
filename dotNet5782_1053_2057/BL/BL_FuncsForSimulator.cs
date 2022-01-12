@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,9 +15,20 @@ namespace BL
             //SIMULATOR
             public void BeginSimulator(int droneId/*, Action<int> updatesToDo, Func<bool> stopSimulato*/)
             {
-                sim = new Simulator(this, droneId);
+                new Thread(() => { be(droneId); }).Start();
             }
-            public void StopSimulator(int droneId)
+            public void be(int droneId)
+            {
+                //calls the CTOR - creates new, unique simulator every time..
+                //"sim" is saved as a field of the BL object
+                sim = new SimulatorBL(this, droneId);
+                sim.StartSimulator();
+            }
+            public void UpdateSimulator()
+            {
+                //sim.UpdateSimulator();
+            }
+            public void StopSimulator()
             {
                 sim.StopSimulator();
             }

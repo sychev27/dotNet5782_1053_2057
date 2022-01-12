@@ -32,9 +32,10 @@ namespace WpfApp1
                 item.Visibility = vis;
             }
         }
+        
         public static void ChangeVisibilty(System.Windows.Visibility vis, params Button[] listButton)
         {
-            //function hides or shows buttons, AND updates whether or not they are enabled.
+            //function hides or shows buttons, AND updates whether or not they are enabled
 
             if (vis == Visibility.Hidden || vis == Visibility.Collapsed)
                 foreach (var item in listButton)

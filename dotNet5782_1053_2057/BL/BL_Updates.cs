@@ -193,7 +193,7 @@ namespace BL
 
             }
             [MethodImpl(MethodImplOptions.Synchronized)]
-            public void PickupParcel(int droneId) //drone collects its pre-determined parcel 
+            public void PickupParcel(int droneId, bool dontUpdateBatteryOrLocation = false) //drone collects its pre-determined parcel 
             {
                 global::BL.BO.BODrone drone = new global::BL.BO.BODrone();
                 try
@@ -202,7 +202,7 @@ namespace BL
                 }
                 catch (EXNotFoundPrintException)
                 {
-                    throw new EXNotFoundPrintException("Drone");
+                    throw new EXDroneNotFound();
                 }
                 if (drone.DroneStatus != global::BL.BO.Enum.DroneStatus.InDelivery)
                     throw new EXDroneNotAssignedParcel();
@@ -213,12 +213,15 @@ namespace BL
                 {
                     if (bodrone.Exists && bodrone.Id == droneId)
                     {
+                        dataAccess.PickupParcel(bodrone.ParcelInTransfer.Id);
+                        bodrone.ParcelInTransfer.Collected = true;
+                        if (dontUpdateBatteryOrLocation)
+                            return;
+                        //otherwise, update battery and location..
                         BO.BOLocation custLoc = getLocationOfCustomer(bodrone.ParcelInTransfer.Sender.Id);
                         bodrone.Battery -= battNededForDist(bodrone.Location, custLoc, 
                             bodrone.ParcelInTransfer.ParcelWeight);
                         bodrone.Location = custLoc;
-                        dataAccess.PickupParcel(bodrone.ParcelInTransfer.Id);
-                        bodrone.ParcelInTransfer.Collected = true;
                         return;
                     }
                 }
@@ -226,15 +229,18 @@ namespace BL
                 throw new EXMiscException("Parcel not collected!");
             }
             [MethodImpl(MethodImplOptions.Synchronized)]
-            public void DeliverParcel(int droneId) //drone delivers its pre-determined parcel
+            public void DeliverParcel(int droneId, 
+                bool dontUpdateBatteryOrLocation = false) //drone delivers its pre-determined parcel
             {
-                global::BL.BO.BODrone drone = new global::BL.BO.BODrone();
+                BO.BODrone drone;
                 try
                 {
                     drone = GetBODrone(droneId);
                 }
-                catch (EXNotFoundPrintException) { throw new EXNotFoundPrintException("Drone"); }
-                
+                catch (EXNotFoundPrintException) 
+                {
+                    throw new EXDroneNotFound(); 
+                }
                 if (drone.DroneStatus != global::BL.BO.Enum.DroneStatus.InDelivery)
                      throw new EXDroneNotAssignedParcel();
                 if (!drone.ParcelInTransfer.Collected)
@@ -247,12 +253,16 @@ namespace BL
                     if (bodrone.Exists && bodrone.Id == droneId)
                     {
                         global::BL.BO.BOLocation custLoc = getLocationOfCustomer(bodrone.ParcelInTransfer.Recipient.Id);
-                        bodrone.Battery -= battNededForDist(bodrone.Location, custLoc,
-                            bodrone.ParcelInTransfer.ParcelWeight);
-                        bodrone.Location = custLoc;
+                        
                         bodrone.DroneStatus = BO.Enum.DroneStatus.Available;
                         dataAccess.DeliverParcel(bodrone.ParcelInTransfer.Id);
                         bodrone.ParcelInTransfer = createEmptyParcInTrans(); //sets Id as -1
+
+                        if (dontUpdateBatteryOrLocation)
+                            return;
+                        bodrone.Battery -= battNededForDist(bodrone.Location, custLoc,
+                                             bodrone.ParcelInTransfer.ParcelWeight);
+                        bodrone.Location = custLoc;
                         return;
                     }
                 }
@@ -260,9 +270,9 @@ namespace BL
                 throw new EXMiscException("parcel not delivered!");
             }
             [MethodImpl(MethodImplOptions.Synchronized)]
-            public void ChargeDrone(int droneId) //sends drone to available station
+            public void ChargeDrone(int droneId, bool dontUpdateBatteryOrLocation = false) //sends drone to available station
             {
-                global::BL.BO.BODrone drone;
+                BO.BODrone drone;
                 try
                 {
                     drone = GetBODrone(droneId);
@@ -273,24 +283,35 @@ namespace BL
                     throw new EXDroneUnavailableException();
 
                 global::BL.BO.BOLocation closestStationLoc = getClosestStationLoc(drone.Location, true);
-                if (drone.Battery < battNededForDist(drone.Location, closestStationLoc))
-                    throw new EXMiscException("not enough battery to make to closet station!");
-
-                
-                drone.Battery -= battNededForDist(drone.Location, closestStationLoc);
-                drone.Location = closestStationLoc;
-                drone.DroneStatus = global::BL.BO.Enum.DroneStatus.Charging;
                 try
                 {
                     AddDroneCharge(drone.Id, this.getStationFromLoc(closestStationLoc).Id);
                 }
-                catch (EXNotFoundPrintException) { throw new EXNotFoundPrintException("Station"); }
-                //station's available charging slots update automatically
+                catch (EXNotFoundPrintException)
+                { 
+                    throw new EXNotFoundPrintException("Station"); 
+                }
+                catch (EXNoStationWithAvailChargingSlots)
+                {
+                    throw;
+                }
+                //if successful, station's available charging slots update automatically
+               
 
+                if (dontUpdateBatteryOrLocation == true)
+                    return;
+                drone.DroneStatus = global::BL.BO.Enum.DroneStatus.Charging;
+                //UPDATE BATTERY AND LOCATION:
+                if (drone.Battery < battNededForDist(drone.Location, closestStationLoc))
+                    throw new EXMiscException("not enough battery to make to closet station!");
+    
+                drone.Battery -= battNededForDist(drone.Location, closestStationLoc);
+                drone.Location = closestStationLoc;
+                
             }
             [MethodImpl(MethodImplOptions.Synchronized)]
-            public void FreeDrone(int droneId, DateTime timeLeftStation/*, bool keepCharging = false*/) //frees drone from station.. 
-                //if "keepCharging == true", then keep drone at station
+            public void FreeDrone(int droneId, DateTime timeLeftStation, 
+                bool dontUpdateBatteryOrLocation = false) //frees drone from station.. 
             {
                 global::BL.BO.BODrone drone;
                 try
@@ -316,28 +337,21 @@ namespace BL
                     return; //throw exception
 
                 TimeSpan ts = timeLeftStation - startTime;
-                double minutesInCharge = ts.TotalMinutes;
-                double batteryGained = chargeRate * minutesInCharge;
+                double secondsInCharge = ts.TotalSeconds;
+                double batteryGained = chargeRate * secondsInCharge;
                 
                 //update drone...
-                foreach (var bodrone in listDrone)
-                {
-                    if (bodrone.Exists && bodrone.Id == droneId)
-                    {
-                        bodrone.Battery += batteryGained;
-                        if (bodrone.Battery > 100)
-                            bodrone.Battery = 100;
-                        //if(!keepCharging)
-                            bodrone.DroneStatus = BO.Enum.DroneStatus.Available;
-                    }
-                }
-                //if(!keepCharging)
-                     dataAccess.EraseDroneCharge(dataAccess.GetDroneCharge(droneId));
-                //try
-                //{
-                //    dataAccess.EraseDroneCharge(dataAccess.getDroneCharge(droneId));
-                //}
-                //catch (DalXml.DO.EXItemNotFoundException) { return; } delete!
+                 dataAccess.EraseDroneCharge(dataAccess.GetDroneCharge(droneId));
+                
+                BO.BODrone bodrone = GetBODrone(droneId);
+                bodrone.DroneStatus = BO.Enum.DroneStatus.Available;
+                if (dontUpdateBatteryOrLocation)
+                    return;
+                //otherwise, update battery...
+                bodrone.Battery += batteryGained;
+                if (bodrone.Battery > 100)
+                    bodrone.Battery = 100;
+                 
             }
 
 

@@ -24,8 +24,9 @@ namespace BL
 
             void AddUser(string _username, string _password, int _id = -1);
 
-            
-            
+
+
+            double GetChargeRate();
             BO.BODrone GetBODrone(int id);
             BO.BOCustomer GetBOCustomer(int id);
             BO.BOParcel GetBOParcel(int id);
@@ -41,7 +42,7 @@ namespace BL
 
 
             int GetIdOfUser(string _username, string _password);
-
+            double GetElectricityRate(BO.BODrone bodrone);
 
 
 
@@ -70,12 +71,15 @@ namespace BL
             public void ModifyParcel(int _id, BO.Enum.Priorities? _priority);
             
             //UPDATES:
-            void ChargeDrone(int droneId); //sends drone to available station
-            void FreeDrone(int droneId, DateTime timeLeftStation/*, bool keepCharging = false*/); //frees drone from station.. 
-                                                                                              //if "keepCharging == true", then keep drone at stationvoid
-            public void AssignParcel(int droneId); //drone determines its parcel based on algorithm
-            void PickupParcel(int droneId); //drone collects its pre-determined parcel
-            void DeliverParcel(int droneId); //drone delivers its pre-determined parcel
+            void ChargeDrone(int droneId, bool dontUpdateBatteryLocation = false); //sends drone to available station
+            void FreeDrone(int droneId, DateTime timeLeftStation,
+                 bool dontUpdateBatteryOrLocation = false); //frees drone from station.. 
+                                                                                             
+            public void AssignParcel(int droneId); 
+            //drone determines its parcel based on algorithm
+            void PickupParcel(int droneId, bool dontUpdateBatteryOrLocation = false); 
+            //drone collects its pre-determined parcel
+            void DeliverParcel(int droneId, bool dontUpdateBatteryOrLocation = false); //drone delivers its pre-determined parcel
 
 
             //Erase
@@ -86,7 +90,8 @@ namespace BL
 
             //SIMULATOR
             void BeginSimulator(int droneId/*, Action<int> updatesToDo, Func<bool> stopSimulator*/);
-            public void StopSimulator(int droneId);
+            public void UpdateSimulator(); //-> called every few seconds... moves Drone along journey
+            void StopSimulator();
 
 
 

@@ -11,8 +11,9 @@ namespace BL
         public class Enum
         {
             public enum WeightCategories { Light, Medium, Heavy };
-            public enum DroneStatus { Available, Charging, InDelivery }; 
+            public enum DroneStatus { Available, Charging, InDelivery, OnWayToCharge }; 
             // charging = charging, inDelivery = delivering a parcel...
+            // "OnWayToCharge" - added for simulator
             public enum ParcelStatus { created, assigned, collected, delivered };
             public enum Priorities { regular, fast, urgent };
         }

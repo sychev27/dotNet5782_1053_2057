@@ -26,13 +26,13 @@ namespace DalXml
         {
             internal class Config
             {
-                //ratios for charging the drone; how many units of battery per minute, 
+                //ratios for charging the drone; how many units of battery per second, 
                 //according to weight of the Parcel (heavier parcels require more battery
                 internal static double empty = 0.1;
                 internal static double light = 0.2;
                 internal static double mediuim = 0.3;
                 internal static double heavy = 0.4;
-                internal static double chargeRate = 15.5; // per minute
+                internal static double chargeRate = .613; // per second 
                 internal int parcelSerialNumber = 1;
             }
 
@@ -75,7 +75,7 @@ namespace DalXml
                 const int LONGBEGIN = 35;
                 const int LONGEND = 37;
                 const int LATBEGIN = 31;
-                const int LATEND = 32;
+                const int LATEND = 33;
 
 
             //INITIALIZE DRONE

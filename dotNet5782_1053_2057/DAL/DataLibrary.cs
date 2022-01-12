@@ -43,7 +43,7 @@ namespace DalObject
             internal static double light = 0.2;
             internal static double mediuim =0.3;
             internal static double heavy = 0.4;
-            internal static double chargeRate = 15.5; // per minute
+            internal static double chargeRate = 5.7; // per minute
             internal int parcelSerialNumber = 1;
         }
 

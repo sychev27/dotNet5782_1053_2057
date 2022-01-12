@@ -26,11 +26,11 @@ namespace WpfApp1
         //DroneStringViewModel currentDroneViewModel;
         int thisDroneId; //field to allow window's function to retrieve bodrone from BL 
         private readonly Object lockThisThread = new Object();     //used to lock threads
-        private readonly BackgroundWorker worker = new BackgroundWorker();
+        private readonly BackgroundWorker workerForPLSimulator = new BackgroundWorker();
         bool simulatorOn = false;
         //bool keepDroneCharging = false;
 
-        readonly int DELAY_BTW_STEPS = 2000; //wait __ miliseconds between steps of 
+        readonly int DELAY_BTW_STEPS = 500; //wait __ miliseconds between steps of 
 
 
        
@@ -171,43 +171,43 @@ namespace WpfApp1
             btnAddDrone.Visibility = Visibility.Hidden;
 
             //initialize BackGroundWorker for Simulator
-            worker.DoWork += worker_DoWork;
-            worker.RunWorkerCompleted += worker_RunWorkerCompleted;
-            worker.ProgressChanged += worker_ProgressChanged;
-            worker.WorkerReportsProgress = true;
-            worker.WorkerSupportsCancellation = true;
+            workerForPLSimulator.DoWork += worker_DoWork;
+            workerForPLSimulator.RunWorkerCompleted += worker_RunWorkerCompleted;
+            workerForPLSimulator.ProgressChanged += worker_ProgressChanged;
+            workerForPLSimulator.WorkerReportsProgress = true;
+            workerForPLSimulator.WorkerSupportsCancellation = true;
 
         }
         private void displayBODrone(int _droneId) //updates this drone model
         {
                 BL.BO.BODrone bodrone = busiAccess.GetBODrone(_droneId);
                 DataContext = createDroneViewModel(bodrone);
+
+            {
+                //    tBoxIdInput.Text = bodrone.Id.ToString();
+                //    tBoxModelInput.Text = bodrone.Model;
+                //    if (busiAccess.GetStationIdOfBODrone(bodrone.Id) != -1)
+                //        tBoxStationIdInput.Text = (busiAccess.GetStationIdOfBODrone(bodrone.Id)).ToString();
+                //    else
+                //        tBoxStationIdInput.Text = "Drone is not charging at a Station";
+
+                //    cmbWeightChoice.SelectedIndex = (int)bodrone.MaxWeight;
+                //    cmbWeightChoice.IsReadOnly = true;
+                //    cmbWeightChoice.IsEnabled = false;
+
+                //    tBlockStatusInfo.Text = bodrone.DroneStatus.ToString();
+                //    if (bodrone.ParcelInTransfer.Id == -1 || bodrone.ParcelInTransfer == null)
+                //        tBlockDeliveryInfo.Text = "Not yet carrying Parcel";
+                //    else
+                //        tBlockDeliveryInfo.Text = bodrone.ParcelInTransfer.ToString();
+                //    tBlockLongInfo.Text = bodrone.Location.Longitude.ToString();
+                //    tBlockLatinfo.Text = bodrone.Location.Latitude.ToString();
+
+                //    tBlockCurrentLocationInfo.Text = busiAccess.GetDroneLocationString(bodrone.Id);
+
+                //    tBlockBatteryInfo.Text = bodrone.Battery.ToString();
+            }//delete this... 
             
-
-            //delete this... 
-
-        //    tBoxIdInput.Text = bodrone.Id.ToString();
-        //    tBoxModelInput.Text = bodrone.Model;
-        //    if (busiAccess.GetStationIdOfBODrone(bodrone.Id) != -1)
-        //        tBoxStationIdInput.Text = (busiAccess.GetStationIdOfBODrone(bodrone.Id)).ToString();
-        //    else
-        //        tBoxStationIdInput.Text = "Drone is not charging at a Station";
-
-        //    cmbWeightChoice.SelectedIndex = (int)bodrone.MaxWeight;
-        //    cmbWeightChoice.IsReadOnly = true;
-        //    cmbWeightChoice.IsEnabled = false;
-
-        //    tBlockStatusInfo.Text = bodrone.DroneStatus.ToString();
-        //    if (bodrone.ParcelInTransfer.Id == -1 || bodrone.ParcelInTransfer == null)
-        //        tBlockDeliveryInfo.Text = "Not yet carrying Parcel";
-        //    else
-        //        tBlockDeliveryInfo.Text = bodrone.ParcelInTransfer.ToString();
-        //    tBlockLongInfo.Text = bodrone.Location.Longitude.ToString();
-        //    tBlockLatinfo.Text = bodrone.Location.Latitude.ToString();
-
-        //    tBlockCurrentLocationInfo.Text = busiAccess.GetDroneLocationString(bodrone.Id);
-
-        //    tBlockBatteryInfo.Text = bodrone.Battery.ToString();
         }
         private void btnModifyDroneModel_Click(object sender, RoutedEventArgs e)
         {
@@ -232,20 +232,7 @@ namespace WpfApp1
             }
             displayBODrone(thisDroneId);
         }
-        //private void chargeDroneThreadFunc() //function displays drone's battery as it charges
-        //{
-        //    //this function must receive a Drone that is charging
-        //    while(busiAccess.GetBODrone(thisDroneId).Battery < 100 
-        //        && keepDroneCharging == true)
-        //    {
-        //        this.Dispatcher.Invoke(() =>
-        //        {
-        //            displayBODrone(thisDroneId);
-        //            Thread.Sleep(DELAY_BTW_STEPS);
-        //        });
-        //    }
-        //    //when drone is fully charged - drone continues charging..
-        //}
+       
         private void btnFreeDroneFromCharge_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -361,39 +348,49 @@ namespace WpfApp1
         {
             if (simulatorOn == false)
             {
+                //TURN ON SIMULATOR
                 simulatorOn = true;
                 Thread newSimulatorThread = new Thread(beginSimulator);
                 newSimulatorThread.Start();
                 btnSimulator.Content = "End Simulator";
+                HelpfulMethods.ChangeVisibilty(Visibility.Hidden, btnFreeDroneFromCharge,
+                    btnSendToCharge, btnAssignDroneToParcel, btnPickupPkg,
+                    btnDeliverPkg, btnEraseDrone);
             }
 
             else // if(simulatorOn == true)
             {
-                worker.CancelAsync();
+                workerForPLSimulator.CancelAsync();
                 btnSimulator.Content = "Begin Simulator";
                 simulatorOn = false;
+                busiAccess.StopSimulator();
             }
             
         }
         private void worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            busiAccess.BeginSimulator(thisDroneId);
-            while (simulatorOn == true)
-            {
-                //int percentage = 5;// busiAccess.GetDroneJourneyPercentage(droneId);
-                worker.ReportProgress(1/*percentage++*/); //reports how much percentage
-                //busiAccess.MoveDroneAlongJourney
-                //need dispatcher..
-                Thread.Sleep(1000);
-            }
-            //finish work...
+            //this.Dispatcher.Invoke(() =>
+            //{
+                busiAccess.BeginSimulator(thisDroneId);
+                while (simulatorOn == true)
+                {
+                    Thread.Sleep(DELAY_BTW_STEPS);
+                    //busiAccess.UpdateSimulator();
+                    //int percentage = 5;// busiAccess.GetDroneJourneyPercentage(droneId);
+                    workerForPLSimulator.ReportProgress(1/*percentage++*/);
+                    
+                }
+
+               
+            //});
+
+           
         }
         private void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             this.Dispatcher.Invoke(() => //Invoke function ensures that
                                          //only one thread access this code block
             {
-                //busiAccess.addBattery(thisDroneId); //change
                 displayBODrone(thisDroneId);
             });
         }
@@ -401,7 +398,7 @@ namespace WpfApp1
         {
             HelpfulMethods.ErrorMsg("worker finished");
             //busiAccess.
-            worker.Dispose();
+            workerForPLSimulator.Dispose();
             
         }
         private void beginSimulator()
@@ -409,15 +406,9 @@ namespace WpfApp1
             simulatorOn = true;
             //https://stackoverflow.com/questions/5483565/how-to-use-wpf-background-worker
             //https://wpf-tutorial.com/misc/multi-threading-with-the-backgroundworker/
-           
-            worker.RunWorkerAsync(1000);             //<- begin backgroundWorker...
+
+            workerForPLSimulator.RunWorkerAsync();             //<- begin backgroundWorker...
             
-
-
-
-
-
-
 
         }
 
