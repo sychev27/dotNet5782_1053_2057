@@ -66,8 +66,14 @@ namespace WpfApp1
             t.Text = _InfoBlock.Id.ToString();
             t.Foreground = new SolidColorBrush(Colors.Red);
             t.Background = new SolidColorBrush(Colors.Blue);
-            t.MouseEnter += new MouseEventHandler(new EventHandler((sender, e) => displayCustomer(sender, e, _InfoBlock)));
+            t.MouseEnter += new MouseEventHandler(
+                new EventHandler((sender, e) => displayCustomer(sender, e, _InfoBlock)));
             t.MouseLeave += new MouseEventHandler(this.hideInfo);
+            t.MouseLeftButtonDown += new MouseButtonEventHandler(
+                new EventHandler((sender, e) => openWindow(sender, e, _InfoBlock)));
+                
+                
+
             //t.GotMouseCapture += new MouseEventHandler(this.displayInfo);
             //t.LostMouseCapture += new MouseEventHandler(this.hideInfo);
             gridMap.Children.Add(t);
@@ -82,6 +88,22 @@ namespace WpfApp1
             tBoxInfo.Text = busiAccess.GetOneCustToList(_InfoBlock.Id).ToString()
                 + "\n" + "Longitude: " + cust.Location.Longitude.ToString()
                 + "\n" + "Latitude: " + cust.Location.Latitude.ToString();
+        }
+        private void openWindow(object sender, EventArgs e, InfoBlock infoBlock)
+        {
+            switch (infoBlock.ThisObjectType)
+            {
+                case ObjectType.Drone:
+                    break;
+                case ObjectType.Station:
+                    break;
+                case ObjectType.Customer:
+                    new CustomerWindow(busiAccess, 
+                busiAccess.GetBOCustomer(infoBlock.Id)).ShowDialog();
+                    break;
+                default:
+                    break;
+            }
         }
         private void hideInfo(object sender, System.EventArgs e)
         {

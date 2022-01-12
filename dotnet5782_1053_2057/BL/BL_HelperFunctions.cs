@@ -11,6 +11,13 @@ namespace BL
     {
         public partial class BL : global::BL.BLApi.Ibl
         {
+
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            public double GetChargeRate()
+            {
+                return chargeRate;
+            }
+
             BO.BOLocation getClosestStationLoc(BO.BOLocation sourceLocation, bool needChargeSlot = false)
             {
                 //"needChargeSlots" --> if we need the station to have a free spot,
@@ -31,7 +38,7 @@ namespace BL
                     }
 
                     BO.BOLocation checkThisStationLocation = new BO.BOLocation(st.Longitude, st.Latitude);
-                    if (distance(sourceLocation, checkThisStationLocation) < distance(sourceLocation, result))
+                    if (HelpfulMethodsBL.GetDistance(sourceLocation, checkThisStationLocation) < HelpfulMethodsBL.GetDistance(sourceLocation, result))
                     {
                         result.Latitude = checkThisStationLocation.Latitude;
                         result.Longitude = checkThisStationLocation.Longitude;
@@ -108,35 +115,35 @@ namespace BL
 
 
 
-            double distance(BO.BOLocation l1, BO.BOLocation l2)
-            {
-                //(1) find diff in radians:
-                double diffLat = l1.Latitude - l2.Latitude;
-                double diffLong = l1.Longitude - l2.Longitude;
-                diffLat *= (Math.PI / 180);
-                diffLong *= (Math.PI / 180);
+            //double getDistance(BO.BOLocation l1, BO.BOLocation l2)
+            //{
+            //    //(1) find diff in radians:
+            //    double diffLat = l1.Latitude - l2.Latitude;
+            //    double diffLong = l1.Longitude - l2.Longitude;
+            //    diffLat *= (Math.PI / 180);
+            //    diffLong *= (Math.PI / 180);
 
-                //(2)convert latitude to radians
-                double lat1 = l1.Latitude * (Math.PI / 180);
-                double lat2 = l2.Latitude * (Math.PI / 180);
+            //    //(2)convert latitude to radians
+            //    double lat1 = l1.Latitude * (Math.PI / 180);
+            //    double lat2 = l2.Latitude * (Math.PI / 180);
 
-                //(3) use Haversine Formula
-                double Hav = Math.Pow(Math.Sin(diffLat / 2), 2) +
-                   Math.Pow(Math.Sin(diffLong / 2), 2) *
-                   Math.Cos(lat1) * Math.Cos(lat2);
+            //    //(3) use Haversine Formula
+            //    double Hav = Math.Pow(Math.Sin(diffLat / 2), 2) +
+            //       Math.Pow(Math.Sin(diffLong / 2), 2) *
+            //       Math.Cos(lat1) * Math.Cos(lat2);
 
-                //(4) Find distance in KM based on earth's radius
-                //d = 2*radius * ArcSin(Square(Hav))
-                double radius = 6371; //radius of Earth in km...
-                double distance = 2 * radius * Math.Asin(Math.Sqrt(Hav));
+            //    //(4) Find distance in KM based on earth's radius
+            //    //d = 2*radius * ArcSin(Square(Hav))
+            //    double radius = 6371; //radius of Earth in km...
+            //    double distance = 2 * radius * Math.Asin(Math.Sqrt(Hav));
 
-                return distance;
-            }
+            //    return distance;
+            //}
 
             double battNededForDist(BO.BOLocation start, BO.BOLocation finish, BO.Enum.WeightCategories? weight = null)
             {
-                
-                double dist = distance(start, finish);
+               
+                double dist = HelpfulMethodsBL.GetDistance(start, finish);
 
                 if (weight != null)
                 {
@@ -256,7 +263,7 @@ namespace BL
                                 BO.BOLocation thisParcLoc = new BO.BOLocation(getLocationOfCustomer(parcel.SenderId).Longitude,
                                     getLocationOfCustomer(parcel.SenderId).Latitude);
 
-                                if (distance(droneCopy.Location, thisParcLoc) < distance(droneCopy.Location, closestLoc))
+                                if (HelpfulMethodsBL.GetDistance(droneCopy.Location, thisParcLoc) < HelpfulMethodsBL.GetDistance(droneCopy.Location, closestLoc))
                                 {
                                     closestParcelId = parcel.Id;
                                     closestLoc = thisParcLoc;
@@ -294,7 +301,8 @@ namespace BL
 
 
             [MethodImpl(MethodImplOptions.Synchronized)]
-            public BO.BODrone GetBODrone(int _id)
+            public BO.BODrone GetBODrone(int _id) //return reference... 
+                                                  //only returns if drone Exists
             {
                 foreach (var item in listDrone)
                 {
@@ -717,8 +725,25 @@ namespace BL
                 //if did not find username at all
                 throw new EXUsernameNotFound();
             }
-            
-            
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            public double GetElectricityRate(BO.BODrone bodrone)
+            {
+                //IF DRONE CARRYING PARCEL
+                if (bodrone.ParcelInTransfer != null
+                    && bodrone.ParcelInTransfer.Id != -1)
+                {
+                    switch (bodrone.MaxWeight)
+                    {
+                        case BO.Enum.WeightCategories.Light: return light;
+                        case BO.Enum.WeightCategories.Medium: return medium;
+                        case BO.Enum.WeightCategories.Heavy: return heavy;
+                        default: return 0;
+                    }
+                } 
+                else // if drone not carrying parcel
+                    return empty;
+
+            }
 
 
 

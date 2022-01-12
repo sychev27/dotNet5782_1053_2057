@@ -21,7 +21,7 @@ namespace BL
         readonly int DELAY_EACH_STEP = 500;   //miliseconds
         readonly int DELAY_BTW_JOURNEYS = 2000;
 
-        readonly double DRONESPEED = 2; //20 kilometers per second
+        readonly double DRONESPEED = 5; //__ kilometers per second
         int droneId;
         BL.BLApi.Ibl busiAccess;
 
@@ -255,7 +255,6 @@ namespace BL
             ||
                 (longitudeDiff < 0                              //if traveling in negative direction
                && bodrone.Location.Longitude < destination.Longitude)) //and we passed the location...
-                bodrone.Location = destination;
             {
                 bodrone.Location = destination;
                 arrivedAtDestination = true;

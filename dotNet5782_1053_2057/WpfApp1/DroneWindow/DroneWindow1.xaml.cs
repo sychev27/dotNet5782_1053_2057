@@ -182,32 +182,10 @@ namespace WpfApp1
         {
                 BL.BO.BODrone bodrone = busiAccess.GetBODrone(_droneId);
                 DataContext = createDroneViewModel(bodrone);
-
-            {
-                //    tBoxIdInput.Text = bodrone.Id.ToString();
-                //    tBoxModelInput.Text = bodrone.Model;
-                //    if (busiAccess.GetStationIdOfBODrone(bodrone.Id) != -1)
-                //        tBoxStationIdInput.Text = (busiAccess.GetStationIdOfBODrone(bodrone.Id)).ToString();
-                //    else
-                //        tBoxStationIdInput.Text = "Drone is not charging at a Station";
-
-                //    cmbWeightChoice.SelectedIndex = (int)bodrone.MaxWeight;
-                //    cmbWeightChoice.IsReadOnly = true;
-                //    cmbWeightChoice.IsEnabled = false;
-
-                //    tBlockStatusInfo.Text = bodrone.DroneStatus.ToString();
-                //    if (bodrone.ParcelInTransfer.Id == -1 || bodrone.ParcelInTransfer == null)
-                //        tBlockDeliveryInfo.Text = "Not yet carrying Parcel";
-                //    else
-                //        tBlockDeliveryInfo.Text = bodrone.ParcelInTransfer.ToString();
-                //    tBlockLongInfo.Text = bodrone.Location.Longitude.ToString();
-                //    tBlockLatinfo.Text = bodrone.Location.Latitude.ToString();
-
-                //    tBlockCurrentLocationInfo.Text = busiAccess.GetDroneLocationString(bodrone.Id);
-
-                //    tBlockBatteryInfo.Text = bodrone.Battery.ToString();
-            }//delete this... 
-            
+            if (bodrone.DroneStatus == BL.BO.Enum.DroneStatus.Charging)
+                HelpfulMethods.ChangeTextColor(Colors.Green, tBlockBatteryInfo);
+            else
+                HelpfulMethods.ChangeTextColor(Colors.Black, tBlockBatteryInfo);
         }
         private void btnModifyDroneModel_Click(object sender, RoutedEventArgs e)
         {
@@ -361,9 +339,12 @@ namespace WpfApp1
             else // if(simulatorOn == true)
             {
                 workerForPLSimulator.CancelAsync();
-                btnSimulator.Content = "Begin Simulator";
                 simulatorOn = false;
                 busiAccess.StopSimulator();
+                btnSimulator.Content = "Begin Simulator";
+                HelpfulMethods.ChangeVisibilty(Visibility.Visible, btnFreeDroneFromCharge,
+                    btnSendToCharge, btnAssignDroneToParcel, btnPickupPkg,
+                    btnDeliverPkg, btnEraseDrone);
             }
             
         }
@@ -396,10 +377,8 @@ namespace WpfApp1
         }
         private void worker_RunWorkerCompleted(object sender,   RunWorkerCompletedEventArgs e)
         {
-            HelpfulMethods.ErrorMsg("worker finished");
-            //busiAccess.
+            MessageBox.Show("Simulator ended successfully", "SUCCESS", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
             workerForPLSimulator.Dispose();
-            
         }
         private void beginSimulator()
         {
