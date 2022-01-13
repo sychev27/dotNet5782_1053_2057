@@ -23,7 +23,8 @@ ALEX:
 -add "lock(bl)" 
 -addd checkbox "Show Erased" - look at Parcel window for guidance... 
 -Make font in Specific windows look nicer
-
+-format "bonus list" in microsoft word.. send it to me and ill make a PDF
+- clean up code - delete white spaces, make the code look nice... add some comments around functions.. 
 
 
 
