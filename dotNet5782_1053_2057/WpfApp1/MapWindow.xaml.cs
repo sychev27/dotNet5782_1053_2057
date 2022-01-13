@@ -31,6 +31,13 @@ namespace WpfApp1
                 RowPlace = (int)((Math.Round(cust.Location.Latitude, 2) - 31) * 10);
             
             }
+            public InfoBlock(BL.BO.BOStation st)
+            {
+                Id = st.Id;
+                ThisObjectType = ObjectType.Station;
+                ColumnPlace = (int)((Math.Round(st.Location.Longitude, 2) - 35) * 10);
+                RowPlace = (int)((Math.Round(st.Location.Latitude, 2) - 31) * 10);
+            }
             public int Id { get; set; }
             public ObjectType ThisObjectType { get; set; }
             public int RowPlace { get; set; }
@@ -44,6 +51,10 @@ namespace WpfApp1
             busiAccess = _busiAccess;
 
             foreach (var item in busiAccess.GetAllBOCustomers())
+            {
+                createInfoBlock(new InfoBlock(item));
+            }
+            foreach (var item in busiAccess.GetStations())
             {
                 createInfoBlock(new InfoBlock(item));
             }
@@ -64,15 +75,39 @@ namespace WpfApp1
             Grid.SetColumn(t, _columnPlace);
             Grid.SetRow(t, _rowPlace);
             t.Text = _InfoBlock.Id.ToString();
-            t.Foreground = new SolidColorBrush(Colors.Red);
-            t.Background = new SolidColorBrush(Colors.Blue);
-            t.MouseEnter += new MouseEventHandler(
-                new EventHandler((sender, e) => displayCustomer(sender, e, _InfoBlock)));
-            t.MouseLeave += new MouseEventHandler(this.hideInfo);
+            
             t.MouseLeftButtonDown += new MouseButtonEventHandler(
                 new EventHandler((sender, e) => openWindow(sender, e, _InfoBlock)));
-                
-                
+
+
+            switch (_InfoBlock.ThisObjectType)
+            {
+                case ObjectType.Drone:
+                    break;
+                case ObjectType.Station:
+                    {
+                        t.Foreground = new SolidColorBrush(Colors.Red);
+                        t.Background = new SolidColorBrush(Colors.Orange);
+                        t.MouseEnter += new MouseEventHandler(
+                            new EventHandler((sender, e) => displayStation(sender, e, _InfoBlock)));
+                        t.MouseLeave += new MouseEventHandler(this.hideInfo);
+                    }
+                    break;
+                case ObjectType.Customer:
+                    {
+                        t.Foreground = new SolidColorBrush(Colors.Red);
+                        t.Background = new SolidColorBrush(Colors.Blue);
+                        t.MouseEnter += new MouseEventHandler(
+                            new EventHandler((sender, e) => displayCustomer(sender, e, _InfoBlock)));
+                        t.MouseLeave += new MouseEventHandler(this.hideInfo);
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+
+
 
             //t.GotMouseCapture += new MouseEventHandler(this.displayInfo);
             //t.LostMouseCapture += new MouseEventHandler(this.hideInfo);
@@ -83,11 +118,19 @@ namespace WpfApp1
 
         private void displayCustomer(object sender, System.EventArgs e, MapWindow.InfoBlock _InfoBlock)
         {
-            BL.BO.BOCustomer cust = busiAccess.GetBOCustomer(_InfoBlock.Id);
+            var item = busiAccess.GetBOCustomer(_InfoBlock.Id);
 
             tBoxInfo.Text = busiAccess.GetOneCustToList(_InfoBlock.Id).ToString()
-                + "\n" + "Longitude: " + cust.Location.Longitude.ToString()
-                + "\n" + "Latitude: " + cust.Location.Latitude.ToString();
+                + "\n" + "Longitude: " + item.Location.Longitude.ToString()
+                + "\n" + "Latitude: " + item.Location.Latitude.ToString();
+        }
+        private void displayStation(object sender, System.EventArgs e, MapWindow.InfoBlock _InfoBlock)
+        {
+            var item = busiAccess.GetBOStation(_InfoBlock.Id);
+
+            tBoxInfo.Text = item.ToString();
+            //    + "\n" + "Longitude: " + item.Location.Longitude.ToString()
+            //    + "\n" + "Latitude: " + item.Location.Latitude.ToString();
         }
         private void openWindow(object sender, EventArgs e, InfoBlock infoBlock)
         {
@@ -96,6 +139,8 @@ namespace WpfApp1
                 case ObjectType.Drone:
                     break;
                 case ObjectType.Station:
+                    new StationWindow(busiAccess,
+                        (infoBlock.Id)).ShowDialog();
                     break;
                 case ObjectType.Customer:
                     new CustomerWindow(busiAccess, 

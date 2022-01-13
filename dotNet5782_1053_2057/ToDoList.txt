@@ -1,10 +1,37 @@
-organize files into folders
 
-finish MapWindow
-Finsh Grouping/Filtering
-Show Erased, finish functions.. 
--add "lock(dal)" in DL -- see page 19
+
+DOVID:
+finish Erase()
+finish Customer Filter
+update collectionView in each listWindow
+save ObservableCollectio in dronelist of DroneStringViewModel
+allow to open multiple drone windows -> save List<> of DroneWindows in dronelistWindow, create OpenWindow(), use Show() instead of ShowDialog()
+finish Simulator "Stop Simulator"
+
+finish MapWindow :
+- figure out constructors for InfoType, save infoTypes in list<> for moving the text box.. 
+-show in customer (numparcels) and in station (numdrones)
+- fix color scheme
+-add deleted items...
+-draw dones
+-new thread(refreshView)
+-use Show() instead of showDialog()
+
+
+ALEX:
+-add "lock(dal)" in DL -- see page 19 of daf targil  (add in each of the 3 layers)
 -add "lock(bl)" 
+-addd checkbox "Show Erased" - look at Parcel window for guidance... 
+-Make font in Specific windows look nicer
 
-make chargeDrone with thread - non simululator mode
-make observable colleciton list so that can open multiple drone Windows...
+
+
+
+
+
+
+
+
+
+
+

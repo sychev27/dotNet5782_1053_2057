@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="StationWindow" Height="450" Width="800">
     <Grid HorizontalAlignment="Stretch" Height="Auto" Margin="0,0,0,0" VerticalAlignment="Stretch" Width="Auto">
-        <Grid HorizontalAlignment="Left" Height="314" Margin="79,0,0,0" VerticalAlignment="Center" Width="673">
+        <Grid HorizontalAlignment="Left" Height="314" Margin="50,50,50,50" VerticalAlignment="Center" Width="673">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="103*"/>
                 <ColumnDefinition Width="100*"/>
@@ -51,6 +51,8 @@
                 </ListView.View>
             </ListView>
             <Button x:Name="btnCancel" Content="Cancel" Grid.Column="2" Height="30" Margin="5,10,10,0" Grid.Row="6" VerticalAlignment="Top" Click="btnCancel_Click"/>
+            <TextBlock x:Name="tBlockStationTitle" Text="Station Window" FontSize="25
+                       " TextAlignment="Center" TextWrapping="Wrap" Grid.ColumnSpan="2" Margin="0,0,18,45" Grid.RowSpan="2"/>
 
 
 
