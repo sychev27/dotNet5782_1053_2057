@@ -2,6 +2,7 @@
 
 DOVID:
 finish Erase()
+add ToString() for deleted.. 
 finish Customer Filter
 update collectionView in each listWindow
 save ObservableCollectio in dronelist of DroneStringViewModel
@@ -21,7 +22,11 @@ finish MapWindow :
 ALEX:
 -add "lock(dal)" in DL -- see page 19 of daf targil  (add in each of the 3 layers)
 -add "lock(bl)" 
--addd checkbox "Show Erased" - look at Parcel window for guidance... 
+
+-add checkbox "Show Erased" - look at Parcel window for guidance... 
+-make sure that it works!
+-prevent from being able to open a window from a deleted object
+
 -Make font in Specific windows look nicer
 -format "bonus list" in microsoft word.. send it to me and ill make a PDF
 - clean up code - delete white spaces, make the code look nice... add some comments around functions.. 
