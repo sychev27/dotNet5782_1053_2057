@@ -10,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Drawing;
 using System.Windows.Shapes;
 
 namespace WpfApp1
@@ -21,6 +22,10 @@ namespace WpfApp1
     {
         BL.BLApi.Ibl busiAccess;
         enum ObjectType { Drone, Station, Customer}
+        static String ImgDroneWithParcel = "C:\\Users\\dyyb1\\OneDrive\\Documentos\\AA windows project\\dotNet5782_1053_2057\\WpfApp1\\Pictures\\drone_with_parcel.jpg";
+        static String ImgDroneWithoutParcel = "C:\\Users\\dyyb1\\OneDrive\\Documentos\\AA windows project\\dotNet5782_1053_2057\\WpfApp1\\Pictures\\drone_without_parcel.PNG";
+
+
         class InfoBlock
         {
             public InfoBlock(BL.BO.BOCustomer cust)
@@ -60,7 +65,18 @@ namespace WpfApp1
             }
 
             tBoxInfo.Text = "Hover the mouse over a square";
+                       
 
+            Image ImageDroneWithParc = new Image();
+            //ImageDroneWithParc.Stretch = (Stretch.Fill);
+            Grid.SetColumn(ImageDroneWithParc, 1);
+            Grid.SetColumnSpan(ImageDroneWithParc, 2);
+            Grid.SetRow(ImageDroneWithParc, 2);
+            Grid.SetRowSpan(ImageDroneWithParc, 3);
+            ImageSource droneWithParcel = new BitmapImage(new Uri(ImgDroneWithoutParcel));
+            ImageDroneWithParc.Source = droneWithParcel;
+            gridMap.Children.Add(ImageDroneWithParc);
+            
         }
 
         private void createInfoBlock(InfoBlock _InfoBlock)
@@ -71,10 +87,13 @@ namespace WpfApp1
 
 
             System.Windows.Controls.TextBlock t = new System.Windows.Controls.TextBlock();
-            t.Name = "tBlock" + _rowPlace.ToString() + _columnPlace.ToString();
+            t.Name = "tBlockR" + _rowPlace.ToString() + "C" + _columnPlace.ToString();
             Grid.SetColumn(t, _columnPlace);
             Grid.SetRow(t, _rowPlace);
             t.Text = _InfoBlock.Id.ToString();
+            t.Foreground = new SolidColorBrush(Colors.Red);
+            //t.FontStyle;
+            t.FontWeight = FontWeight.FromOpenTypeWeight(500);
             
             t.MouseLeftButtonDown += new MouseButtonEventHandler(
                 new EventHandler((sender, e) => openWindow(sender, e, _InfoBlock)));
@@ -86,7 +105,6 @@ namespace WpfApp1
                     break;
                 case ObjectType.Station:
                     {
-                        t.Foreground = new SolidColorBrush(Colors.Red);
                         t.Background = new SolidColorBrush(Colors.Orange);
                         t.MouseEnter += new MouseEventHandler(
                             new EventHandler((sender, e) => displayStation(sender, e, _InfoBlock)));
@@ -95,7 +113,6 @@ namespace WpfApp1
                     break;
                 case ObjectType.Customer:
                     {
-                        t.Foreground = new SolidColorBrush(Colors.Red);
                         t.Background = new SolidColorBrush(Colors.Blue);
                         t.MouseEnter += new MouseEventHandler(
                             new EventHandler((sender, e) => displayCustomer(sender, e, _InfoBlock)));
