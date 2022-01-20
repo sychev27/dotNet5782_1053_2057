@@ -332,7 +332,9 @@ namespace BL
 
 
             BO.BOCustomerInParcel createCustInParcel(int origCustId)
+
             {
+                //function not affected by "Exists" feature
                 IEnumerable<DalXml.DO.Customer> origCustomers = dataAccess.GetCustomers();
                 foreach (var item in origCustomers)
                 {
@@ -381,6 +383,7 @@ namespace BL
                 }
                
                 BO.BOStation newSt = new BO.BOStation();
+                newSt.Exists = origSt.Exists;
                 newSt.Id = origSt.Id;
                 newSt.Name = origSt.Name;
                 newSt.Location = new BO.BOLocation(origSt.Longitude, origSt.Latitude);
@@ -423,6 +426,7 @@ namespace BL
                 }
                 //throw exception if not found..
                 newCust.Id = origCust.Id;
+                newCust.Exists = origCust.Exists;
                 newCust.Location = new BO.BOLocation(origCust.Longitude, origCust.Latitude);
                 newCust.Name = origCust.Name;
                 newCust.Phone = origCust.Phone;
@@ -482,6 +486,7 @@ namespace BL
             {
                 BO.BOCustomerToList newCustToList = new BO.BOCustomerToList();
                 DalXml.DO.Customer origCust = dataAccess.GetCustomer(_id);
+                newCustToList.Exists = origCust.Exists;
                 newCustToList.Id = origCust.Id;
                 newCustToList.CustomerName = origCust.Name;
                 newCustToList.Phone = origCust.Phone;

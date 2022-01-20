@@ -10,6 +10,12 @@ namespace BL
     {
         public class BOCustomer
         {
+
+            public BOCustomer()
+            {
+                Exists = true;
+            }
+            public bool Exists { get; set; }
             public int Id { get; set; }
             public string Name { get; set; }
             public string Phone { get; set; }
@@ -21,7 +27,10 @@ namespace BL
 
             public override string ToString()
             {
-                string res = "Customer " + Name + " Id: " + Id + "\n";
+
+                string res = "";
+                if (!Exists) res += "DELETED --\n"; 
+                res += "Customer " + Name + " Id: " + Id + "\n";
                 return res;
             }
         }

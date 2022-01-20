@@ -132,6 +132,11 @@ namespace WpfApp1
         {
 
         }
+
+        private void foo(object sender, RoutedEventArgs e)
+        {
+            CustomerFilter = tBoxCustNameInput.Text;
+        }
     }
 
 
