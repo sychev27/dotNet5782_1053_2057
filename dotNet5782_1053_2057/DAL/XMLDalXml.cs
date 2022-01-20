@@ -20,9 +20,9 @@ namespace DalXml
 
 
 
-    namespace DalXml
-    {
-        public sealed class DalXml1 : IDal
+namespace DalXml
+{
+    public sealed class DataSource : IDal
         {
             internal class Config
             {
@@ -56,11 +56,11 @@ namespace DalXml
             class Nested
             {
                 static Nested() { }
-                internal static readonly DalXml1 instance = new DalXml1();
+                internal static readonly DataSource instance = new DataSource();
             }
             //this field is static- so that it can be accessed even before the object is initialized
-            public static DalXml1 Instance { get { return Nested.instance; } }
-            private DalXml1() //private CTOR - implemented Singleton Design pattern
+            public static DataSource Instance { get { return Nested.instance; } }
+            private DataSource() //private CTOR - implemented Singleton Design pattern
             {
                 Initialize();
             }
