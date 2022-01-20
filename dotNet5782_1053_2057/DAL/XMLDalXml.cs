@@ -20,9 +20,9 @@ namespace DalXml
 
 
 
-    namespace DalXml
-    {
-        public sealed class DalXml1 : IDal
+namespace DalXml
+{
+    public sealed class DataSource : IDal
         {
             internal class Config
             {
@@ -43,7 +43,7 @@ namespace DalXml
             string stationsPath = @"StationsXml.xml"; //XElement
 
             string droneChargesPath = @"DroneChargesXml.xml"; //XMLSerializer
-            string dronsPath = @"DronsXml.xml"; //XMLSerializer
+            string dronesPath = @"DronesXml.xml"; //XMLSerializer
             string parcelsPath = @"ParcelsXml.xml"; //XMLSerializer
             string customersPath = @"CustomersXml.xml"; //XMLSerializer
             string usersPath = @"UsersXml.xml"; //XMLSerializer (holds list of username and passwords)
@@ -56,11 +56,11 @@ namespace DalXml
             class Nested
             {
                 static Nested() { }
-                internal static readonly DalXml1 instance = new DalXml1();
+                internal static readonly DataSource instance = new DataSource();
             }
             //this field is static- so that it can be accessed even before the object is initialized
-            public static DalXml1 Instance { get { return Nested.instance; } }
-            private DalXml1() //private CTOR - implemented Singleton Design pattern
+            public static DataSource Instance { get { return Nested.instance; } }
+            private DataSource() //private CTOR - implemented Singleton Design pattern
             {
                 Initialize();
             }
@@ -93,7 +93,7 @@ namespace DalXml
                   exampleD.Exists = true;
                   listDrone.Add(exampleD);
                 }
-                DALTools.XMLTools.SaveListToXMLSerializer<DalXml.DO.Drone>(listDrone,dronsPath);
+                DALTools.XMLTools.SaveListToXMLSerializer<DalXml.DO.Drone>(listDrone,dronesPath);
 
                 //INITIALIZE STATION
 
@@ -188,7 +188,7 @@ namespace DalXml
         public DO.Drone GetDrone(int _id)
         {
             DO.Drone drone = new DO.Drone(0, "", 0);
-            IEnumerable<DO.Drone> listDrone = DALTools.XMLTools.LoadListFromXMLSerializer<DO.Drone>(dronsPath);
+            IEnumerable<DO.Drone> listDrone = DALTools.XMLTools.LoadListFromXMLSerializer<DO.Drone>(dronesPath);
 
             foreach (DO.Drone dr in listDrone)
                 if (dr.Id == _id && dr.Exists)
@@ -204,10 +204,16 @@ namespace DalXml
             IEnumerable<DO.Customer> listCustomer = DALTools.XMLTools.LoadListFromXMLSerializer<DO.Customer>(customersPath);
 
             foreach (DO.Customer cst in listCustomer)
-                if (cst.Id == _id && cst.Exists)
-                    cust = cst;
-            if (cust.Id == 0) throw new DO.EXItemNotFoundException();
-            return cust;
+                if (cst.Id == _id)
+                   return cst;
+           
+            throw new DO.EXItemNotFoundException();
+
+            //foreach (DO.Customer cst in listCustomer) <- delete this...
+            //    if (cst.Id == _id && cst.Exists) 
+            //        cust = cst;
+            //if (cust.Id == 0) throw new DO.EXItemNotFoundException();
+            //return cust;
         }
         [MethodImpl(MethodImplOptions.Synchronized)]
         public DO.Parcel GetParcel(int _id)
@@ -243,9 +249,9 @@ namespace DalXml
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddDrone(DO.Drone drone)
         {
-            List<DO.Drone> listDrone = DALTools.XMLTools.LoadListFromXMLSerializer<DO.Drone>(dronsPath) as List<DO.Drone>;
+            List<DO.Drone> listDrone = DALTools.XMLTools.LoadListFromXMLSerializer<DO.Drone>(dronesPath) as List<DO.Drone>;
             listDrone.Add(drone);
-            DALTools.XMLTools.SaveListToXMLSerializer<DO.Drone>(listDrone, dronsPath);
+            DALTools.XMLTools.SaveListToXMLSerializer<DO.Drone>(listDrone, dronesPath);
         }
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddCustomer(DO.Customer custom)
@@ -299,7 +305,7 @@ namespace DalXml
         [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<DO.Drone> GetDrones()
         {
-            return DALTools.XMLTools.LoadListFromXMLSerializer<DO.Drone>(dronsPath);
+            return DALTools.XMLTools.LoadListFromXMLSerializer<DO.Drone>(dronesPath);
         }
         [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<DO.Parcel> GetParcels()
@@ -346,7 +352,7 @@ namespace DalXml
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void EraseDrone(int droneId)
         {
-            List<DO.Drone> listDrone = DALTools.XMLTools.LoadListFromXMLSerializer<DO.Drone>(dronsPath).ToList();
+            List<DO.Drone> listDrone = DALTools.XMLTools.LoadListFromXMLSerializer<DO.Drone>(dronesPath).ToList();
             foreach (var item in listDrone)
             {
                 if (item.Id == droneId)
@@ -355,7 +361,7 @@ namespace DalXml
                     listDrone.Remove(item);
                     copy.Exists = false;
                     listDrone.Add(copy);
-                    DALTools.XMLTools.SaveListToXMLSerializer<DO.Drone>(listDrone, dronsPath);
+                    DALTools.XMLTools.SaveListToXMLSerializer<DO.Drone>(listDrone, dronesPath);
                     return;
                 }
             }
@@ -427,7 +433,7 @@ namespace DalXml
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void ModifyDrone(int _id, string _model) //changes drone model
         {
-            List<DO.Drone> listDrone = DALTools.XMLTools.LoadListFromXMLSerializer<DO.Drone>(dronsPath).ToList();
+            List<DO.Drone> listDrone = DALTools.XMLTools.LoadListFromXMLSerializer<DO.Drone>(dronesPath).ToList();
             foreach (var item in listDrone)
             {
                 if (item.Id == _id && item.Exists)
@@ -436,7 +442,7 @@ namespace DalXml
                     listDrone.Remove(item);
                     copy.Model = _model;
                     listDrone.Add(copy);
-                    DALTools.XMLTools.SaveListToXMLSerializer<DO.Drone>(listDrone, dronsPath);
+                    DALTools.XMLTools.SaveListToXMLSerializer<DO.Drone>(listDrone, dronesPath);
                     return;
                 }
             }

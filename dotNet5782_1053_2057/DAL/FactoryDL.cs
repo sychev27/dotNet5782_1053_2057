@@ -3,10 +3,10 @@
     public static DalXml.IDal GetDL(string libraryType)
     {
         if (libraryType == "a")
-            return DalXml.DalXml1.Instance;
-        else if (libraryType == "b")
-            return DalObject.DalApi.DataSource.Instance;
-        else
+            return DalXml.DataSource.Instance;
+        //else if (libraryType == "b")
+        //    return DalObject.DalApi.DataSource.Instance;
+        //else
             throw new DalXml.DO.EXItemNotFoundException();
     }
 }

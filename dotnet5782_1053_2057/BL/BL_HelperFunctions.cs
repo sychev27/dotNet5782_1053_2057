@@ -361,7 +361,7 @@ namespace BL
                 IEnumerable<DalXml.DO.Parcel> origList = dataAccess.GetParcels();
                 foreach (var item in origList)
                 {
-                    if (_id == item.Id && item.Exists)
+                    if (_id == item.Id)
                     {
                         return CreateBOParcel(_id);
                     }
@@ -537,6 +537,8 @@ namespace BL
             [MethodImpl(MethodImplOptions.Synchronized)]
             public IEnumerable<BO.BOCustomerToList> GetCustToList()
             {
+
+
                 List<BO.BOCustomerToList> res = 
                     new List<BO.BOCustomerToList>();
                 foreach (var item in dataAccess.GetCustomers())
@@ -548,7 +550,7 @@ namespace BL
             [MethodImpl(MethodImplOptions.Synchronized)]
             public IEnumerable<BO.BOParcelToList> GetParcelToList()
             {
-                ObservableCollection<BO.BOParcelToList> res = new ObservableCollection<BO.BOParcelToList>();
+                List<BO.BOParcelToList> res = new List<BO.BOParcelToList>();
                 foreach (var item in dataAccess.GetParcels())
                 {
                     //if(item.Exists)

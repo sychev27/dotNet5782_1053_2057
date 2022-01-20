@@ -30,7 +30,22 @@ namespace WpfApp1
             refreshList();
         }
 
-        private void refreshList(bool getDeleted = false)
+        private void Selector2_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void Selector1_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void btnRefreshList_Click(object sender, RoutedEventArgs e)
+        {
+            refreshList();
+        }
+
+        private void refreshList()
         {
             DataContext = busiAccess.GetParcelToList(); // for grouping...
             parcCollectionView = (CollectionView)CollectionViewSource.
@@ -49,8 +64,6 @@ namespace WpfApp1
 
             parcCollectionView.SortDescriptions.Add(new SortDescription
                 (nameof(BL.BO.BOParcelToList.Id), ListSortDirection.Ascending));
-            
-
         }
 
         private void btnAddParcel_Click(object sender, RoutedEventArgs e)

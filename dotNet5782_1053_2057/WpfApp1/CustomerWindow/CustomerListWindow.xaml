@@ -29,7 +29,8 @@
                 <RowDefinition Height="10*"></RowDefinition>
                 <RowDefinition Height="10*"></RowDefinition>
             </Grid.RowDefinitions>
-            <TextBox x:Name="tBoxCustNameInput" Text="{Binding CustomerFilter, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.ColumnSpan="2" Grid.Column="1" HorizontalAlignment="Left" Height="28" Margin="36,0,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Center" Width="334"/>
+            <TextBox x:Name="tBoxCustNameInput" Text="" Grid.ColumnSpan="2" Grid.Column="1" HorizontalAlignment="Left" Height="28" Margin="36,0,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Center" Width="334" SelectionChanged="tBoxCustInput_selection_Changed"/>
+
             <TextBlock x:Name="tBlockEnterCustName" HorizontalAlignment="Left" Height="28" Margin="21,0,0,0" Grid.Row="1" Text="Enter Customer name to filter:" TextWrapping="Wrap" VerticalAlignment="Center" Width="179"/>
 
             <!--<TextBox  Grid.Column="0" HorizontalAlignment="Stretch" Margin="4,6,6,4" Text="Filter:" TextWrapping="Wrap" VerticalAlignment="Stretch" Width="190" FontSize="22"/>

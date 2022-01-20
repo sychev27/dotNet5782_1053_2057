@@ -56,12 +56,12 @@ namespace WpfApp1
             btnAddParcel.IsEnabled = false;
             btnAddParcel.Visibility = Visibility.Hidden;
             
-            displayBOParcel(busiAccess, parcel);
-
+            displayBOParcel(parcel.Id);
         }
 
-        private void displayBOParcel(BL.BLApi.Ibl _busiAccess, BL.BO.BOParcel boparcel)
+        private void displayBOParcel(int parcId)
         {
+            BL.BO.BOParcel boparcel = busiAccess.GetBOParcel(parcId);
             tBoxParcIdInput.Text = boparcel.Id.ToString();
             tBoxSenderId.Text = boparcel.Sender.Id.ToString();
             tBlockNameOfSender.Text = busiAccess.GetBOCustomer(boparcel.Sender.Id).Name;
@@ -202,16 +202,24 @@ namespace WpfApp1
         {
             int _id;
             Int32.TryParse(tBoxSenderId.Text, out _id);
-            BL.BO.BOCustomer custumer = busiAccess.GetBOCustomer(_id);
-            new CustomerWindow(busiAccess,custumer).ShowDialog();
+            BL.BO.BOCustomer customer = busiAccess.GetBOCustomer(_id);
+            if (customer.Exists)
+                new CustomerWindow(busiAccess, customer).ShowDialog();
+            else
+                HelpfulMethods.ErrorMsg("Customer has been deleted..");
+            displayBOParcel(Int32.Parse(tBoxParcIdInput.Text));
         }
 
         private void tBoxReceiverId_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             int _id;
             Int32.TryParse(tBoxReceiverId.Text, out _id);
-            BL.BO.BOCustomer custumer = busiAccess.GetBOCustomer(_id);
-            new CustomerWindow(busiAccess, custumer).ShowDialog();
+            BL.BO.BOCustomer customer = busiAccess.GetBOCustomer(_id);
+            if (customer.Exists)
+                new CustomerWindow(busiAccess, customer).ShowDialog();
+            else
+                HelpfulMethods.ErrorMsg("Customer has been deleted..");
+            displayBOParcel(Int32.Parse(tBoxParcIdInput.Text));
         }
 
         private void cmbWeightCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -234,9 +242,16 @@ namespace WpfApp1
             int droneId;
             bool droneIdSuccess = Int32.TryParse(tBoxDroneIdOutput.Text, out droneId);
             if (droneIdSuccess)
-                new DroneWindow(busiAccess, busiAccess.GetBODrone(droneId)).ShowDialog();
+            {
+                BL.BO.BODrone bodrone = busiAccess.GetBODrone(droneId);
+                if (bodrone.Exists)
+                    new DroneWindow(busiAccess, bodrone).ShowDialog();
+                else
+                    HelpfulMethods.ErrorMsg("Drone has been deleted..");
+            }
             else
                 return;
+            displayBOParcel(Int32.Parse(tBoxParcIdInput.Text));
         }
     }
 }

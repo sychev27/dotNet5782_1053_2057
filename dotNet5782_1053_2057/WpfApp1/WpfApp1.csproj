@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Pics\**" />
+    <EmbeddedResource Remove="Pics\**" />
+    <None Remove="Pics\**" />
+    <Page Remove="Pics\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\BL\BL.csproj" />
   </ItemGroup>
 

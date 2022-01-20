@@ -52,21 +52,24 @@ namespace WpfApp1
             InitializeComponent();
             busiAccess = busiAccess1;
             refreshList();
-
             custCollectionView.SortDescriptions.Add(new SortDescription(
                 nameof(BL.BO.BOCustomerToList.Id), ListSortDirection.Ascending));
-            custCollectionView.Filter = FilterByName;
-
+            custCollectionView.Filter = filterByName_WithOutErased;
         }
-        private bool FilterByName(object obj)
+        private bool filterByName_WithOutErased(object obj)
         {
             if (obj is BL.BO.BOCustomerToList cust)
-            {
-                return cust.CustomerName.Contains(CustomerFilter, StringComparison.InvariantCultureIgnoreCase);
-            }
-
+                return cust.CustomerName.Contains(CustomerFilter, StringComparison.InvariantCultureIgnoreCase)
+                        && cust.Exists;
             return false;
         }
+        private bool filterByName_WithErased(object obj)
+        {
+            if (obj is BL.BO.BOCustomerToList cust)
+                return cust.CustomerName.Contains(CustomerFilter, StringComparison.InvariantCultureIgnoreCase);
+            return false;
+        }
+
         private void btnAddCustomer1_Click(object sender, RoutedEventArgs e)
         {
             new CustomerWindow(busiAccess).ShowDialog();
@@ -79,7 +82,11 @@ namespace WpfApp1
             BL.BO.BOCustomerToList customer = CustomerListView.SelectedItem as BL.BO.BOCustomerToList;
             if (customer == null)
                 return;
-            
+            if (customer.Exists == false)
+            {
+                HelpfulMethods.ErrorMsg("Customer is deleted");
+                return;
+            }
             int id = customer.Id;
             BL.BO.BOCustomer cust = busiAccess.GetBOCustomer(id);
             new CustomerWindow(busiAccess, cust).ShowDialog();
@@ -106,31 +113,37 @@ namespace WpfApp1
                 GetDefaultView(DataContext);
             CustomerListView.ItemsSource = custCollectionView;
 
-            
+            if (!(bool)chkBoxGetErased.IsChecked)
+                custCollectionView.Filter = filterByName_WithOutErased;
+            else //to get erased
+                custCollectionView.Filter = filterByName_WithErased; 
+            custCollectionView.Refresh();
         }
 
 
-        
-
-        private void chkboxNumParcels_Checked(object sender, RoutedEventArgs e)
-        {
-            //CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(DataContext);
-            //PropertyGroupDescription groupDescription = new PropertyGroupDescription("NumParcelsSentNotDelivered");
-            //view.GroupDescriptions.Add(groupDescription);
-        }
-        private void chkboxNumParcels_Unchecked(object sender, RoutedEventArgs e)
-        {
-            //refreshList();
-        }
+       
 
         private void chkBoxGetErased_Checked(object sender, RoutedEventArgs e)
         {
-
+            refreshList();
         }
 
         private void chkBoxGetErased_UnChecked(object sender, RoutedEventArgs e)
         {
+            refreshList();
+        }
 
+        private void tBoxCustInput_selection_Changed(object sender, RoutedEventArgs e)
+        {
+            CustomerFilter = tBoxCustNameInput.Text;
+        }
+        private bool filterOutErased(object obj)
+        {
+            if (obj is BL.BO.BOCustomerToList item)
+            {
+                return item.Exists;
+            }
+            else return false;
         }
     }
 

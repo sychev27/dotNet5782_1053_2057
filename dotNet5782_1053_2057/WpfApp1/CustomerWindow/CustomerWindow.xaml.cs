@@ -28,13 +28,10 @@ namespace WpfApp1
             InitializeComponent();
             busiAccess = _busiAccess;
             //edit buttons and text boxes for Update Window:
-            btnModifyCustomer.IsEnabled = false;
-            btnModifyCustomer.Visibility = Visibility.Hidden;
+            HelpfulMethods.ChangeVisibilty(Visibility.Hidden, btnEraseCust, btnModifyCustomer);
             lstParcelListSending.Visibility = Visibility.Hidden;
             lstParcelListReceiving.Visibility = Visibility.Hidden;
             hideCustomerLogInBtns();
-
-            btnEraseCust.IsEnabled = false;
 
             if (register)
             {
@@ -61,10 +58,10 @@ namespace WpfApp1
             btnAddCustomer.Visibility = Visibility.Hidden;
             hideCustomerLogInBtns();
 
+            thisCustomerId = customer.Id;
+            displayBOCustomer(customer.Id);
 
-            displayBOCustomer(busiAccess, customer);
-
-            btnEraseCust.IsEnabled = false;
+            //btnEraseCust.IsEnabled = false;
         }
 
 
@@ -79,18 +76,16 @@ namespace WpfApp1
 
 
 
-        private void displayBOCustomer(BL.BLApi.Ibl _busiAccess, BL.BO.BOCustomer bocustumer)
+        private void displayBOCustomer(int _id)
         {
-            thisCustomerId = bocustumer.Id;
-
-
-            tBoxCusIdInput.Text = bocustumer.Id.ToString();
-            tBoxNameInput.Text = bocustumer.Name;
-            tBoxPhoneInput.Text = bocustumer.Phone;
-            tBoxLongiInfo.Text = bocustumer.Location.Longitude.ToString();
-            tBoxLatitInfo.Text = bocustumer.Location.Latitude.ToString();
-            lstParcelListSending.ItemsSource = bocustumer.ListOfParcSent; //_busiAccess.GetBOParcelAtCustomerList(bocustumer);
-            lstParcelListReceiving.ItemsSource = bocustumer.ListOfParcReceived;
+            BL.BO.BOCustomer bocustomer = busiAccess.GetBOCustomer(_id);
+            tBoxCusIdInput.Text = bocustomer.Id.ToString();
+            tBoxNameInput.Text = bocustomer.Name;
+            tBoxPhoneInput.Text = bocustomer.Phone;
+            tBoxLongiInfo.Text = bocustomer.Location.Longitude.ToString();
+            tBoxLatitInfo.Text = bocustomer.Location.Latitude.ToString();
+            lstParcelListSending.ItemsSource = bocustomer.ListOfParcSent; //_busiAccess.GetBOParcelAtCustomerList(bocustumer);
+            lstParcelListReceiving.ItemsSource = bocustomer.ListOfParcReceived;
 
             //working on a function in BL..
 
@@ -236,6 +231,8 @@ namespace WpfApp1
             try
             {
                 busiAccess.EraseCustomer(thisCustomerId);
+                HelpfulMethods.SuccessMsg("Customer Erased");
+                Close();
             }
             catch (BL.BLApi.EXCantDltCustWParcInDelivery ex)
             {
@@ -246,6 +243,7 @@ namespace WpfApp1
         private void btnSendParcel_Click(object sender, RoutedEventArgs e)
         {
             //open new ParcelWindow(), send the Sender ID.... 
+            displayBOCustomer(thisCustomerId);
         }
 
         private void hideCustomerLogInBtns(bool isCustLogin = false)
@@ -277,7 +275,11 @@ namespace WpfApp1
             BL.BO.BOParcelAtCustomer parcel = lstParcelListSending.SelectedItem as BL.BO.BOParcelAtCustomer;
             int id = parcel.Id;
             BL.BO.BOParcel parc = busiAccess.GetBOParcel(id);
-            new ParcelWindow(busiAccess, parc).ShowDialog();
+            if (parc.Exists)
+                new ParcelWindow(busiAccess, parc).ShowDialog();
+            else
+                HelpfulMethods.ErrorMsg("Parcel Deleted!");
+            displayBOCustomer(thisCustomerId);
         }
 
         private void lstParcelListReceiving_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -285,7 +287,11 @@ namespace WpfApp1
             BL.BO.BOParcelAtCustomer parcel = lstParcelListReceiving.SelectedItem as BL.BO.BOParcelAtCustomer;
             int id = parcel.Id;
             BL.BO.BOParcel parc = busiAccess.GetBOParcel(id);
-            new ParcelWindow(busiAccess, parc).ShowDialog();
+            if (parc.Exists)
+                new ParcelWindow(busiAccess, parc).ShowDialog();
+            else
+                HelpfulMethods.ErrorMsg("Parcel Deleted!");
+            displayBOCustomer(thisCustomerId);
         }
 
         private void btnAddParcel_Click(object sender, RoutedEventArgs e)

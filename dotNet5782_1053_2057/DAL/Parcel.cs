@@ -10,7 +10,7 @@ namespace DalXml
             public Parcel(int _senderId,int _targetId,DalXml.DO.WeightCategories? _weight,
                           DalXml.DO.Priorities? _priority) 
             {
-                Id = DalObject.DalApi.DataSource.thisConfig.parcelSerialNumber++; 
+                Id = DalXml.DataSource.thisConfig.parcelSerialNumber++; 
                 SenderId = _senderId;
                 ReceiverId = _targetId;
                 Weight = _weight;

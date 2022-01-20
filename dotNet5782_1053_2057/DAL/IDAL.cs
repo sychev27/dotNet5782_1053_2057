@@ -68,9 +68,9 @@ namespace DalXml
         public static DalXml.IDal GetDL(LibTypes libraryType)
         {
             if (libraryType == LibTypes.XMLVersion)
-                return DalXml.DalXml1.Instance;
+                return DalXml.DataSource.Instance;
             else if (libraryType == LibTypes.CodeVersion)
-                return DalObject.DalApi.DataSource.Instance;
+                return DalXml.DataSource.Instance;
             else
                 throw new DalXml.DO.EXItemNotFoundException();
         }

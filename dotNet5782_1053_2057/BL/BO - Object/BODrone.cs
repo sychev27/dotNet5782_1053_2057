@@ -62,7 +62,8 @@ namespace BL
             public override string ToString()
             {
                 string res = "";
-                if (!Exists) res += "DELETED --\n";
+                if (!Exists) 
+                    res += "DELETED --\n";
                 res += "Drone " + Id + " Model: " + Model + " \n";
                 res += "Battery: " + Battery + " \nStatus: " + DroneStatus + "\n";
                 res += "MaxWeight: " + MaxWeight + "\n";

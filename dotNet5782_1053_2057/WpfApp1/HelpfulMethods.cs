@@ -18,6 +18,12 @@ namespace WpfApp1
             MessageBox.Show(msg, "Error",
                    MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
         }
+        public static void SuccessMsg(string msg)
+        {
+            MessageBox.Show(msg, "SUCCESS", 
+                MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
+
+        }
         public static void ChangeTextColor(Color color, params TextBlock[] listTBlock)
         {
             foreach (var item in listTBlock)
