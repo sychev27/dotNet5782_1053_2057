@@ -5,7 +5,6 @@ VisualStudioVersion = 16.0.31727.386
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{619473E7-D791-4150-9280-3B7A24A64784}"
 	ProjectSection(SolutionItems) = preProject
-		Qs_Bonuses.txt = Qs_Bonuses.txt
 		..\README.md = ..\README.md
 		ToDoList.txt = ToDoList.txt
 	EndProjectSection
