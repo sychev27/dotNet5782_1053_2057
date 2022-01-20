@@ -188,7 +188,14 @@ namespace WpfApp1
 
         private void btnEraseStation_Click(object sender, RoutedEventArgs e)
         {
-
+            try
+            {
+                busiAccess.EraseStation(Int32.Parse(tBoxIdInput.Text));
+            }
+            catch (BL.BLApi.EXCantDltStationWDroneCharging ex)
+            {
+                HelpfulMethods.ErrorMsg(ex.ToString());
+            }
         }
 
 

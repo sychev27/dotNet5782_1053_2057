@@ -28,13 +28,10 @@ namespace WpfApp1
             InitializeComponent();
             busiAccess = _busiAccess;
             //edit buttons and text boxes for Update Window:
-            btnModifyCustomer.IsEnabled = false;
-            btnModifyCustomer.Visibility = Visibility.Hidden;
+            HelpfulMethods.ChangeVisibilty(Visibility.Hidden, btnEraseCust, btnModifyCustomer);
             lstParcelListSending.Visibility = Visibility.Hidden;
             lstParcelListReceiving.Visibility = Visibility.Hidden;
             hideCustomerLogInBtns();
-
-            btnEraseCust.IsEnabled = false;
 
             if (register)
             {
@@ -64,7 +61,7 @@ namespace WpfApp1
 
             displayBOCustomer(busiAccess, customer);
 
-            btnEraseCust.IsEnabled = false;
+            //btnEraseCust.IsEnabled = false;
         }
 
 

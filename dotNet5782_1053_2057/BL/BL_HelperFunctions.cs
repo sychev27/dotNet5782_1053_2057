@@ -537,6 +537,8 @@ namespace BL
             [MethodImpl(MethodImplOptions.Synchronized)]
             public IEnumerable<BO.BOCustomerToList> GetCustToList()
             {
+
+
                 List<BO.BOCustomerToList> res = 
                     new List<BO.BOCustomerToList>();
                 foreach (var item in dataAccess.GetCustomers())

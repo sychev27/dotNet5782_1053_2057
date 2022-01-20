@@ -440,15 +440,7 @@ namespace BL
                 BO.BOStation st = CreateBOStation(id);
                 if (st.ListDroneCharge.Count != 0)
                     throw new EXCantDltStationWDroneCharging();
-
-                foreach (var item in dataAccess.GetStations())
-                {
-                    if (item.Id == id)
-                    {
-                        dataAccess.EraseStation(id);
-                        return;
-                    }
-                }
+                dataAccess.EraseStation(id);
             }
             [MethodImpl(MethodImplOptions.Synchronized)]
             public void EraseParcel(int parcelId)

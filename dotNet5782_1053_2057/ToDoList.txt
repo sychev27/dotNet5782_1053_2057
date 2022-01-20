@@ -9,6 +9,12 @@ save ObservableCollectio in dronelist of DroneStringViewModel
 allow to open multiple drone windows -> save List<> of DroneWindows in dronelistWindow, create OpenWindow(), use Show() instead of ShowDialog()
 finish Simulator "Stop Simulator"
 
+
+-add checkbox "Show Erased" - look at Parcel window for guidance... 
+-make sure that it works!
+-prevent from being able to open a window from a deleted object
+
+
 finish MapWindow :
 - figure out constructors for InfoType, save infoTypes in list<> for moving the text box.. 
 -show in customer (numparcels) and in station (numdrones)
@@ -20,23 +26,26 @@ finish MapWindow :
 
 
 ALEX:
--add "lock(dal)" in DL -- see page 19 of daf targil  (add in each of the 3 layers)
--add "lock(bl)" 
+-add "lock(dataAccess?)" in DL -- see page 19 of daf targil  (add in each of the 3 layers)
+-add "lock(busiAccess?)" 
 
--add checkbox "Show Erased" - look at Parcel window for guidance... 
--make sure that it works!
--prevent from being able to open a window from a deleted object
-
--Make font in Specific windows look nicer
 -format "bonus list" in microsoft word.. send it to me and ill make a PDF
+
+-use Math.Round() for displaying the battery/ location
+-Make font in Specific windows look nicer
+
+- erase "refresh button"
+
 - clean up code - delete white spaces, make the code look nice... add some comments around functions.. 
 
 
 
 
 
-
-
+PROBLEMS:
+- no use of linq
+- return reference, not value, 
+- no binding in most windows (except for drone..)
 
 
 
