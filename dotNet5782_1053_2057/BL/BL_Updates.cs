@@ -392,8 +392,6 @@ namespace BL
             [MethodImpl(MethodImplOptions.Synchronized)]
             public void EraseCustomer(int _id) //FUNCTION NOT COMPLETE!!!!
             {
-               
-                
                 //CHECK IF CUSTOMER HAS A PARCEL IN DELIVERY....throw exception..
                 BO.BOCustomer cust = CreateBOCustomer(_id);
                 //create list of his parcels:
@@ -411,12 +409,10 @@ namespace BL
                         throw new EXCantDltCustWParcInDelivery();
                 }
                 
-
-                //IF NO PROBLEMS, DELETE CUSTOMER
-                //delete his/her parcels which are assigned:
+                //IF NO PROBLEMS, DELETE CUSTOMER AND HIS PARCELS 
                 foreach (var item in allOfCustParcels)
                 {
-
+                    EraseParcel(item.Id);
                 }
 
                 //delete Customer from Data Layer
@@ -447,8 +443,8 @@ namespace BL
             {
                 //check..
                 BO.BOParcel parc = CreateBOParcel(parcelId);
-                if (parc.TimeOfAssignment != null)  //if parcel was assigned
-                    //&& parc.TimeOfDelivery != null)    //and not yet delivered
+                if (parc.TimeOfAssignment != null  //if parcel was assigned to a drone
+                    && parc.TimeOfDelivery == null)    //and not yet delivered
                     throw new EXCantDltParAlrdyAssgndToDrone(GetDroneIdOfParcel(parcelId));
                 
               //throw new EXCantDltParNotYetDelivered();

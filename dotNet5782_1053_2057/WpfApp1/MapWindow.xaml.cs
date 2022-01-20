@@ -68,6 +68,7 @@ namespace WpfApp1
                        
 
             Image ImageDroneWithParc = new Image();
+            
             //ImageDroneWithParc.Stretch = (Stretch.Fill);
             Grid.SetColumn(ImageDroneWithParc, 1);
             Grid.SetColumnSpan(ImageDroneWithParc, 2);
@@ -75,6 +76,7 @@ namespace WpfApp1
             Grid.SetRowSpan(ImageDroneWithParc, 3);
             ImageSource droneWithParcel = new BitmapImage(new Uri(ImgDroneWithoutParcel));
             ImageDroneWithParc.Source = droneWithParcel;
+            //ImageDroneWithParc.MouseLeftButtonDown = ;
             gridMap.Children.Add(ImageDroneWithParc);
             
         }
@@ -176,5 +178,10 @@ namespace WpfApp1
         {
             Close();
         }
+
+
+
+
+        //END OF MAP WINDOW
     }
 }

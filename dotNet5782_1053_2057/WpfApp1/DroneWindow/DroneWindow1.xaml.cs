@@ -182,10 +182,13 @@ namespace WpfApp1
         {
                 BL.BO.BODrone bodrone = busiAccess.GetBODrone(_droneId);
                 DataContext = createDroneViewModel(bodrone);
-            if (bodrone.DroneStatus == BL.BO.Enum.DroneStatus.Charging)
-                HelpfulMethods.ChangeTextColor(Colors.Green, tBlockBatteryInfo);
-            else
-                HelpfulMethods.ChangeTextColor(Colors.Black, tBlockBatteryInfo);
+            if(simulatorOn)
+            {
+                if (bodrone.DroneStatus == BL.BO.Enum.DroneStatus.Charging)
+                    HelpfulMethods.ChangeTextColor(Colors.Green, tBlockBatteryInfo);
+                else
+                    HelpfulMethods.ChangeTextColor(Colors.Black, tBlockBatteryInfo);
+            }
         }
         private void btnModifyDroneModel_Click(object sender, RoutedEventArgs e)
         {

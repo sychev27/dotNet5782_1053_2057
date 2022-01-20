@@ -219,7 +219,7 @@ namespace BL
                 origParcel.Id = -1;
                 foreach (var item in origParcList)
                 {
-                    if (origDroneId == item.DroneId)
+                    if (origDroneId == item.DroneId && item.Exists)
                     {
                         origParcel = item; break;
                     }
@@ -362,10 +362,18 @@ namespace BL
                 {
                     newParcAtCust.OtherSide = createCustInParcel(origParc.SenderId);
                 }
-
-                //newParcAtCust.ParcelStatus = (IBL.BO.Enum.ParcelStatus) ?? FINISH !!
+                
                 newParcAtCust.Priority = (BO.Enum.Priorities)origParc.Priority;
-
+                //set parcel status:
+                if (origParc.TimeDelivered != null) //if delivered..
+                    newParcAtCust.ParcelStatus = BO.Enum.ParcelStatus.delivered;
+                else if (origParc.TimePickedUp != null)
+                    newParcAtCust.ParcelStatus = BO.Enum.ParcelStatus.collected;
+                else if (origParc.TimeAssigned != null)
+                    newParcAtCust.ParcelStatus = BO.Enum.ParcelStatus.assigned;
+                else
+                    newParcAtCust.ParcelStatus = BO.Enum.ParcelStatus.created;
+                
                 return newParcAtCust;
             }
 
@@ -432,18 +440,15 @@ namespace BL
                 newCust.Phone = origCust.Phone;
 
                 newCust.ListOfParcSent = new List<BO.BOParcelAtCustomer>();
+                newCust.ListOfParcReceived = new List<BO.BOParcelAtCustomer>();
                 foreach (var item in dataAccess.GetParcels())
                 {
+                    if (!item.Exists)
+                        continue;
                     if (item.SenderId == newCust.Id)
                         newCust.ListOfParcSent.Add(createParcAtCust(item, true));
-                }
-                newCust.ListOfParcReceived = new List<BO.BOParcelAtCustomer>();
-                {
-                    foreach (var item in dataAccess.GetParcels())
-                    {
-                        if (item.ReceiverId == newCust.Id)
+                    if (item.ReceiverId == newCust.Id)
                             newCust.ListOfParcReceived.Add(createParcAtCust(item, false));
-                    }
                 }
                 return newCust;
             }
@@ -497,6 +502,8 @@ namespace BL
 
                 foreach (var item in dataAccess.GetParcels())
                 {
+                    if (!item.Exists)
+                        continue;
                     if (item.SenderId == newCustToList.Id) //if sent this parcel
                     {
                         if (item.TimeDelivered == null)//if not delivered
@@ -545,7 +552,7 @@ namespace BL
                     newParcToList.ParcelStatus = BO.Enum.ParcelStatus.delivered;
                 else if (origParcel.TimePickedUp != null) // if collected
                     newParcToList.ParcelStatus = BO.Enum.ParcelStatus.collected;
-                else if (origParcel.DroneId != -1)
+                else if (origParcel.TimeAssigned != null)
                     newParcToList.ParcelStatus = BO.Enum.ParcelStatus.assigned;
                 else
                     newParcToList.ParcelStatus = BO.Enum.ParcelStatus.created;

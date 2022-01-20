@@ -34,7 +34,7 @@ namespace BL
                 //    + numParcelsSentDelivered + numParcelsSentNotDelivered).ToString() + "\n";
 
                 res += "Parcels waiting to be delivered: " + NumParcelsSentNotDelivered + "\n";
-
+                res += "Parcels waiting to be received: " + NumParcelsOnWayToCustomer + "\n";
                 return res;
             }
         }

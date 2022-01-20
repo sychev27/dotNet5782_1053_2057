@@ -2,7 +2,7 @@
 
 DOVID:
 
-finish Customer Filter
+
 update collectionView in each listWindow
 save ObservableCollectio in dronelist of DroneStringViewModel
 allow to open multiple drone windows -> save List<> of DroneWindows in dronelistWindow, 

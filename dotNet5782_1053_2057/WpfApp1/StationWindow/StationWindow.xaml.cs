@@ -191,6 +191,8 @@ namespace WpfApp1
             try
             {
                 busiAccess.EraseStation(Int32.Parse(tBoxIdInput.Text));
+                HelpfulMethods.SuccessMsg("Station Erased");
+                Close();
             }
             catch (BL.BLApi.EXCantDltStationWDroneCharging ex)
             {

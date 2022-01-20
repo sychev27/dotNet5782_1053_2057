@@ -204,10 +204,16 @@ namespace DalXml
             IEnumerable<DO.Customer> listCustomer = DALTools.XMLTools.LoadListFromXMLSerializer<DO.Customer>(customersPath);
 
             foreach (DO.Customer cst in listCustomer)
-                if (cst.Id == _id && cst.Exists)
-                    cust = cst;
-            if (cust.Id == 0) throw new DO.EXItemNotFoundException();
-            return cust;
+                if (cst.Id == _id)
+                   return cst;
+           
+            throw new DO.EXItemNotFoundException();
+
+            //foreach (DO.Customer cst in listCustomer) <- delete this...
+            //    if (cst.Id == _id && cst.Exists) 
+            //        cust = cst;
+            //if (cust.Id == 0) throw new DO.EXItemNotFoundException();
+            //return cust;
         }
         [MethodImpl(MethodImplOptions.Synchronized)]
         public DO.Parcel GetParcel(int _id)

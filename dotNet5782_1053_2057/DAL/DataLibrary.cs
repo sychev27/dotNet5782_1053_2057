@@ -82,11 +82,13 @@ namespace DalObject
 
         public DalXml.DO.Customer GetCustomer(int _id) {
             DalXml.DO.Customer cust = new DalXml.DO.Customer(0, "", "", 0, 0);
-            for (int i = 0; i < listCustomer.Count; i++)
-                if (listCustomer[i].Id == _id && listCustomer[i].Exists)
-                    cust = listCustomer[i];
-            if (cust.Id == 0)  throw new DalXml.DO.EXItemNotFoundException();
-            return cust;
+                for (int i = 0; i < listCustomer.Count; i++)
+                    if (listCustomer[i].Id == _id && listCustomer[i].Exists)
+                    {
+                        cust = listCustomer[i];
+                        return cust;
+                    }
+            throw new DalXml.DO.EXItemNotFoundException();
         }
         public DalXml.DO.Parcel GetParcel(int _id)
         {
