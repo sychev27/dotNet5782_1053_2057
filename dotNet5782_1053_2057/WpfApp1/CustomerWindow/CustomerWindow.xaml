@@ -7,11 +7,11 @@
         mc:Ignorable="d"
         Title="CustomerWindow" Height="450" Width="800">
     <Grid x:Name="OutputAndInputGrid" RenderTransformOrigin="0.46,0.503">
-        <TextBlock x:Name="tBlock_chooseCustomerId" Text=" ID:" Margin="5,5,5,5" FontSize="30"/>
-        <TextBlock x:Name="tBlock_chooseName" Grid.Row="1" Text="Name:" Margin="5,5,5,5" FontSize="30"/>
-        <TextBlock x:Name="tBlock_choosePhone" Grid.Row="2" Text="Phone:" Margin="5,5,5,5" FontSize="30"/>
-        <TextBlock x:Name="tBlockLongitude" Grid.Row="3" Text="Longitude: 35-36" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="25"/>
-        <TextBlock x:Name="tBlockLatitude" Grid.Row="4" Text="Latitude: 31-32" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="25"/>
+        <TextBlock x:Name="tBlock_chooseCustomerId" Text=" ID:" Margin="5,5,5,5" FontSize="25"/>
+        <TextBlock x:Name="tBlock_chooseName" Grid.Row="1" Text="Name:" Margin="5,5,5,5" FontSize="25"/>
+        <TextBlock x:Name="tBlock_choosePhone" Grid.Row="2" Text="Phone:" Margin="5,5,5,5" FontSize="25"/>
+        <TextBlock x:Name="tBlockLongitude" Grid.Row="3" Text="Longitude: 35-36" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="20"/>
+        <TextBlock x:Name="tBlockLatitude" Grid.Row="4" Text="Latitude: 31-32" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="20"/>
 
 
         <TextBox x:Name ="tBoxCusIdInput" Grid.Column="1" Text="" TextWrapping="Wrap" Margin="5,5,5,5" Height="Auto" VerticalAlignment="Stretch" FontSize="18" />

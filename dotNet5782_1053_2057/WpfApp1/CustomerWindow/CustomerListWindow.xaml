@@ -85,7 +85,6 @@
             </ListView>
             <Button x:Name="btnAddCustomer1" Content="Add new customer" Grid.Row="1" Margin="5,5,5,10" FontSize="16" Click="btnAddCustomer1_Click"/>
             <Button x:Name="btnCloseList" Grid.Column="3" Margin="5,5,5,10" Content="Close" Grid.Row="1" FontSize="18" Click="btnCloseList_Click"/>
-            <Button x:Name="btnRefreshList" Grid.Column="2" Margin="5,5,5,10" Content="Refresh" Grid.Row="1" Click="btnRefreshList_Click"/>
             <CheckBox x:Name="chkBoxGetErased" Content="Show Erased customers" FontSize="16" Grid.Column="1" Grid.Row="1" Margin="5,5,5,5" Checked="chkBoxGetErased_Checked" Unchecked="chkBoxGetErased_UnChecked"/>
 
             <!--<CheckBox x:Name="chkboxNumParcels" Content="Organize By Num Parcels" HorizontalAlignment="Left" Height="26" Margin="244,415,0,0" Grid.Row="1" VerticalAlignment="Top" Width="150" Checked="chkboxNumParcels_Checked" Unchecked="chkboxNumParcels_Unchecked"/>-->

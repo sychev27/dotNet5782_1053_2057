@@ -84,18 +84,12 @@ namespace WpfApp1
                 HelpfulMethods.ErrorMsg("Drone is deleted"); 
                 //add function to allow user to Restore drone!
             }
-            
-              
+            chkBoxGetErased.IsChecked = false;
+            refreshList() ;
         }
-
-        private void btnRefresh_Click(object sender, RoutedEventArgs e)
-        {
-            refreshList();
-         }
 
         private void refreshList(bool getDeleted = false)
         {
-            //DronesListView.ItemsSource = null;
             DronesListView.ItemsSource = busiAccess.GetBODroneList(getDeleted);
 
         }
@@ -108,8 +102,8 @@ namespace WpfApp1
         }
         private void chkBoxGetErased_UnChecked(object sender, RoutedEventArgs e)
         {
-            //DataContext = busiAccess.GetBODroneList();
-            DataContext = busiAccess.GetBODroneList();
+            //DataContext = busiAccess.GetBODroneList(false);
+            DronesListView.ItemsSource = busiAccess.GetBODroneList(false);
         }
 
         private ObservableCollection<BL.BO.BODrone> getBODronesAsObservable()
