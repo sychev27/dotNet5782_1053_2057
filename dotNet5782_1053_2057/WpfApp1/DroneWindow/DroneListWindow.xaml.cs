@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.ComponentModel;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
@@ -21,28 +22,24 @@ namespace WpfApp1
     public partial class DroneListWindow : Window
     {
         BL.BLApi.Ibl busiAccess;
-        
-        //private ObservableCollection<BL.BO.BODrone> droneList = getBODronesAsObservable();
-        
+        public ICollectionView droneCollectionView { get; set; }
+
+        //this field holds the different windows of each drone,
+        //to ensure that we do not open 2 windows of the same drone
+        // List<DroneWindow> possibleWindows = new List<DroneWindow>(); 
+        //ObservableCollection<BL.BO.BODrone> droneList;
+
 
         public DroneListWindow(BL.BLApi.Ibl busiAccess1) 
         {
             busiAccess = busiAccess1;
             //droneList = busiAccess.GetBODroneList() as ObservableCollection<BL.BO.BODrone>;
-             
-            DataContext = busiAccess.GetBODroneList();
             InitializeComponent();
+            refreshList();
 
-
-
-            //DronesListView.ItemsSource = busiAccess.GetBODroneList();
-            StatusSelector1.DataContext = Enum.GetValues(typeof(BL.BO.Enum.DroneStatus));
+             StatusSelector1.DataContext = Enum.GetValues(typeof(BL.BO.Enum.DroneStatus));
            // StatusSelector1.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.DroneStatus));
             StatusSelector2.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.WeightCategories));
-
-
-
-
         }
 
         private void StatusSelector1_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -82,10 +79,8 @@ namespace WpfApp1
             else
             {
                 HelpfulMethods.ErrorMsg("Drone is deleted"); 
-                //add function to allow user to Restore drone!
             }
-            
-              
+            refreshList();  
         }
 
         private void btnRefresh_Click(object sender, RoutedEventArgs e)
@@ -95,27 +90,42 @@ namespace WpfApp1
 
         private void refreshList(bool getDeleted = false)
         {
-            //DronesListView.ItemsSource = null;
-            DronesListView.ItemsSource = busiAccess.GetBODroneList(getDeleted);
+            DataContext = busiAccess.GetBODroneList(true); 
+            droneCollectionView = (CollectionView)CollectionViewSource.
+                GetDefaultView(DataContext);
+            DronesListView.ItemsSource = droneCollectionView;
+            //droneCollectionView.Refresh();
+            if ((bool)!chkBoxGetErased.IsChecked)
+                droneCollectionView.Filter = filterOutErased;
+            else
+                droneCollectionView.Filter = null;
 
+            droneCollectionView.SortDescriptions.Add(new SortDescription
+                (nameof(BL.BO.BOParcelToList.Id), ListSortDirection.Ascending));
         }
+        private bool filterOutErased(object obj)
+        {
+            if (obj is BL.BO.BODrone item)
+            {
+                return item.Exists;
+            }
+            else return false;
+        }
+
 
         private void chkBoxGetErased_Checked(object sender, RoutedEventArgs e)
         {
-            //DataContext = busiAccess.GetBODroneList(true);
-            DronesListView.ItemsSource = busiAccess.GetBODroneList(true);
-
+            refreshList();
         }
         private void chkBoxGetErased_UnChecked(object sender, RoutedEventArgs e)
         {
-            //DataContext = busiAccess.GetBODroneList();
-            DataContext = busiAccess.GetBODroneList();
+            refreshList();
         }
 
         private ObservableCollection<BL.BO.BODrone> getBODronesAsObservable()
         {
             ObservableCollection<BL.BO.BODrone> res = new ObservableCollection<BL.BO.BODrone>();
-            foreach (var item in busiAccess.GetBODroneList())
+            foreach (var item in busiAccess.GetBODroneList(true))
             {
                 res.Add(item);
             }
