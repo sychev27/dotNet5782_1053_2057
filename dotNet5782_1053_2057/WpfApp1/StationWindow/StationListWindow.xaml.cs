@@ -36,11 +36,6 @@ namespace WpfApp1
             Close();
         }
 
-        private void btnRefresh_Click(object sender, RoutedEventArgs e)
-        {
-            refreshList();
-        }
-
         private void LstViewStation_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             new StationWindow(busiAccess, (LstViewStation.SelectedItem as BL.BO.BOStationToList).Id).ShowDialog();

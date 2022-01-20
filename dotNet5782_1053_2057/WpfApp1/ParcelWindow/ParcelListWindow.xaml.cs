@@ -30,21 +30,6 @@ namespace WpfApp1
             refreshList();
         }
 
-        private void Selector2_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void Selector1_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void btnRefreshList_Click(object sender, RoutedEventArgs e)
-        {
-            refreshList();
-        }
-
         private void refreshList()
         {
             DataContext = busiAccess.GetParcelToList(); // for grouping...

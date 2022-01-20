@@ -132,7 +132,7 @@ namespace BL
                             double minBatteryNeeded = battNededForDist(drone.Location, getClosestStationLoc(drone.Location));
                             double battery = r.Next((int)minBatteryNeeded + 1, 100);
                             battery += r.NextDouble();
-                            drone.Battery = battery;
+                            drone.Battery =battery;
 
                         }
                         try
@@ -156,10 +156,6 @@ namespace BL
                     //end of foreach
                 //end of Ctor
             }
-
-
-                
-            
 
 
             void receiveDronesFromData()

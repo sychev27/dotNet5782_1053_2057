@@ -83,11 +83,6 @@ namespace WpfApp1
             refreshList();  
         }
 
-        private void btnRefresh_Click(object sender, RoutedEventArgs e)
-        {
-            refreshList();
-         }
-
         private void refreshList(bool getDeleted = false)
         {
             DataContext = busiAccess.GetBODroneList(true); 
