@@ -44,7 +44,6 @@
             </ListView>
             <Button Grid.Column="3" x:Name="btnAddDrone1" Content="Add new drone" Grid.Row="1" Margin ="7,7,7,7"  FontSize="16" Click="btnAddDrone1_Click"/>
             <Button Grid.Column="0" x:Name="btnClose" Content="Close" Grid.Row="1" Margin ="7,7,7,7" FontSize="18" Click="btnClose_Click" RenderTransformOrigin="0.5,0.5"/>
-            <Button Grid.Column="2" x:Name="btnRefresh" Content="Refresh" Grid.Row="1" Margin ="7,7,7,7" Click="btnRefresh_Click"/>
             <CheckBox Grid.Column="1" x:Name="chkBoxGetErased" Content="Include Erased Drones" Grid.Row="1" Margin ="7,7,7,7" Checked="chkBoxGetErased_Checked" Unchecked="chkBoxGetErased_UnChecked"/>
         </Grid>
     </Grid>

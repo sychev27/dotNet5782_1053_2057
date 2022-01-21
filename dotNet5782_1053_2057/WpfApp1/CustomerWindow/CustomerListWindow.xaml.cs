@@ -99,12 +99,6 @@ namespace WpfApp1
             Close();
 
         }
-
-        private void btnRefreshList_Click(object sender, RoutedEventArgs e)
-        {
-            refreshList();
-        }
-
         private void refreshList(bool getDeleted = false)
         {
 

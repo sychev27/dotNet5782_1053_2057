@@ -281,6 +281,25 @@ namespace BL
 
                 return closestParcelId; //will return -1
             }
+
+
+
+            //private IEnumerable<BO.BOParcelAtCustomer> getParcelsOfCustomer(int custId, bool Sender)
+            //{
+            //    //if Sender == true; return parcels Customer Sent
+            //    //else              return parcels Customer Received
+            //    List<BO.BOParcelAtCustomer> res = new List<BO.BOParcelAtCustomer>();
+            //    foreach (var item in dataAccess.getParcels())
+            //    {
+            //        if (item.SenderId == custId)
+            //            res.Add(createParcAtCust(dataAccess.getParcel(item.SenderId), Sender));
+            //    }
+
+            //    return res;
+            //}
+
+
+
             [MethodImpl(MethodImplOptions.Synchronized)]
             public BO.BODrone GetBODrone(int _id) //return reference... 
                                                   //only returns if drone Exists
@@ -304,6 +323,15 @@ namespace BL
                     if (_id == item.Id && item.Exists)
                     {
                         return CreateBOCustomer(_id);
+                        
+                        //BO.BOCustomer boCustomer = new BO.BOCustomer();
+                        //boCustomer.Id = item.Id;
+                        //boCustomer.Name = item.Name;
+                        //boCustomer.Phone = item.Phone;
+                        //boCustomer.Location = new BO.BOLocation (item.Latitude, item.Longitude);
+                        //boCustomer.ListOfParcSent = getParcelsOfCustomer(item.Id, true);
+                        //boCustomer.ListOfParcReceived = getParcelsOfCustomer(item.Id, false);
+                        //return boCustomer;
                     }
                 }
                 //throw exception!!!
@@ -374,7 +402,7 @@ namespace BL
                 if (getDeleted)
                     return listDrone; // without filtering out the deleted drones
 
-                List<BO.BODrone> res = new List<BO.BODrone>();
+                ObservableCollection<BO.BODrone> res = new ObservableCollection<BO.BODrone>();
                 foreach (var item in listDrone)
                 {
                     if (item.Exists)
@@ -386,7 +414,7 @@ namespace BL
             {
                 if (getDeleted)
                     return dataAccess.GetParcels();
-                List<DalXml.DO.Parcel> res = new List<DalXml.DO.Parcel>();
+                ObservableCollection<DalXml.DO.Parcel> res = new ObservableCollection<DalXml.DO.Parcel>();
                 foreach (var item in dataAccess.GetParcels())
                 {
                     if (item.Exists)
@@ -405,21 +433,21 @@ namespace BL
                         {
                             //Predicate<BO.BODrone> res = availableDrone;
                             ////return listDrone.FindAll(res);
-                            return new List<BO.BODrone>(GetBODroneList()
+                            return new ObservableCollection<BO.BODrone>(GetBODroneList()
                                 .Where(x => x.DroneStatus == BO.Enum.DroneStatus.Available));
                         }
                     case 1:
                         {
                             //Predicate<BO.BODrone> res = maintenanceDrone;
                             //return listDrone.FindAll(res);
-                            return new List<BO.BODrone>(GetBODroneList()
+                            return new ObservableCollection<BO.BODrone>(GetBODroneList()
                                 .Where(x => x.DroneStatus == BO.Enum.DroneStatus.Charging));
                         }
                     case 2:
                         {
                             //Predicate<BO.BODrone> res = inDeliveryDrone;
                             //return listDrone.FindAll(res);
-                            return new List<BO.BODrone>(GetBODroneList()
+                            return new ObservableCollection<BO.BODrone>(GetBODroneList()
                                 .Where(x => x.DroneStatus == BO.Enum.DroneStatus.InDelivery));
                         }
                     default:
@@ -436,19 +464,19 @@ namespace BL
                         {
                             //Predicate<BO.BODrone> res = lightDrone;
                             //return listDrone.FindAll(res);
-                            return new List<BO.BODrone>(GetBODroneList()
+                            return new ObservableCollection<BO.BODrone>(GetBODroneList()
                                 .Where(x => x.MaxWeight == BO.Enum.WeightCategories.Light));
                         }
                     case 1:
                         {
-                            return new List<BO.BODrone>(GetBODroneList()
+                            return new ObservableCollection<BO.BODrone>(GetBODroneList()
                                 .Where(x => x.MaxWeight == BO.Enum.WeightCategories.Medium));
                         }
                     case 2:
                         {
                             //Predicate<BO.BODrone> res = heavyDrone;
                             //return listDrone.FindAll(res);
-                            return new List<BO.BODrone>(GetBODroneList()
+                            return new ObservableCollection<BO.BODrone>(GetBODroneList()
                                 .Where(x => x.MaxWeight == BO.Enum.WeightCategories.Heavy));
                         }
                     default:
@@ -564,7 +592,7 @@ namespace BL
             [MethodImpl(MethodImplOptions.Synchronized)]
             public IEnumerable<BO.BOParcelAtCustomer> GetBOParcelAtCustomerList(BO.BOCustomer customer)
             {
-                List<BO.BOParcelAtCustomer> lst = new List<BO.BOParcelAtCustomer>();
+                ObservableCollection<BO.BOParcelAtCustomer> lst = new ObservableCollection<BO.BOParcelAtCustomer>();
                 foreach (BO.BOParcelAtCustomer item in customer.ListOfParcReceived)
                     lst.Add(item);
                 foreach (BO.BOParcelAtCustomer item in customer.ListOfParcSent)
@@ -573,9 +601,9 @@ namespace BL
             }
 
 
-            //public List<BO.BODroneToList> GetDroneToList()
+            //public ObservableCollection<BO.BODroneToList> GetDroneToList()
             //{
-            //    List<BO.BODroneToList> res = new List<BO.BODroneToList>();
+            //    ObservableCollection<BO.BODroneToList> res = new ObservableCollection<BO.BODroneToList>();
             //    foreach (var item in listDrone)
             //    {
             //        res.Add(createBODroneToList(item.Id));

@@ -30,28 +30,12 @@ namespace WpfApp1
             refreshList();
         }
 
-        private void Selector2_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void Selector1_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void btnRefreshList_Click(object sender, RoutedEventArgs e)
-        {
-            refreshList();
-        }
-
         private void refreshList()
         {
             DataContext = busiAccess.GetParcelToList(); // for grouping...
             parcCollectionView = (CollectionView)CollectionViewSource.
                 GetDefaultView(DataContext);
             ParcelListView.ItemsSource = parcCollectionView;
-
 
             if ((bool)chkboxSortPriority.IsChecked)
                 parcCollectionView.GroupDescriptions.
@@ -129,13 +113,6 @@ namespace WpfApp1
                 .FirstOrDefault(x => x.PropertyName == nameof(BL.BO.BOParcelToList.NameSender));
             if (groupDescrip != null)
                 parcCollectionView.GroupDescriptions.Remove(groupDescrip);
-
-            ////uncheck all boxes
-            //CheckBox[] arr = { chkboxShowErased, chkboxSortPriority };
-            //foreach (var item in arr)
-            //{
-            //    item.IsChecked = false;
-            //}
         }
 
         private void chkboxSortSender_Checked(object sender, RoutedEventArgs e)
