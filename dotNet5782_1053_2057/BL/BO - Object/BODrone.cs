@@ -65,7 +65,7 @@ namespace BL
                 if (!Exists) 
                     res += "DELETED --\n";
                 res += "Drone " + Id + " Model: " + Model + " \n";
-                res += "Battery: " + Battery + " \nStatus: " + DroneStatus + "\n";
+                res += "Battery: " + Math.Round(Battery, 2) + " \nStatus: " + DroneStatus + "\n";
                 res += "MaxWeight: " + MaxWeight + "\n";
 
                 if ((ParcelInTransfer.Id != -1) && ParcelInTransfer.Id != 0)

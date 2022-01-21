@@ -226,6 +226,15 @@ namespace BL
         void moveDroneAlongJourney(BL.BO.BODrone bodrone, BO.BOLocation source,
             BO.BOLocation destination, double secondsTraveled)
         {
+            if(source == destination) //if drone begin the next journey, but was already at the first stop
+                //(for example - if the drone delivered a parcel at Reuven, and the next mission was to pick up a parcel from reuven)
+            {
+                bodrone.Location = destination;
+                arrivedAtDestination = true;
+                return;
+            }
+            
+            
             //(1) UPDATE LOCATION:
             
             //all distances are measured in km

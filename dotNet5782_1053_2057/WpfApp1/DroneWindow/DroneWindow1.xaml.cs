@@ -382,12 +382,12 @@ namespace WpfApp1
         private WpfApp1.DroneStringViewModel createDroneViewModel(BL.BO.BODrone origDrone)
         {
             WpfApp1.DroneStringViewModel newDrone = new WpfApp1.DroneStringViewModel();
-            newDrone.Battery = origDrone.Battery.ToString();
+            newDrone.Battery = Math.Round(origDrone.Battery, 2).ToString();
             newDrone.DroneStatus = origDrone.DroneStatus.ToString();
             newDrone.Exists = origDrone.Exists;
             newDrone.Id = origDrone.Id.ToString();
-            newDrone.Longitude = origDrone.Location.Longitude.ToString();
-            newDrone.Latitude = origDrone.Location.Latitude.ToString();
+            newDrone.Longitude = Math.Round(origDrone.Location.Longitude, 5).ToString();
+            newDrone.Latitude = Math.Round(origDrone.Location.Latitude, 5).ToString();
             newDrone.MaxWeight = origDrone.MaxWeight.ToString();
             newDrone.Model = origDrone.Model;
             newDrone.ParcelInTransfer = (origDrone.ParcelInTransfer.Id == -1 || origDrone.ParcelInTransfer == null) ?

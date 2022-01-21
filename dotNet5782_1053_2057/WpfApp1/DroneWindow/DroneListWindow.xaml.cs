@@ -85,9 +85,9 @@ namespace WpfApp1
 
         private void refreshList()
         {
-            //droneList = busiAccess.GetBODroneList(true) as ObservableCollection<BL.BO.BODrone>;
-            //DataContext = droneList; 
-            DataContext = busiAccess.GetBODroneList(true); 
+            droneList = getBODronesAsObservable();
+            DataContext = droneList; 
+            //DataContext = busiAccess.GetBODroneList(true); 
             droneCollectionView = (CollectionView)CollectionViewSource.
                 GetDefaultView(DataContext);
             DronesListView.ItemsSource = droneCollectionView;

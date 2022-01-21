@@ -27,7 +27,7 @@ namespace BL
                 string res = "";
                 if (!Exists) res += "DELETED --";
                 res += "Drone " + Id + " Model: " + Model + " \n";
-                res += "Battery: " + Battery + " Location " + Location + "\n";
+                res += "Battery: " + Math.Round(Battery, 2) + " Location " + Location + "\n";
                 if (IdOfParcelCarrying != 0 && IdOfParcelCarrying != -1)
                     res += "carrying parcel " + IdOfParcelCarrying + "\n";
                 
