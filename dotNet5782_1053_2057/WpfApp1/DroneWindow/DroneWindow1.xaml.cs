@@ -44,8 +44,8 @@ namespace WpfApp1
             //(1) Disable and Hide irrelevant buttons
             HelpfulMethods.ChangeVisibilty(Visibility.Hidden, btnModifyDroneModel, btnAssignDroneToParcel, btnFreeDroneFromCharge,
                 btnPickupPkg, btnSendToCharge, btnDeliverPkg, btnEraseDrone, btnSimulator);
-
-            //(3) Hide irrelevnat TextBlocks
+            
+            //(2) Hide irrelevnat TextBlocks
             tBlockStatus.Visibility = Visibility.Hidden;
             tBlockStatusInfo.Visibility = Visibility.Hidden;
             tBlockDelivery.Visibility = Visibility.Hidden;
@@ -60,7 +60,6 @@ namespace WpfApp1
             tBlockBatteryInfo.Visibility = Visibility.Hidden;
 
         }
-
         private void btnAddDrone_Click(object sender, RoutedEventArgs e)
         {
             //reset text color
@@ -134,21 +133,7 @@ namespace WpfApp1
         }
 
       
-
-
-
-
-
-
-
-
-
-
-
-
-
         //TO UPDATE A DRONE...
-        
         public DroneWindow(BL.BLApi.Ibl _busiAccess, BL.BO.BODrone _bodrone) //CTOR called by DroneListWindow
         {
             InitializeComponent();

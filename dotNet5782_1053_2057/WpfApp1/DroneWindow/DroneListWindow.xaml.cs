@@ -26,8 +26,8 @@ namespace WpfApp1
 
         //this field holds the different windows of each drone,
         //to ensure that we do not open 2 windows of the same drone
-        // List<DroneWindow> possibleWindows = new List<DroneWindow>(); 
-        //ObservableCollection<BL.BO.BODrone> droneList;
+        //List<DroneWindow> possibleWindows = new List<DroneWindow>(); 
+        ObservableCollection<BL.BO.BODrone> droneList;
 
 
         public DroneListWindow(BL.BLApi.Ibl busiAccess1) 
@@ -88,9 +88,11 @@ namespace WpfApp1
             refreshList();
          }
 
-        private void refreshList(bool getDeleted = false)
+        private void refreshList()
         {
-            DataContext = busiAccess.GetBODroneList(true); 
+            droneList = busiAccess.GetBODroneList(true) as ObservableCollection<BL.BO.BODrone>;
+            DataContext = droneList; 
+            //DataContext = busiAccess.GetBODroneList(true); 
             droneCollectionView = (CollectionView)CollectionViewSource.
                 GetDefaultView(DataContext);
             DronesListView.ItemsSource = droneCollectionView;
