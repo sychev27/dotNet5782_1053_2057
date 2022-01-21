@@ -78,82 +78,69 @@ namespace BL
                 foreach (BO.BODrone drone in listDrone)
                 {
                     //assumption that Drone does not have a parcel
-                        do //randomly set droneStatus =  "charging" and "available"
+                    do //randomly set droneStatus =  "charging" and "available"
+                    {
+                        drone.DroneStatus = (BO.Enum.DroneStatus)r.Next(0, 3);
+                    } while (drone.DroneStatus == BO.Enum.DroneStatus.InDelivery);
+
+                    if (drone.DroneStatus == BO.Enum.DroneStatus.Charging)
+                    {
+                        //(1) SET LOCATION - to Random Station
+                        List<DalXml.DO.Station> listStation = dataAccess.GetStations().ToList();
+                        DalXml.DO.Station st = listStation[r.Next(0, listStation.Count)];
+                        drone.Location = new BO.BOLocation(st.Longitude, st.Latitude);
+
+                        //(2) SET BATTERY - btw 50 to 100%
+                        drone.Battery = r.Next(50, 100);
+                        drone.Battery += r.NextDouble();
+                        drone.Battery = Math.Round(drone.Battery,2);
+                        AddDroneCharge(drone.Id, st.Id);
+                    }
+                    else
+                    {
+                        IEnumerable<DalXml.DO.DroneCharge> listDroneCharge = dataAccess.GetDroneCharges();
+
+                        foreach (var item in listDroneCharge)
                         {
-                            drone.DroneStatus = (BO.Enum.DroneStatus)r.Next(0, 3);
-                        } while (drone.DroneStatus == BO.Enum.DroneStatus.InDelivery);
-
-
-                        if (drone.DroneStatus == BO.Enum.DroneStatus.Charging)
-                        {
-
-                            //(1) SET LOCATION - to Random Station
-                            List<DalXml.DO.Station> listStation = dataAccess.GetStations().ToList();
-                            // List<DalXml.DO.Station> listStation = new List<DalXml.DO.Station>();
-                            // foreach (var item in dataAccess.GetStations())
-                            //     listStation.Add(item);
-
-                            DalXml.DO.Station st = listStation[r.Next(0, listStation.Count)];
-
-                            drone.Location = new BO.BOLocation(st.Longitude, st.Latitude);
-
-                            //(2) SET BATTERY - btw 50 to 100%
-                            drone.Battery = r.Next(50, 100);
-                            //drone.Battery = 2000;
-                            drone.Battery += r.NextDouble();
-
-                            AddDroneCharge(drone.Id, st.Id);
+                            if (item.DroneId == drone.Id /*&& item.Exists*/)
+                                dataAccess.EraseDroneCharge(item);
                         }
-                        else
-                        {
-                            IEnumerable<DalXml.DO.DroneCharge> listDroneCharge = dataAccess.GetDroneCharges();
-
-                            foreach (var item in listDroneCharge)
+                    }
+                    if (drone.DroneStatus == BO.Enum.DroneStatus.Available)
+                    {
+                        //(1) SET LOCATION - to Random Customer's location
+                        if (tempListCust.Count == 0) //if not yet full, fill customer list
+                            foreach (var item in dataAccess.GetCustomers())
                             {
-                                if (item.DroneId == drone.Id /*&& item.Exists*/)
-                                    dataAccess.EraseDroneCharge(item);
+                                //For now, tempListCust includes every customer,
+                                //not just those who have had a parcel already delivered to them
+                                BO.BOLocation loc = new BO.BOLocation(item.Longitude, item.Latitude);
+                                tempListCust.Add(loc);
                             }
-                        }
-                        if (drone.DroneStatus == BO.Enum.DroneStatus.Available)
-                        {
-                            //(1) SET LOCATION - to Random Customer's location
-                            if (tempListCust.Count == 0) //if not yet full, fill customer list
-                                foreach (var item in dataAccess.GetCustomers())
-                                {
-                                    //For now, tempListCust includes every customer,
-                                    //not just those who have had a parcel already delivered to them
-                                    BO.BOLocation loc = new BO.BOLocation(item.Longitude, item.Latitude);
-                                    tempListCust.Add(loc);
-                                }
 
-                            drone.Location = tempListCust[r.Next(0, tempListCust.Count())];
+                        drone.Location = tempListCust[r.Next(0, tempListCust.Count())];
 
-                            //(2) SET BATTERY - battNeeded to 100%
-                            double minBatteryNeeded = battNededForDist(drone.Location, getClosestStationLoc(drone.Location));
-                            double battery = r.Next((int)minBatteryNeeded + 1, 100);
-                            battery += r.NextDouble();
-                            drone.Battery =battery;
+                        //(2) SET BATTERY - battNeeded to 100%
+                        double minBatteryNeeded = battNededForDist(drone.Location, getClosestStationLoc(drone.Location));
+                        double battery = r.Next((int)minBatteryNeeded + 1, 100);
+                        battery += r.NextDouble();
+                        drone.Battery = Math.Round(battery,2);
 
-                        }
-                        try
-                        {
-                            AssignParcel(drone.Id);
-                        }
-                        catch (EXNoAppropriateParcel)
-                        {
-                            continue;
-                        }
-                        catch (EXDroneUnavailableException)
-                        {
-                            continue;
-                        }
-
-
-
-
-
+                    }
+                    try
+                    {
+                         AssignParcel(drone.Id);
+                    }
+                    catch (EXNoAppropriateParcel)
+                    {
+                        continue;
+                    }
+                    catch (EXDroneUnavailableException)
+                    {
+                        continue;
+                    }
                 }
-                    //end of foreach
+                //end of foreach
                 //end of Ctor
             }
 
@@ -166,7 +153,6 @@ namespace BL
                 {
                     addDroneToBusiLayer(drone);
                 }
-
             }
             void addDroneToBusiLayer(DalXml.DO.Drone drone) //receives IDAL.DO.Drone,
                                                           //creates a corresponding BODrone, saves in BL's list
@@ -226,7 +212,6 @@ namespace BL
                 return origParcel.Id;
             }
 
-
             BO.BOParcelInTransfer createEmptyParcInTrans()
             {
                 BO.BOParcelInTransfer thisParc = new BO.BOParcelInTransfer();
@@ -250,21 +235,15 @@ namespace BL
                 {
                     thisParc.Recipient = exception.creatEmptyCustInParc();
                 }
-
-
                 thisParc.PickupPoint = new BO.BOLocation(0, 0);
                 thisParc.DeliveryPoint = new BO.BOLocation(0, 0);
                 thisParc.TransportDistance = 0;
-
-
-
                 return thisParc;
             }
             BO.BOParcelInTransfer createParcInTrans(int origDroneId, int origParcId = -1) //used in Initialization
             {
                 //receives ID of its drone. Fetches correct parcel from Data Layer.
                 //Builds the object based on that parcel
-
                 BO.BOParcelInTransfer thisParc = new BO.BOParcelInTransfer();
 
                 //(1)FETCH SPECIFIC PARCEL FROM DATA LAYER
@@ -317,18 +296,12 @@ namespace BL
                     thisParc.Recipient = exception.creatEmptyCustInParc();
                 }
 
-
                 thisParc.PickupPoint = getLocationOfCustomer(origParcel.SenderId);
                 thisParc.DeliveryPoint = getLocationOfCustomer(origParcel.ReceiverId);
                 thisParc.TransportDistance = HelpfulMethodsBL.GetDistance(thisParc.PickupPoint, thisParc.DeliveryPoint);
-
                 return thisParc;
-
             }
-
-
             BO.BOCustomerInParcel createCustInParcel(int origCustId)
-
             {
                 //function not affected by "Exists" feature
                 IEnumerable<DalXml.DO.Customer> origCustomers = dataAccess.GetCustomers();
@@ -342,7 +315,6 @@ namespace BL
                 }
                 //throw exception! not found!
                 throw new EXCustInParcNotFoundException();
-
             }
             BO.BOParcelAtCustomer createParcAtCust(DalXml.DO.Parcel origParc, bool Sender)
             {
@@ -372,7 +344,6 @@ namespace BL
                 
                 return newParcAtCust;
             }
-
 
             private BO.BOStation CreateBOStation(int id)
             {
@@ -411,8 +382,7 @@ namespace BL
                         d.Id = item.DroneId;
                         d.Battery = GetBODrone(d.Id).Battery;
                         newSt.ListDroneCharge.Add(d);
-                    }
-                    
+                    }      
                 }
                 return newSt;
             }
@@ -444,11 +414,10 @@ namespace BL
                     if (item.SenderId == newCust.Id)
                         newCust.ListOfParcSent.Add(createParcAtCust(item, true));
                     if (item.ReceiverId == newCust.Id)
-                            newCust.ListOfParcReceived.Add(createParcAtCust(item, false));
+                        newCust.ListOfParcReceived.Add(createParcAtCust(item, false));
                 }
                 return newCust;
             }
-
 
             private BO.BOParcel CreateBOParcel(int id)
             {
@@ -475,13 +444,8 @@ namespace BL
                 newParc.TimeOfAssignment = origParc.TimeAssigned;
                 newParc.TimeOfDelivery = origParc.TimeDelivered;
                 newParc.TimeOfCollection = origParc.TimePickedUp;
-                //newParc.timeOfAssignment = 
-                //newParc.timeOfCreation =
-
-
                 return newParc;
             }
-
 
             private BO.BOCustomerToList createBOCustToList(int _id)
             {
@@ -552,9 +516,7 @@ namespace BL
                     newParcToList.ParcelStatus = BO.Enum.ParcelStatus.assigned;
                 else
                     newParcToList.ParcelStatus = BO.Enum.ParcelStatus.created;
-
-
-                return newParcToList;
+               return newParcToList;
             }
             private BO.BOStationToList createBOStationToList(int _id)
             {

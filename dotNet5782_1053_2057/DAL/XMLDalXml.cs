@@ -23,22 +23,22 @@ namespace DalXml
 namespace DalXml
 {
     public sealed class DataSource : IDal
+    {
+        internal class Config
         {
-            internal class Config
-            {
-                //ratios for charging the drone; how many units of battery per second, 
-                //according to weight of the Parcel (heavier parcels require more battery
-                internal static double empty = 0.1;
-                internal static double light = 0.2;
-                internal static double mediuim = 0.3;
-                internal static double heavy = 0.4;
-                internal static double chargeRate = .613; // per second 
-                internal int parcelSerialNumber = 1;
-            }
+            //ratios for charging the drone; how many units of battery per second, 
+            //according to weight of the Parcel (heavier parcels require more battery
+            internal static double empty = 0.1;
+            internal static double light = 0.2;
+            internal static double mediuim = 0.3;
+            internal static double heavy = 0.4;
+            internal static double chargeRate = .613; // per second 
+            internal int parcelSerialNumber = 1;
+        }
 
-            internal static Config thisConfig = new Config();
+        internal static Config thisConfig = new Config();
 
-            #region DS XML Files
+        #region DS XML Files
 
             string stationsPath = @"StationsXml.xml"; //XElement
 
@@ -51,7 +51,7 @@ namespace DalXml
             #endregion
 
 
-            #region singelton
+        #region singelton
             //Internal Class - for Lazy Initialization:
             class Nested
             {
@@ -69,118 +69,116 @@ namespace DalXml
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void Initialize()
-            {
-                Random r = new Random();
-                //coordinates for area of jerusalem (Long: 35-37, Lat: 31-33)
-                const int LONGBEGIN = 35;
-                const int LONGEND = 37;
-                const int LATBEGIN = 31;
-                const int LATEND = 33;
+        {
+            Random r = new Random();
+            //coordinates for area of jerusalem (Long: 35-37, Lat: 31-33)
+            const int LONGBEGIN = 35;
+            const int LONGEND = 37;
+            const int LATBEGIN = 31;
+            const int LATEND = 33;
 
 
             //INITIALIZE DRONE
 
             string[] droneModels = { "Merkava", "Namer" };
-                List<DO.Drone> listDrone = new List<DO.Drone>();
+            List<DO.Drone> listDrone = new List<DO.Drone>();
 
-                for (int i = 0; i < 5; i++)
-                {
-                  DO.Drone exampleD = new DO.Drone();
+            for (int i = 0; i < 5; i++)
+            {
+                DO.Drone exampleD = new DO.Drone();
 
-                  exampleD.Id = i + 1;
-                  exampleD.MaxWeight = (DalXml.DO.WeightCategories)r.Next(0, 3);
-                  exampleD.Model = droneModels[r.Next(0, 2)];
-                  exampleD.Exists = true;
-                  listDrone.Add(exampleD);
-                }
-                DALTools.XMLTools.SaveListToXMLSerializer<DalXml.DO.Drone>(listDrone,dronesPath);
+                exampleD.Id = i + 1;
+                exampleD.MaxWeight = (DalXml.DO.WeightCategories)r.Next(0, 3);
+                exampleD.Model = droneModels[r.Next(0, 2)];
+                exampleD.Exists = true;
+                listDrone.Add(exampleD);
+            }
+            DALTools.XMLTools.SaveListToXMLSerializer<DalXml.DO.Drone>(listDrone,dronesPath);
 
-                //INITIALIZE STATION
+            //INITIALIZE STATION
+            List<DalXml.DO.Station> listStation = new List<DalXml.DO.Station>();
+            for (int i = 0; i < 2; i++)
+            {
+                DO.Station exampleS = new DalXml.DO.Station();
 
-                List<DalXml.DO.Station> listStation = new List<DalXml.DO.Station>();
-                for (int i = 0; i < 2; i++)
-                {
-                  DO.Station exampleS = new DalXml.DO.Station();
-
-
-                  exampleS.Id = i + 1;
-                  exampleS.Name = r.Next(20, 100);
-                  //coordinates for Jerusalem area..
-                  exampleS.Longitude = r.Next(LONGBEGIN, LONGEND) + r.NextDouble();
-                  exampleS.Latitude = r.Next(LATBEGIN, LATEND) + r.NextDouble();
-                  exampleS.ChargeSlots = r.Next(7, 13);
-                  exampleS.Exists = true;
-                  listStation.Add(exampleS);
-                  //thisConfig.indexAvailStation++;
-                }
+                exampleS.Id = i + 1;
+                exampleS.Name = r.Next(20, 100);
+                //coordinates for Jerusalem area..
+                exampleS.Longitude = r.Next(LONGBEGIN, LONGEND) + r.NextDouble();
+                exampleS.Latitude = r.Next(LATBEGIN, LATEND) + r.NextDouble();
+                exampleS.Longitude = Math.Round(exampleS.Longitude, 5);
+                exampleS.Latitude = Math.Round(exampleS.Latitude, 5);
+                exampleS.ChargeSlots = r.Next(7, 13);
+                exampleS.Exists = true;
+                listStation.Add(exampleS);
+                //thisConfig.indexAvailStation++;
+            }
             DALTools.XmlStation xmlStation = new DALTools.XmlStation(stationsPath);
             xmlStation.SaveStationListLinq(listStation);
 
 
             //INITIALIZE CUSTOMER
             string[] customerNames = new string[12] { "Reuven", "Shimon", "Levi",
-                "Yehuda", "Yissachar", "Zevulun", "Asher", "Gad", "Dan", "Naftali",
-                "Yosef", "Binyamin" };
-                string[] customerPhones = new string[10] { "0552255518", "0525553455",
-                "0552355577", "0557155580", "0557155548", "0559555755",
-                "0556555137", "0545558684", "0556555731", "0552255513" };
+            "Yehuda", "Yissachar", "Zevulun", "Asher", "Gad", "Dan", "Naftali",
+            "Yosef", "Binyamin" };
+            string[] customerPhones = new string[10] { "0552255518", "0525553455",
+            "0552355577", "0557155580", "0557155548", "0559555755",
+            "0556555137", "0545558684", "0556555731", "0552255513" };
 
-                List<DalXml.DO.Customer> listCustomer = new List<DalXml.DO.Customer>();
-                for (int i = 0; i < 10; i++)
+            List<DalXml.DO.Customer> listCustomer = new List<DalXml.DO.Customer>();
+            for (int i = 0; i < 10; i++)
+            {
+                DalXml.DO.Customer exampleC = new DalXml.DO.Customer();
+                exampleC.Id = i + 1;
+                exampleC.Longitude = r.Next(LONGBEGIN, LONGEND) + r.NextDouble();
+                exampleC.Latitude = r.Next(LATBEGIN, LATEND) + r.NextDouble();
+                exampleC.Longitude = Math.Round(exampleC.Longitude,5);
+                exampleC.Latitude = Math.Round(exampleC.Latitude, 5);
+                exampleC.Name = customerNames[i];
+                exampleC.Phone = customerPhones[i];
+                exampleC.Exists = true;
+
+                listCustomer.Add(exampleC);
+            }
+            DALTools.XMLTools.SaveListToXMLSerializer<DalXml.DO.Customer>(listCustomer, customersPath);
+
+
+            //INITIALIZE PARCELS
+            List<DalXml.DO.Parcel> listParcel = new List<DalXml.DO.Parcel>();
+
+            for (int i = 0; i < 10; i++)
+            {
+                DO.Parcel exampleP = new DO.Parcel();
+                exampleP.Id = thisConfig.parcelSerialNumber++;
+                exampleP.SenderId = listCustomer[r.Next(0, 10)].Id;
+                do
                 {
-                    DalXml.DO.Customer exampleC = new DalXml.DO.Customer();
-                    exampleC.Id = i + 1;
+                    exampleP.ReceiverId = listCustomer[r.Next(0, 10)].Id;
+                } while (exampleP.ReceiverId == exampleP.SenderId);
 
-                    exampleC.Longitude = r.Next(LONGBEGIN, LONGEND) + r.NextDouble();
-                    exampleC.Latitude = r.Next(LATBEGIN, LATEND) + r.NextDouble();
+                exampleP.Weight = (DalXml.DO.WeightCategories)r.Next(0, 3);
+                exampleP.Priority = (DalXml.DO.Priorities)r.Next(0, 3);
+                exampleP.TimeCreated = DateTime.Now;
+                exampleP.Exists = true;
 
-                    exampleC.Name = customerNames[i];
-                    exampleC.Phone = customerPhones[i];
-                    exampleC.Exists = true;
+                //no Parcel is collectd/delivered  in Initialization
+                listParcel.Add(exampleP);
+            }
+            DALTools.XMLTools.SaveListToXMLSerializer<DalXml.DO.Parcel>(listParcel, parcelsPath);
 
-                    listCustomer.Add(exampleC);
-                }
-                DALTools.XMLTools.SaveListToXMLSerializer<DalXml.DO.Customer>(listCustomer, customersPath);
-
-
-                //INITIALIZE PARCELS
-                List<DalXml.DO.Parcel> listParcel = new List<DalXml.DO.Parcel>();
-
-                for (int i = 0; i < 10; i++)
-                {
-                    DO.Parcel exampleP = new DO.Parcel();
-                    exampleP.Id = thisConfig.parcelSerialNumber++;
-                    exampleP.SenderId = listCustomer[r.Next(0, 10)].Id;
-                    do
-                    {
-                      exampleP.ReceiverId = listCustomer[r.Next(0, 10)].Id;
-                    } while (exampleP.ReceiverId == exampleP.SenderId);
-
-                    exampleP.Weight = (DalXml.DO.WeightCategories)r.Next(0, 3);
-                    exampleP.Priority = (DalXml.DO.Priorities)r.Next(0, 3);
-                    exampleP.TimeCreated = DateTime.Now;
-                    exampleP.Exists = true;
-
-
-                    //no Parcel is collectd/delivered  in Initialization
-
-                    listParcel.Add(exampleP);
-                }
-                DALTools.XMLTools.SaveListToXMLSerializer<DalXml.DO.Parcel>(listParcel, parcelsPath);
-
-                //INITIALIZE USERS
-                List<DalXml.DO.User> listUser = new List<DalXml.DO.User>();
-                DalXml.DO.User userEmployee = new DalXml.DO.User();
-                userEmployee.Id = -1; //employee
-                userEmployee.Username = "boss";
-                userEmployee.Password = "boss";
-                listUser.Add(userEmployee);
-                DalXml.DO.User userReuven = new DalXml.DO.User();
-                userReuven.Id = 1; //customer reuven
-                userReuven.Username = "ruv";
-                userReuven.Password = "ruv";
-                listUser.Add(userReuven);
-                DALTools.XMLTools.SaveListToXMLSerializer<DalXml.DO.User>(listUser, usersPath);
+            //INITIALIZE USERS
+            List<DalXml.DO.User> listUser = new List<DalXml.DO.User>();
+            DalXml.DO.User userEmployee = new DalXml.DO.User();
+            userEmployee.Id = -1; //employee
+            userEmployee.Username = "boss";
+            userEmployee.Password = "boss";
+            listUser.Add(userEmployee);
+            DalXml.DO.User userReuven = new DalXml.DO.User();
+            userReuven.Id = 1; //customer reuven
+            userReuven.Username = "ruv";
+            userReuven.Password = "ruv";
+            listUser.Add(userReuven);
+            DALTools.XMLTools.SaveListToXMLSerializer<DalXml.DO.User>(listUser, usersPath);
             //END OF FUNCTION
         }
 
