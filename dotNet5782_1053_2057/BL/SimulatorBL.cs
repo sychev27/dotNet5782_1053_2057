@@ -28,9 +28,9 @@ namespace BL
         //for calculating battery
         DateTime beginTimeForBattery;
         //for calculating journey...
-        bool arrivedAtDestination;
+        bool arrivedAtDestination = false;
         DateTime beginTimeForDistance;
-        BL.BO.BOLocation beginLocation; //set once for every leg of the journey
+        BL.BO.BOLocation currentLocation; //set once for every leg of the journey
       
         readonly BackgroundWorker workerForBLSimulator = new BackgroundWorker();
         bool simulatorOn;
@@ -48,8 +48,6 @@ namespace BL
             //initialize BackGroundWorker for Simulator
             workerForBLSimulator.DoWork += worker_DoWork;
             workerForBLSimulator.RunWorkerCompleted += worker_RunWorkerCompleted;
-            //workerForBLSimulator.ProgressChanged += worker_ProgressChanged;
-            //workerForBLSimulator.WorkerReportsProgress = true;
             workerForBLSimulator.WorkerSupportsCancellation = true;
         }
         public void StartSimulator()
@@ -57,15 +55,13 @@ namespace BL
             //begin simulator:
             simulatorOn = true;
             BL.BO.BODrone bodrone = busiAccess.GetBODrone(droneId);
-            resetBeginTimeAndLocation(bodrone);
+            resetCurrentTimeAndLocation(bodrone);
             workerForBLSimulator.RunWorkerAsync();
-                
-           
         }
         public void StopSimulator()
         {
             workerForBLSimulator.CancelAsync();
-            //stopDroneJourney(droneId);
+            stopDroneJourney(droneId);
             simulatorOn = false;
         }
         private void worker_DoWork(object sender, DoWorkEventArgs e)
@@ -74,9 +70,7 @@ namespace BL
             {
                 Thread.Sleep(DELAY_EACH_STEP); 
                 UpdateSimulator();
-                //workerForBLSimulator.ReportProgress(1);
             }
-
         }
         private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -84,131 +78,131 @@ namespace BL
         }
        
         /// <summaryOfUpdateSimulator>
-        /// Summary of Collecting a Parcel:
+        /// SUMMARY OF COLLECTING A PARCEL:
         /// assignParcel(), dronestatus->inDelivery, journey, arrive at customer 1
-        /// pickupParcel(), drone.parcelInTransfer != null, journey, arrive at cust 2
+        /// pickupParcel(), drone.parcelInTransfer -> != null, journey, arrive at cust 2
         /// deliverParcel(), dronestatus->Available...
         /// 
-        /// Summary of Charging:
-        /// chargeDrone(), dronestatus->charging, journey, arrive at station, charge till battery = 100.
+        /// SUMMARY OF CHARGING:
+        /// chargeDrone(), dronestatus->charging, journey, arrive at station, charge till battery == 100.
         /// freeDrone(), dronestatus -> available
         /// </summaryOfUpdateSimulator>
-        void UpdateSimulator()
+        void UpdateSimulator() //called every iteration
         {
             BL.BO.BODrone bodrone = busiAccess.GetBODrone(droneId); //receives drone by reference...
             BL.BO.BOLocation destination;
 
-            switch (bodrone.DroneStatus)
+            lock (busiAccess)
             {
-                case BO.Enum.DroneStatus.Available:
-                    {
-                        try
+                switch (bodrone.DroneStatus)
+                {
+                    case BO.Enum.DroneStatus.Available:
                         {
-                            busiAccess.AssignParcel(droneId); //function does not change battery nor location
-                            resetBeginTimeAndLocation(bodrone);
+                            try
+                            {
+                                busiAccess.AssignParcel(droneId); //function does not change battery nor location
+                                resetCurrentTimeAndLocation(bodrone);
+                            }
+                            catch (BL.BLApi.EXNoAppropriateParcel)
+                            {
+                                if (bodrone.Battery >= 100)
+                                {
+                                    Thread.Sleep(DELAY_BTW_JOURNEYS);
+                                    return;
+                                }
+                                busiAccess.ChargeDrone(droneId, true); //send drone to charge..
+                                bodrone.DroneStatus = BO.Enum.DroneStatus.OnWayToCharge;
+                                resetCurrentTimeAndLocation(bodrone);
+                            }
                         }
-                        catch (BL.BLApi.EXNoAppropriateParcel)
+                        break;
+                    case BO.Enum.DroneStatus.OnWayToCharge:
                         {
+                            if (!arrivedAtDestination)//if on way to station
+                            {
+                                destination = busiAccess.
+                                        GetBOStation(busiAccess.GetStationIdOfBODrone(droneId)).Location;
+                                moveDroneAlongJourney(bodrone, currentLocation, destination, calculateTimeDiff());
+                            }
+                            else  //if drone arrived at station 
+                            {
+                                resetCurrentTimeAndLocation(bodrone);
+                                bodrone.DroneStatus = BO.Enum.DroneStatus.Charging;
+                            }
+                        }
+                        break;
+                    case BO.Enum.DroneStatus.Charging:
+                        {
+                            //only if drone is already at station...
+                            TimeSpan ts = DateTime.Now - beginTimeForBattery;
+                            beginTimeForBattery = DateTime.Now;
+                            double secondsInCharge = ts.TotalSeconds;
+                            bodrone.Battery += busiAccess.GetChargeRate() * secondsInCharge;
                             if (bodrone.Battery >= 100)
                             {
-                                Thread.Sleep(DELAY_BTW_JOURNEYS);
-                                return;
-                            }
-                            busiAccess.ChargeDrone(droneId, true); //send drone to charge..
-                            bodrone.DroneStatus = BO.Enum.DroneStatus.OnWayToCharge;
-                            resetBeginTimeAndLocation(bodrone);
-                        }
-                    }
-                    break;
-                case BO.Enum.DroneStatus.OnWayToCharge:
-                    {
-                        if (!arrivedAtDestination)//if on way to station
-                        {
-                            destination = busiAccess.
-                                    GetBOStation(busiAccess.GetStationIdOfBODrone(droneId)).Location;
-                            moveDroneAlongJourney(bodrone, beginLocation, destination, calculateTimeDiff());
-                        }
-                        else  //if drone arrived at station 
-                        {
-                            resetBeginTimeAndLocation(bodrone);
-                            bodrone.DroneStatus = BO.Enum.DroneStatus.Charging;
-                        }
-                    }
-                    break;
-                case BO.Enum.DroneStatus.Charging:
-                    {
-                        //only if drone is already at station...
-                        TimeSpan ts = DateTime.Now - beginTimeForBattery;
-                        beginTimeForBattery = DateTime.Now;
-                        double secondsInCharge = ts.TotalSeconds;
-                        bodrone.Battery += busiAccess.GetChargeRate() * secondsInCharge;
-                        if (bodrone.Battery >= 100)
-                        {
-                            bodrone.Battery = 100;
-                            resetBeginTimeAndLocation(bodrone);
-                            busiAccess.FreeDrone(droneId, DateTime.Now);
-                            Thread.Sleep(DELAY_BTW_JOURNEYS); //wait 3 seconds till we try to assign 
-                        }
-                                                
-                    }
-                    break;
-                case BO.Enum.DroneStatus.InDelivery:
-                    {
-                        if (bodrone.ParcelInTransfer.Collected == false)
-                        //IF ON WAY TO THE SENDER..
-                        {
-                            if (!arrivedAtDestination)
-                                moveDroneAlongJourney(bodrone, beginLocation,
-                                     busiAccess.GetBOCustomer(bodrone.ParcelInTransfer.Sender.Id).Location,
-                                      calculateTimeDiff());
-                            else //if drone has arrived
-                            {
-                                busiAccess.PickupParcel(droneId);
-                                resetBeginTimeAndLocation(bodrone);
-                            }
-                        }
-                        else //if (bodrone.ParcelInTransfer.Collected == true)
-                             //IF ON WAY TO RECEIVER
-                        {
-                            if (!arrivedAtDestination)
-                                moveDroneAlongJourney(bodrone, beginLocation,
-                                     busiAccess.GetBOCustomer(bodrone.ParcelInTransfer.Recipient.Id).Location,
-                                      calculateTimeDiff());
-                            else //if drone has arrived
-                            {
-                                busiAccess.DeliverParcel(droneId);
-                                resetBeginTimeAndLocation(bodrone);
+                                bodrone.Battery = 100;
+                                resetCurrentTimeAndLocation(bodrone);
+                                busiAccess.FreeDrone(droneId, DateTime.Now, true);
+                                Thread.Sleep(DELAY_BTW_JOURNEYS); //wait 3 seconds till we try to assign 
                             }
 
                         }
-                    }
-                    break;
-                default:
-                    break;
+                        break;
+                    case BO.Enum.DroneStatus.InDelivery:
+                        {
+                            if (bodrone.ParcelInTransfer.Collected == false)
+                            //IF ON WAY TO THE SENDER..
+                            {
+                                if (!arrivedAtDestination)
+                                    moveDroneAlongJourney(bodrone, currentLocation,
+                                         busiAccess.GetBOCustomer(bodrone.ParcelInTransfer.Sender.Id).Location,
+                                          calculateTimeDiff());
+                                else //if drone has arrived
+                                {
+                                    busiAccess.PickupParcel(droneId, true);
+                                    resetCurrentTimeAndLocation(bodrone);
+                                }
+                            }
+                            else //if (bodrone.ParcelInTransfer.Collected == true)
+                                 //IF ON WAY TO RECEIVER
+                            {
+                                if (!arrivedAtDestination)
+                                    moveDroneAlongJourney(bodrone, currentLocation,
+                                         busiAccess.GetBOCustomer(bodrone.ParcelInTransfer.Recipient.Id).Location,
+                                          calculateTimeDiff());
+                                else //if drone has arrived
+                                {
+                                    busiAccess.DeliverParcel(droneId, true);
+                                    resetCurrentTimeAndLocation(bodrone);
+                                }
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
 
-
         }
-
-        void resetBeginTimeAndLocation(BL.BO.BODrone bodrone) 
+        void resetCurrentTimeAndLocation(BL.BO.BODrone bodrone) //THREAD SLEEPS HERE... 
         {
             //called everytime drone receives a new destination
             //function used to help keep track of Drone's journey
-            beginLocation = bodrone.Location;
+            currentLocation = bodrone.Location;
             beginTimeForDistance = DateTime.Now;
             beginTimeForBattery = DateTime.Now;
             arrivedAtDestination = false;
             Thread.Sleep(DELAY_BTW_JOURNEYS);
         }
-        double calculateTimeDiff()
+        double calculateTimeDiff() //calculates difference btw now, and last measured time
         {
             TimeSpan t = DateTime.Now - beginTimeForDistance;
             beginTimeForDistance = DateTime.Now;
             return t.TotalSeconds;
         }
-        
         void moveDroneAlongJourney(BL.BO.BODrone bodrone, BO.BOLocation source,
-            BO.BOLocation destination, double secondsTraveled)
+            BO.BOLocation destination, double secondsTraveled) //UPDATES DRONE'S BATTERY, LOCATION, 
+            //AND CHANGES "arrivedAtDestination" flag
         {
             if(source == destination) //if drone begin the next journey, but was already at the first stop
                 //(for example - if the drone delivered a parcel at Reuven, and the next mission was to pick up a parcel from reuven)
@@ -239,7 +233,7 @@ namespace BL
             TimeSpan ts = DateTime.Now - beginTimeForBattery;
             beginTimeForBattery = DateTime.Now;
             double secondsInTravel = ts.TotalSeconds;
-            bodrone.Battery -= (busiAccess.GetElectricityRate(bodrone) * secondsInTravel);
+            bodrone.Battery -= busiAccess.GetElectricityRate(bodrone) * secondsInTravel;
 
             //(3) CHECK THAT ARRIVED AT DESTINATION
             if ((longitudeDiff > 0                                     // if traveling in positive direction
@@ -254,105 +248,82 @@ namespace BL
             //we only need to check either longitude or latitude, because they are in sync...
 
         }
-        
+        void moveDroneToDestination(BO.BODrone bodrone, BO.BOLocation destination
+            ) //UPDATES DRONE'S LOCATION AND BATTERY
+        {
+            double totalDistance = HelpfulMethodsBL.GetDistance(bodrone.Location, destination);
+            double totalSecondsNeededForJourney =  totalDistance / DRONESPEED;
+            bodrone.Battery -= totalSecondsNeededForJourney * busiAccess.GetElectricityRate(bodrone);
+            bodrone.Location = destination;
+        }
         void stopDroneJourney(int droneId)
         {
+            
             //find total seconds needed to complete journey,
             //call moveDroneAlongJourney with that number of seconds
             BL.BO.BODrone bodrone = busiAccess.GetBODrone(droneId); //receives drone by reference...
             BL.BO.BOLocation destination;
 
-            switch (bodrone.DroneStatus)
+            lock (busiAccess)
             {
-                case BO.Enum.DroneStatus.Available:
-                    {
-                        try
+
+                switch (bodrone.DroneStatus)
+                {
+                    case BO.Enum.DroneStatus.Available:
                         {
-                            busiAccess.AssignParcel(droneId); //function does not change battery nor location
-                            resetBeginTimeAndLocation(bodrone);
+                            return;
                         }
-                        catch (BL.BLApi.EXNoAppropriateParcel)
-                        {
-                            if (bodrone.Battery >= 100)
-                            {
-                                Thread.Sleep(DELAY_BTW_JOURNEYS);
-                                return;
-                            }
-                            busiAccess.ChargeDrone(droneId, true); //send drone to charge..
-                            bodrone.DroneStatus = BO.Enum.DroneStatus.OnWayToCharge;
-                            resetBeginTimeAndLocation(bodrone);
-                        }
-                    }
-                    break;
-                case BO.Enum.DroneStatus.OnWayToCharge:
-                    {
-                        if (!arrivedAtDestination)//if on way to station
+                    case BO.Enum.DroneStatus.OnWayToCharge:
                         {
                             destination = busiAccess.
-                                    GetBOStation(busiAccess.GetStationIdOfBODrone(droneId)).Location;
-                            moveDroneAlongJourney(bodrone, beginLocation, destination, calculateTimeDiff());
-                        }
-                        else  //if drone arrived at station 
-                        {
-                            resetBeginTimeAndLocation(bodrone);
-                            bodrone.DroneStatus = BO.Enum.DroneStatus.Charging;
-                        }
-                    }
-                    break;
-                case BO.Enum.DroneStatus.Charging:
-                    {
-                        //only if drone is already at station...
-                        TimeSpan ts = DateTime.Now - beginTimeForBattery;
-                        beginTimeForBattery = DateTime.Now;
-                        double secondsInCharge = ts.TotalSeconds;
-                        bodrone.Battery += busiAccess.GetChargeRate() * secondsInCharge;
-                        if (bodrone.Battery >= 100)
-                        {
-                            bodrone.Battery = 100;
-                            resetBeginTimeAndLocation(bodrone);
-                            busiAccess.FreeDrone(droneId, DateTime.Now);
-                            Thread.Sleep(DELAY_BTW_JOURNEYS); //wait 3 seconds till we try to assign 
-                        }
-
-                    }
-                    break;
-                case BO.Enum.DroneStatus.InDelivery:
-                    {
-                        if (bodrone.ParcelInTransfer.Collected == false)
-                        //IF ON WAY TO THE SENDER..
-                        {
+                                         GetBOStation(busiAccess.GetStationIdOfBODrone(droneId)).Location;
                             if (!arrivedAtDestination)
-                                moveDroneAlongJourney(bodrone, beginLocation,
-                                     busiAccess.GetBOCustomer(bodrone.ParcelInTransfer.Sender.Id).Location,
-                                      calculateTimeDiff());
-                            else //if drone has arrived
                             {
-                                busiAccess.PickupParcel(droneId);
-                                resetBeginTimeAndLocation(bodrone);
+                                moveDroneToDestination(bodrone, destination);
+                            }
+                            //drone arrived at station 
+                            {
+                                bodrone.DroneStatus = BO.Enum.DroneStatus.Charging;
                             }
                         }
-                        else //if (bodrone.ParcelInTransfer.Collected == true)
-                             //IF ON WAY TO RECEIVER
+                        break;
+                    case BO.Enum.DroneStatus.Charging:
                         {
-                            if (!arrivedAtDestination)
-                                moveDroneAlongJourney(bodrone, beginLocation,
-                                     busiAccess.GetBOCustomer(bodrone.ParcelInTransfer.Recipient.Id).Location,
-                                      calculateTimeDiff());
-                            else //if drone has arrived
-                            {
-                                busiAccess.DeliverParcel(droneId);
-                                resetBeginTimeAndLocation(bodrone);
-                            }
-
+                            return;
                         }
-                    }
-                    break;
-                default:
-                    break;
+                    case BO.Enum.DroneStatus.InDelivery:
+                        {
+                            if (bodrone.ParcelInTransfer.Collected == false)
+                            //IF ON WAY TO THE SENDER..
+                            {
+                                destination = busiAccess.GetBOCustomer(bodrone.ParcelInTransfer.Sender.Id).Location;
+                                if (!arrivedAtDestination)
+                                    moveDroneToDestination(bodrone, destination);
+                                //if drone has arrived
+                                {
+                                    busiAccess.PickupParcel(droneId, true);
+                                }
+                            }
+                            else //if (bodrone.ParcelInTransfer.Collected == true)
+                                 //IF ON WAY TO RECEIVER
+                            {
+                                destination = busiAccess.GetBOCustomer(bodrone.ParcelInTransfer.Recipient.Id).Location;
+                                if (!arrivedAtDestination)
+                                    moveDroneToDestination(bodrone, destination);
+                                //if drone has arrived
+                                {
+                                    busiAccess.DeliverParcel(droneId, true);
+                                }
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
-
+        //END OF SIMULATOR CLASS
     }
 }
 

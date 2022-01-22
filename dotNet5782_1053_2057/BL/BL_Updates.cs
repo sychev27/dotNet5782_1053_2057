@@ -190,7 +190,7 @@ namespace BL
             [MethodImpl(MethodImplOptions.Synchronized)]
             public void PickupParcel(int droneId, bool dontUpdateBatteryOrLocation = false) //drone collects its pre-determined parcel 
             {
-                global::BL.BO.BODrone drone = new global::BL.BO.BODrone();
+                BO.BODrone drone = new BO.BODrone();
                 try
                 {
                     drone = GetBODrone(droneId);

@@ -42,7 +42,7 @@ namespace WpfApp1
             tBoxTimeOfCreation.Visibility = Visibility.Hidden;
             tBoxTimeOfDelivery.Visibility = Visibility.Hidden;
 
-            btnEraseParce.IsEnabled = false;
+            btnEraseParcel.IsEnabled = false;
         }
 
         public ParcelWindow(BL.BLApi.Ibl _busiAccess, BL.BO.BOParcel parcel)
