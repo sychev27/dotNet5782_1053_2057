@@ -11,9 +11,7 @@ namespace BL
     {
         public partial class BL : Ibl
         {
-
             //ADD
-
             [MethodImpl(MethodImplOptions.Synchronized)]
             public void AddDrone(int _id, string _model, DalXml.DO.WeightCategories _maxWeight, int _stationId)
             {
@@ -60,6 +58,7 @@ namespace BL
                 DalXml.DO.DroneCharge newDroneCharge = new DalXml.DO.DroneCharge(_droneId, _stationId);
                 dataAccess.AddDroneCharge(newDroneCharge);
             }
+
             [MethodImpl(MethodImplOptions.Synchronized)]
             public void AddParcel(int _senderId, int _targetId, DalXml.DO.WeightCategories? _weight,
                              DalXml.DO.Priorities? _priority)// DateTime _requested, DateTime _scheduled)

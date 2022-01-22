@@ -54,7 +54,6 @@ namespace BL
             SimulatorBL sim; //initialized in the BeginSimulator() function
 
             //Lazy Initialization...
-            //static BL() { }
             private BL() //Private CTOR - implementing Singleton Design Pattern
             {
                 IEnumerable<double> elecInfo = dataAccess.RequestElec();
@@ -519,8 +518,7 @@ namespace BL
                 newStationToList.Exists = origStation.Exists;
 
                 return newStationToList;
-            }
-            
+            }            
             //end of class
         }
     }

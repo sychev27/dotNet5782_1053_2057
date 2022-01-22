@@ -78,24 +78,11 @@ namespace BL
             }
 
         }
-        //private void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        //{
-
-        //}
         private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             workerForBLSimulator.Dispose();
         }
        
-        //void UpdateSimulator() IGNORE THIS
-        //{
-        //    BL.BO.BODrone bodrone = busiAccess.GetBODrone(droneId);
-        //    TimeSpan ts = DateTime.Now - beginTime;
-        //    beginTime = DateTime.Now;
-        //    double secondsInCharge = ts.TotalSeconds;
-        //    double batteryGained = busiAccess.GetChargeRate() * secondsInCharge;
-        //    bodrone.Battery += batteryGained;
-        //}
         /// <summaryOfUpdateSimulator>
         /// Summary of Collecting a Parcel:
         /// assignParcel(), dronestatus->inDelivery, journey, arrive at customer 1
@@ -220,9 +207,6 @@ namespace BL
             return t.TotalSeconds;
         }
         
-
-
-
         void moveDroneAlongJourney(BL.BO.BODrone bodrone, BO.BOLocation source,
             BO.BOLocation destination, double secondsTraveled)
         {
@@ -232,8 +216,7 @@ namespace BL
                 bodrone.Location = destination;
                 arrivedAtDestination = true;
                 return;
-            }
-            
+            }          
             
             //(1) UPDATE LOCATION:
             
