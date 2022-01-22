@@ -58,5 +58,8 @@ namespace WpfApp1
 
         }
 
+
+
+        //end of helpful methods file
     }
 }

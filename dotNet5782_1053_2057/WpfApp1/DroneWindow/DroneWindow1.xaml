@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="DroneWindow" Height="450" Width="800">
+        Title="DroneWindow" Height="450" Width="800" Closing="Window_Closing">
     <Grid Margin="20,20,20,20">
         <Grid x:Name="OutputAndInput" RenderTransformOrigin="0.46,0.503" Margin="5,5,5,5">
             <TextBlock x:Name="tBlock_chooseDroneId" Text=" ID:"  Margin="5,5,5,5"/>
@@ -32,7 +32,7 @@
 
             <TextBox x:Name ="tBoxIdInput" Grid.Column="1" Text="{Binding Id, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" Margin="5,5,5,5" Height="Auto" VerticalAlignment="Stretch" />
             <TextBox x:Name ="tBoxModelInput" Grid.Column="1" Grid.Row="1" Text="{Binding Model, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" Margin="5,5,5,5" />
-            <ComboBox x:Name="cmbWeightChoice" Grid.Row="2" Text="{Binding MaxWeight, UpdateSourceTrigger=PropertyChanged}" SelectionChanged="ComboBox_SelectionChanged" Height="Auto" Margin="5,5,5,5" Grid.Column="1"/>
+            <ComboBox x:Name="cmbWeightChoice" Grid.Row="2" Text="{Binding MaxWeight, UpdateSourceTrigger=PropertyChanged}" Height="Auto" Margin="5,5,5,5" Grid.Column="1"/>
             <TextBox x:Name = "tBoxStationIdInput" Grid.Column="1" Text="{Binding StationId, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" TextWrapping="Wrap" Margin="5,5,5,5" />
             <TextBlock x:Name="tBlockStatusInfo" Grid.Column="1" Text ="{Binding DroneStatus, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" TextWrapping="Wrap" Margin="5,5,5,5"/>
             <TextBlock x:Name="tBlockDeliveryInfo" Grid.Column="1" Grid.Row="5" Text="{Binding ParcelInTransfer, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" Margin="5,5,5,5"/>
