@@ -21,7 +21,6 @@ namespace BL
             public const string CHARGING_STATIONS = "availChargingStations";
         }
 
-
         public static class FactoryBL
         {
             public static global::BL.BLApi.Ibl GetBL()
@@ -29,7 +28,6 @@ namespace BL
                 return BLApi.BL.Instance;
             }
         }
-
 
         public partial class BL : global::BL.BLApi.Ibl
         {
@@ -67,13 +65,10 @@ namespace BL
                 chargeRate = elecInfo.ElementAt(4);
 
                 receiveDronesFromData();
-
-                
+               
                 //holds temporary list of locations of customers 
                 List<BO.BOLocation> tempListCust = new List<BO.BOLocation>();
                 //(for now, tempListCust holds every customer, not just those who have had a parcel delivered to them
-
-
 
                 foreach (BO.BODrone drone in listDrone)
                 {
@@ -144,7 +139,6 @@ namespace BL
                 //end of Ctor
             }
 
-
             void receiveDronesFromData()
             { 
                 IEnumerable<DalXml.DO.Drone> origList = dataAccess.GetDrones();
@@ -157,7 +151,6 @@ namespace BL
             void addDroneToBusiLayer(DalXml.DO.Drone drone) //receives IDAL.DO.Drone,
                                                           //creates a corresponding BODrone, saves in BL's list
             {
-
                 BO.BODrone boDrone = new BO.BODrone();
                 boDrone.Exists = drone.Exists;
                 boDrone.Id = drone.Id;
@@ -180,8 +173,7 @@ namespace BL
                 {
                     boDrone.ParcelInTransfer = createParcInTrans(boDrone.Id);
                     if (boDrone.ParcelInTransfer != null)
-                        boDrone.DroneStatus = BO.Enum.DroneStatus.InDelivery;
-                    
+                        boDrone.DroneStatus = BO.Enum.DroneStatus.InDelivery;                   
                 }
                 catch (EXParcInTransNotFoundException exception)
                 {
@@ -189,7 +181,6 @@ namespace BL
                 }
                 listDrone.Add(boDrone);
             }
-
 
             int getParcIdFromDroneID(int origDroneId)
             {
@@ -266,12 +257,10 @@ namespace BL
                     }
                 }
 
-
                 //(2) THROW EXCEPTION IF NOT FOUND
                 if (origParcel.Id == -1) throw new EXParcInTransNotFoundException();
 
                 if (origParcel.SenderId == -1) throw new EXParcInTransNotFoundException();
-
 
                 //(3) CREATE THIS OBJECT
                 thisParc.Id = origParcel.Id;

@@ -32,9 +32,6 @@ namespace BL
             {
                 sim.StopSimulator();
             }
-            
-
-
         }
     }
 }

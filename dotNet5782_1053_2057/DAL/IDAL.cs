@@ -38,9 +38,7 @@ namespace DalXml
         public void ModifyDrone(int _id, string _model);
         public void ModifyCust(int _id, string _name, string _phone);
         public void ModifyStation(int _id, int _name, int _totalChargeSlots);
-
         public void ModifyParcel(int _id, DalXml.DO.Priorities? _priority);
-
 
         //Erase:
         void EraseDroneCharge(DalXml.DO.DroneCharge thisDroneCharge);

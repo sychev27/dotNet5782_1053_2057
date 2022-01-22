@@ -77,7 +77,6 @@ namespace DalXml
             const int LATBEGIN = 31;
             const int LATEND = 33;
 
-
             //INITIALIZE DRONE
 
             string[] droneModels = { "Merkava", "Namer" };
@@ -116,7 +115,6 @@ namespace DalXml
             DALTools.XmlStation xmlStation = new DALTools.XmlStation(stationsPath);
             xmlStation.SaveStationListLinq(listStation);
 
-
             //INITIALIZE CUSTOMER
             string[] customerNames = new string[12] { "Reuven", "Shimon", "Levi",
             "Yehuda", "Yissachar", "Zevulun", "Asher", "Gad", "Dan", "Naftali",
@@ -141,7 +139,6 @@ namespace DalXml
                 listCustomer.Add(exampleC);
             }
             DALTools.XMLTools.SaveListToXMLSerializer<DalXml.DO.Customer>(listCustomer, customersPath);
-
 
             //INITIALIZE PARCELS
             List<DalXml.DO.Parcel> listParcel = new List<DalXml.DO.Parcel>();
@@ -206,13 +203,8 @@ namespace DalXml
                    return cst;
            
             throw new DO.EXItemNotFoundException();
-
-            //foreach (DO.Customer cst in listCustomer) <- delete this...
-            //    if (cst.Id == _id && cst.Exists) 
-            //        cust = cst;
-            //if (cust.Id == 0) throw new DO.EXItemNotFoundException();
-            //return cust;
         }
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         public DO.Parcel GetParcel(int _id)
         {
@@ -225,12 +217,14 @@ namespace DalXml
             if (parcel.Id == 0) throw new DO.EXItemNotFoundException();
             return parcel;
         }
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         public DO.Station GetStation(int _id)
         {
             DALTools.XmlStation xmlStation = new DALTools.XmlStation(stationsPath);
             return xmlStation.GetStation(_id);
         }
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         public DO.DroneCharge GetDroneCharge(int _droneId)
         {
@@ -251,6 +245,7 @@ namespace DalXml
             listDrone.Add(drone);
             DALTools.XMLTools.SaveListToXMLSerializer<DO.Drone>(listDrone, dronesPath);
         }
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddCustomer(DO.Customer custom)
         {
@@ -258,6 +253,7 @@ namespace DalXml
             listCustomer.Add(custom);
             DALTools.XMLTools.SaveListToXMLSerializer<DO.Customer>(listCustomer, customersPath);
         }
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddParcel(DO.Parcel parcel)
         {
@@ -265,12 +261,14 @@ namespace DalXml
             listParcel.Add(parcel);
             DALTools.XMLTools.SaveListToXMLSerializer<DO.Parcel>(listParcel, parcelsPath);
         }
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddStation(DO.Station st)
         {
             DALTools.XmlStation xmlStation = new DALTools.XmlStation(stationsPath);
             xmlStation.AddStation(st);
         }
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddDroneCharge(DO.DroneCharge droneCharge)
         {
@@ -286,6 +284,7 @@ namespace DalXml
             listDroneCharge.Add(droneCharge);
             DALTools.XMLTools.SaveListToXMLSerializer<DO.DroneCharge>(listDroneCharge, droneChargesPath);
         }
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void AddUser(DO.User _user)
         {
@@ -305,18 +304,21 @@ namespace DalXml
         {
             return DALTools.XMLTools.LoadListFromXMLSerializer<DO.Drone>(dronesPath);
         }
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<DO.Parcel> GetParcels()
         {
             return DALTools.XMLTools.LoadListFromXMLSerializer<DO.Parcel>(parcelsPath);
       
         }
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<DO.Station> GetStations()
         {
             DALTools.XmlStation xmlStation = new DALTools.XmlStation(stationsPath);
             return xmlStation.GetStationList();
         }
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         public IEnumerable<DO.Customer> GetCustomers()
         {
@@ -364,6 +366,7 @@ namespace DalXml
                 }
             }
         }
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void EraseCustomer(int id)
         {
@@ -382,6 +385,7 @@ namespace DalXml
 
             }
         }
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void EraseStation(int id)
         {
@@ -389,6 +393,7 @@ namespace DalXml
             xmlStation.RemoveStation(id);
 
         }
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void EraseParcel(int id)
         {
@@ -407,6 +412,7 @@ namespace DalXml
 
             }
         }
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void EraseDroneCharge(DO.DroneCharge thisDroneCharge)
         {
@@ -469,8 +475,8 @@ namespace DalXml
             }
             //if not found --> exception
             throw new DO.EXItemNotFoundException();
-
         }
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void ModifyStation(int _id, int _name = 0, int _totalChargeSlots = 0)
         {
@@ -479,8 +485,8 @@ namespace DalXml
                 return;
             else    //if not found --> exception
                 throw new DalXml.DO.EXItemNotFoundException();
-
         }
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void ModifyParcel(int _id, DO.Priorities? _priority)
         {
@@ -537,6 +543,7 @@ namespace DalXml
             }
             //if not found --> exception
         }
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void DeliverParcel(int parcelId)
         {
@@ -555,24 +562,5 @@ namespace DalXml
             }
             //if not found --> exception
         }
-
-
-        //User functions
-
-
-
-
-        //public IEnumerable<DalXml.DO.Drone> getSpecificDroneList(Predicate<DalXml.DO.Drone> property)
-        //{
-        //        List<DalXml.DO.Drone> lst = new List<DalXml.DO.Drone>();
-        //        foreach (var item in listDrone)
-
-
-        //        {
-        //            lst.Add
-        //        }
-        //    return listDrone.FindAll(property);
-        //}
-
     }
 }

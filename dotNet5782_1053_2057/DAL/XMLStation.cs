@@ -128,7 +128,7 @@ namespace DALTools
                 stationElement = (from s in stationRoot.Elements()
                                   where Convert.ToInt32(s.Element("id").Value) == _id
                                   select s).FirstOrDefault();
-                stationElement.Remove();
+                stationElement.Element("exists").Value = false.ToString();
                 stationRoot.Save(stationsPath);
                 return true;
             }
