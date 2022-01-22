@@ -50,7 +50,6 @@ namespace BL
             internal double chargeRate;// per second
 
             List<BO.BODrone> listDrone = new List<BO.BODrone>();
-            //ObservableCollection<BO.BODrone> listDrone = new ObservableCollection<BO.BODrone>();
             SimulatorBL sim; //initialized in the BeginSimulator() function
 
             //Lazy Initialization...
@@ -183,23 +182,26 @@ namespace BL
 
             int getParcIdFromDroneID(int origDroneId)
             {
-                //receives ID of its drone. Fetches correct parcel from Data Layer.
-                IEnumerable<DalXml.DO.Parcel> origParcList = dataAccess.GetParcels();
-
-                //(1)FETCH PARCEL FROM DATA LAYER
-                DalXml.DO.Parcel origParcel = new DalXml.DO.Parcel();
-                origParcel.Id = -1;
-                foreach (var item in origParcList)
+                lock (dataAccess)
                 {
-                    if (origDroneId == item.DroneId && item.Exists)
-                    {
-                        origParcel = item; break;
-                    }
-                }
-                //(2) THROW EXCEPTION IF NOT FOUND
-                if (origParcel.Id == -1) throw new EXParcInTransNotFoundException();
+                    //receives ID of its drone. Fetches correct parcel from Data Layer.
+                    IEnumerable<DalXml.DO.Parcel> origParcList = dataAccess.GetParcels();
 
-                return origParcel.Id;
+                    //(1)FETCH PARCEL FROM DATA LAYER
+                    DalXml.DO.Parcel origParcel = new DalXml.DO.Parcel();
+                    origParcel.Id = -1;
+                    foreach (var item in origParcList)
+                    {
+                        if (origDroneId == item.DroneId && item.Exists)
+                        {
+                            origParcel = item; break;
+                        }
+                    }
+                    //(2) THROW EXCEPTION IF NOT FOUND
+                    if (origParcel.Id == -1) throw new EXParcInTransNotFoundException();
+
+                    return origParcel.Id;
+                }
             }
 
             BO.BOParcelInTransfer createEmptyParcInTrans()
@@ -232,77 +234,83 @@ namespace BL
             }
             BO.BOParcelInTransfer createParcInTrans(int origDroneId, int origParcId = -1) //used in Initialization
             {
-                //receives ID of its drone. Fetches correct parcel from Data Layer.
-                //Builds the object based on that parcel
-                BO.BOParcelInTransfer thisParc = new BO.BOParcelInTransfer();
-
-                //(1)FETCH SPECIFIC PARCEL FROM DATA LAYER
-                IEnumerable<DalXml.DO.Parcel> origParcList = dataAccess.GetParcels();
-
-                DalXml.DO.Parcel origParcel = new DalXml.DO.Parcel();
-                //assume origParcel it's proper ID
-                if (origParcId == -1) //if caller of this function did not sent Parcel's Id as a parameter
-                    origParcel.Id = getParcIdFromDroneID(origDroneId);
-                else
-                    origParcel.Id = origParcId;
-
-                origParcel.SenderId = -1;
-
-                foreach (var item in origParcList) //sets "origParcel" acc to Parcel saved in data Layer
+                lock (dataAccess)
                 {
-                    if (item.Id == origParcel.Id)
+                    //receives ID of its drone. Fetches correct parcel from Data Layer.
+                    //Builds the object based on that parcel
+                    BO.BOParcelInTransfer thisParc = new BO.BOParcelInTransfer();
+
+                    //(1)FETCH SPECIFIC PARCEL FROM DATA LAYER
+                    IEnumerable<DalXml.DO.Parcel> origParcList = dataAccess.GetParcels();
+
+                    DalXml.DO.Parcel origParcel = new DalXml.DO.Parcel();
+                    //assume origParcel it's proper ID
+                    if (origParcId == -1) //if caller of this function did not sent Parcel's Id as a parameter
+                        origParcel.Id = getParcIdFromDroneID(origDroneId);
+                    else
+                        origParcel.Id = origParcId;
+
+                    origParcel.SenderId = -1;
+
+                    foreach (var item in origParcList) //sets "origParcel" acc to Parcel saved in data Layer
                     {
-                        origParcel = item; break;
+                        if (item.Id == origParcel.Id)
+                        {
+                            origParcel = item; break;
+                        }
                     }
-                }
 
-                //(2) THROW EXCEPTION IF NOT FOUND
-                if (origParcel.Id == -1) throw new EXParcInTransNotFoundException();
+                    //(2) THROW EXCEPTION IF NOT FOUND
+                    if (origParcel.Id == -1) throw new EXParcInTransNotFoundException();
 
-                if (origParcel.SenderId == -1) throw new EXParcInTransNotFoundException();
+                    if (origParcel.SenderId == -1) throw new EXParcInTransNotFoundException();
 
-                //(3) CREATE THIS OBJECT
-                thisParc.Id = origParcel.Id;
-                //thisParc.Collected = (origParcel.TimePickedUp == null) ? false : true;
-                thisParc.Collected = false;
-                thisParc.Priority = (BO.Enum.Priorities)origParcel.Priority;
-                thisParc.ParcelWeight = (BO.Enum.WeightCategories)origParcel.Weight;
-                try
-                {
-                    thisParc.Sender = createCustInParcel(origParcel.SenderId);
-                }
-                catch (EXCustInParcNotFoundException exception)
-                {
-                    thisParc.Sender = exception.creatEmptyCustInParc();
-                }
-                try
-                {
-                    thisParc.Recipient = createCustInParcel(origParcel.ReceiverId);
-                }
-                catch (EXCustInParcNotFoundException exception)
-                {
-                    thisParc.Recipient = exception.creatEmptyCustInParc();
-                }
+                    //(3) CREATE THIS OBJECT
+                    thisParc.Id = origParcel.Id;
+                    //thisParc.Collected = (origParcel.TimePickedUp == null) ? false : true;
+                    thisParc.Collected = false;
+                    thisParc.Priority = (BO.Enum.Priorities)origParcel.Priority;
+                    thisParc.ParcelWeight = (BO.Enum.WeightCategories)origParcel.Weight;
+                    try
+                    {
+                        thisParc.Sender = createCustInParcel(origParcel.SenderId);
+                    }
+                    catch (EXCustInParcNotFoundException exception)
+                    {
+                        thisParc.Sender = exception.creatEmptyCustInParc();
+                    }
+                    try
+                    {
+                        thisParc.Recipient = createCustInParcel(origParcel.ReceiverId);
+                    }
+                    catch (EXCustInParcNotFoundException exception)
+                    {
+                        thisParc.Recipient = exception.creatEmptyCustInParc();
+                    }
 
-                thisParc.PickupPoint = getLocationOfCustomer(origParcel.SenderId);
-                thisParc.DeliveryPoint = getLocationOfCustomer(origParcel.ReceiverId);
-                thisParc.TransportDistance = HelpfulMethodsBL.GetDistance(thisParc.PickupPoint, thisParc.DeliveryPoint);
-                return thisParc;
+                    thisParc.PickupPoint = getLocationOfCustomer(origParcel.SenderId);
+                    thisParc.DeliveryPoint = getLocationOfCustomer(origParcel.ReceiverId);
+                    thisParc.TransportDistance = HelpfulMethodsBL.GetDistance(thisParc.PickupPoint, thisParc.DeliveryPoint);
+                    return thisParc;
+                }
             }
             BO.BOCustomerInParcel createCustInParcel(int origCustId)
             {
-                //function not affected by "Exists" feature
-                IEnumerable<DalXml.DO.Customer> origCustomers = dataAccess.GetCustomers();
-                foreach (var item in origCustomers)
+                lock (dataAccess)
                 {
-                    if (origCustId == item.Id)
+                    //function not affected by "Exists" feature
+                    IEnumerable<DalXml.DO.Customer> origCustomers = dataAccess.GetCustomers();
+                    foreach (var item in origCustomers)
                     {
-                        BO.BOCustomerInParcel ans = new BO.BOCustomerInParcel(item.Id, item.Name);
-                        return ans;
+                        if (origCustId == item.Id)
+                        {
+                            BO.BOCustomerInParcel ans = new BO.BOCustomerInParcel(item.Id, item.Name);
+                            return ans;
+                        }
                     }
+                    //throw exception! not found!
+                    throw new EXCustInParcNotFoundException();
                 }
-                //throw exception! not found!
-                throw new EXCustInParcNotFoundException();
             }
             BO.BOParcelAtCustomer createParcAtCust(DalXml.DO.Parcel origParc, bool Sender)
             {
@@ -317,8 +325,7 @@ namespace BL
                 else //if the Parcel is being held by a Receiver, this field holds the Sender
                 {
                     newParcAtCust.OtherSide = createCustInParcel(origParc.SenderId);
-                }
-                
+                } 
                 newParcAtCust.Priority = (BO.Enum.Priorities)origParc.Priority;
                 //set parcel status:
                 if (origParc.TimeDelivered != null) //if delivered..
@@ -335,140 +342,153 @@ namespace BL
 
             private BO.BOStation CreateBOStation(int id)
             {
-                DalXml.DO.Station origSt;
-                try
+                lock (dataAccess)
                 {
-                    origSt = dataAccess.GetStation(id);
-                }
-                catch (DalXml.DO.EXItemNotFoundException)
-                {
-                    throw new EXNotFoundPrintException("Station");
-                }
-               
-                BO.BOStation newSt = new BO.BOStation();
-                newSt.Exists = origSt.Exists;
-                newSt.Id = origSt.Id;
-                newSt.Name = origSt.Name;
-                newSt.Location = new BO.BOLocation(origSt.Longitude, origSt.Latitude);
-                newSt.ChargeSlots = origSt.ChargeSlots;
-                newSt.ListDroneCharge = new List<BO.BODroneInCharge>();
-
-                foreach (var item in GetDroneCharges()) //create BODroneInCharge and add to list
-                {
-                    if(item.StationId == newSt.Id)
+                    DalXml.DO.Station origSt;
+                    try
                     {
-                        try
+                        origSt = dataAccess.GetStation(id);
+                    }
+                    catch (DalXml.DO.EXItemNotFoundException)
+                    {
+                        throw new EXNotFoundPrintException("Station");
+                    }
+
+                    BO.BOStation newSt = new BO.BOStation();
+                    newSt.Exists = origSt.Exists;
+                    newSt.Id = origSt.Id;
+                    newSt.Name = origSt.Name;
+                    newSt.Location = new BO.BOLocation(origSt.Longitude, origSt.Latitude);
+                    newSt.ChargeSlots = origSt.ChargeSlots;
+                    newSt.ListDroneCharge = new List<BO.BODroneInCharge>();
+
+                    foreach (var item in GetDroneCharges()) //create BODroneInCharge and add to list
+                    {
+                        if (item.StationId == newSt.Id)
                         {
-                            BO.BODrone copy = GetBODrone(item.DroneId);
+                            try
+                            {
+                                BO.BODrone copy = GetBODrone(item.DroneId);
+                            }
+                            catch (BLApi.EXDroneNotFound)
+                            {
+                                break;
+                            }
+
+                            BO.BODroneInCharge d = new BO.BODroneInCharge();
+                            d.Id = item.DroneId;
+                            d.Battery = GetBODrone(d.Id).Battery;
+                            newSt.ListDroneCharge.Add(d);
                         }
-                        catch (BLApi.EXDroneNotFound)
-                        {
-                            break;
-                        }
-                        
-                        BO.BODroneInCharge d = new BO.BODroneInCharge();
-                        d.Id = item.DroneId;
-                        d.Battery = GetBODrone(d.Id).Battery;
-                        newSt.ListDroneCharge.Add(d);
-                    }      
+                    }
+                    return newSt;
                 }
-                return newSt;
             }
             private BO.BOCustomer CreateBOCustomer(int id)
             {
-                BO.BOCustomer newCust = new BO.BOCustomer();
-                DalXml.DO.Customer origCust = new DalXml.DO.Customer();
-                try
+                lock (dataAccess)
                 {
-                    origCust = dataAccess.GetCustomer(id);
-                }
-                catch (DalXml.DO.EXItemNotFoundException)
-                {
-                    throw new EXNotFoundPrintException("Customer");
-                }
-                //throw exception if not found..
-                newCust.Id = origCust.Id;
-                newCust.Exists = origCust.Exists;
-                newCust.Location = new BO.BOLocation(origCust.Longitude, origCust.Latitude);
-                newCust.Name = origCust.Name;
-                newCust.Phone = origCust.Phone;
+                    BO.BOCustomer newCust = new BO.BOCustomer();
+                    DalXml.DO.Customer origCust = new DalXml.DO.Customer();
+                    try
+                    {
+                        origCust = dataAccess.GetCustomer(id);
+                    }
+                    catch (DalXml.DO.EXItemNotFoundException)
+                    {
+                        throw new EXNotFoundPrintException("Customer");
+                    }
+                    //throw exception if not found..
+                    newCust.Id = origCust.Id;
+                    newCust.Exists = origCust.Exists;
+                    newCust.Location = new BO.BOLocation(origCust.Longitude, origCust.Latitude);
+                    newCust.Name = origCust.Name;
+                    newCust.Phone = origCust.Phone;
 
-                newCust.ListOfParcSent = new List<BO.BOParcelAtCustomer>();
-                newCust.ListOfParcReceived = new List<BO.BOParcelAtCustomer>();
-                foreach (var item in dataAccess.GetParcels())
-                {
-                    if (!item.Exists)
-                        continue;
-                    if (item.SenderId == newCust.Id)
-                        newCust.ListOfParcSent.Add(createParcAtCust(item, true));
-                    if (item.ReceiverId == newCust.Id)
-                        newCust.ListOfParcReceived.Add(createParcAtCust(item, false));
+                    newCust.ListOfParcSent = new List<BO.BOParcelAtCustomer>();
+                    newCust.ListOfParcReceived = new List<BO.BOParcelAtCustomer>();
+                    foreach (var item in dataAccess.GetParcels())
+                    {
+                        if (!item.Exists)
+                            continue;
+                        if (item.SenderId == newCust.Id)
+                            newCust.ListOfParcSent.Add(createParcAtCust(item, true));
+                        if (item.ReceiverId == newCust.Id)
+                            newCust.ListOfParcReceived.Add(createParcAtCust(item, false));
+                    }
+                    return newCust;
                 }
-                return newCust;
             }
 
             private BO.BOParcel CreateBOParcel(int id)
             {
-                BO.BOParcel newParc = new BO.BOParcel();
-                DalXml.DO.Parcel origParc = new DalXml.DO.Parcel();
-                try
+                lock (dataAccess)
                 {
-                    origParc = dataAccess.GetParcel(id);
-                }
-                //throw exception if not found..
-                catch (DalXml.DO.EXItemNotFoundException)
-                {
-                    throw new EXNotFoundPrintException("Parcel");
-                }
-                newParc.Id = origParc.Id;
-                newParc.Priority = (BO.Enum.Priorities)origParc.Priority;
-                newParc.Sender = new BO.BOCustomerInParcel(
-                    origParc.SenderId, dataAccess.GetCustomer(origParc.SenderId).Name);
-                newParc.Receiver = new BO.BOCustomerInParcel(
-                    origParc.ReceiverId, dataAccess.GetCustomer(origParc.ReceiverId).Name);
+                    BO.BOParcel newParc = new BO.BOParcel();
+                    DalXml.DO.Parcel origParc = new DalXml.DO.Parcel();
+                    try
+                    {
+                        origParc = dataAccess.GetParcel(id);
+                    }
+                    //throw exception if not found..
+                    catch (DalXml.DO.EXItemNotFoundException)
+                    {
+                        throw new EXNotFoundPrintException("Parcel");
+                    }
+                    newParc.Id = origParc.Id;
+                    newParc.Priority = (BO.Enum.Priorities)origParc.Priority;
+                    newParc.Sender = new BO.BOCustomerInParcel(
+                        origParc.SenderId, dataAccess.GetCustomer(origParc.SenderId).Name);
+                    newParc.Receiver = new BO.BOCustomerInParcel(
+                        origParc.ReceiverId, dataAccess.GetCustomer(origParc.ReceiverId).Name);
 
-                newParc.WeightCategory = (BO.Enum.WeightCategories)origParc.Weight;
-                newParc.TimeOfCreation = origParc.TimeCreated;
-                newParc.TimeOfAssignment = origParc.TimeAssigned;
-                newParc.TimeOfDelivery = origParc.TimeDelivered;
-                newParc.TimeOfCollection = origParc.TimePickedUp;
-                return newParc;
+                    newParc.WeightCategory = (BO.Enum.WeightCategories)origParc.Weight;
+                    newParc.TimeOfCreation = origParc.TimeCreated;
+                    newParc.TimeOfAssignment = origParc.TimeAssigned;
+                    newParc.TimeOfDelivery = origParc.TimeDelivered;
+                    newParc.TimeOfCollection = origParc.TimePickedUp;
+                    return newParc;
+                }
             }
 
             private BO.BOCustomerToList createBOCustToList(int _id)
             {
-                BO.BOCustomerToList newCustToList = new BO.BOCustomerToList();
-                DalXml.DO.Customer origCust = dataAccess.GetCustomer(_id);
-                newCustToList.Exists = origCust.Exists;
-                newCustToList.Id = origCust.Id;
-                newCustToList.CustomerName = origCust.Name;
-                newCustToList.Phone = origCust.Phone;
-                newCustToList.NumParcelsOnWayToCustomer = 0;
-                newCustToList.NumParcelsRecieved = 0;
-                newCustToList.NumParcelsSentDelivered = 0;
-                newCustToList.NumParcelsSentNotDelivered = 0;
-
-                foreach (var item in dataAccess.GetParcels())
+                lock (dataAccess)
                 {
-                    if (!item.Exists)
-                        continue;
-                    if (item.SenderId == newCustToList.Id) //if sent this parcel
+                    BO.BOCustomerToList newCustToList = new BO.BOCustomerToList();
+                    DalXml.DO.Customer origCust = dataAccess.GetCustomer(_id);
+                    newCustToList.Exists = origCust.Exists;
+                    newCustToList.Id = origCust.Id;
+                    newCustToList.CustomerName = origCust.Name;
+                    newCustToList.Phone = origCust.Phone;
+                    newCustToList.NumParcelsOnWayToCustomer = 0;
+                    newCustToList.NumParcelsRecieved = 0;
+                    newCustToList.NumParcelsSentDelivered = 0;
+                    newCustToList.NumParcelsSentNotDelivered = 0;
+
+                    foreach (var item in dataAccess.GetParcels())
                     {
-                        if (item.TimeDelivered == null)//if not delivered
-                            newCustToList.NumParcelsSentNotDelivered++;
-                        else  //if deliverd
-                            newCustToList.NumParcelsSentDelivered++;
+                        if (!item.Exists)
+                            continue;
+                        if (item.SenderId == newCustToList.Id) //if sent this parcel
+                        {
+                            if (item.TimeDelivered == null)//if not delivered
+                                newCustToList.NumParcelsSentNotDelivered++;
+                            else  //if deliverd
+                                newCustToList.NumParcelsSentDelivered++;
+                        }
+                        else if (item.ReceiverId == newCustToList.Id)
+                        {
+                            if (item.TimeDelivered == null) //if not delivered
+                                newCustToList.NumParcelsOnWayToCustomer++;
+                            else  //if delivered
+                                newCustToList.NumParcelsRecieved++;
+                        }
                     }
-                    else if (item.ReceiverId == newCustToList.Id)
-                    {
-                        if (item.TimeDelivered == null) //if not delivered
-                            newCustToList.NumParcelsOnWayToCustomer++;
-                        else  //if delivered
-                            newCustToList.NumParcelsRecieved++;
-                    }
+                    return newCustToList;
                 }
-                return newCustToList;
             }
+
             private BO.BODroneToList createBODroneToList(int _id)
             {
                 BO.BODroneToList newDroneToList = new BO.BODroneToList();
@@ -478,12 +498,10 @@ namespace BL
                 newDroneToList.MaxWeight = origBODrone.MaxWeight;
                 newDroneToList.Battery = origBODrone.Battery;
                 newDroneToList.Location = origBODrone.Location;
-                //if (origBODrone.ParcelInTransfer.Id == 0)
-                //    newDroneToList.IdOfParcelCarrying = 0;
-                //else
                 newDroneToList.IdOfParcelCarrying = origBODrone.ParcelInTransfer.Id;
                 return newDroneToList;
             }
+
             private BO.BOParcelToList createBOParcToList(int _id)
             {
                 BO.BOParcelToList newParcToList = new BO.BOParcelToList();
@@ -506,6 +524,7 @@ namespace BL
                     newParcToList.ParcelStatus = BO.Enum.ParcelStatus.created;
                return newParcToList;
             }
+
             private BO.BOStationToList createBOStationToList(int _id)
             {
                 BO.BOStationToList newStationToList = new BO.BOStationToList();
