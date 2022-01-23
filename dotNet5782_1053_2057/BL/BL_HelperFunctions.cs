@@ -20,48 +20,52 @@ namespace BL
 
             BO.BOLocation getClosestStationLoc(BO.BOLocation sourceLocation, bool needChargeSlot = false)
             {
-                //"needChargeSlots" --> if we need the station to have a free spot,
-                //then we send a parameter = true.
-                //otherwise, we can ignore this parameter
-
-                BO.BOLocation result = new BO.BOLocation(0, 0); //set to "null" to begin with..
-                
-                IEnumerable<DalXml.DO.Station> list = dataAccess.GetStations();
-
-                foreach (DalXml.DO.Station st in dataAccess.GetStations())
+                lock (dataAccess)
                 {
-                    //skip Stations with no available charging slots...
-                    if (needChargeSlot == true) //if we need the station to have a free slot
-                    {
-                        if (freeSpots(st) <= 0) //if there are no free spots in this station, we continue our loop
-                            continue;
-                    }
+                    //"needChargeSlots" --> if we need the station to have a free spot,
+                    //then we send a parameter = true.
+                    //otherwise, we can ignore this parameter
 
-                    BO.BOLocation checkThisStationLocation = new BO.BOLocation(st.Longitude, st.Latitude);
-                    if (HelpfulMethodsBL.GetDistance(sourceLocation, checkThisStationLocation) < HelpfulMethodsBL.GetDistance(sourceLocation, result))
+                    BO.BOLocation result = new BO.BOLocation(0, 0); //set to "null" to begin with..
+
+                    foreach (DalXml.DO.Station st in dataAccess.GetStations())
                     {
-                        result.Latitude = checkThisStationLocation.Latitude;
-                        result.Longitude = checkThisStationLocation.Longitude;
+                        //skip Stations with no available charging slots...
+                        if (needChargeSlot == true) //if we need the station to have a free slot
+                        {
+                            if (freeSpots(st) <= 0) //if there are no free spots in this station, we continue our loop
+                                continue;
+                        }
+
+                        BO.BOLocation checkThisStationLocation = new BO.BOLocation(st.Longitude, st.Latitude);
+                        if (HelpfulMethodsBL.GetDistance(sourceLocation, checkThisStationLocation) < HelpfulMethodsBL.GetDistance(sourceLocation, result))
+                        {
+                            result.Latitude = checkThisStationLocation.Latitude;
+                            result.Longitude = checkThisStationLocation.Longitude;
+                        }
                     }
+                    if (result.Latitude == 0 || result.Longitude == 0)
+                        if (needChargeSlot == true)
+                            throw new EXNoStationWithAvailChargingSlots();
+                        else
+                            throw new EXMiscException("Unknown exception - could not locate station");
+                    return result;
                 }
-                if (result.Latitude == 0 || result.Longitude == 0)
-                    if (needChargeSlot == true)
-                        throw new EXNoStationWithAvailChargingSlots();
-                    else
-                        throw new EXMiscException("Unknown exception - could not locate station");
-                return result;
             }
 
             DalXml.DO.Station getStationFromLoc(BO.BOLocation loc)
             {
-                IEnumerable<DalXml.DO.Station> stations = dataAccess.GetStations();
-                foreach (var item in stations)
+                lock (dataAccess)
                 {
-                    if (item.Longitude == loc.Longitude && item.Latitude == loc.Latitude)
-                        return item;
+                    IEnumerable<DalXml.DO.Station> stations = dataAccess.GetStations();
+                    foreach (var item in stations)
+                    {
+                        if (item.Longitude == loc.Longitude && item.Latitude == loc.Latitude)
+                            return item;
+                    }
+                    //throw exception! //not found;
+                    throw new EXNotFoundPrintException("Station");
                 }
-                //throw exception! //not found;
-                throw new EXNotFoundPrintException("Station");
             }
             BO.BOLocation getLocationOfCustomer(int customerId)
             {
@@ -138,108 +142,113 @@ namespace BL
 
             int freeSpots(DalXml.DO.Station st)
             {//returns 0 (or less) if not spots are free...
-                int numSpots = st.ChargeSlots;
-                foreach (DalXml.DO.DroneCharge drCharge in GetDroneCharges())
+                lock (dataAccess)
                 {
-                    if (st.Id == drCharge.StationId)
-                        numSpots--;
+                    int numSpots = st.ChargeSlots;
+                    foreach (DalXml.DO.DroneCharge drCharge in GetDroneCharges())
+                    {
+                        if (st.Id == drCharge.StationId)
+                            numSpots--;
+                    }
+                    return numSpots;
                 }
-                return numSpots;
             }
 
             int findClosestParcel(BO.BODrone droneCopy)
             {
-                //Explanation:
-                //(1) Only take the relevant Parcels (acc to Drone's max weight)
-                //(2) organize into 3 groups (by Priority), each group with 3 sub groups (by weight)
-                //(3) Traverse the parcels, beginning from best choice. if we can make the journey, take the parcel
-
-                //Initialize our 2D array:
-                //first dimension - organized by Parcel Priority
-                //second dimesion - organized by weight category - index 0: light, index 1: medium, index 2: heavy
-                List<DalXml.DO.Parcel>[,] parcels = new List<DalXml.DO.Parcel>[3, 3];
-                for (int i = 0; i < 3; i++)
+                lock (dataAccess)
                 {
-                    for (int j = 0; j < 3; j++)
-                    {
-                        parcels[i, j] = new List<DalXml.DO.Parcel>();
-                    }
-                }
-                const int REGULAR = 0, FAST = 1, URGENT = 2;
+                    //Explanation:
+                    //(1) Only take the relevant Parcels (acc to Drone's max weight)
+                    //(2) organize into 3 groups (by Priority), each group with 3 sub groups (by weight)
+                    //(3) Traverse the parcels, beginning from best choice. if we can make the journey, take the parcel
 
-                foreach (var origParcel in dataAccess.GetParcels())
-                {
-                    //(1) Take Relevant Parcels
-                    if ((origParcel.DroneId == 0 || origParcel.DroneId == null) 
-                        && (int)origParcel.Weight <= (int)droneCopy.MaxWeight) //if drone can hold parcel
+                    //Initialize our 2D array:
+                    //first dimension - organized by Parcel Priority
+                    //second dimesion - organized by weight category - index 0: light, index 1: medium, index 2: heavy
+                    List<DalXml.DO.Parcel>[,] parcels = new List<DalXml.DO.Parcel>[3, 3];
+                    for (int i = 0; i < 3; i++)
                     {
-                        //(2) Fill our 3 Arrays...each with 3 sub groups
-                        switch ((DalXml.DO.Priorities)origParcel.Priority)
+                        for (int j = 0; j < 3; j++)
                         {
-                            case DalXml.DO.Priorities.regular:
-                                if (origParcel.Weight == DalXml.DO.WeightCategories.light)
-                                    parcels[REGULAR, 0].Add(origParcel);
-                                if (origParcel.Weight == DalXml.DO.WeightCategories.medium)
-                                    parcels[REGULAR, 1].Add(origParcel);
-                                if (origParcel.Weight == DalXml.DO.WeightCategories.heavy)
-                                    parcels[REGULAR, 2].Add(origParcel);
-                                break;
-                            case DalXml.DO.Priorities.fast:
-                                if (origParcel.Weight == DalXml.DO.WeightCategories.light)
-                                    parcels[FAST, 0].Add(origParcel);
-                                if (origParcel.Weight == DalXml.DO.WeightCategories.medium)
-                                    parcels[FAST, 1].Add(origParcel);
-                                if (origParcel.Weight == DalXml.DO.WeightCategories.heavy)
-                                    parcels[FAST, 2].Add(origParcel);
-                                break;
-                            case DalXml.DO.Priorities.urgent:
-                                if (origParcel.Weight == DalXml.DO.WeightCategories.light)
-                                    parcels[URGENT, 0].Add(origParcel);
-                                if (origParcel.Weight == DalXml.DO.WeightCategories.medium)
-                                    parcels[URGENT, 1].Add(origParcel);
-                                if (origParcel.Weight == DalXml.DO.WeightCategories.heavy)
-                                    parcels[URGENT, 2].Add(origParcel);
-                                break;
-                            default:
-                                break;
+                            parcels[i, j] = new List<DalXml.DO.Parcel>();
                         }
                     }
+                    const int REGULAR = 0, FAST = 1, URGENT = 2;
 
-                }
-
-                //(3) traverse parcels, choose closest parcel
-                int closestParcelId = -1;
-                BO.BOLocation closestLoc = new BO.BOLocation(0, 0); //distance will be big..
-
-                for (int i = 2; i >= 0; i--) //i iterates thru parcel priority
-                {
-                    for (int j = 2; j >= 0; j--) //j iterates thru weight category
+                    foreach (var origParcel in dataAccess.GetParcels())
                     {
-                        foreach (DalXml.DO.Parcel parcel in parcels[i, j])
+                        //(1) Take Relevant Parcels
+                        if ((origParcel.DroneId == 0 || origParcel.DroneId == null)
+                            && (int)origParcel.Weight <= (int)droneCopy.MaxWeight) //if drone can hold parcel
                         {
-                            if (battNeededForJourey(droneCopy, getLocationOfCustomer(parcel.SenderId),
-                                getLocationOfCustomer(parcel.ReceiverId), (BO.Enum.WeightCategories)parcel.Weight) <= droneCopy.Battery)
-                            { //if drone can make the journey,
-
-                                //if this parcel is closer, replace the "closest Parcel":
-                                BO.BOLocation thisParcLoc = new BO.BOLocation(getLocationOfCustomer(parcel.SenderId).Longitude,
-                                    getLocationOfCustomer(parcel.SenderId).Latitude);
-
-                                if (HelpfulMethodsBL.GetDistance(droneCopy.Location, thisParcLoc) < HelpfulMethodsBL.GetDistance(droneCopy.Location, closestLoc))
-                                {
-                                    closestParcelId = parcel.Id;
-                                    closestLoc = thisParcLoc;
-                                }
+                            //(2) Fill our 3 Arrays...each with 3 sub groups
+                            switch ((DalXml.DO.Priorities)origParcel.Priority)
+                            {
+                                case DalXml.DO.Priorities.regular:
+                                    if (origParcel.Weight == DalXml.DO.WeightCategories.light)
+                                        parcels[REGULAR, 0].Add(origParcel);
+                                    if (origParcel.Weight == DalXml.DO.WeightCategories.medium)
+                                        parcels[REGULAR, 1].Add(origParcel);
+                                    if (origParcel.Weight == DalXml.DO.WeightCategories.heavy)
+                                        parcels[REGULAR, 2].Add(origParcel);
+                                    break;
+                                case DalXml.DO.Priorities.fast:
+                                    if (origParcel.Weight == DalXml.DO.WeightCategories.light)
+                                        parcels[FAST, 0].Add(origParcel);
+                                    if (origParcel.Weight == DalXml.DO.WeightCategories.medium)
+                                        parcels[FAST, 1].Add(origParcel);
+                                    if (origParcel.Weight == DalXml.DO.WeightCategories.heavy)
+                                        parcels[FAST, 2].Add(origParcel);
+                                    break;
+                                case DalXml.DO.Priorities.urgent:
+                                    if (origParcel.Weight == DalXml.DO.WeightCategories.light)
+                                        parcels[URGENT, 0].Add(origParcel);
+                                    if (origParcel.Weight == DalXml.DO.WeightCategories.medium)
+                                        parcels[URGENT, 1].Add(origParcel);
+                                    if (origParcel.Weight == DalXml.DO.WeightCategories.heavy)
+                                        parcels[URGENT, 2].Add(origParcel);
+                                    break;
+                                default:
+                                    break;
                             }
                         }
-                        if (closestParcelId != -1) //if we found a parcel that fits our criteria
-                            return closestParcelId;
-                        //else, j-- ; next weight category
                     }
-                    //i-- ; next parcel priority
-                }
 
-                return closestParcelId; //will return -1
+                    //(3) traverse parcels, choose closest parcel
+                    int closestParcelId = -1;
+                    BO.BOLocation closestLoc = new BO.BOLocation(0, 0); //distance will be big..
+
+                    for (int i = 2; i >= 0; i--) //i iterates thru parcel priority
+                    {
+                        for (int j = 2; j >= 0; j--) //j iterates thru weight category
+                        {
+                            foreach (DalXml.DO.Parcel parcel in parcels[i, j])
+                            {
+                                if (battNeededForJourey(droneCopy, getLocationOfCustomer(parcel.SenderId),
+                                    getLocationOfCustomer(parcel.ReceiverId), (BO.Enum.WeightCategories)parcel.Weight) <= droneCopy.Battery)
+                                { //if drone can make the journey,
+
+                                    //if this parcel is closer, replace the "closest Parcel":
+                                    BO.BOLocation thisParcLoc = new BO.BOLocation(getLocationOfCustomer(parcel.SenderId).Longitude,
+                                        getLocationOfCustomer(parcel.SenderId).Latitude);
+
+                                    if (HelpfulMethodsBL.GetDistance(droneCopy.Location, thisParcLoc) < HelpfulMethodsBL.GetDistance(droneCopy.Location, closestLoc))
+                                    {
+                                        closestParcelId = parcel.Id;
+                                        closestLoc = thisParcLoc;
+                                    }
+                                }
+                            }
+                            if (closestParcelId != -1) //if we found a parcel that fits our criteria
+                                return closestParcelId;
+                            //else, j-- ; next weight category
+                        }
+                        //i-- ; next parcel priority
+                    }
+
+                    return closestParcelId; //will return -1
+                }
             }
 
 
@@ -344,15 +353,18 @@ namespace BL
             }
             private IEnumerable<DalXml.DO.Parcel> getParcelListFromData(bool getDeleted = false)
             {
-                if (getDeleted)
-                    return dataAccess.GetParcels();
-                ObservableCollection<DalXml.DO.Parcel> res = new ObservableCollection<DalXml.DO.Parcel>();
-                foreach (var item in dataAccess.GetParcels())
+                lock (dataAccess)
                 {
-                    if (item.Exists)
-                        res.Add(item);
+                    if (getDeleted)
+                        return dataAccess.GetParcels();
+                    ObservableCollection<DalXml.DO.Parcel> res = new ObservableCollection<DalXml.DO.Parcel>();
+                    foreach (var item in dataAccess.GetParcels())
+                    {
+                        if (item.Exists)
+                            res.Add(item);
+                    }
+                    return res;
                 }
-                return res;
             }
 
             [MethodImpl(MethodImplOptions.Synchronized)]
@@ -452,8 +464,6 @@ namespace BL
                     return false;
             }
 
-
-
             //for printing these lists:
             [MethodImpl(MethodImplOptions.Synchronized)]
             public IEnumerable<BO.BOCustomerToList> GetCustToList()
@@ -466,6 +476,7 @@ namespace BL
                 }
                 return res;
             }
+
             [MethodImpl(MethodImplOptions.Synchronized)]
             public IEnumerable<BO.BOParcelToList> GetParcelToList()
             {
@@ -477,6 +488,7 @@ namespace BL
                 }
                 return res;
             }
+
             [MethodImpl(MethodImplOptions.Synchronized)]
             public IEnumerable<BO.BOStationToList> GetStationToList()
             {
@@ -487,6 +499,7 @@ namespace BL
                 }
                 return res;
             }
+
             [MethodImpl(MethodImplOptions.Synchronized)]
             public IEnumerable<BO.BOStation> GetStations()
             {
@@ -501,6 +514,7 @@ namespace BL
             {
                 return dataAccess.GetDroneCharges();
             }
+
             [MethodImpl(MethodImplOptions.Synchronized)]
             public IEnumerable<BO.BOParcelAtCustomer> GetBOParcelAtCustomerList(BO.BOCustomer customer)
             {
@@ -540,7 +554,6 @@ namespace BL
                 }
                 else if (bodrone.DroneStatus == BO.Enum.DroneStatus.InDelivery)
                 {
-
                     //if already pickuped up pkg
                     if (bodrone.Location == bodrone.ParcelInTransfer.PickupPoint)
                         return "At Customer " + bodrone.ParcelInTransfer.Sender.Name;
@@ -548,8 +561,6 @@ namespace BL
                         return "At Customer " + bodrone.ParcelInTransfer.Recipient.Name;
                     else
                         return findAllPossibleLoc(bodrone);
-                    
-
                 }
                 else if (bodrone.DroneStatus == BO.Enum.DroneStatus.Available)
                 {
@@ -561,21 +572,24 @@ namespace BL
 
             private string findAllPossibleLoc(BO.BODrone bodrone)
             {
-                //if at station - after charging
-                foreach (var station in dataAccess.GetStations())
+                lock (dataAccess)
                 {
-                    if (bodrone.Location.Longitude == station.Longitude
-                        && bodrone.Location.Latitude == station.Latitude)
-                        return "At Station " + station.Id.ToString();
+                    //if at station - after charging
+                    foreach (var station in dataAccess.GetStations())
+                    {
+                        if (bodrone.Location.Longitude == station.Longitude
+                            && bodrone.Location.Latitude == station.Latitude)
+                            return "At Station " + station.Id.ToString();
+                    }
+                    //if at customer
+                    foreach (var cust in dataAccess.GetCustomers())
+                    {
+                        if (bodrone.Location.Longitude == cust.Longitude
+                          && bodrone.Location.Latitude == cust.Latitude)
+                            return "At Customer " + cust.Name;
+                    }
+                    return "Could not locate..";
                 }
-                //if at customer
-                foreach (var cust in dataAccess.GetCustomers())
-                {
-                    if (bodrone.Location.Longitude == cust.Longitude
-                      && bodrone.Location.Latitude == cust.Latitude)
-                        return "At Customer " + cust.Name;
-                }
-                return "Could not locate..";
             }
 
             [MethodImpl(MethodImplOptions.Synchronized)]
@@ -610,7 +624,6 @@ namespace BL
                 } 
                 else // if drone not carrying parcel
                     return empty;
-
             }
             //end of class definition...
         }

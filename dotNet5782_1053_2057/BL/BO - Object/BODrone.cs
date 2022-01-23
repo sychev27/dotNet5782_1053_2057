@@ -57,8 +57,6 @@ namespace BL
                 }
             }
 
-
-
             public override string ToString()
             {
                 string res = "";
@@ -67,10 +65,12 @@ namespace BL
                 res += "Drone " + Id + " Model: " + Model + " \n";
                 res += "Battery: " + Math.Round(Battery, 2) + " \nStatus: " + DroneStatus + "\n";
                 res += "MaxWeight: " + MaxWeight + "\n";
-
+                res += "Longitude: " + Math.Round(Location.Longitude, 5)
+                    + " Latitude: " + Math.Round(Location.Latitude, 5) + "\n";
                 if ((ParcelInTransfer.Id != -1) && ParcelInTransfer.Id != 0)
                     res += ParcelInTransfer.ToString();
-
+                else
+                    res += "Not carrying a Parcel";
                 return res;
             }
 

@@ -24,19 +24,16 @@ namespace WpfApp1
     public partial class DroneWindow : Window
     {
         BL.BLApi.Ibl busiAccess;
-        //DroneStringViewModel currentDroneViewModel;
-        int thisDroneId; //field to allow window's function to retrieve bodrone from BL 
-        private readonly Object lockThisThread = new Object();     //used to lock threads
+        public int ThisDroneId; //field to allow window's function to retrieve bodrone from BL -- 
+        //this field is public because it is used by DroneListWindow
         private readonly BackgroundWorker workerForPLSimulator = new BackgroundWorker();
         bool simulatorOn = false;
-        //bool keepDroneCharging = false;
-        ObservableCollection<BL.BO.BODrone> droneList;
+        bool openedByDroneList = false;
         readonly int DELAY_BTW_STEPS = 500; //wait __ miliseconds between steps of 
-
-
-       
+        DroneListWindow parent; //the window which called this window
         
-        public DroneWindow(BL.BLApi.Ibl _busiAccess)//default CTOR - to Add a drone
+        //3 TYPES OF CONSTUCTORS:
+        public DroneWindow(BL.BLApi.Ibl _busiAccess)//default CTOR - to Add a drone - OPENED FROM DRONElIST
         {
             InitializeComponent();
             busiAccess = _busiAccess;
@@ -61,6 +58,50 @@ namespace WpfApp1
             tBlockBatteryInfo.Visibility = Visibility.Hidden;
 
         }
+        public DroneWindow(BL.BLApi.Ibl _busiAccess, 
+            BL.BO.BODrone _bodrone) //CTOR called by ParcelWindow, StationWindow - to VIEW drone
+        {
+            InitializeComponent();
+            busiAccess = _busiAccess;
+            
+            //updates DroneViewModel to display details
+            ThisDroneId = _bodrone.Id; 
+            displayBODrone(ThisDroneId);
+            
+
+            //edit buttons and text boxes for Update Window:
+            tBoxIdInput.IsReadOnly = true;
+            tBoxIdInput.BorderBrush = Brushes.Transparent;
+            tBoxStationIdInput.IsReadOnly = true;
+            tBoxStationIdInput.BorderBrush = Brushes.Transparent;
+            cmbWeightChoice.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.WeightCategories));
+            cmbWeightChoice.IsReadOnly = true;
+            cmbWeightChoice.IsEnabled = false;
+
+            HelpfulMethods.ChangeVisibilty(Visibility.Hidden, 
+                btnModifyDroneModel, btnAssignDroneToParcel, btnFreeDroneFromCharge, btnAddDrone,
+               btnPickupPkg, btnSendToCharge, btnDeliverPkg, btnEraseDrone, btnSimulator);
+        }
+        public DroneWindow(BL.BLApi.Ibl _busiAccess, BL.BO.BODrone _bodrone,  
+            DroneListWindow _parent) //CTOR called by DroneListWindow - to update a drone
+             : this(_busiAccess, _bodrone) //calls constructor for viewing..
+        {
+            parent = _parent;
+            openedByDroneList = true; //boolean value - used to keep window open, to prevent user 
+                                     // from opening many windows of same drone... 
+                                     //see comment at line __ of DroneListWindow.xaml.cs
+            //ALLOW UPDATES:
+            HelpfulMethods.ChangeVisibilty(Visibility.Visible,
+               btnModifyDroneModel, btnAssignDroneToParcel, btnFreeDroneFromCharge,
+              btnPickupPkg, btnSendToCharge, btnDeliverPkg, btnEraseDrone, btnSimulator);
+            //INITIALIZE BACKGROUNDWORKER FOR SIMULATOR
+            workerForPLSimulator.DoWork += worker_DoWork;
+            workerForPLSimulator.RunWorkerCompleted += worker_RunWorkerCompleted;
+            workerForPLSimulator.ProgressChanged += worker_ProgressChanged;
+            workerForPLSimulator.WorkerReportsProgress = true;
+            workerForPLSimulator.WorkerSupportsCancellation = true;
+        }
+         //BUTTONS:
         private void btnAddDrone_Click(object sender, RoutedEventArgs e)
         {
             //reset text color
@@ -132,59 +173,6 @@ namespace WpfApp1
            
             
         }
-
-      
-        //TO UPDATE A DRONE...
-        public DroneWindow(BL.BLApi.Ibl _busiAccess, BL.BO.BODrone _bodrone) //CTOR called by DroneListWindow
-        {
-            InitializeComponent();
-            busiAccess = _busiAccess;
-            
-            //updates DroneViewModel to display details
-            thisDroneId = _bodrone.Id; 
-            displayBODrone(thisDroneId);
-            
-
-            //edit buttons and text boxes for Update Window:
-            tBoxIdInput.IsReadOnly = true;
-            tBoxIdInput.BorderBrush = Brushes.Transparent;
-            tBoxStationIdInput.IsReadOnly = true;
-            tBoxStationIdInput.BorderBrush = Brushes.Transparent;
-            cmbWeightChoice.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.WeightCategories));
-            cmbWeightChoice.IsReadOnly = true;
-            cmbWeightChoice.IsEnabled = false;
-            btnAddDrone.IsEnabled = false;
-            btnAddDrone.Visibility = Visibility.Hidden;
-
-            //initialize BackGroundWorker for Simulator
-            workerForPLSimulator.DoWork += worker_DoWork;
-            workerForPLSimulator.RunWorkerCompleted += worker_RunWorkerCompleted;
-            workerForPLSimulator.ProgressChanged += worker_ProgressChanged;
-            workerForPLSimulator.WorkerReportsProgress = true;
-            workerForPLSimulator.WorkerSupportsCancellation = true;
-
-        }
-
-        public DroneWindow(BL.BLApi.Ibl _busiAccess, BL.BO.BODrone _bodrone, ObservableCollection<BL.BO.BODrone> _droneList)
-            : this( _busiAccess,_bodrone)
-        {
-            droneList = _droneList;
-        }
-      
-
-        private void displayBODrone(int _droneId) //updates this drone model
-        {
-                BL.BO.BODrone bodrone = busiAccess.GetBODrone(_droneId);
-                DataContext = createDroneViewModel(bodrone);
-                droneList = getBODronesAsObservable();
-            if(simulatorOn)
-            {
-                if (bodrone.DroneStatus == BL.BO.Enum.DroneStatus.Charging)
-                    HelpfulMethods.ChangeTextColor(Colors.Green, tBlockBatteryInfo);
-                else
-                    HelpfulMethods.ChangeTextColor(Colors.Black, tBlockBatteryInfo);
-            }
-        }
         private void btnModifyDroneModel_Click(object sender, RoutedEventArgs e)
         {
             int id;
@@ -197,136 +185,95 @@ namespace WpfApp1
         {
             try
             {
-                busiAccess.ChargeDrone(thisDroneId);
-                //keepDroneCharging = true;
-                //Thread newChargingThread = new Thread(chargeDroneThreadFunc);
-                //newChargingThread.Start();
+                busiAccess.ChargeDrone(ThisDroneId);
             }
             catch (BL.BLApi.EXDroneUnavailableException ex)
             {
-                errorMsg(ex.ToString());
+                HelpfulMethods.ErrorMsg(ex.ToString());
             }
-            displayBODrone(thisDroneId);
+            displayBODrone(ThisDroneId);
         }
-       
         private void btnFreeDroneFromCharge_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                busiAccess.FreeDrone(thisDroneId, DateTime.Now);
-                //keepDroneCharging = false;
+                busiAccess.FreeDrone(ThisDroneId, DateTime.Now);
             }
             catch (BL.BLApi.EXMiscException ex) //if drone is not charging
             {
-                errorMsg(ex.ToString());
+                HelpfulMethods.ErrorMsg(ex.ToString());
             }
-             displayBODrone(thisDroneId);
+             displayBODrone(ThisDroneId);
         }
         private void btnPickupPkg_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                busiAccess.PickupParcel(thisDroneId);
+                busiAccess.PickupParcel(ThisDroneId);
             }
             catch (BL.BLApi.EXDroneNotAssignedParcel ex)
             {
-                errorMsg(ex.ToString());
+                HelpfulMethods.ErrorMsg(ex.ToString());
             }
             catch (BL.BLApi.EXParcelAlreadyCollected ex)
             {
-                errorMsg(ex.ToString());
+                HelpfulMethods.ErrorMsg(ex.ToString());
             }
-            displayBODrone(thisDroneId);
+            displayBODrone(ThisDroneId);
         }
         private void btnAssignDroneToParcel_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                busiAccess.AssignParcel(thisDroneId);
+                busiAccess.AssignParcel(ThisDroneId);
             }
             catch (BL.BLApi.EXNoAppropriateParcel ex)
             {
-                errorMsg(ex.ToString());
+                HelpfulMethods.ErrorMsg(ex.ToString());
             }
             catch (BL.BLApi.EXDroneUnavailableException ex)
             {
-                errorMsg(ex.ToString());
+                HelpfulMethods.ErrorMsg(ex.ToString());
             }
-            displayBODrone(thisDroneId);
+            displayBODrone(ThisDroneId);
         }
         private void btnDeliverPkg_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                busiAccess.DeliverParcel(thisDroneId);
+                busiAccess.DeliverParcel(ThisDroneId);
             }
             catch (BL.BLApi.EXDroneNotAssignedParcel ex)
             {
-                errorMsg(ex.ToString());
+                HelpfulMethods.ErrorMsg(ex.ToString());
             }
             catch (BL.BLApi.EXParcelNotCollected ex)
             {
-                errorMsg(ex.ToString());
+                HelpfulMethods.ErrorMsg(ex.ToString());
             }
-            displayBODrone(thisDroneId);
+            displayBODrone(ThisDroneId);
         }
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            
-        }
-
-
-
-        private void errorMsg(string msg)
-        {
-            MessageBox.Show(msg, "Error",
-                   MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
-        }
-
         private void btnEraseDrone_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                busiAccess.EraseDrone(thisDroneId);
+                //no need to check if simulator is on. bec if it was, the btn would be disabled...
+                busiAccess.EraseDrone(ThisDroneId);
+                MessageBox.Show("Drone " + tBoxIdInput.Text + " Erased", "Success",
+                MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
+                Close();
             }
             catch (BL.BLApi.EXCantDltDroneWParc ex)
             {
                 HelpfulMethods.ErrorMsg(ex.ToString());
                 return;
             }
-
-            MessageBox.Show("Drone " + tBoxIdInput.Text + " Erased", "Success",
-                MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
-            Close();
         }
-        private ObservableCollection<BL.BO.BODrone> getBODronesAsObservable()
-        {
-            ObservableCollection<BL.BO.BODrone> res = new ObservableCollection<BL.BO.BODrone>();
-            foreach (var item in busiAccess.GetBODroneList(true))
-            {
-                res.Add(item);
-            }
-            return res;
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
 
         //SIMULATOR FUNCTIONS
         private void btnSimulator_Click(object sender, RoutedEventArgs e)
@@ -334,32 +281,42 @@ namespace WpfApp1
             if (simulatorOn == false)
             {
                 //TURN ON SIMULATOR
-                simulatorOn = true;
-                Thread newSimulatorThread = new Thread(beginSimulator);
-                newSimulatorThread.Start();
-                btnSimulator.Content = "End Simulator";
-                HelpfulMethods.ChangeVisibilty(Visibility.Hidden, btnFreeDroneFromCharge,
-                    btnSendToCharge, btnAssignDroneToParcel, btnPickupPkg,
-                    btnDeliverPkg, btnEraseDrone);
+                BeginSimulator();
             }
-
             else // if(simulatorOn == true)
             {
-                workerForPLSimulator.CancelAsync();
-                simulatorOn = false;
-                busiAccess.StopSimulator();
-                btnSimulator.Content = "Begin Simulator";
-                HelpfulMethods.ChangeVisibilty(Visibility.Visible, btnFreeDroneFromCharge,
-                    btnSendToCharge, btnAssignDroneToParcel, btnPickupPkg,
-                    btnDeliverPkg, btnEraseDrone);
+                StopSimulator();
             }
-            
+        }
+        public void BeginSimulator()//public function --> can be called by DroneListWindow
+        {
+            if (simulatorOn) //if similulator is already on..
+                return;
+            simulatorOn = true;
+            Thread newSimulatorThread = new Thread(beginSimulator);
+            newSimulatorThread.Start();
+            btnSimulator.Content = "End Simulator";
+            HelpfulMethods.ChangeVisibilty(Visibility.Hidden, btnFreeDroneFromCharge,
+                btnSendToCharge, btnAssignDroneToParcel, btnPickupPkg,
+                btnDeliverPkg, btnEraseDrone);
+        }
+        public void StopSimulator() //public function --> can be called by DroneListWindow
+        {
+            if (!simulatorOn) //if similulator is already off..
+                return; 
+            workerForPLSimulator.CancelAsync();
+            simulatorOn = false;
+            busiAccess.StopSimulator();
+            btnSimulator.Content = "Begin Simulator";
+            HelpfulMethods.ChangeVisibilty(Visibility.Visible, btnFreeDroneFromCharge,
+                btnSendToCharge, btnAssignDroneToParcel, btnPickupPkg,
+                btnDeliverPkg, btnEraseDrone);
         }
         private void worker_DoWork(object sender, DoWorkEventArgs e)
         {
             //this.Dispatcher.Invoke(() =>
             //{
-                busiAccess.BeginSimulator(thisDroneId);
+                busiAccess.BeginSimulator(ThisDroneId);
                 while (simulatorOn == true)
                 {
                     Thread.Sleep(DELAY_BTW_STEPS);
@@ -379,7 +336,7 @@ namespace WpfApp1
             this.Dispatcher.Invoke(() => //Invoke function ensures that
                                          //only one thread access this code block
             {
-                displayBODrone(thisDroneId);
+                displayBODrone(ThisDroneId);
             });
         }
         private void worker_RunWorkerCompleted(object sender,   RunWorkerCompletedEventArgs e)
@@ -390,14 +347,10 @@ namespace WpfApp1
         private void beginSimulator()
         {
             simulatorOn = true;
-            //https://stackoverflow.com/questions/5483565/how-to-use-wpf-background-worker
-            //https://wpf-tutorial.com/misc/multi-threading-with-the-backgroundworker/
-
-            workerForPLSimulator.RunWorkerAsync();             //<- begin backgroundWorker...
-            
-
+             workerForPLSimulator.RunWorkerAsync();             //<- begin backgroundWorker...
         }
-
+        
+        //OTHER FUNCTIONS
         private WpfApp1.DroneStringViewModel createDroneViewModel(BL.BO.BODrone origDrone)
         {
             WpfApp1.DroneStringViewModel newDrone = new WpfApp1.DroneStringViewModel();
@@ -415,6 +368,35 @@ namespace WpfApp1
             int stationId = busiAccess.GetStationIdOfBODrone(origDrone.Id);
             newDrone.StationId = (stationId != -1) ? stationId.ToString() : "Drone is not charging at a Station";
             return newDrone;
+        }
+        private void displayBODrone(int _droneId) //updates this drone model
+        //this function is called after any changes are made
+        {
+            BL.BO.BODrone bodrone = busiAccess.GetBODrone(_droneId);
+            DataContext = createDroneViewModel(bodrone); //set this drone for this window...
+            if (simulatorOn)
+            {
+                if (bodrone.DroneStatus == BL.BO.Enum.DroneStatus.Charging)
+                    HelpfulMethods.ChangeTextColor(Colors.Green, tBlockBatteryInfo);
+                else
+                    HelpfulMethods.ChangeTextColor(Colors.Black, tBlockBatteryInfo);
+            }
+        }
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            if (openedByDroneList)
+            {
+                if(simulatorOn) // keep window open, but hidden..
+                {
+                    e.Cancel = true;
+                    Hide(); //hides window instead of closing....- see comment at line 27 of DroneListWindow
+                }
+                else //close this window...
+                {
+                    parent.RemoveDroneWindow(ThisDroneId);
+                }             
+            }
+            parent.RefreshList(); //Refreshes list in DroneListWindow
         }
 
 
