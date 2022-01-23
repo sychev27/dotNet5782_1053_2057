@@ -325,7 +325,7 @@ namespace WpfApp1
         }
         private void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            this.Dispatcher.Invoke(() => //Invoke function ensures that
+            Dispatcher.Invoke(() => //Invoke function ensures that
                                          //only one thread access this code block
             {
                 displayBODrone(ThisDroneId);
@@ -386,9 +386,10 @@ namespace WpfApp1
                 else //close this window...
                 {
                     parent.RemoveDroneWindow(ThisDroneId);
-                }             
+                }
+                parent.RefreshList(); //Refreshes list in DroneListWindow
             }
-            parent.RefreshList(); //Refreshes list in DroneListWindow
+            
         }
 
 

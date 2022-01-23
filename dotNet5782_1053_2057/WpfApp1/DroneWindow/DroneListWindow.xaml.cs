@@ -149,17 +149,21 @@ namespace WpfApp1
         }
         public void RefreshList() //called to refresh...
         {
-            droneCollectionView = /*(CollectionView)*/CollectionViewSource.
-               GetDefaultView(busiAccess.GetBODroneList(true));
-            DataContext = droneCollectionView;
-            //DronesListView.ItemsSource = droneCollectionView;
-            if ((bool)!chkBoxGetErased.IsChecked)
-                droneCollectionView.Filter = filterOutErased;
-            else
-                droneCollectionView.Filter = null;
+            Dispatcher.Invoke(() => //Invoke function ensures that
+                                    //only one thread access this code block
+            {
+                droneCollectionView = CollectionViewSource.
+                GetDefaultView(busiAccess.GetBODroneList(true));
+                DataContext = droneCollectionView;
+                //DronesListView.ItemsSource = droneCollectionView;
+                if ((bool)!chkBoxGetErased.IsChecked)
+                    droneCollectionView.Filter = filterOutErased;
+                else
+                    droneCollectionView.Filter = null;
 
-            droneCollectionView.SortDescriptions.Add(new SortDescription
-                (nameof(BL.BO.BOParcelToList.Id), ListSortDirection.Ascending));
+                droneCollectionView.SortDescriptions.Add(new SortDescription
+                    (nameof(BL.BO.BOParcelToList.Id), ListSortDirection.Ascending));
+            });
         }
         private bool filterOutErased(object obj)
         {
@@ -174,15 +178,17 @@ namespace WpfApp1
         {
             if (!simulatorOn)
             {
-                workerToDisplayDroneList.RunWorkerAsync();
-
+                new Thread(beginSimulator).Start();
+                btnWatchSimulator.Content = "Stop Watching Drones";
             }
             else //if simulatorOn
-                ;
+            {
+                simulatorOn = false;
+                workerToDisplayDroneList.CancelAsync();
+                btnWatchSimulator.Content = "Watch Drone Simulator";
+                workerToDisplayDroneList.Dispose();
+            }
         }
-
-
-        // This event handler is where the time-consuming work is done.
         private void workerToDisplayDroneList_DoWork(object sender, DoWorkEventArgs e)
         {
             while(simulatorOn)
@@ -190,6 +196,11 @@ namespace WpfApp1
                 Thread.Sleep(DELAY_BTW_STEPS);
                 RefreshList();
             }
+        }
+        private void beginSimulator()
+        {
+            simulatorOn = true;
+            workerToDisplayDroneList.RunWorkerAsync();
         }
 
         //end of window
