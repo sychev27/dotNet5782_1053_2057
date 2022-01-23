@@ -11,9 +11,7 @@ namespace BL
     {
         public partial class BL : Ibl
         {
-
             //ADD
-
             [MethodImpl(MethodImplOptions.Synchronized)]
             public void AddDrone(int _id, string _model, DalXml.DO.WeightCategories _maxWeight, int _stationId)
             {
@@ -39,8 +37,8 @@ namespace BL
                                                      //nor Delivered in original Initializtion
                 listDrone.Add(boDrone);
                 AddDroneCharge(_id, _stationId);
-
             }
+
             [MethodImpl(MethodImplOptions.Synchronized)]
             public void AddCustomer(int _id, string _name, string _phone, double _longitude,
                     double _latitude)
@@ -53,12 +51,14 @@ namespace BL
                 DalXml.DO.Customer newCust = new DalXml.DO.Customer(_id, _name, _phone, _longitude, _latitude);
                 dataAccess.AddCustomer(newCust);
             }
+
             [MethodImpl(MethodImplOptions.Synchronized)]
             public void AddDroneCharge(int _droneId, int _stationId)
             {
                 DalXml.DO.DroneCharge newDroneCharge = new DalXml.DO.DroneCharge(_droneId, _stationId);
                 dataAccess.AddDroneCharge(newDroneCharge);
             }
+
             [MethodImpl(MethodImplOptions.Synchronized)]
             public void AddParcel(int _senderId, int _targetId, DalXml.DO.WeightCategories? _weight,
                              DalXml.DO.Priorities? _priority)// DateTime _requested, DateTime _scheduled)
@@ -67,6 +67,7 @@ namespace BL
                 DalXml.DO.Parcel dummy = new DalXml.DO.Parcel(_senderId, _targetId, _weight, _priority);
                 dataAccess.AddParcel(dummy);
             }
+
             [MethodImpl(MethodImplOptions.Synchronized)]
             public void AddStation(int _id, int _name, double _longitude, double _latitude, int _chargeSlots)
             {
@@ -78,6 +79,7 @@ namespace BL
                 DalXml.DO.Station dummy = new DalXml.DO.Station(_id, _name, _longitude, _latitude, _chargeSlots);
                 dataAccess.AddStation(dummy);
             }
+
             [MethodImpl(MethodImplOptions.Synchronized)]
             public void AddUser(string _username, string _password, int _id = -1)
             {
@@ -87,20 +89,12 @@ namespace BL
                         || item.Id == _id)
                         throw new EXUserAlreadyExists();
                 }
-
-
                 DalXml.DO.User newUser = new DalXml.DO.User();
                 newUser.Id = _id; // id = -1 for employees
                 newUser.Username = _username;
                 newUser.Password = _password;
                 dataAccess.AddUser(newUser);
             }
-
-
-
-
-
-
 
             //Modify
             [MethodImpl(MethodImplOptions.Synchronized)]
@@ -127,6 +121,7 @@ namespace BL
                     }
                 }
             }
+
             [MethodImpl(MethodImplOptions.Synchronized)]
             public void ModifyCust(int _id, string _name, string _phone)
             {
@@ -139,6 +134,7 @@ namespace BL
                     throw new EXNotFoundPrintException("Custumer");
                 }
             }
+
             [MethodImpl(MethodImplOptions.Synchronized)]
             public void ModifyStation(int _id, int _name, int _totalChargeSlots)
             {
@@ -151,13 +147,12 @@ namespace BL
                     throw new EXNotFoundPrintException("Station");
                 }
             }
+
             [MethodImpl(MethodImplOptions.Synchronized)]
             public void ModifyParcel(int _id, BO.Enum.Priorities? _priority)
             {
                 dataAccess.ModifyParcel(_id, (DalXml.DO.Priorities)_priority);
             }
-
-
 
             //UPDATE ACTIONS
             [MethodImpl(MethodImplOptions.Synchronized)]
@@ -190,8 +185,8 @@ namespace BL
                 droneCopy.ParcelInTransfer = createParcInTrans(droneCopy.Id, closestParcelId);
 
                 dataAccess.AssignDroneToParcel(droneId, closestParcelId);
-
             }
+
             [MethodImpl(MethodImplOptions.Synchronized)]
             public void PickupParcel(int droneId, bool dontUpdateBatteryOrLocation = false) //drone collects its pre-determined parcel 
             {
@@ -228,6 +223,7 @@ namespace BL
                 //throw Exception //parcel not collected!
                 throw new EXMiscException("Parcel not collected!");
             }
+
             [MethodImpl(MethodImplOptions.Synchronized)]
             public void DeliverParcel(int droneId, 
                 bool dontUpdateBatteryOrLocation = false) //drone delivers its pre-determined parcel
@@ -245,7 +241,6 @@ namespace BL
                      throw new EXDroneNotAssignedParcel();
                 if (!drone.ParcelInTransfer.Collected)
                     throw new EXParcelNotCollected();
-
 
                 //Deliver the Parcel, updating the bodrone's details accordingly
                 foreach (var bodrone in listDrone)
@@ -269,6 +264,7 @@ namespace BL
                 //throw Exception //parcel not delivered!
                 throw new EXMiscException("parcel not delivered!");
             }
+
             [MethodImpl(MethodImplOptions.Synchronized)]
             public void ChargeDrone(int droneId, bool dontUpdateBatteryOrLocation = false) //sends drone to available station
             {
@@ -295,9 +291,7 @@ namespace BL
                 {
                     throw;
                 }
-                //if successful, station's available charging slots update automatically
-               
-
+                //if successful, station's available charging slots update automatically            
                 if (dontUpdateBatteryOrLocation == true)
                     return;
                 drone.DroneStatus = global::BL.BO.Enum.DroneStatus.Charging;
@@ -306,9 +300,9 @@ namespace BL
                     throw new EXMiscException("not enough battery to make to closet station!");
     
                 drone.Battery -= battNededForDist(drone.Location, closestStationLoc);
-                drone.Location = closestStationLoc;
-                
+                drone.Location = closestStationLoc;               
             }
+
             [MethodImpl(MethodImplOptions.Synchronized)]
             public void FreeDrone(int droneId, DateTime timeLeftStation, 
                 bool dontUpdateBatteryOrLocation = false) //frees drone from station.. 
@@ -350,11 +344,8 @@ namespace BL
                 //otherwise, update battery...
                 bodrone.Battery += batteryGained;
                 if (bodrone.Battery > 100)
-                    bodrone.Battery = 100;
-                 
+                    bodrone.Battery = 100;                
             }
-
-
 
             //ERASE:
             [MethodImpl(MethodImplOptions.Synchronized)]
@@ -373,12 +364,6 @@ namespace BL
                     {
                         //UPDATES IN BL
                         item.Exists = false;
-
-                        //BO.BODrone copy = item;
-                        //listDrone.Remove(item);
-                        //copy.Exists = false;
-                        //listDrone.Add(copy);
-
                         //UPDATES IN DL
                         dataAccess.EraseDrone(droneId); 
                         if(item.DroneStatus == BO.Enum.DroneStatus.Charging)
@@ -389,6 +374,7 @@ namespace BL
                 }
                 throw new EXDroneNotFound();
             }
+
             [MethodImpl(MethodImplOptions.Synchronized)]
             public void EraseCustomer(int _id) //FUNCTION NOT COMPLETE!!!!
             {
@@ -424,11 +410,9 @@ namespace BL
                         return;
                     }
                 }
-
-
-
                 //erase customer from userlist!
             }
+
             [MethodImpl(MethodImplOptions.Synchronized)]
             public void EraseStation(int id)
             {
@@ -438,6 +422,7 @@ namespace BL
                     throw new EXCantDltStationWDroneCharging();
                 dataAccess.EraseStation(id);
             }
+
             [MethodImpl(MethodImplOptions.Synchronized)]
             public void EraseParcel(int parcelId)
             {
@@ -458,10 +443,6 @@ namespace BL
                     }
                 }
             }
-
-
         }
-
-
     }
 }

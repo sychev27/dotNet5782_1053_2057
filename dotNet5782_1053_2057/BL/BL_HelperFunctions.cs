@@ -49,11 +49,9 @@ namespace BL
                         throw new EXNoStationWithAvailChargingSlots();
                     else
                         throw new EXMiscException("Unknown exception - could not locate station");
-
-
                 return result;
-
             }
+
             DalXml.DO.Station getStationFromLoc(BO.BOLocation loc)
             {
                 IEnumerable<DalXml.DO.Station> stations = dataAccess.GetStations();
@@ -72,6 +70,7 @@ namespace BL
                             dataAccess.GetCustomer(customerId).Latitude);
                 return loc;
             }
+
             BO.BOLocation getLocationOfStation(int StationId)
             {
                 BO.BOLocation loc;
@@ -86,8 +85,6 @@ namespace BL
                 }
                 
                 return loc;
-
-
             }
 
             [MethodImpl(MethodImplOptions.Synchronized)]
@@ -100,7 +97,6 @@ namespace BL
                     if (drCharge.DroneId == droneId)
                         return drCharge.StationId;
                 }
-
                 //check if assigned at Station
                 IEnumerable<DalXml.DO.Station> stationList = dataAccess.GetStations();
                 foreach (DalXml.DO.Station st in stationList)//dataAccess.GetStations())
@@ -112,33 +108,6 @@ namespace BL
                 //if drone is not charging at station
                 return -1;
             }
-
-
-
-            //double getDistance(BO.BOLocation l1, BO.BOLocation l2)
-            //{
-            //    //(1) find diff in radians:
-            //    double diffLat = l1.Latitude - l2.Latitude;
-            //    double diffLong = l1.Longitude - l2.Longitude;
-            //    diffLat *= (Math.PI / 180);
-            //    diffLong *= (Math.PI / 180);
-
-            //    //(2)convert latitude to radians
-            //    double lat1 = l1.Latitude * (Math.PI / 180);
-            //    double lat2 = l2.Latitude * (Math.PI / 180);
-
-            //    //(3) use Haversine Formula
-            //    double Hav = Math.Pow(Math.Sin(diffLat / 2), 2) +
-            //       Math.Pow(Math.Sin(diffLong / 2), 2) *
-            //       Math.Cos(lat1) * Math.Cos(lat2);
-
-            //    //(4) Find distance in KM based on earth's radius
-            //    //d = 2*radius * ArcSin(Square(Hav))
-            //    double radius = 6371; //radius of Earth in km...
-            //    double distance = 2 * radius * Math.Asin(Math.Sqrt(Hav));
-
-            //    return distance;
-            //}
 
             double battNededForDist(BO.BOLocation start, BO.BOLocation finish, BO.Enum.WeightCategories? weight = null)
             {
@@ -160,17 +129,12 @@ namespace BL
                 BO.BOLocation Receiver, BO.Enum.WeightCategories weight)
             {
                 double totalBattery = 0;
-
                 totalBattery += battNededForDist(drone.Location, Sender, weight);                            //drone -> Sender
                 totalBattery += battNededForDist(Sender, Receiver, weight);                  //Sender -> Receiver
                 totalBattery += battNededForDist(Receiver, getClosestStationLoc(Receiver));//Receiver -> Station
 
                 return totalBattery;
-
             }
-
-
-
 
             int freeSpots(DalXml.DO.Station st)
             {//returns 0 (or less) if not spots are free...
@@ -201,9 +165,7 @@ namespace BL
                         parcels[i, j] = new List<DalXml.DO.Parcel>();
                     }
                 }
-
                 const int REGULAR = 0, FAST = 1, URGENT = 2;
-
 
                 foreach (var origParcel in dataAccess.GetParcels())
                 {
@@ -269,35 +231,16 @@ namespace BL
                                     closestLoc = thisParcLoc;
                                 }
                             }
-
                         }
                         if (closestParcelId != -1) //if we found a parcel that fits our criteria
                             return closestParcelId;
                         //else, j-- ; next weight category
-
                     }
                     //i-- ; next parcel priority
                 }
 
                 return closestParcelId; //will return -1
             }
-
-
-
-            //private IEnumerable<BO.BOParcelAtCustomer> getParcelsOfCustomer(int custId, bool Sender)
-            //{
-            //    //if Sender == true; return parcels Customer Sent
-            //    //else              return parcels Customer Received
-            //    List<BO.BOParcelAtCustomer> res = new List<BO.BOParcelAtCustomer>();
-            //    foreach (var item in dataAccess.getParcels())
-            //    {
-            //        if (item.SenderId == custId)
-            //            res.Add(createParcAtCust(dataAccess.getParcel(item.SenderId), Sender));
-            //    }
-
-            //    return res;
-            //}
-
 
 
             [MethodImpl(MethodImplOptions.Synchronized)]
@@ -322,21 +265,13 @@ namespace BL
                 {
                     if (_id == item.Id && item.Exists)
                     {
-                        return CreateBOCustomer(_id);
-                        
-                        //BO.BOCustomer boCustomer = new BO.BOCustomer();
-                        //boCustomer.Id = item.Id;
-                        //boCustomer.Name = item.Name;
-                        //boCustomer.Phone = item.Phone;
-                        //boCustomer.Location = new BO.BOLocation (item.Latitude, item.Longitude);
-                        //boCustomer.ListOfParcSent = getParcelsOfCustomer(item.Id, true);
-                        //boCustomer.ListOfParcReceived = getParcelsOfCustomer(item.Id, false);
-                        //return boCustomer;
+                        return CreateBOCustomer(_id);          
                     }
                 }
                 //throw exception!!!
                 throw new EXNotFoundPrintException("Customer");
             }
+
             [MethodImpl(MethodImplOptions.Synchronized)]
             public IEnumerable<BO.BOCustomer> GetAllBOCustomers()
             {
@@ -393,9 +328,6 @@ namespace BL
                     throw new BLApi.EXDroneNotFound();
             }
 
-
-
-
             [MethodImpl(MethodImplOptions.Synchronized)]
             public IEnumerable<BO.BODrone> GetBODroneList(bool getDeleted = false)
             {
@@ -423,7 +355,6 @@ namespace BL
                 return res;
             }
 
-
             [MethodImpl(MethodImplOptions.Synchronized)]
             public IEnumerable<BO.BODrone> GetSpecificDroneListStatus(int num)
             {
@@ -431,22 +362,16 @@ namespace BL
                 {
                     case 0:
                         {
-                            //Predicate<BO.BODrone> res = availableDrone;
-                            ////return listDrone.FindAll(res);
                             return new ObservableCollection<BO.BODrone>(GetBODroneList()
                                 .Where(x => x.DroneStatus == BO.Enum.DroneStatus.Available));
                         }
                     case 1:
                         {
-                            //Predicate<BO.BODrone> res = maintenanceDrone;
-                            //return listDrone.FindAll(res);
                             return new ObservableCollection<BO.BODrone>(GetBODroneList()
                                 .Where(x => x.DroneStatus == BO.Enum.DroneStatus.Charging));
                         }
                     case 2:
                         {
-                            //Predicate<BO.BODrone> res = inDeliveryDrone;
-                            //return listDrone.FindAll(res);
                             return new ObservableCollection<BO.BODrone>(GetBODroneList()
                                 .Where(x => x.DroneStatus == BO.Enum.DroneStatus.InDelivery));
                         }
@@ -462,8 +387,6 @@ namespace BL
                 {
                     case 0:
                         {
-                            //Predicate<BO.BODrone> res = lightDrone;
-                            //return listDrone.FindAll(res);
                             return new ObservableCollection<BO.BODrone>(GetBODroneList()
                                 .Where(x => x.MaxWeight == BO.Enum.WeightCategories.Light));
                         }
@@ -474,8 +397,6 @@ namespace BL
                         }
                     case 2:
                         {
-                            //Predicate<BO.BODrone> res = heavyDrone;
-                            //return listDrone.FindAll(res);
                             return new ObservableCollection<BO.BODrone>(GetBODroneList()
                                 .Where(x => x.MaxWeight == BO.Enum.WeightCategories.Heavy));
                         }
@@ -537,8 +458,6 @@ namespace BL
             [MethodImpl(MethodImplOptions.Synchronized)]
             public IEnumerable<BO.BOCustomerToList> GetCustToList()
             {
-
-
                 List<BO.BOCustomerToList> res = 
                     new List<BO.BOCustomerToList>();
                 foreach (var item in dataAccess.GetCustomers())
@@ -580,13 +499,6 @@ namespace BL
             }
             private IEnumerable<DalXml.DO.DroneCharge> GetDroneCharges()
             {
-                //List<DalXml.DO.DroneCharge> res = 
-               //     new List<DalXml.DO.DroneCharge>();
-               // foreach (var item in dataAccess.GetDroneCharges())
-                //{
-                //    if (item.Exists)
-                //        res.Add(item);
-                //}
                 return dataAccess.GetDroneCharges();
             }
             [MethodImpl(MethodImplOptions.Synchronized)]
@@ -599,49 +511,6 @@ namespace BL
                     lst.Add(item);
                 return lst;
             }
-
-
-            //public ObservableCollection<BO.BODroneToList> GetDroneToList()
-            //{
-            //    ObservableCollection<BO.BODroneToList> res = new ObservableCollection<BO.BODroneToList>();
-            //    foreach (var item in listDrone)
-            //    {
-            //        res.Add(createBODroneToList(item.Id));
-            //    }
-            //    return res;
-            //}
-            //public IEnumerable<BO.BOParcelToList> GetParcelsNotYetAssigned()
-            //{
-            //    List<BO.BOParcelToList> res = new List<BO.BOParcelToList>();
-            //    foreach (var item in GetParcelToList())
-            //    {
-            //        if (item.ParcelStatus == BO.Enum.ParcelStatus.created)
-            //            res.Add(item);
-            //    }
-            //    return res;
-            //}
-            //public IEnumerable<BO.BOStationToList> GetStationAvailChargeSlots()
-            //{
-            //    List<BO.BOStationToList> res = new List<BO.BOStationToList>();
-            //    foreach (var item in dataAccess.GetStations())
-            //    {
-            //        if (freeSpots(item) > 0)
-            //            res.Add(createBOStationToList(item.Id));
-            //    }
-            //    return res;
-            //}
-
-            //public string GetBODroneModel(int id)
-            //{
-            //    return GetBODrone(id).Model;
-            //}
-            //public BO.Enum.WeightCategories GetBoDroneMaxWeight(int id)
-            //{
-            //    return GetBODrone(id).MaxWeight;
-            //}
-
-
-
 
             [MethodImpl(MethodImplOptions.Synchronized)]
             public bool droneIdExists(int id)
@@ -690,7 +559,6 @@ namespace BL
                 return "Could not locate..";
             }
 
-
             private string findAllPossibleLoc(BO.BODrone bodrone)
             {
                 //if at station - after charging
@@ -710,9 +578,6 @@ namespace BL
                 return "Could not locate..";
             }
 
-
-
-
             [MethodImpl(MethodImplOptions.Synchronized)]
             public int GetIdOfUser(string _username, string _password)
             {
@@ -727,6 +592,7 @@ namespace BL
                 //if did not find username at all
                 throw new EXUsernameNotFound();
             }
+
             [MethodImpl(MethodImplOptions.Synchronized)]
             public double GetElectricityRate(BO.BODrone bodrone)
             {
@@ -746,12 +612,6 @@ namespace BL
                     return empty;
 
             }
-
-
-
-
-
-
             //end of class definition...
         }
     }
