@@ -45,7 +45,7 @@
             <Button Grid.Column="3" x:Name="btnAddDrone1" Content="Add new drone" Grid.Row="1" Margin ="7,7,7,7"  FontSize="16" Click="btnAddDrone1_Click"/>
             <Button Grid.Column="0" x:Name="btnClose" Content="Close" Grid.Row="1" Margin ="7,7,7,7" FontSize="18" Click="btnClose_Click" RenderTransformOrigin="0.5,0.5"/>
             <CheckBox Grid.Column="1" x:Name="chkBoxGetErased" Content="Include Erased Drones" Grid.Row="1" Margin ="7,7,7,7" Checked="chkBoxGetErased_Checked" Unchecked="chkBoxGetErased_UnChecked"/>
-            <Button x:Name="btnWatchSimulator" Content="Watch Drone Simulator" Grid.Column="2" Grid.Row="1" Margin ="7,7,7,7" />
+            <Button x:Name="btnWatchSimulator" Content="Watch Drone Simulator" Grid.Column="2" Grid.Row="1" Margin ="7,7,0,7" HorizontalAlignment="Left" Width="196" Click="btnWatchSimulator_Click" />
         </Grid>
     </Grid>
 </Window>

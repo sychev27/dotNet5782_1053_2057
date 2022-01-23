@@ -10,6 +10,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.ComponentModel;
+using System.Threading;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
@@ -23,14 +24,19 @@ namespace WpfApp1
     {
         BL.BLApi.Ibl busiAccess;
         public ICollectionView droneCollectionView { get; set; }
-
         /// <summaryOflistDroneWindows>
         /// -Holds the open windows of each drone, to ensure that user does not open 2 windows of the same drone.
         /// -If a drone's Simulator is on, the DroneWindow will not close, but rather will be hidden
         /// -If the DroneListWindow is closed, all simulators are stopped, and the all DroneWindows are closed
         /// </summary>
         List<DroneWindow> openDroneWindows = new List<DroneWindow>();
-        
+        //for simulator:
+        bool simulatorOn = false;
+        readonly BackgroundWorker workerToDisplayDroneList = new BackgroundWorker();
+        readonly int DELAY_BTW_STEPS = 2000;  // ___ miliseconds
+
+
+
         //CTOR:
         public DroneListWindow(BL.BLApi.Ibl busiAccess1)
         {
@@ -40,6 +46,13 @@ namespace WpfApp1
             RefreshList();
             StatusSelector1.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.DroneStatus));
             StatusSelector2.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.WeightCategories));
+
+            //INITIALIZE BACKGROUNDWORKER FOR SIMULATOR
+            workerToDisplayDroneList.DoWork += workerToDisplayDroneList_DoWork;
+            //workerToDisplayDroneList.RunWorkerCompleted += workerToDisplayDroneList_RunWorkerCompleted;
+            //workerToDisplayDroneList.ProgressChanged += workerToDisplayDroneList_ProgressChanged;
+            //workerToDisplayDroneList.WorkerReportsProgress = true;
+            workerToDisplayDroneList.WorkerSupportsCancellation = true;
         }
         //BUTTONS, USER INTERFAFCE:
         private void StatusSelector1_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -156,8 +169,28 @@ namespace WpfApp1
             }
             else return false;
         }
-        
-        
+        //SIMULATOR FUNCTIONS -- TO REFRESH DRONELIST EVERY FEW SECONDS..
+        private void btnWatchSimulator_Click(object sender, RoutedEventArgs e)
+        {
+            if (!simulatorOn)
+            {
+                workerToDisplayDroneList.RunWorkerAsync();
+
+            }
+            else //if simulatorOn
+                ;
+        }
+
+
+        // This event handler is where the time-consuming work is done.
+        private void workerToDisplayDroneList_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while(simulatorOn)
+            {
+                Thread.Sleep(DELAY_BTW_STEPS);
+                RefreshList();
+            }
+        }
 
         //end of window
     }

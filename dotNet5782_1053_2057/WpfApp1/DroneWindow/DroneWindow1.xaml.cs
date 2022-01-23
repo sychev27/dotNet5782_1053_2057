@@ -25,11 +25,13 @@ namespace WpfApp1
     {
         BL.BLApi.Ibl busiAccess;
         public int ThisDroneId; //field to allow window's function to retrieve bodrone from BL -- 
-        //this field is public because it is used by DroneListWindow
+                                //this field is public because it is used by DroneListWindow
+        //SIMULATOR FIELDS:
         private readonly BackgroundWorker workerForPLSimulator = new BackgroundWorker();
         bool simulatorOn = false;
-        bool openedByDroneList = false;
         readonly int DELAY_BTW_STEPS = 500; //wait __ miliseconds between steps of 
+       //FIELDS TO ALLOW OPENING MULTIPLE DRONEWINDOWS SIMOULTANEOUSLY
+        bool openedByDroneList = false; 
         DroneListWindow parent; //the window which called this window
         
         //3 TYPES OF CONSTUCTORS:
@@ -314,22 +316,12 @@ namespace WpfApp1
         }
         private void worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            //this.Dispatcher.Invoke(() =>
-            //{
                 busiAccess.BeginSimulator(ThisDroneId);
                 while (simulatorOn == true)
                 {
                     Thread.Sleep(DELAY_BTW_STEPS);
-                    //busiAccess.UpdateSimulator();
-                    //int percentage = 5;// busiAccess.GetDroneJourneyPercentage(droneId);
-                    workerForPLSimulator.ReportProgress(1/*percentage++*/);
-                    
+                    workerForPLSimulator.ReportProgress(1);
                 }
-
-               
-            //});
-
-           
         }
         private void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
@@ -346,7 +338,7 @@ namespace WpfApp1
         }
         private void beginSimulator()
         {
-            simulatorOn = true;
+             simulatorOn = true;
              workerForPLSimulator.RunWorkerAsync();             //<- begin backgroundWorker...
         }
         
