@@ -389,7 +389,6 @@ namespace WpfApp1
                 }
                 parent.RefreshList(); //Refreshes list in DroneListWindow
             }
-            
         }
 
 

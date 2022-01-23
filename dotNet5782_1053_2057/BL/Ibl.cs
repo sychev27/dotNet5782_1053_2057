@@ -68,7 +68,6 @@ namespace BL
 
             //SIMULATOR
             void BeginSimulator(int droneId/*, Action<int> updatesToDo, Func<bool> stopSimulator*/);
-            public void UpdateSimulator(); //-> called every few seconds... moves Drone along journey
             void StopSimulator();
 
             //end of interface

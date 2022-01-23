@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,21 +14,19 @@ namespace BL
         {
 
             //SIMULATOR
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public void BeginSimulator(int droneId/*, Action<int> updatesToDo, Func<bool> stopSimulato*/)
             {
-                new Thread(() => { be(droneId); }).Start();
+                new Thread(() => { wrapperFunction(droneId); }).Start();
             }
-            public void be(int droneId)
+            public void wrapperFunction(int droneId) //allows us to use a thread with a parameter..
             {
                 //calls the CTOR - creates new, unique simulator every time..
                 //"sim" is saved as a field of the BL object
                 sim = new SimulatorBL(this, droneId);
                 sim.StartSimulator();
             }
-            public void UpdateSimulator()
-            {
-                //sim.UpdateSimulator();
-            }
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public void StopSimulator()
             {
                 sim.StopSimulator();

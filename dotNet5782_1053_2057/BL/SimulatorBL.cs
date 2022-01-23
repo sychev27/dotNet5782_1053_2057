@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 using static BL.BLApi.BL; //added acc to the instructions...
 using System.Threading;
+using System.Runtime.CompilerServices;
 using BL.BO;
 
 
@@ -36,6 +37,7 @@ namespace BL
         bool simulatorOn;
 
 
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public SimulatorBL(BL.BLApi.Ibl _busiAccess, int _droneId) //CTOR -
         //creates new simulator for every drone requested - allowing multiple simulators at once
         {
@@ -50,6 +52,7 @@ namespace BL
             workerForBLSimulator.RunWorkerCompleted += worker_RunWorkerCompleted;
             workerForBLSimulator.WorkerSupportsCancellation = true;
         }
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void StartSimulator()
         {
             //begin simulator:
@@ -58,6 +61,7 @@ namespace BL
             resetCurrentTimeAndLocation(bodrone);
             workerForBLSimulator.RunWorkerAsync();
         }
+        [MethodImpl(MethodImplOptions.Synchronized)]
         public void StopSimulator()
         {
             workerForBLSimulator.CancelAsync();
@@ -69,7 +73,7 @@ namespace BL
             while (simulatorOn)
             {
                 Thread.Sleep(DELAY_EACH_STEP); 
-                UpdateSimulator();
+                updateSimulator();
             }
         }
         private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -87,7 +91,7 @@ namespace BL
         /// chargeDrone(), dronestatus->charging, journey, arrive at station, charge till battery == 100.
         /// freeDrone(), dronestatus -> available
         /// </summaryOfUpdateSimulator>
-        void UpdateSimulator() //called every iteration
+        private void updateSimulator() //called every iteration
         {
             BL.BO.BODrone bodrone = busiAccess.GetBODrone(droneId); //receives drone by reference...
             BL.BO.BOLocation destination;
