@@ -5,7 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.ComponentModel; 
+using System.ComponentModel;
+using System.Collections.ObjectModel;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -29,7 +30,7 @@ namespace WpfApp1
         private readonly BackgroundWorker workerForPLSimulator = new BackgroundWorker();
         bool simulatorOn = false;
         //bool keepDroneCharging = false;
-
+        ObservableCollection<BL.BO.BODrone> droneList;
         readonly int DELAY_BTW_STEPS = 500; //wait __ miliseconds between steps of 
 
 
@@ -163,10 +164,19 @@ namespace WpfApp1
             workerForPLSimulator.WorkerSupportsCancellation = true;
 
         }
+
+        public DroneWindow(BL.BLApi.Ibl _busiAccess, BL.BO.BODrone _bodrone, ObservableCollection<BL.BO.BODrone> _droneList)
+            : this( _busiAccess,_bodrone)
+        {
+            droneList = _droneList;
+        }
+      
+
         private void displayBODrone(int _droneId) //updates this drone model
         {
                 BL.BO.BODrone bodrone = busiAccess.GetBODrone(_droneId);
                 DataContext = createDroneViewModel(bodrone);
+                droneList = getBODronesAsObservable();
             if(simulatorOn)
             {
                 if (bodrone.DroneStatus == BL.BO.Enum.DroneStatus.Charging)
@@ -292,6 +302,15 @@ namespace WpfApp1
             MessageBox.Show("Drone " + tBoxIdInput.Text + " Erased", "Success",
                 MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
             Close();
+        }
+        private ObservableCollection<BL.BO.BODrone> getBODronesAsObservable()
+        {
+            ObservableCollection<BL.BO.BODrone> res = new ObservableCollection<BL.BO.BODrone>();
+            foreach (var item in busiAccess.GetBODroneList(true))
+            {
+                res.Add(item);
+            }
+            return res;
         }
 
 

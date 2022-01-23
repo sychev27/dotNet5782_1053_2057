@@ -57,6 +57,7 @@ namespace WpfApp1
        private void btnAddDrone1_Click(object sender, RoutedEventArgs e)
        {
             new DroneWindow(busiAccess).ShowDialog();
+
             //keep previous filters
             //int index = StatusSelector1.SelectedIndex;
             //DronesListView.ItemsSource = busiAccess.GetSpecificDroneListStatus(index);
@@ -75,7 +76,8 @@ namespace WpfApp1
             BL.BO.BODrone drone = DronesListView.SelectedItem as BL.BO.BODrone;
             //check if drone is erased:
             if (drone.Exists)
-                new DroneWindow(busiAccess, drone).ShowDialog();
+                new DroneWindow(busiAccess, drone).Show();
+            //new DroneWindow(busiAccess, drone).ShowDialog();
             else
             {
                 HelpfulMethods.ErrorMsg("Drone is deleted"); 
