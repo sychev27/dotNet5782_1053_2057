@@ -128,7 +128,7 @@ namespace WpfApp1
             {
                 CloseAndStopSimulatorAllDroneWindows();
                 //no need to release parent's ptr to DroneListWindow
-                return;
+                return; 
             }
             MessageBoxResult result =
              MessageBox.Show( "Closing this window will close all drone windows, and stop all simulators. " +
