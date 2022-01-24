@@ -74,8 +74,8 @@ namespace BL
         { 
             while (simulatorOn)
             {
-                Thread.Sleep(DELAY_EACH_STEP); 
                 updateSimulator();
+                Thread.Sleep(DELAY_EACH_STEP); 
             }
         }
         private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -211,7 +211,7 @@ namespace BL
             BO.BOLocation destination, double secondsTraveled) //UPDATES DRONE'S BATTERY, LOCATION, 
             //AND CHANGES "arrivedAtDestination" flag
         {
-            if(source == destination) //if drone begin the next journey, but was already at the first stop
+            if(source == destination) //if drone begins the next journey, but was already at the first stop
                 //(for example - if the drone delivered a parcel at Reuven, and the next mission was to pick up a parcel from reuven)
             {
                lock(busiAccess)
@@ -246,6 +246,9 @@ namespace BL
                 beginTimeForBattery = DateTime.Now;
                 double secondsInTravel = ts.TotalSeconds;
                 bodrone.Battery -= busiAccess.GetElectricityRate(bodrone) * secondsInTravel;
+
+                if (bodrone.Location.Longitude <30 || bodrone.Location.Latitude <30 || bodrone.Battery < 1)
+                    throw new Exception();
 
                 //(3) CHECK THAT ARRIVED AT DESTINATION
                 if ((longitudeDiff > 0                                     // if traveling in positive direction
