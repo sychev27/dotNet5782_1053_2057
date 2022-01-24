@@ -39,13 +39,17 @@ namespace WpfApp1
         bool watchSimulatorOn = false;
         readonly BackgroundWorker workerToDisplayDroneList = new BackgroundWorker();
         readonly int DELAY_BTW_STEPS = 2000;  // ___ miliseconds
+        //"parent" - allows us to ensure no other windows open simoultaneously with DronelistWindow, 
+        //except for MapWindow (to watch Simulator)
+        MainWindow parent;
 
 
 
         //CTOR:
-        public DroneListWindow(BL.BLApi.Ibl busiAccess1)
+        public DroneListWindow(BL.BLApi.Ibl _busiAccess, MainWindow _parent)
         {
-            busiAccess = busiAccess1;
+            busiAccess = _busiAccess;
+            parent = _parent;
             InitializeComponent();
             //listDrone = getDronesAsObservable();
             RefreshList();
@@ -130,6 +134,7 @@ namespace WpfApp1
             else //close the windows...
             {
                 CloseAndStopSimulatorAllWindows();
+                parent.CloseDroneListWindow();
             }
             //DroneListWindow closes automatically, no need to clear list..
         }
@@ -241,11 +246,12 @@ namespace WpfApp1
             }
         }
         private void workerToDisplayDroneList_DoWork(object sender, DoWorkEventArgs e)
+            //THREAD SLEEPS HERE
         {
             while(watchSimulatorOn)
             {
-                Thread.Sleep(DELAY_BTW_STEPS);
-                RefreshList();
+               Thread.Sleep(DELAY_BTW_STEPS);
+               RefreshList();
             }
         }
         private void beginWatchingSimulator()

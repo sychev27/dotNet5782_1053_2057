@@ -59,7 +59,19 @@ namespace BL
             simulatorOn = true;
             BL.BO.BODrone bodrone = busiAccess.GetBODrone(droneId);
             resetCurrentTimeAndLocation(bodrone);
-            workerForBLSimulator.RunWorkerAsync();
+            if (!workerForBLSimulator.IsBusy)
+            {
+                workerForBLSimulator.RunWorkerAsync();
+            }
+            else
+            {
+                while(workerForBLSimulator.IsBusy)
+                {
+                    Thread.Sleep(1000);
+                }
+                workerForBLSimulator.RunWorkerAsync();
+            }   
+            
         }
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void StopSimulator()
@@ -96,7 +108,7 @@ namespace BL
             BL.BO.BODrone bodrone = busiAccess.GetBODrone(droneId); //receives drone by reference...
             BL.BO.BOLocation destination;
 
-            lock (busiAccess)
+            if(Monitor.TryEnter(busiAccess, 300))
             {
                 switch (bodrone.DroneStatus)
                 {
@@ -186,6 +198,7 @@ namespace BL
                         break;
                 }
             }
+            
 
         }
         void resetCurrentTimeAndLocation(BL.BO.BODrone bodrone) //THREAD SLEEPS HERE... 
@@ -211,54 +224,62 @@ namespace BL
             if(source == destination) //if drone begin the next journey, but was already at the first stop
                 //(for example - if the drone delivered a parcel at Reuven, and the next mission was to pick up a parcel from reuven)
             {
-                bodrone.Location = destination;
-                arrivedAtDestination = true;
-                return;
-            }          
-            
-            //(1) UPDATE LOCATION:
-            
-            //all distances are measured in km
-            //function calculated total time needed to travel entire distance,
-            double totalDistance = HelpfulMethodsBL.GetDistance(source, destination);
-            double totalSecNeededForJourney = totalDistance / DRONESPEED;
-            //then drone calculates how many points of Longitude/Latitude to move the drone,
-            //based on time actually traveled
-            double longitudeDiff = destination.Longitude - source.Longitude; //<-can be negative...
-            double latitudeDiff = destination.Latitude - source.Latitude;    //<-can be negative...
-            double longitudeProportion = longitudeDiff / totalSecNeededForJourney;
-            double latitudeProportion = latitudeDiff / totalSecNeededForJourney;
-
-            bodrone.Location.Longitude += secondsTraveled * longitudeProportion;
-            bodrone.Location.Latitude += secondsTraveled * latitudeProportion;
-
-
-            //(2) UPDATE BATTERY:
-            TimeSpan ts = DateTime.Now - beginTimeForBattery;
-            beginTimeForBattery = DateTime.Now;
-            double secondsInTravel = ts.TotalSeconds;
-            bodrone.Battery -= busiAccess.GetElectricityRate(bodrone) * secondsInTravel;
-
-            //(3) CHECK THAT ARRIVED AT DESTINATION
-            if ((longitudeDiff > 0                                     // if traveling in positive direction
-                && bodrone.Location.Longitude > destination.Longitude) //and we passed the location
-            ||
-                (longitudeDiff < 0                              //if traveling in negative direction
-               && bodrone.Location.Longitude < destination.Longitude)) //and we passed the location...
-            {
-                bodrone.Location = destination;
-                arrivedAtDestination = true;
+               if(Monitor.TryEnter(busiAccess, 300))
+                {
+                    bodrone.Location = destination;
+                    arrivedAtDestination = true;
+                    return;
+                }
             }
-            //we only need to check either longitude or latitude, because they are in sync...
 
+            if(Monitor.TryEnter(busiAccess, 300))
+            {
+                //(1) UPDATE LOCATION:
+
+                //all distances are measured in km
+                //function calculated total time needed to travel entire distance,
+                double totalDistance = HelpfulMethodsBL.GetDistance(source, destination);
+                double totalSecNeededForJourney = totalDistance / DRONESPEED;
+                //then drone calculates how many points of Longitude/Latitude to move the drone,
+                //based on time actually traveled
+                double longitudeDiff = destination.Longitude - source.Longitude; //<-can be negative...
+                double latitudeDiff = destination.Latitude - source.Latitude;    //<-can be negative...
+                double longitudeProportion = longitudeDiff / totalSecNeededForJourney;
+                double latitudeProportion = latitudeDiff / totalSecNeededForJourney;
+
+                bodrone.Location.Longitude += secondsTraveled * longitudeProportion;
+                bodrone.Location.Latitude += secondsTraveled * latitudeProportion;
+
+
+                //(2) UPDATE BATTERY:
+                TimeSpan ts = DateTime.Now - beginTimeForBattery;
+                beginTimeForBattery = DateTime.Now;
+                double secondsInTravel = ts.TotalSeconds;
+                bodrone.Battery -= busiAccess.GetElectricityRate(bodrone) * secondsInTravel;
+
+                //(3) CHECK THAT ARRIVED AT DESTINATION
+                if ((longitudeDiff > 0                                     // if traveling in positive direction
+                    && bodrone.Location.Longitude > destination.Longitude) //and we passed the location
+                ||
+                    (longitudeDiff < 0                              //if traveling in negative direction
+                   && bodrone.Location.Longitude < destination.Longitude)) //and we passed the location...
+                {
+                    bodrone.Location = destination;
+                    arrivedAtDestination = true;
+                }
+                //we only need to check either longitude or latitude, because they are in sync...
+            }
         }
         void moveDroneToDestination(BO.BODrone bodrone, BO.BOLocation destination
             ) //UPDATES DRONE'S LOCATION AND BATTERY
         {
-            double totalDistance = HelpfulMethodsBL.GetDistance(bodrone.Location, destination);
-            double totalSecondsNeededForJourney =  totalDistance / DRONESPEED;
-            bodrone.Battery -= totalSecondsNeededForJourney * busiAccess.GetElectricityRate(bodrone);
-            bodrone.Location = destination;
+            if(Monitor.TryEnter(busiAccess, 300))
+            {
+                double totalDistance = HelpfulMethodsBL.GetDistance(bodrone.Location, destination);
+                double totalSecondsNeededForJourney = totalDistance / DRONESPEED;
+                bodrone.Battery -= totalSecondsNeededForJourney * busiAccess.GetElectricityRate(bodrone);
+                bodrone.Location = destination;
+            }
         }
         void stopDroneJourney(int droneId)
         {

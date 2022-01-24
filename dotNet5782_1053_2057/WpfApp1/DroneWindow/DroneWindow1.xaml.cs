@@ -316,12 +316,14 @@ namespace WpfApp1
         }
         private void worker_DoWork(object sender, DoWorkEventArgs e)
         {
+            
                 busiAccess.BeginSimulator(ThisDroneId);
                 while (simulatorOn == true)
                 {
                     Thread.Sleep(DELAY_BTW_STEPS);
                     workerForPLSimulator.ReportProgress(1);
                 }
+             
         }
         private void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
