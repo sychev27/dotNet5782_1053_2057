@@ -81,7 +81,7 @@ namespace WpfApp1
         //HELPING FUNCTIONS:
         public void CloseDroneListWindow() //called by droneList window when it closes..
         {
-            droneListWindow.Close();
+            //droneListWindow.Close();
             droneListWindow = null;
         }
 

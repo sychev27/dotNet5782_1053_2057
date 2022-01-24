@@ -366,15 +366,18 @@ namespace WpfApp1
         private void displayBODrone(int _droneId) //updates this drone model
         //this function is called after any changes are made
         {
-            BL.BO.BODrone bodrone = busiAccess.GetBODrone(_droneId);
-            DataContext = createDroneViewModel(bodrone); //set this drone for this window...
-            if (simulatorOn)
+            Dispatcher.Invoke(() =>
             {
-                if (bodrone.DroneStatus == BL.BO.Enum.DroneStatus.Charging)
-                    HelpfulMethods.ChangeTextColor(Colors.Green, tBlockBatteryInfo);
-                else
-                    HelpfulMethods.ChangeTextColor(Colors.Black, tBlockBatteryInfo);
-            }
+                BL.BO.BODrone bodrone = busiAccess.GetBODrone(_droneId);
+                DataContext = createDroneViewModel(bodrone); //set this drone for this window...
+                if (simulatorOn)
+                {
+                    if (bodrone.DroneStatus == BL.BO.Enum.DroneStatus.Charging)
+                        HelpfulMethods.ChangeTextColor(Colors.Green, tBlockBatteryInfo);
+                    else
+                        HelpfulMethods.ChangeTextColor(Colors.Black, tBlockBatteryInfo);
+                }
+            });
         }
         private void Window_Closing(object sender, CancelEventArgs e)
         {

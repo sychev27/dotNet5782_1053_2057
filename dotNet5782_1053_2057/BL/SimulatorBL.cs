@@ -59,18 +59,19 @@ namespace BL
             simulatorOn = true;
             BL.BO.BODrone bodrone = busiAccess.GetBODrone(droneId);
             resetCurrentTimeAndLocation(bodrone);
-            if (!workerForBLSimulator.IsBusy)
-            {
-                workerForBLSimulator.RunWorkerAsync();
-            }
-            else
-            {
-                while(workerForBLSimulator.IsBusy)
-                {
-                    Thread.Sleep(1000);
-                }
-                workerForBLSimulator.RunWorkerAsync();
-            }   
+            workerForBLSimulator.RunWorkerAsync(); 
+            //if (!workerForBLSimulator.IsBusy)
+            //{
+                
+            //}
+            //else
+            //{
+            //    while(workerForBLSimulator.IsBusy)
+            //    {
+            //        Thread.Sleep(1000);
+            //    }
+            //    workerForBLSimulator.RunWorkerAsync();
+            //}   
             
         }
         [MethodImpl(MethodImplOptions.Synchronized)]
@@ -108,7 +109,7 @@ namespace BL
             BL.BO.BODrone bodrone = busiAccess.GetBODrone(droneId); //receives drone by reference...
             BL.BO.BOLocation destination;
 
-            if(Monitor.TryEnter(busiAccess, 300))
+            lock(busiAccess)
             {
                 switch (bodrone.DroneStatus)
                 {
@@ -224,7 +225,7 @@ namespace BL
             if(source == destination) //if drone begin the next journey, but was already at the first stop
                 //(for example - if the drone delivered a parcel at Reuven, and the next mission was to pick up a parcel from reuven)
             {
-               if(Monitor.TryEnter(busiAccess, 300))
+               lock(busiAccess)
                 {
                     bodrone.Location = destination;
                     arrivedAtDestination = true;
@@ -232,7 +233,7 @@ namespace BL
                 }
             }
 
-            if(Monitor.TryEnter(busiAccess, 300))
+            lock(busiAccess)
             {
                 //(1) UPDATE LOCATION:
 
@@ -273,7 +274,7 @@ namespace BL
         void moveDroneToDestination(BO.BODrone bodrone, BO.BOLocation destination
             ) //UPDATES DRONE'S LOCATION AND BATTERY
         {
-            if(Monitor.TryEnter(busiAccess, 300))
+            lock(busiAccess)
             {
                 double totalDistance = HelpfulMethodsBL.GetDistance(bodrone.Location, destination);
                 double totalSecondsNeededForJourney = totalDistance / DRONESPEED;
