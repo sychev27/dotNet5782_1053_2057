@@ -38,7 +38,6 @@ namespace WpfApp1
                 item.Visibility = vis;
             }
         }
-        
         public static void ChangeVisibilty(System.Windows.Visibility vis, params Button[] listButton)
         {
             //function hides or shows buttons, AND updates whether or not they are enabled
@@ -55,7 +54,10 @@ namespace WpfApp1
                     item.IsEnabled = true;
                     item.Visibility = vis;
                 }
-
+        }
+        public static bool IsOpen(this Window window)
+        {
+            return Application.Current.Windows.Cast<Window>().Any(x => x == window);
         }
 
 

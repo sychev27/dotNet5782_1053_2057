@@ -58,7 +58,6 @@ namespace WpfApp1
 
             btnWatchSimulator.IsEnabled = false;
 
-
             //INITIALIZE BACKGROUNDWORKER FOR SIMULATOR
             workerToDisplayDroneList.DoWork += workerToDisplayDroneList_DoWork;
             //workerToDisplayDroneList.RunWorkerCompleted += workerToDisplayDroneList_RunWorkerCompleted;
@@ -125,9 +124,14 @@ namespace WpfApp1
         //HELPING FUNCTIONS
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            
+            if(parent.IsClosing) //if User is closing the MainWindow, we prevent this MsgBox from popping up...
+            {
+                CloseAndStopSimulatorAllDroneWindows();
+                //no need to release parent's ptr to DroneListWindow
+                return;
+            }
             MessageBoxResult result =
-              MessageBox.Show( "Closing this window will close all drone windows, and stop all simulators. " +
+             MessageBox.Show( "Closing this window will close all drone windows, and stop all simulators. " +
               "Do you want to close this window?" ,  
               "Notice", MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (result == MessageBoxResult.No)

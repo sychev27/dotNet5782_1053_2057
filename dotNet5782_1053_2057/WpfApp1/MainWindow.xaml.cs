@@ -26,6 +26,7 @@ namespace WpfApp1
         BL.BLApi.Ibl busiAccess;          // <-- allows us to access business logic layer..
         DroneListWindow droneListWindow;  // <-- used to prevent user from opening other windows while
                                           // the droneList window is open
+        public bool IsClosing = false;         //<-- used to communicate to DroneListwWindow that this window is closing...
 
         public MainWindow(BL.BLApi.Ibl _busiAccess) //CTOR
         {
@@ -89,6 +90,7 @@ namespace WpfApp1
             //ensure that window is not left open..
             if (droneListWindow != null)
             {
+                IsClosing = true;
                 droneListWindow.Close();
                 droneListWindow = null;
             } 
