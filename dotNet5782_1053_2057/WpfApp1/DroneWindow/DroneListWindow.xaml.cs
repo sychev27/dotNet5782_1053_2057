@@ -122,6 +122,7 @@ namespace WpfApp1
         //HELPING FUNCTIONS
         private void Window_Closing(object sender, CancelEventArgs e)
         {
+            
             MessageBoxResult result =
               MessageBox.Show( "Closing this window will close all drone windows, and stop all simulators. " +
               "Do you want to close this window?" ,  
@@ -134,7 +135,7 @@ namespace WpfApp1
             else //close the windows...
             {
                 CloseAndStopSimulatorAllDroneWindows();
-                parent.CloseDroneListWindow();
+                parent.ReleasePtrToDroneListWindow();
             }
             //DroneListWindow closes automatically, no need to clear list..
         }

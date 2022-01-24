@@ -377,6 +377,8 @@ namespace WpfApp1
                     else
                         HelpfulMethods.ChangeTextColor(Colors.Black, tBlockBatteryInfo);
                 }
+                if (parent != null)
+                    parent.RefreshList();
             });
         }
         private void Window_Closing(object sender, CancelEventArgs e)

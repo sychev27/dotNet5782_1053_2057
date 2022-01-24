@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Text;
 using System.Threading.Tasks;
 namespace BL
@@ -256,11 +257,12 @@ namespace BL
             public BO.BODrone GetBODrone(int _id) //return reference... 
                                                   //only returns if drone Exists
             {
+                
                 foreach (var item in listDrone)
                 {
                     if (_id == item.Id && item.Exists)
                         return item;
-                }
+                }   
                 //throw exception!!!
                 throw new EXDroneNotFound() ;
                 //return null;
