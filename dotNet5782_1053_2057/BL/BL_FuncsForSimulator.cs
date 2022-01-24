@@ -23,13 +23,21 @@ namespace BL
             {
                 //calls the CTOR - creates new, unique simulator every time..
                 //"sim" is saved as a field of the BL object
-                sim = new SimulatorBL(this, droneId);
+                SimulatorBL sim =  new SimulatorBL(this, droneId);
                 sim.StartSimulator();
+                listSimulators.Add(sim);
             }
             [MethodImpl(MethodImplOptions.Synchronized)]
-            public void StopSimulator()
+            public void StopSimulator(int _droneId)
             {
-                sim.StopSimulator();
+                foreach (var item in listSimulators)
+                {
+                    if(item.DroneId == _droneId)
+                    {
+                        item.StopSimulator();
+                        return;
+                    }    
+                }
             }
         }
     }

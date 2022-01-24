@@ -308,7 +308,7 @@ namespace WpfApp1
                 return; 
             workerForPLSimulator.CancelAsync();
             simulatorOn = false;
-            busiAccess.StopSimulator();
+            busiAccess.StopSimulator(ThisDroneId);
             btnSimulator.Content = "Begin Simulator";
             HelpfulMethods.ChangeVisibilty(Visibility.Visible, btnFreeDroneFromCharge,
                 btnSendToCharge, btnAssignDroneToParcel, btnPickupPkg,

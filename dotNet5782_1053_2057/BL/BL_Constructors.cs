@@ -50,7 +50,7 @@ namespace BL
             internal double chargeRate;// per second
 
             List<BO.BODrone> listDrone = new List<BO.BODrone>();
-            SimulatorBL sim; //initialized in the BeginSimulator() function
+            List<SimulatorBL> listSimulators = new List<SimulatorBL>(); //holds open Simulators
 
             //Lazy Initialization...
             private BL() //Private CTOR - implementing Singleton Design Pattern

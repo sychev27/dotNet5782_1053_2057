@@ -68,7 +68,7 @@ namespace BL
 
             //SIMULATOR
             void BeginSimulator(int droneId/*, Action<int> updatesToDo, Func<bool> stopSimulator*/);
-            void StopSimulator();
+            void StopSimulator(int _droneId);
 
             //end of interface
         }

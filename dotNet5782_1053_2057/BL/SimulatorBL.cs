@@ -23,7 +23,9 @@ namespace BL
         readonly int DELAY_BTW_JOURNEYS = 2000;
 
         readonly double DRONESPEED = 5; //__ kilometers per second
-        int droneId;
+        public int DroneId; //<- this field is useful in the simulator,
+                            //and also functions as an ID for this individual Simulator
+                            // it is used by BL to find the correct Simulator 
         BL.BLApi.Ibl busiAccess;
 
         //for calculating battery
@@ -45,7 +47,7 @@ namespace BL
             //and the same simulator is used for each call
             busiAccess = _busiAccess;
             beginTimeForDistance = DateTime.Now;
-            droneId = _droneId;
+            DroneId = _droneId;
 
             //initialize BackGroundWorker for Simulator
             workerForBLSimulator.DoWork += worker_DoWork;
@@ -57,28 +59,15 @@ namespace BL
         {
             //begin simulator:
             simulatorOn = true;
-            BL.BO.BODrone bodrone = busiAccess.GetBODrone(droneId);
+            BL.BO.BODrone bodrone = busiAccess.GetBODrone(DroneId);
             resetCurrentTimeAndLocation(bodrone);
             workerForBLSimulator.RunWorkerAsync(); 
-            //if (!workerForBLSimulator.IsBusy)
-            //{
-                
-            //}
-            //else
-            //{
-            //    while(workerForBLSimulator.IsBusy)
-            //    {
-            //        Thread.Sleep(1000);
-            //    }
-            //    workerForBLSimulator.RunWorkerAsync();
-            //}   
-            
         }
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void StopSimulator()
         {
             workerForBLSimulator.CancelAsync();
-            stopDroneJourney(droneId);
+            stopDroneJourney(DroneId);
             simulatorOn = false;
         }
         private void worker_DoWork(object sender, DoWorkEventArgs e)
@@ -106,7 +95,7 @@ namespace BL
         /// </summaryOfUpdateSimulator>
         private void updateSimulator() //called every iteration
         {
-            BL.BO.BODrone bodrone = busiAccess.GetBODrone(droneId); //receives drone by reference...
+            BL.BO.BODrone bodrone = busiAccess.GetBODrone(DroneId); //receives drone by reference...
             BL.BO.BOLocation destination;
 
             lock(busiAccess)
@@ -117,7 +106,7 @@ namespace BL
                         {
                             try
                             {
-                                busiAccess.AssignParcel(droneId); //function does not change battery nor location
+                                busiAccess.AssignParcel(DroneId); //function does not change battery nor location
                                 resetCurrentTimeAndLocation(bodrone);
                             }
                             catch (BL.BLApi.EXNoAppropriateParcel)
@@ -127,7 +116,7 @@ namespace BL
                                     Thread.Sleep(DELAY_BTW_JOURNEYS);
                                     return;
                                 }
-                                busiAccess.ChargeDrone(droneId, true); //send drone to charge..
+                                busiAccess.ChargeDrone(DroneId, true); //send drone to charge..
                                 bodrone.DroneStatus = BO.Enum.DroneStatus.OnWayToCharge;
                                 resetCurrentTimeAndLocation(bodrone);
                             }
@@ -138,7 +127,7 @@ namespace BL
                             if (!arrivedAtDestination)//if on way to station
                             {
                                 destination = busiAccess.
-                                        GetBOStation(busiAccess.GetStationIdOfBODrone(droneId)).Location;
+                                        GetBOStation(busiAccess.GetStationIdOfBODrone(DroneId)).Location;
                                 moveDroneAlongJourney(bodrone, currentLocation, destination, calculateTimeDiff());
                             }
                             else  //if drone arrived at station 
@@ -159,7 +148,7 @@ namespace BL
                             {
                                 bodrone.Battery = 100;
                                 resetCurrentTimeAndLocation(bodrone);
-                                busiAccess.FreeDrone(droneId, DateTime.Now, true);
+                                busiAccess.FreeDrone(DroneId, DateTime.Now, true);
                                 Thread.Sleep(DELAY_BTW_JOURNEYS); //wait 3 seconds till we try to assign 
                             }
 
@@ -176,7 +165,7 @@ namespace BL
                                           calculateTimeDiff());
                                 else //if drone has arrived
                                 {
-                                    busiAccess.PickupParcel(droneId, true);
+                                    busiAccess.PickupParcel(DroneId, true);
                                     resetCurrentTimeAndLocation(bodrone);
                                 }
                             }
@@ -189,7 +178,7 @@ namespace BL
                                           calculateTimeDiff());
                                 else //if drone has arrived
                                 {
-                                    busiAccess.DeliverParcel(droneId, true);
+                                    busiAccess.DeliverParcel(DroneId, true);
                                     resetCurrentTimeAndLocation(bodrone);
                                 }
                             }
