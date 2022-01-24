@@ -24,7 +24,8 @@ namespace WpfApp1
     {
 
         BL.BLApi.Ibl busiAccess;          // <-- allows us to access business logic layer..
-        DroneListWindow droneListWindow;  // <-- used to prevent user from opening other windows while
+        MapWindow ptrMapWindow;
+        DroneListWindow ptrDroneListWindow;  // <-- used to prevent user from opening other windows while
                                           // the droneList window is open
         public bool IsClosing = false;         //<-- used to communicate to DroneListwWindow that this window is closing...
 
@@ -36,43 +37,54 @@ namespace WpfApp1
         //BUTTONS:
         private void btnOpenDroneList_Click(object sender, RoutedEventArgs e)
         {
-            if (droneListWindow != null) //if droneListWindow is already open...
+            if (ptrDroneListWindow != null) //if droneListWindow is already open...
             {
-                droneListWindow.Show();
-                droneListWindow.Focus();
-                if (droneListWindow.WindowState == WindowState.Minimized)
-                    droneListWindow.WindowState = WindowState.Normal;
+                ptrDroneListWindow.Show();
+                ptrDroneListWindow.Focus();
+                if (ptrDroneListWindow.WindowState == WindowState.Minimized)
+                    ptrDroneListWindow.WindowState = WindowState.Normal;
             }
             else
             {
-                droneListWindow = new DroneListWindow(busiAccess, this);
-                droneListWindow.Show();
+                ptrDroneListWindow = new DroneListWindow(busiAccess, this);
+                ptrDroneListWindow.Show();
             }
         }
         private void btnCustomerLists_Click(object sender, RoutedEventArgs e)
         {
-            if(droneListWindow != null)
+            if(ptrDroneListWindow != null)
                 HelpfulMethods.ErrorMsg("Cannot open this window while the drone list winow is open");
             else
                 new CustomerListWindow(busiAccess).ShowDialog();
         }
         private void btnParcelLists_Click(object sender, RoutedEventArgs e)
         {
-            if (droneListWindow != null)
+            if (ptrDroneListWindow != null)
                 HelpfulMethods.ErrorMsg("Cannot open this window while the drone list winow is open");
             else
                 new ParcelListWindow(busiAccess).ShowDialog();
         }
         private void btnStationLists_Click(object sender, RoutedEventArgs e)
         {
-            if (droneListWindow != null)
+            if (ptrDroneListWindow != null)
                 HelpfulMethods.ErrorMsg("Cannot open this window while the drone list winow is open");
             else
                 new StationListWindow(busiAccess).ShowDialog();
         }
         private void btnOpenMap_Click(object sender, RoutedEventArgs e)
         {
-            new MapWindow(busiAccess).ShowDialog();
+            if (ptrMapWindow != null) //if mapWindow is already open...
+            {
+                ptrMapWindow.Show();
+                ptrMapWindow.Focus();
+                if (ptrMapWindow.WindowState == WindowState.Minimized)
+                    ptrMapWindow.WindowState = WindowState.Normal;
+            }
+            else
+            {
+                ptrMapWindow = new MapWindow(busiAccess);
+                ptrMapWindow.Show();
+            }
         }
         private void btnLogOut_Click(object sender, RoutedEventArgs e)
         {
@@ -82,19 +94,23 @@ namespace WpfApp1
         //HELPING FUNCTIONS:
         public void ReleasePtrToDroneListWindow() //called by droneList window when it closes..
         {
-            droneListWindow = null;
+            ptrDroneListWindow = null;
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             //ensure that window is not left open..
-            if (droneListWindow != null)
+            if (ptrDroneListWindow != null)
             {
                 IsClosing = true;
-                droneListWindow.Close();
-                droneListWindow = null;
+                ptrDroneListWindow.Close();
+                ptrDroneListWindow = null;
             } 
-            
+            if(HelpfulMethods.IsWindowOpen(ptrMapWindow))
+            {
+                ptrMapWindow.Close();
+                ptrMapWindow = null;
+            }    
         }
         //END OF WINDOW
     }

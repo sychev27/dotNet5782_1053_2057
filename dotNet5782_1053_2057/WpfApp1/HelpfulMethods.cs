@@ -55,7 +55,7 @@ namespace WpfApp1
                     item.Visibility = vis;
                 }
         }
-        public static bool IsOpen(this Window window)
+        public static bool IsWindowOpen(this Window window)
         {
             return Application.Current.Windows.Cast<Window>().Any(x => x == window);
         }

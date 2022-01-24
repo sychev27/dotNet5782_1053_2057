@@ -24,6 +24,7 @@ namespace BL
             void AddUser(string _username, string _password, int _id = -1);
 
             double GetChargeRate();
+            int GetNumParcelsWaitingAtCustomer(BO.BOCustomer cust);
             BO.BODrone GetBODrone(int id);
             BO.BOCustomer GetBOCustomer(int id);
             BO.BOParcel GetBOParcel(int id);
