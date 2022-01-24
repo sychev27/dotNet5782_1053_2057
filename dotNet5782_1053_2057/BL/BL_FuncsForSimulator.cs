@@ -15,7 +15,7 @@ namespace BL
 
             //SIMULATOR
             [MethodImpl(MethodImplOptions.Synchronized)]
-            public void BeginSimulator(int droneId/*, Action<int> updatesToDo, Func<bool> stopSimulato*/)
+            public void BeginSimulatorForDrone(int droneId/*, Action<int> updatesToDo, Func<bool> stopSimulato*/)
             {
                 new Thread(() => { wrapperFunction(droneId); }).Start();
             }
@@ -28,7 +28,7 @@ namespace BL
                 listSimulators.Add(sim);
             }
             [MethodImpl(MethodImplOptions.Synchronized)]
-            public void StopSimulator(int _droneId)
+            public void StopSimulatorForDrone(int _droneId)
             {
                 foreach (var item in listSimulators)
                 {

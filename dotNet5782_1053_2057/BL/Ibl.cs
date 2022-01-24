@@ -42,6 +42,7 @@ namespace BL
             BO.BOCustomerToList GetOneCustToList(int _id);
             IEnumerable<BO.BOParcelToList> GetParcelToList();
             IEnumerable<BO.BOStationToList> GetStationToList();
+            BO.BOStationToList GetOneStationToList(int stationId);
             IEnumerable<BO.BODrone> GetSpecificDroneListStatus(int num);
             IEnumerable<BO.BODrone> GetSpecificDroneListWeight(int num);
 
@@ -68,8 +69,8 @@ namespace BL
             void EraseParcel(int id);
 
             //SIMULATOR
-            void BeginSimulator(int droneId/*, Action<int> updatesToDo, Func<bool> stopSimulator*/);
-            void StopSimulator(int _droneId);
+            void BeginSimulatorForDrone(int droneId/*, Action<int> updatesToDo, Func<bool> stopSimulator*/);
+            void StopSimulatorForDrone(int _droneId);
 
             //end of interface
         }

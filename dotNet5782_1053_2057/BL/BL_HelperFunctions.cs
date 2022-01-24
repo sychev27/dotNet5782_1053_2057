@@ -501,6 +501,16 @@ namespace BL
                 }
                 return res;
             }
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            public BO.BOStationToList GetOneStationToList(int stationId)
+            {
+                foreach (var item in dataAccess.GetStations())
+                {
+                    if (item.Id == stationId)
+                        return createBOStationToList(item.Id);
+                }
+                throw new EXNotFoundPrintException("Station");
+            }
 
             [MethodImpl(MethodImplOptions.Synchronized)]
             public IEnumerable<BO.BOStation> GetStations()

@@ -103,7 +103,8 @@ namespace WpfApp1
             workerForPLSimulator.WorkerReportsProgress = true;
             workerForPLSimulator.WorkerSupportsCancellation = true;
         }
-         //BUTTONS:
+        
+        //BUTTONS:
         private void btnAddDrone_Click(object sender, RoutedEventArgs e)
         {
             //reset text color
@@ -295,7 +296,7 @@ namespace WpfApp1
             if (simulatorOn) //if similulator is already on..
                 return;
             simulatorOn = true;
-            Thread newSimulatorThread = new Thread(beginSimulator);
+            Thread newSimulatorThread = new Thread(beginSimulatorWrapperFunc);
             newSimulatorThread.Start();
             btnSimulator.Content = "End Simulator";
             HelpfulMethods.ChangeVisibilty(Visibility.Hidden, btnFreeDroneFromCharge,
@@ -308,7 +309,7 @@ namespace WpfApp1
                 return; 
             workerForPLSimulator.CancelAsync();
             simulatorOn = false;
-            busiAccess.StopSimulator(ThisDroneId);
+            busiAccess.StopSimulatorForDrone(ThisDroneId);
             btnSimulator.Content = "Begin Simulator";
             HelpfulMethods.ChangeVisibilty(Visibility.Visible, btnFreeDroneFromCharge,
                 btnSendToCharge, btnAssignDroneToParcel, btnPickupPkg,
@@ -316,14 +317,12 @@ namespace WpfApp1
         }
         private void worker_DoWork(object sender, DoWorkEventArgs e)
         {
-            
-                busiAccess.BeginSimulator(ThisDroneId);
+                busiAccess.BeginSimulatorForDrone(ThisDroneId);
                 while (simulatorOn == true)
                 {
                     Thread.Sleep(DELAY_BTW_STEPS);
-                    workerForPLSimulator.ReportProgress(1);
+                    workerForPLSimulator.ReportProgress(1); //this 1 is insignificant..
                 }
-             
         }
         private void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
@@ -336,9 +335,9 @@ namespace WpfApp1
         private void worker_RunWorkerCompleted(object sender,   RunWorkerCompletedEventArgs e)
         {
             MessageBox.Show("Simulator ended successfully", "SUCCESS", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
-            workerForPLSimulator.Dispose();
+            //workerForPLSimulator.Dispose();
         }
-        private void beginSimulator()
+        private void beginSimulatorWrapperFunc()
         {
              simulatorOn = true;
              workerForPLSimulator.RunWorkerAsync();             //<- begin backgroundWorker...

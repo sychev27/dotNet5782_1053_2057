@@ -10,6 +10,8 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Threading;
+using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Shapes;
 
@@ -26,6 +28,7 @@ namespace WpfApp1
         static String ImgDroneWithoutParcel = "C:\\Users\\dyyb1\\OneDrive\\Documentos\\AA windows project\\dotNet5782_1053_2057\\WpfApp1\\Pictures\\drone_without_parcel2.PNG";
         static String ImgStation = "C:\\Users\\dyyb1\\OneDrive\\Documentos\\AA windows project\\dotNet5782_1053_2057\\WpfApp1\\Pictures\\station.jpg";
         static String ImgHouse = "C:\\Users\\dyyb1\\OneDrive\\Documentos\\AA windows project\\dotNet5782_1053_2057\\WpfApp1\\Pictures\\house.png";
+        
         List<TextBlock> listTextBlocks = new List<TextBlock>();
         List<Image> listImages = new List<Image>();
 
@@ -33,11 +36,15 @@ namespace WpfApp1
         readonly System.Windows.Media.Color stationColor = Colors.Orange;
         readonly System.Windows.Media.Color droneColor = Colors.Red;
         readonly System.Windows.Media.Color textColor = Colors.Black;
-        readonly int IMAGESIZE = 1; //gridspan and rowspan of image
+        readonly int IMAGESIZEforDrones = 1; //gridspan and rowspan of image
+        readonly int IMAGESIZEforCustStations = 2; //gridspan and rowspan of image
         readonly string emptyTextForInfoWindow = "Hover the mouse over a square or image";
 
-        MainWindow parent; //pointer which allows us to communicate with main 
-
+        //for simulator:
+        readonly BackgroundWorker worker = new BackgroundWorker();
+        bool simulatorOn = false;
+        readonly string textForSimulatorBtnStart = "Turn On Simulator";
+        readonly int DELAY_BTW_REFRESH = 500; // __ miliseconds
         /// <summaryOfInfoBlock>
         /// Each block is synchronized with an id number, tagged with a type of object,
         /// and given appropriate Column and Row places
@@ -56,14 +63,15 @@ namespace WpfApp1
                 ThisObjectType = ObjectType.Customer;
                 ColumnPlace = getColumnPlace(cust.Location);
                 RowPlace = getRowPlace(cust.Location);
-                numParcels = _numParcelsAtCustomer;
+                numParcelsOrDronesCharging = _numParcelsAtCustomer;
             }
-            public InfoBlock(BL.BO.BOStation st)
+            public InfoBlock(BL.BO.BOStation st, int _numDronesCharging)
             {
                 Id = st.Id;
                 ThisObjectType = ObjectType.Station;
                 ColumnPlace = getColumnPlace(st.Location);
                 RowPlace = getRowPlace(st.Location);
+                numParcelsOrDronesCharging = _numDronesCharging;
             }
             public InfoBlock(BL.BO.BODrone drone)
             {
@@ -71,7 +79,7 @@ namespace WpfApp1
                 ThisObjectType = ObjectType.Drone;
                 ColumnPlace = getColumnPlace(drone.Location);
                 RowPlace = getRowPlace(drone.Location);
-                numParcels = (drone.ParcelInTransfer.Id == 0 || drone.ParcelInTransfer.Id == -1) ?
+                numParcelsOrDronesCharging = (drone.ParcelInTransfer.Id == 0 || drone.ParcelInTransfer.Id == -1) ?
                     0 : 1;
             }
            //FIELDS:
@@ -79,7 +87,7 @@ namespace WpfApp1
             public ObjectType ThisObjectType { get; set; }
             public int RowPlace { get; set; }
             public int ColumnPlace { get; set; }
-            public int? numParcels { get; set; } //used for drone and Customer, not station...
+            public int? numParcelsOrDronesCharging { get; set; } //used differently for drone, customer, and station...
             //METHODS:
             private int getColumnPlace(BL.BO.BOLocation loc)
             {
@@ -91,12 +99,17 @@ namespace WpfApp1
             }
         }
 
-        public MapWindow(BL.BLApi.Ibl _busiAccess) //CTOR
+        //CTOR
+        public MapWindow(BL.BLApi.Ibl _busiAccess) 
         {
             InitializeComponent();
             busiAccess = _busiAccess;
             tBoxInfo.Text = emptyTextForInfoWindow;
             refreshMap();
+
+            worker.DoWork += worker_DoWork;
+            worker.RunWorkerCompleted += worker_RunWorkerCompleted;
+            worker.WorkerSupportsCancellation = true;
         }
         //BUTTONS AND OTHER USER INTERFACE:
         private void btnReturnToMainMenu_Click(object sender, RoutedEventArgs e)
@@ -125,7 +138,8 @@ namespace WpfApp1
             }
             foreach (var item in busiAccess.GetStations())
             {
-                listTextBlocks.Add(createTextBlock(new InfoBlock(item)));
+                listTextBlocks.Add(createTextBlock(new InfoBlock(item,
+                    busiAccess.GetOneStationToList(item.Id).ChargeSlotsTaken)));
             }
             foreach (var item in busiAccess.GetBODroneList())
             {
@@ -141,7 +155,8 @@ namespace WpfApp1
             }
             foreach (var item in busiAccess.GetStations())
             {
-                listImages.Add(createImage(new InfoBlock(item)));
+                listImages.Add(createImage(new InfoBlock(item,
+                    busiAccess.GetOneStationToList(item.Id).ChargeSlotsTaken)));
             }
             foreach (var item in busiAccess.GetBODroneList())
             {
@@ -177,7 +192,7 @@ namespace WpfApp1
                         newTextBlock.Background = new SolidColorBrush(customerColor);
                         newTextBlock.MouseEnter += new MouseEventHandler(
                             new EventHandler((sender, e) => displayCustomer(sender, e, _InfoBlock)));
-                        newTextBlock.Text = _InfoBlock.numParcels.ToString();
+                        newTextBlock.Text = _InfoBlock.numParcelsOrDronesCharging.ToString();
                     }
                     break;
                 case ObjectType.Drone:
@@ -185,7 +200,7 @@ namespace WpfApp1
                         newTextBlock.Background = new SolidColorBrush(droneColor);
                         newTextBlock.MouseEnter += new MouseEventHandler(
                             new EventHandler((sender, e) => displayDrone(sender, e, _InfoBlock)));
-                        newTextBlock.Text = _InfoBlock.numParcels.ToString();
+                        newTextBlock.Text = _InfoBlock.numParcelsOrDronesCharging.ToString();
                     }
                     break;
                 default:
@@ -199,19 +214,19 @@ namespace WpfApp1
         {
             Image newImage = new Image();
             Grid.SetColumn(newImage, _InfoBlock.ColumnPlace);
-            Grid.SetColumnSpan(newImage, IMAGESIZE);
             Grid.SetRow(newImage, _InfoBlock.RowPlace);
-            Grid.SetRowSpan(newImage, IMAGESIZE);
             ImageSource _imageSource;
             switch(_InfoBlock.ThisObjectType)
             {
                 case ObjectType.Drone:
                     {
-                        _imageSource = (_InfoBlock.numParcels == 0) ?
+                        _imageSource = (_InfoBlock.numParcelsOrDronesCharging == 0) ?
                                         new BitmapImage(new Uri(ImgDroneWithoutParcel))
                                         : new BitmapImage(new Uri(ImgDroneWithParcel));
                         newImage.MouseEnter += new MouseEventHandler(
                             new EventHandler((sender, e) => displayDrone(sender, e, _InfoBlock)));
+                        Grid.SetColumnSpan(newImage, IMAGESIZEforDrones);
+                        Grid.SetRowSpan(newImage, IMAGESIZEforDrones);
                     }
                     break;
                 case ObjectType.Station:
@@ -219,6 +234,8 @@ namespace WpfApp1
                         _imageSource = new BitmapImage(new Uri(ImgStation));
                         newImage.MouseEnter += new MouseEventHandler(
                             new EventHandler((sender, e) => displayStation(sender, e, _InfoBlock)));
+                        Grid.SetColumnSpan(newImage, IMAGESIZEforCustStations);
+                        Grid.SetRowSpan(newImage, IMAGESIZEforCustStations);
                     }
                     break;
                 case ObjectType.Customer:
@@ -226,6 +243,8 @@ namespace WpfApp1
                         _imageSource = new BitmapImage(new Uri(ImgHouse));
                         newImage.MouseEnter += new MouseEventHandler(
                             new EventHandler((sender, e) => displayCustomer(sender, e, _InfoBlock)));
+                        Grid.SetColumnSpan(newImage, IMAGESIZEforCustStations);
+                        Grid.SetRowSpan(newImage, IMAGESIZEforCustStations);
                     }
                     break;
                 default:
@@ -287,11 +306,14 @@ namespace WpfApp1
         }
         private void refreshMap()
         {
-            clearMap();
-            if((bool)chkboxTextMode.IsChecked)
-                fillMapWithTextBlocks();
-            else
-                fillMapWithImages();
+            Dispatcher.Invoke(() =>
+           {
+               clearMap();
+               if ((bool)chkboxTextMode.IsChecked)
+                   fillMapWithTextBlocks();
+               else
+                   fillMapWithImages();
+           });
         }
         private void clearMap()
         {
@@ -305,8 +327,63 @@ namespace WpfApp1
             }
         }
 
+        //FOR SIMULATOR:
+        private void worker_DoWork(object sender, DoWorkEventArgs e) //displays Map, Sleeps
+        {
+            while(simulatorOn)
+            {
+                refreshMap();
+                Thread.Sleep(DELAY_BTW_REFRESH);
+            }
+        }
+        private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            HelpfulMethods.SuccessMsg("Simulator Stopped Successfully");
+        }
+        private void beginSimulator()
+        {
+            foreach (var item in busiAccess.GetBODroneList()) //begin all Simulators in BL
+            {
+                if(item.Exists)
+                {
+                    busiAccess.BeginSimulatorForDrone(item.Id);
+                }
+            }
+            worker.RunWorkerAsync(); //begin simular in PL
+        }
         
+        private void btnSimulator_Click(object sender, RoutedEventArgs e)
+        {
+            if (!simulatorOn) //turn on simulator...
+            {
+                simulatorOn = true;
+               Thread newThread = new Thread(beginSimulator);
+               newThread.Start();
+               btnSimulator.Content = "Turn off Simulator";
+            }
+            else    //turn off simulator
+            {
+                stopSimulator();
+            }
+        }
+        private void stopSimulator()
+        {
+            simulatorOn = false;
+            worker.CancelAsync();
+            btnSimulator.Content = textForSimulatorBtnStart;
+            foreach (var item in busiAccess.GetBODroneList()) //stop simulators in BL
+            {
+                if (item.Exists)
+                {
+                    busiAccess.StopSimulatorForDrone(item.Id);
+                }
+            }
+        }
 
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            stopSimulator();
+        }
 
 
 
