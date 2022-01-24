@@ -52,8 +52,10 @@ namespace WpfApp1
         }
         private void btnCustomerLists_Click(object sender, RoutedEventArgs e)
         {
-            if(ptrDroneListWindow != null)
+            if (ptrDroneListWindow != null)
                 HelpfulMethods.ErrorMsg("Cannot open this window while the drone list winow is open");
+            else if (ptrMapWindow != null && HelpfulMethods.IsWindowOpen(ptrMapWindow))
+                HelpfulMethods.ErrorMsg("Cannot open this window while the map window is open");
             else
                 new CustomerListWindow(busiAccess).ShowDialog();
         }
@@ -61,6 +63,8 @@ namespace WpfApp1
         {
             if (ptrDroneListWindow != null)
                 HelpfulMethods.ErrorMsg("Cannot open this window while the drone list winow is open");
+            else if (ptrMapWindow != null && HelpfulMethods.IsWindowOpen(ptrMapWindow))
+                HelpfulMethods.ErrorMsg("Cannot open this window while the map window is open");
             else
                 new ParcelListWindow(busiAccess).ShowDialog();
         }
@@ -68,12 +72,14 @@ namespace WpfApp1
         {
             if (ptrDroneListWindow != null)
                 HelpfulMethods.ErrorMsg("Cannot open this window while the drone list winow is open");
+            else if (ptrMapWindow != null && HelpfulMethods.IsWindowOpen(ptrMapWindow))
+                HelpfulMethods.ErrorMsg("Cannot open this window while the map window is open");
             else
                 new StationListWindow(busiAccess).ShowDialog();
         }
         private void btnOpenMap_Click(object sender, RoutedEventArgs e)
         {
-            if (ptrMapWindow != null) //if mapWindow is already open...
+            if (HelpfulMethods.IsWindowOpen(ptrMapWindow)) //if mapWindow is already open...
             {
                 ptrMapWindow.Show();
                 ptrMapWindow.Focus();

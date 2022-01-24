@@ -36,6 +36,7 @@ namespace WpfApp1
         readonly int IMAGESIZE = 1; //gridspan and rowspan of image
         readonly string emptyTextForInfoWindow = "Hover the mouse over a square or image";
 
+        MainWindow parent; //pointer which allows us to communicate with main 
 
         /// <summaryOfInfoBlock>
         /// Each block is synchronized with an id number, tagged with a type of object,

@@ -627,6 +627,18 @@ namespace BL
                 else // if drone not carrying parcel
                     return empty;
             }
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            public int GetNumParcelsWaitingAtCustomer(BO.BOCustomer cust)
+            {
+                int res = 0;
+                foreach (var item in cust.ListOfParcSent)
+                {
+                    if (item.ParcelStatus == BO.Enum.ParcelStatus.created
+                        || item.ParcelStatus == BO.Enum.ParcelStatus.assigned) //but not yet collected...
+                        ++res;
+                }
+                return res;
+            }
             //end of class definition...
         }
     }
