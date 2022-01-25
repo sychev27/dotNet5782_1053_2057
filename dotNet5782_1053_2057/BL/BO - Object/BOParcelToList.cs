@@ -26,7 +26,7 @@ namespace BL
             {
                 string res = "";
                 if (!Exists) res += "DELETED --\n";
-                res += "Parcel " + Id + "From " + NameSender + " to " + NameReceiver + "\n";
+                res += "Parcel " + Id + " From " + NameSender + " to " + NameReceiver + "\n";
                 res += Weight.ToString() + " Priority: " + Priority.ToString() + "\n";
                 res += "Status: " + ParcelStatus;
                 res += "\n";

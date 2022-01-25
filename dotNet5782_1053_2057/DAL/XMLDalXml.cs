@@ -77,7 +77,7 @@ namespace DalXml
             const int LATBEGIN = 31;
             const int LATEND = 33;
 
-            const int NUMPARCELS = 30;
+            const int NUMPARCELS = 100;
 
 
             //INITIALIZE DRONE
@@ -171,12 +171,12 @@ namespace DalXml
             DalXml.DO.User userEmployee = new DalXml.DO.User();
             userEmployee.Id = -1; //employee
             userEmployee.Username = "boss";
-            userEmployee.Password = "boss";
+            userEmployee.Password = "bPassword";
             listUser.Add(userEmployee);
             DalXml.DO.User userReuven = new DalXml.DO.User();
             userReuven.Id = 1; //customer reuven
-            userReuven.Username = "ruv";
-            userReuven.Password = "ruv";
+            userReuven.Username = "Reuven613";
+            userReuven.Password = "rPassword";
             listUser.Add(userReuven);
             DALTools.XMLTools.SaveListToXMLSerializer<DalXml.DO.User>(listUser, usersPath);
             //END OF FUNCTION

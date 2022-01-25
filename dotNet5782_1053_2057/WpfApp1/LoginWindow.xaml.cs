@@ -24,6 +24,13 @@ namespace WpfApp1
         public LoginWindow()
         {
             InitializeComponent();
+            tBlockUserInfo.Text = "For Employee: \n" +
+                "user: boss \n" +
+                "password: bPassword\n" +
+                "\n" +
+                "For Customer:\n" +
+                "user: Reuven613\n" +
+                "password: rPassword";
         }
         public LoginWindow(BL.BLApi.Ibl _busiAccess) : this()
         {

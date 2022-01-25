@@ -130,21 +130,26 @@ namespace WpfApp1
                 //no need to release parent's ptr to DroneListWindow
                 return; 
             }
-            MessageBoxResult result =
-             MessageBox.Show( "Closing this window will close all drone windows, and stop all simulators. " +
-              "Do you want to close this window?" ,  
+            
+            if(allDroneSimulatorsOn)
+            {
+                MessageBoxResult result =
+             MessageBox.Show("Closing this window will close all drone windows, and stop all simulators. " +
+              "Do you want to close this window?",
               "Notice", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-            if (result == MessageBoxResult.No)
-            {
-                // If user doesn't want to close, cancel closure
-                e.Cancel = true;
+                if (result == MessageBoxResult.No)
+                {
+                    // If user doesn't want to close, cancel closure
+                    e.Cancel = true;
+                }
+                else //close the windows...
+                {
+                    CloseAndStopSimulatorAllDroneWindows();
+                    parent.ReleasePtrToDroneListWindow();
+                }
+                //DroneListWindow closes automatically, no need to clear list..
             }
-            else //close the windows...
-            {
-                CloseAndStopSimulatorAllDroneWindows();
-                parent.ReleasePtrToDroneListWindow();
-            }
-            //DroneListWindow closes automatically, no need to clear list..
+
         }
         private void CloseAndStopSimulatorAllDroneWindows()
         {

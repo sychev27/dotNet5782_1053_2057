@@ -77,9 +77,6 @@ namespace WpfApp1
             }
             public InfoBlock(BL.BO.BODrone drone)
             {
-                if (Double.IsNaN(drone.Location.Longitude))
-                    throw new Exception(); //DELETE HERE
-
                 Id = drone.Id;
                 ThisObjectType = ObjectType.Drone;
                 ColumnPlace = getColumnPlace(drone.Location);
@@ -88,8 +85,6 @@ namespace WpfApp1
                     || drone.ParcelInTransfer.Collected == false) ? //if drone has not yet picked up parcel...
                     /*set to Zero*/ 0 : /*else set to 1*/  1;
                 name = "Drone " + drone.Id.ToString();
-                if (ColumnPlace < 0)
-                    throw new Exception(); //DELETE HERE
             }
            //FIELDS:
             public int Id { get; set; }
@@ -139,20 +134,23 @@ namespace WpfApp1
             refreshMap();
         }
         //HELPING FUNCTIONS
-        private void fillMapWithTextBlocks() //drones are behind other items
+        private void fillMapWithTextBlocks() //drones are behind stations, in front of customers
         {
-            foreach (var item in busiAccess.GetBODroneList())
-            {
-                listTextBlocks.Add(createTextBlock(new InfoBlock(item)));
-            }
             foreach (var item in busiAccess.GetAllBOCustomers())
             {
-                listTextBlocks.Add(createTextBlock(new InfoBlock(item,
+                if (item.Exists) 
+                    listTextBlocks.Add(createTextBlock(new InfoBlock(item,
                     busiAccess.GetNumParcelsWaitingAtCustomer(item))));
+            }
+            foreach (var item in busiAccess.GetBODroneList())
+            {
+                if (item.Exists)
+                    listTextBlocks.Add(createTextBlock(new InfoBlock(item)));
             }
             foreach (var item in busiAccess.GetStations())
             {
-                listTextBlocks.Add(createTextBlock(new InfoBlock(item,
+                if (item.Exists) 
+                    listTextBlocks.Add(createTextBlock(new InfoBlock(item,
                     busiAccess.GetOneStationToList(item.Id).ChargeSlotsTaken)));
             }
         }
@@ -160,17 +158,20 @@ namespace WpfApp1
         {
             foreach (var item in busiAccess.GetAllBOCustomers())
             {
-                listImages.Add(createImage(new InfoBlock(item,
+                if (item.Exists) 
+                    listImages.Add(createImage(new InfoBlock(item,
                     busiAccess.GetNumParcelsWaitingAtCustomer(item))));
             }
             foreach (var item in busiAccess.GetStations())
             {
-                listImages.Add(createImage(new InfoBlock(item,
+                if (item.Exists) 
+                    listImages.Add(createImage(new InfoBlock(item,
                     busiAccess.GetOneStationToList(item.Id).ChargeSlotsTaken)));
             }
             foreach (var item in busiAccess.GetBODroneList())
             {
-                listImages.Add(createImage(new InfoBlock(item)));
+                if (item.Exists) 
+                    listImages.Add(createImage(new InfoBlock(item)));
             }
         }
         private TextBlock createTextBlock(InfoBlock _InfoBlock) //Creates and sets TextBlock on Grid
@@ -211,6 +212,7 @@ namespace WpfApp1
                         newTextBlock.MouseEnter += new MouseEventHandler(
                             new EventHandler((sender, e) => displayDroneInInfoWindow(sender, e, _InfoBlock)));
                         newTextBlock.Text = _InfoBlock.numParcelsOrDronesCharging.ToString();
+                        newTextBlock.Margin = new Thickness(5, 0, 5, 0);
                     }
                     break;
                 default:
@@ -309,6 +311,7 @@ namespace WpfApp1
                 default:
                     break;
             }
+            refreshMap();
         }
         private void hideTextInInfoWindow(object sender, System.EventArgs e)
         {
@@ -348,7 +351,7 @@ namespace WpfApp1
         }
         private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            HelpfulMethods.SuccessMsg("Simulator Stopped Successfully");
+            //HelpfulMethods.SuccessMsg("Simulator Stopped Successfully");
         }
         private void beginSimulator()
         {
@@ -360,8 +363,7 @@ namespace WpfApp1
                 }
             }
             worker.RunWorkerAsync(); //begin simular in PL
-        }
-        
+        } 
         private void btnSimulator_Click(object sender, RoutedEventArgs e)
         {
             if (!simulatorOn) //turn on simulator...
@@ -388,11 +390,12 @@ namespace WpfApp1
                     busiAccess.StopSimulatorForDrone(item.Id);
                 }
             }
+            HelpfulMethods.SuccessMsg("All Drone Simulators canceled");
         }
-
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            stopSimulator();
+            if(simulatorOn)
+                stopSimulator();
         }
 
 

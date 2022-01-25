@@ -98,9 +98,6 @@ namespace BL
             BL.BO.BODrone bodrone = busiAccess.GetBODrone(DroneId); //receives drone by reference...
             BL.BO.BOLocation destination;
 
-            if (double.IsNaN(bodrone.Location.Longitude))
-                throw new Exception(); //DELETE HERE
-
             lock(busiAccess)
             {
                 switch (bodrone.DroneStatus)
@@ -162,7 +159,7 @@ namespace BL
                             if (bodrone.ParcelInTransfer.Collected == false)
                             //IF ON WAY TO THE SENDER..
                             {
-                                if (!arrivedAtDestination) //DELETE HERE CAUGHT PROBLEM
+                                if (!arrivedAtDestination) 
                                     moveDroneAlongJourney(bodrone, currentLocation,
                                          busiAccess.GetBOCustomer(bodrone.ParcelInTransfer.Sender.Id).Location,
                                           calculateTimeDiff());
@@ -198,8 +195,6 @@ namespace BL
         {
             //called everytime drone receives a new destination
             //function used to help keep track of Drone's journey
-            if (Double.IsNaN(bodrone.Location.Longitude))
-                throw new Exception(); //DELETE HERE
             currentLocation = bodrone.Location;
             beginTimeForDistance = DateTime.Now;
             beginTimeForBattery = DateTime.Now;
@@ -216,14 +211,17 @@ namespace BL
             BO.BOLocation destination, double secondsTraveled) //UPDATES DRONE'S BATTERY, LOCATION, 
             //AND CHANGES "arrivedAtDestination" flag
         {
-            if(source == destination) //if drone begins the next journey, but was already at the first stop
+            if (bodrone.Battery < 0)
+                throw new Exception(); //DELETE HERE
+
+
+            if (source.Longitude.Equals(destination.Longitude)
+                && source.Latitude.Equals(destination.Latitude)) //if drone begins the next journey, but was already at the first stop
                 //(for example - if the drone delivered a parcel at Reuven, and the next mission was to pick up a parcel from reuven)
             {
                lock(busiAccess)
                 {
                     bodrone.Location = destination;
-                    if (Double.IsNaN(bodrone.Location.Longitude))
-                        throw new Exception(); //DELETE HERE
                     arrivedAtDestination = true;
                     return;
                 }
@@ -244,7 +242,7 @@ namespace BL
                 double latitudeDiff = destination.Latitude - source.Latitude;    //<-can be negative...
                 double longitudeProportion = longitudeDiff / totalSecNeededForJourney;
                 double latitudeProportion = latitudeDiff / totalSecNeededForJourney;
-                if (totalSecNeededForJourney == 0)
+                if (totalSecNeededForJourney == 0) //if drone did not travel, this prevents a NaN value...
                 {
                     longitudeProportion = 0;
                     latitudeProportion = 0;
@@ -252,8 +250,6 @@ namespace BL
 
                 bodrone.Location.Longitude += secondsTraveled * longitudeProportion;
                 bodrone.Location.Latitude += secondsTraveled * latitudeProportion;
-                if (Double.IsNaN(bodrone.Location.Longitude))
-                    throw new Exception(); //DELETE HERE //CAUGHT
 
                 //(2) UPDATE BATTERY:
                 TimeSpan ts = DateTime.Now - beginTimeForBattery;
@@ -261,7 +257,6 @@ namespace BL
                 double secondsInTravel = ts.TotalSeconds;
                 bodrone.Battery -= busiAccess.GetElectricityRate(bodrone) * secondsInTravel;
 
-                
                 //(3) CHECK THAT ARRIVED AT DESTINATION
                 if ((longitudeDiff > 0                                     // if traveling in positive direction
                     && bodrone.Location.Longitude > destination.Longitude) //and we passed the location
@@ -273,9 +268,6 @@ namespace BL
                     arrivedAtDestination = true;
                 }
                 //we only need to check either longitude or latitude, because they are in sync...
-                if (bodrone.Location.Longitude < 30 || bodrone.Location.Latitude < 30 || bodrone.Battery < 0)
-                    throw new Exception(); //DELETE HERE
-
             }
         }
         void moveDroneToDestination(BO.BODrone bodrone, BO.BOLocation destination
@@ -287,8 +279,6 @@ namespace BL
                 double totalSecondsNeededForJourney = totalDistance / DRONESPEED;
                 bodrone.Battery -= totalSecondsNeededForJourney * busiAccess.GetElectricityRate(bodrone);
                 bodrone.Location = destination;
-                if (Double.IsNaN(bodrone.Location.Longitude))
-                    throw new Exception(); //DELETE HERE
             }
         }
         void stopDroneJourney(int droneId)
@@ -312,8 +302,6 @@ namespace BL
                         {
                             destination = busiAccess.
                                          GetBOStation(busiAccess.GetStationIdOfBODrone(droneId)).Location;
-                            if (Double.IsNaN(destination.Longitude))
-                                throw new Exception(); //DELETE HERE
                             if (!arrivedAtDestination)
                             {
                                 moveDroneToDestination(bodrone, destination);
@@ -334,8 +322,6 @@ namespace BL
                             //IF ON WAY TO THE SENDER..
                             {
                                 destination = busiAccess.GetBOCustomer(bodrone.ParcelInTransfer.Sender.Id).Location;
-                                if (Double.IsNaN(destination.Longitude))
-                                    throw new Exception(); //DELETE HERE
                                 if (!arrivedAtDestination)
                                     moveDroneToDestination(bodrone, destination);
                                 //if drone has arrived
@@ -347,8 +333,6 @@ namespace BL
                                  //IF ON WAY TO RECEIVER
                             {
                                 destination = busiAccess.GetBOCustomer(bodrone.ParcelInTransfer.Recipient.Id).Location;
-                                if (Double.IsNaN(destination.Longitude))
-                                    throw new Exception(); //DELETE HERE
                                 if (!arrivedAtDestination)
                                     moveDroneToDestination(bodrone, destination);
                                 //if drone has arrived
