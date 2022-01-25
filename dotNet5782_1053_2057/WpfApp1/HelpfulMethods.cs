@@ -13,6 +13,12 @@ namespace WpfApp1
 {
     static class HelpfulMethods
     {
+        /// <summary>
+        /// this class holds different WPF methods  which are very common
+        /// all functionality is simple
+        /// </summary>
+        /// <param name="msg"></param>
+
         public static void ErrorMsg(string msg)
         {
             MessageBox.Show(msg, "Error",
