@@ -32,7 +32,7 @@ namespace DalXml
             internal static double light = 0.2;
             internal static double mediuim = 0.3;
             internal static double heavy = 0.4;
-            internal static double chargeRate = 100; /*.613;*/ // per second  //DELETE HERE
+            internal static double chargeRate = .613; // per second  
             internal int parcelSerialNumber = 1;
         }
 
