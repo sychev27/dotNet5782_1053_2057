@@ -77,7 +77,7 @@ namespace DalXml
             const int LATBEGIN = 31;
             const int LATEND = 33;
 
-            const int NUMPARCELS = 100;
+            const int NUMPARCELS = 30;
 
 
             //INITIALIZE DRONE
