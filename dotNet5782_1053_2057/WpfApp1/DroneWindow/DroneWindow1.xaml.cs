@@ -69,8 +69,7 @@ namespace WpfApp1
             //updates DroneViewModel to display details
             ThisDroneId = _bodrone.Id; 
             displayBODrone(ThisDroneId);
-            
-
+             
             //edit buttons and text boxes for Update Window:
             tBoxIdInput.IsReadOnly = true;
             tBoxIdInput.BorderBrush = Brushes.Transparent;
@@ -84,6 +83,7 @@ namespace WpfApp1
                 btnModifyDroneModel, btnAssignDroneToParcel, btnFreeDroneFromCharge, btnAddDrone,
                btnPickupPkg, btnSendToCharge, btnDeliverPkg, btnEraseDrone, btnSimulator);
         }
+
         public DroneWindow(BL.BLApi.Ibl _busiAccess, BL.BO.BODrone _bodrone,  
             DroneListWindow _parent) //CTOR called by DroneListWindow - to update a drone
              : this(_busiAccess, _bodrone) //calls constructor for viewing..
@@ -118,7 +118,6 @@ namespace WpfApp1
             bool stationIdSuccess = Int32.TryParse(tBoxStationIdInput.Text, out _stationId);
             DalXml.DO.WeightCategories? weight = (DalXml.DO.WeightCategories)cmbWeightChoice.SelectedIndex;
 
-
             //(2) Check that Data is Valid
             bool validData = true;
             //check Id
@@ -127,7 +126,6 @@ namespace WpfApp1
                 tBlock_chooseDroneId.Foreground = new SolidColorBrush(Colors.Red);
                 validData = false;
             }
-
 
             if(tBoxModelInput.Text == null || tBoxModelInput.Text == "")
             {
@@ -145,8 +143,6 @@ namespace WpfApp1
                 tBlock_chooseMaxWeight.Foreground = new SolidColorBrush(Colors.Red);
                 validData = false;
             }
-
-
 
             //(3) Add Drone..
             if (validData)
@@ -171,10 +167,9 @@ namespace WpfApp1
                 }
             }
             else
-                return;
-           
-            
+                return;          
         }
+
         private void btnModifyDroneModel_Click(object sender, RoutedEventArgs e)
         {
             int id;
@@ -183,6 +178,7 @@ namespace WpfApp1
             MessageBox.Show("Drone Model Changed", "SUCCESS", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
             Close();
         }
+
         private void btnSendToCharge_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -195,6 +191,7 @@ namespace WpfApp1
             }
             displayBODrone(ThisDroneId);
         }
+
         private void btnFreeDroneFromCharge_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -207,6 +204,7 @@ namespace WpfApp1
             }
              displayBODrone(ThisDroneId);
         }
+
         private void btnPickupPkg_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -239,6 +237,7 @@ namespace WpfApp1
             }
             displayBODrone(ThisDroneId);
         }
+
         private void btnDeliverPkg_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -255,10 +254,12 @@ namespace WpfApp1
             }
             displayBODrone(ThisDroneId);
         }
+
         private void btnCancel_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
+
         private void btnEraseDrone_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -276,7 +277,6 @@ namespace WpfApp1
             }
         }
         
-
         //SIMULATOR FUNCTIONS
         private void btnSimulator_Click(object sender, RoutedEventArgs e)
         {
@@ -290,6 +290,7 @@ namespace WpfApp1
                 StopSimulator();
             }
         }
+
         public void BeginSimulator()//public function --> can be called by DroneListWindow
         {
             if (simulatorOn) //if similulator is already on..
@@ -314,15 +315,17 @@ namespace WpfApp1
                 btnSendToCharge, btnAssignDroneToParcel, btnPickupPkg,
                 btnDeliverPkg, btnEraseDrone);
         }
+
         private void worker_DoWork(object sender, DoWorkEventArgs e)
         {
-                busiAccess.BeginSimulator(ThisDroneId);
-                while (simulatorOn == true)
-                {
-                    Thread.Sleep(DELAY_BTW_STEPS);
-                    workerForPLSimulator.ReportProgress(1);
-                }
+            busiAccess.BeginSimulator(ThisDroneId);
+            while (simulatorOn == true)
+            {
+                Thread.Sleep(DELAY_BTW_STEPS);
+                workerForPLSimulator.ReportProgress(1);
+            }
         }
+
         private void worker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             Dispatcher.Invoke(() => //Invoke function ensures that
@@ -331,15 +334,17 @@ namespace WpfApp1
                 displayBODrone(ThisDroneId);
             });
         }
+
         private void worker_RunWorkerCompleted(object sender,   RunWorkerCompletedEventArgs e)
         {
             MessageBox.Show("Simulator ended successfully", "SUCCESS", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
             workerForPLSimulator.Dispose();
         }
+
         private void beginSimulator()
         {
              simulatorOn = true;
-             workerForPLSimulator.RunWorkerAsync();             //<- begin backgroundWorker...
+             workerForPLSimulator.RunWorkerAsync();     //<- begin backgroundWorker...
         }
         
         //OTHER FUNCTIONS
@@ -361,6 +366,7 @@ namespace WpfApp1
             newDrone.StationId = (stationId != -1) ? stationId.ToString() : "Drone is not charging at a Station";
             return newDrone;
         }
+
         private void displayBODrone(int _droneId) //updates this drone model
         //this function is called after any changes are made
         {
@@ -374,6 +380,7 @@ namespace WpfApp1
                     HelpfulMethods.ChangeTextColor(Colors.Black, tBlockBatteryInfo);
             }
         }
+
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             if (openedByDroneList)
@@ -390,8 +397,6 @@ namespace WpfApp1
                 parent.RefreshList(); //Refreshes list in DroneListWindow
             }
         }
-
-
         //END OF DRONE WINDOW CODE.
     }
 }
