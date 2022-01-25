@@ -127,7 +127,6 @@ namespace WpfApp1
             if(parent.IsClosing) //if User is closing the MainWindow, we prevent this MsgBox from popping up...
             {
                 CloseAndStopSimulatorAllDroneWindows();
-                parent.ReleasePtrToDroneListWindow();
                 return; 
             }
             
@@ -145,7 +144,6 @@ namespace WpfApp1
                 else //close the windows...
                 {
                     CloseAndStopSimulatorAllDroneWindows();
-                    parent.ReleasePtrToDroneListWindow();
                 }
                 //DroneListWindow closes automatically, no need to clear list..
             }
