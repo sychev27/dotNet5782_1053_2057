@@ -32,7 +32,7 @@ namespace DalXml
             internal static double light = 0.2;
             internal static double mediuim = 0.3;
             internal static double heavy = 0.4;
-            internal static double chargeRate = .613; // per second 
+            internal static double chargeRate = 100; /*.613;*/ // per second  //DELETE HERE
             internal int parcelSerialNumber = 1;
         }
 
@@ -76,6 +76,9 @@ namespace DalXml
             const int LONGEND = 37;
             const int LATBEGIN = 31;
             const int LATEND = 33;
+
+            const int NUMPARCELS = 30;
+
 
             //INITIALIZE DRONE
 
@@ -143,7 +146,7 @@ namespace DalXml
             //INITIALIZE PARCELS
             List<DalXml.DO.Parcel> listParcel = new List<DalXml.DO.Parcel>();
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < NUMPARCELS; i++)
             {
                 DO.Parcel exampleP = new DO.Parcel();
                 exampleP.Id = thisConfig.parcelSerialNumber++;

@@ -33,7 +33,7 @@ namespace WpfApp1
         List<Image> listImages = new List<Image>();
 
         readonly System.Windows.Media.Color customerColor = Colors.Blue;
-        readonly System.Windows.Media.Color stationColor = Colors.Orange;
+        readonly System.Windows.Media.Color stationColor = Colors.Green;
         readonly System.Windows.Media.Color droneColor = Colors.Red;
         readonly System.Windows.Media.Color textColor = Colors.Black;
         readonly int IMAGESIZEforDrones = 1; //gridspan and rowspan of image
@@ -64,6 +64,7 @@ namespace WpfApp1
                 ColumnPlace = getColumnPlace(cust.Location);
                 RowPlace = getRowPlace(cust.Location);
                 numParcelsOrDronesCharging = _numParcelsAtCustomer;
+                name = cust.Name;
             }
             public InfoBlock(BL.BO.BOStation st, int _numDronesCharging)
             {
@@ -72,15 +73,23 @@ namespace WpfApp1
                 ColumnPlace = getColumnPlace(st.Location);
                 RowPlace = getRowPlace(st.Location);
                 numParcelsOrDronesCharging = _numDronesCharging;
+                name = "Station: " + st.Id.ToString();
             }
             public InfoBlock(BL.BO.BODrone drone)
             {
+                if (Double.IsNaN(drone.Location.Longitude))
+                    throw new Exception(); //DELETE HERE
+
                 Id = drone.Id;
                 ThisObjectType = ObjectType.Drone;
                 ColumnPlace = getColumnPlace(drone.Location);
                 RowPlace = getRowPlace(drone.Location);
-                numParcelsOrDronesCharging = (drone.ParcelInTransfer.Id == 0 || drone.ParcelInTransfer.Id == -1) ?
-                    0 : 1;
+                numParcelsOrDronesCharging = (drone.ParcelInTransfer.Id == 0 || drone.ParcelInTransfer.Id == -1
+                    || drone.ParcelInTransfer.Collected == false) ? //if drone has not yet picked up parcel...
+                    /*set to Zero*/ 0 : /*else set to 1*/  1;
+                name = "Drone " + drone.Id.ToString();
+                if (ColumnPlace < 0)
+                    throw new Exception(); //DELETE HERE
             }
            //FIELDS:
             public int Id { get; set; }
@@ -88,6 +97,7 @@ namespace WpfApp1
             public int RowPlace { get; set; }
             public int ColumnPlace { get; set; }
             public int? numParcelsOrDronesCharging { get; set; } //used differently for drone, customer, and station...
+            public string name { get; set; }
             //METHODS:
             private int getColumnPlace(BL.BO.BOLocation loc)
             {
@@ -104,7 +114,7 @@ namespace WpfApp1
         {
             InitializeComponent();
             busiAccess = _busiAccess;
-            tBoxInfo.Text = emptyTextForInfoWindow;
+            tBoxInfoWindow.Text = emptyTextForInfoWindow;
             refreshMap();
 
             worker.DoWork += worker_DoWork;
@@ -129,8 +139,12 @@ namespace WpfApp1
             refreshMap();
         }
         //HELPING FUNCTIONS
-        private void fillMapWithTextBlocks()
+        private void fillMapWithTextBlocks() //drones are behind other items
         {
+            foreach (var item in busiAccess.GetBODroneList())
+            {
+                listTextBlocks.Add(createTextBlock(new InfoBlock(item)));
+            }
             foreach (var item in busiAccess.GetAllBOCustomers())
             {
                 listTextBlocks.Add(createTextBlock(new InfoBlock(item,
@@ -141,12 +155,8 @@ namespace WpfApp1
                 listTextBlocks.Add(createTextBlock(new InfoBlock(item,
                     busiAccess.GetOneStationToList(item.Id).ChargeSlotsTaken)));
             }
-            foreach (var item in busiAccess.GetBODroneList())
-            {
-                listTextBlocks.Add(createTextBlock(new InfoBlock(item)));
-            }
         }
-        private void fillMapWithImages()
+        private void fillMapWithImages() //drones are in front of other items
         {
             foreach (var item in busiAccess.GetAllBOCustomers())
             {
@@ -169,29 +179,29 @@ namespace WpfApp1
             newTextBlock.Name = "tBlockR" + _InfoBlock.RowPlace.ToString() + "C" + _InfoBlock.ColumnPlace.ToString();
             Grid.SetColumn(newTextBlock, _InfoBlock.ColumnPlace);
             Grid.SetRow(newTextBlock, _InfoBlock.RowPlace);
-            newTextBlock.FontSize = 20;
+            newTextBlock.FontSize = 11;
             newTextBlock.FontWeight = FontWeights.Bold;
             newTextBlock.Foreground = new SolidColorBrush(textColor);
-            newTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(300);
+            newTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(700);
             
             newTextBlock.MouseLeftButtonDown += new MouseButtonEventHandler(
-                new EventHandler((sender, e) => openWindow(sender, e, _InfoBlock)));
-            newTextBlock.MouseLeave += new MouseEventHandler(this.hideInfo);
+                new EventHandler((sender, e) => openWindowOfInfoBlock(sender, e, _InfoBlock)));
+            newTextBlock.MouseLeave += new MouseEventHandler(this.hideTextInInfoWindow);
             switch (_InfoBlock.ThisObjectType)
             {
                 case ObjectType.Station:
                     {
                         newTextBlock.Background = new SolidColorBrush(stationColor);
                         newTextBlock.MouseEnter += new MouseEventHandler(
-                            new EventHandler((sender, e) => displayStation(sender, e, _InfoBlock)));
-                        newTextBlock.Text = _InfoBlock.Id.ToString();
+                            new EventHandler((sender, e) => displayStationInInfoWindow(sender, e, _InfoBlock)));
+                        newTextBlock.Text = _InfoBlock.numParcelsOrDronesCharging.ToString();
                     }
                     break;
                 case ObjectType.Customer:
                     {
                         newTextBlock.Background = new SolidColorBrush(customerColor);
                         newTextBlock.MouseEnter += new MouseEventHandler(
-                            new EventHandler((sender, e) => displayCustomer(sender, e, _InfoBlock)));
+                            new EventHandler((sender, e) => displayCustomerInInfoWindow(sender, e, _InfoBlock)));
                         newTextBlock.Text = _InfoBlock.numParcelsOrDronesCharging.ToString();
                     }
                     break;
@@ -199,14 +209,14 @@ namespace WpfApp1
                     {
                         newTextBlock.Background = new SolidColorBrush(droneColor);
                         newTextBlock.MouseEnter += new MouseEventHandler(
-                            new EventHandler((sender, e) => displayDrone(sender, e, _InfoBlock)));
+                            new EventHandler((sender, e) => displayDroneInInfoWindow(sender, e, _InfoBlock)));
                         newTextBlock.Text = _InfoBlock.numParcelsOrDronesCharging.ToString();
                     }
                     break;
                 default:
                     break;
             }
-
+            newTextBlock.Text += "\n" + _InfoBlock.name;
             gridMap.Children.Add(newTextBlock);
             return newTextBlock;
         }
@@ -224,7 +234,7 @@ namespace WpfApp1
                                         new BitmapImage(new Uri(ImgDroneWithoutParcel))
                                         : new BitmapImage(new Uri(ImgDroneWithParcel));
                         newImage.MouseEnter += new MouseEventHandler(
-                            new EventHandler((sender, e) => displayDrone(sender, e, _InfoBlock)));
+                            new EventHandler((sender, e) => displayDroneInInfoWindow(sender, e, _InfoBlock)));
                         Grid.SetColumnSpan(newImage, IMAGESIZEforDrones);
                         Grid.SetRowSpan(newImage, IMAGESIZEforDrones);
                     }
@@ -233,7 +243,7 @@ namespace WpfApp1
                     {
                         _imageSource = new BitmapImage(new Uri(ImgStation));
                         newImage.MouseEnter += new MouseEventHandler(
-                            new EventHandler((sender, e) => displayStation(sender, e, _InfoBlock)));
+                            new EventHandler((sender, e) => displayStationInInfoWindow(sender, e, _InfoBlock)));
                         Grid.SetColumnSpan(newImage, IMAGESIZEforCustStations);
                         Grid.SetRowSpan(newImage, IMAGESIZEforCustStations);
                     }
@@ -242,7 +252,7 @@ namespace WpfApp1
                     {
                         _imageSource = new BitmapImage(new Uri(ImgHouse));
                         newImage.MouseEnter += new MouseEventHandler(
-                            new EventHandler((sender, e) => displayCustomer(sender, e, _InfoBlock)));
+                            new EventHandler((sender, e) => displayCustomerInInfoWindow(sender, e, _InfoBlock)));
                         Grid.SetColumnSpan(newImage, IMAGESIZEforCustStations);
                         Grid.SetRowSpan(newImage, IMAGESIZEforCustStations);
                     }
@@ -253,34 +263,34 @@ namespace WpfApp1
             }
             newImage.Source = _imageSource;
             newImage.MouseLeftButtonDown += new MouseButtonEventHandler(
-                new EventHandler((sender, e) => openWindow(sender, e, _InfoBlock)));
-            newImage.MouseLeave += new MouseEventHandler(this.hideInfo);
+                new EventHandler((sender, e) => openWindowOfInfoBlock(sender, e, _InfoBlock)));
+            newImage.MouseLeave += new MouseEventHandler(this.hideTextInInfoWindow);
             gridMap.Children.Add(newImage);
             return newImage;
         }
-        private void displayCustomer(object sender, System.EventArgs e, MapWindow.InfoBlock _InfoBlock)
+        private void displayCustomerInInfoWindow(object sender, System.EventArgs e, MapWindow.InfoBlock _InfoBlock)
         {
             var item = busiAccess.GetBOCustomer(_InfoBlock.Id);
 
-            tBoxInfo.Text = busiAccess.GetOneCustToList(_InfoBlock.Id).ToString()
+            tBoxInfoWindow.Text = busiAccess.GetOneCustToList(_InfoBlock.Id).ToString()
                 + "\n" + "Long: " + Math.Round(item.Location.Longitude, 3).ToString()
                 + "\n" + "Lat: " + Math.Round(item.Location.Latitude, 3).ToString();
         }
-        private void displayStation(object sender, System.EventArgs e, MapWindow.InfoBlock _InfoBlock)
+        private void displayStationInInfoWindow(object sender, System.EventArgs e, MapWindow.InfoBlock _InfoBlock)
         {
             var item = busiAccess.GetBOStation(_InfoBlock.Id);
 
-            tBoxInfo.Text = item.ToString()
+            tBoxInfoWindow.Text = item.ToString()
                 + "\n" + "Long: " + Math.Round(item.Location.Longitude, 3).ToString()
                 + "\n" + "Lat: " + Math.Round(item.Location.Latitude, 3).ToString(); 
         }
-        private void displayDrone(object sender, System.EventArgs e, MapWindow.InfoBlock _InfoBlock)
+        private void displayDroneInInfoWindow(object sender, System.EventArgs e, MapWindow.InfoBlock _InfoBlock)
         {
             var item = busiAccess.GetBODrone(_InfoBlock.Id);
 
-            tBoxInfo.Text = item.ToString();
+            tBoxInfoWindow.Text = item.ToString();
         }
-        private void openWindow(object sender, EventArgs e, InfoBlock infoBlock)
+        private void openWindowOfInfoBlock(object sender, EventArgs e, InfoBlock infoBlock)
         {
             switch (infoBlock.ThisObjectType)
             {
@@ -300,9 +310,9 @@ namespace WpfApp1
                     break;
             }
         }
-        private void hideInfo(object sender, System.EventArgs e)
+        private void hideTextInInfoWindow(object sender, System.EventArgs e)
         {
-            tBoxInfo.Text = emptyTextForInfoWindow;
+            tBoxInfoWindow.Text = emptyTextForInfoWindow;
         }
         private void refreshMap()
         {

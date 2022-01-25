@@ -314,6 +314,7 @@ namespace WpfApp1
             HelpfulMethods.ChangeVisibilty(Visibility.Visible, btnFreeDroneFromCharge,
                 btnSendToCharge, btnAssignDroneToParcel, btnPickupPkg,
                 btnDeliverPkg, btnEraseDrone);
+            HelpfulMethods.ChangeTextColor(Colors.Black, tBlockBatteryInfo); //if charging, this box was green
         }
         private void worker_DoWork(object sender, DoWorkEventArgs e)
         {
