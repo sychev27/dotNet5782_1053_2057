@@ -29,6 +29,11 @@ namespace WpfApp1
         static String ImgStation = "C:\\Users\\dyyb1\\OneDrive\\Documentos\\AA windows project\\dotNet5782_1053_2057\\WpfApp1\\Pictures\\station.jpg";
         static String ImgHouse = "C:\\Users\\dyyb1\\OneDrive\\Documentos\\AA windows project\\dotNet5782_1053_2057\\WpfApp1\\Pictures\\house.png";
         
+        
+
+
+
+
         List<TextBlock> listTextBlocks = new List<TextBlock>();
         List<Image> listImages = new List<Image>();
 

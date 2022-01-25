@@ -69,7 +69,6 @@ namespace WpfApp1
             userMode = true;
         }
 
-
         private void displayBOCustomer(int _id)
         {
             BL.BO.BOCustomer bocustomer = busiAccess.GetBOCustomer(_id);
@@ -228,7 +227,7 @@ namespace WpfApp1
         }
         private void btnSendParcel_Click(object sender, RoutedEventArgs e)
         {
-            new ParcelWindow(busiAccess);
+            new ParcelWindow(busiAccess, thisCustomerId).ShowDialog();
             displayBOCustomer(thisCustomerId);
         }
         private void hideCustomerLogInBtns(bool isCustLogin = false)
@@ -272,5 +271,6 @@ namespace WpfApp1
                 HelpfulMethods.ErrorMsg("Parcel Deleted!");
             displayBOCustomer(thisCustomerId);
         }
+
     }
 }

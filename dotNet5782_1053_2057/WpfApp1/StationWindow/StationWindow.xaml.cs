@@ -179,9 +179,12 @@ namespace WpfApp1
         }
         private void lstViewDronesCharging_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-           new DroneWindow(busiAccess, 
-               busiAccess.GetBODrone((lstViewDronesCharging.SelectedItem as BL.BO.BODroneInCharge).Id))
-                .ShowDialog();
+            BL.BO.BODrone bodrone = busiAccess.
+                GetBODrone((lstViewDronesCharging.SelectedItem as BL.BO.BODroneInCharge).Id);
+            if (bodrone.Exists)
+                new DroneWindow(busiAccess, bodrone).ShowDialog();
+            else
+                HelpfulMethods.ErrorMsg("Drone does not exist");
             displayStation(Int32.Parse(tBoxIdInput.Text));
         }
 

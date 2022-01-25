@@ -38,6 +38,7 @@ namespace WpfApp1
 
         private void LstViewStation_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            BL.BO.BOStationToList st = LstViewStation.SelectedItem as BL.BO.BOStationToList;
             new StationWindow(busiAccess, (LstViewStation.SelectedItem as BL.BO.BOStationToList).Id).ShowDialog();
             refreshList();
         }
