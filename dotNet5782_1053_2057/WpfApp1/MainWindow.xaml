@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="640" Width="800">
+        Title="MainWindow" Height="640" Width="800" Closing="Window_Closing">
     <Grid Name="MainGrid">
 
         <Grid x:Name="Main4Btns" HorizontalAlignment="Center" Height="397" VerticalAlignment="Center" Width="466">

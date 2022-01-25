@@ -36,6 +36,7 @@
             <TextBlock x:Name="tBlockWelcomeMsg" TextAlignment="Center" FontSize="30" Height="94" Margin="26,10,10,0" TextWrapping="Wrap" VerticalAlignment="Top"><Run Text="Welcome to our Project!"/><LineBreak/><Run Text="Please Sign in"/></TextBlock>
 
         </Grid>
+        <TextBox x:Name="tBlockUserInfo" HorizontalAlignment="Left" Height="216" Margin="37,142,0,0" Text="this text set in backcode..." TextWrapping="Wrap" VerticalAlignment="Top" Width="138"/>
 
 
 

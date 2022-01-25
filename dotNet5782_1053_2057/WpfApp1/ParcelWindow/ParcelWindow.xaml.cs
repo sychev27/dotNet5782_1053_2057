@@ -20,15 +20,15 @@ namespace WpfApp1
     public partial class ParcelWindow : Window
     {
         BL.BLApi.Ibl busiAccess;
-        
-        public ParcelWindow(BL.BLApi.Ibl _busiAccess)
-        //To Add a Parcel 
+        public ParcelWindow(BL.BLApi.Ibl _busiAccess, int? _userId = null) //if window is opened by user, _userId is set to a value
+        //CTOR - To Add a Parcel 
         {
             InitializeComponent();
             busiAccess = _busiAccess;
             cmbWeightCategory.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.WeightCategories));
             cmbPriority.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.Priorities));
 
+            btnEraseParcel.IsEnabled = false; 
             btnModifyParcel.IsEnabled = false;
             btnModifyParcel.Visibility = Visibility.Hidden;
             tBlock_chooseParcelId.Visibility = Visibility.Hidden;
@@ -36,17 +36,26 @@ namespace WpfApp1
             tBlockTimeOfCollection.Visibility = Visibility.Hidden;
             tBlockTimeOfCreation.Visibility = Visibility.Hidden;
             tBlockTimeOfDelivery.Visibility = Visibility.Hidden;
+            tBlockDroneId.Visibility = Visibility.Hidden;
+            tBlockNameOfDrone.Visibility = Visibility.Hidden;
             tBoxParcIdInput.Visibility = Visibility.Hidden;
             tBoxTimeOfAssignment.Visibility = Visibility.Hidden;
             tBoxTimeOfCollection.Visibility = Visibility.Hidden;
             tBoxTimeOfCreation.Visibility = Visibility.Hidden;
             tBoxTimeOfDelivery.Visibility = Visibility.Hidden;
 
-            btnEraseParcel.IsEnabled = false;
-        }
+            if (_userId != null) //make window appropriate for user
+            {
+                tBoxSenderId.Text = ((int)_userId).ToString();
+                tBoxSenderId.IsEnabled = false;
+                tBlockNameOfSender.Text = busiAccess.GetBOCustomer((int)_userId).Name;
+                //disable user from opening receivers window
+                tBoxReceiverId.MouseDoubleClick -= tBoxReceiverId_MouseDoubleClick;
 
+            }
+        }
         public ParcelWindow(BL.BLApi.Ibl _busiAccess, BL.BO.BOParcel parcel)
-        //To Update a Parcel (called from Parcel List)
+        //CTOR - To Update a Parcel (called from Parcel List)
         {
             InitializeComponent();
             busiAccess = _busiAccess;
@@ -58,7 +67,6 @@ namespace WpfApp1
             
             displayBOParcel(parcel.Id);
         }
-
         private void displayBOParcel(int parcId)
         {
             BL.BO.BOParcel boparcel = busiAccess.GetBOParcel(parcId);
@@ -98,7 +106,6 @@ namespace WpfApp1
             tBoxTimeOfDelivery.Text = boparcel.TimeOfDelivery.ToString();
 
         }
-
         private void btnAddParcel_Click(object sender, RoutedEventArgs e)
         {
             //reset text color
@@ -168,12 +175,10 @@ namespace WpfApp1
 
 
         }
-
         private void btnCancel1_Click(object sender, RoutedEventArgs e)
         {
             Close();
         }
-
         private void btnModifyParcel_Click(object sender, RoutedEventArgs e)
         {
             busiAccess.ModifyParcel(Int32.Parse(tBoxParcIdInput.Text),
@@ -182,7 +187,6 @@ namespace WpfApp1
                 MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
             Close();   
         }
-
         private void btnEraseparc_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -196,8 +200,7 @@ namespace WpfApp1
             {
                 HelpfulMethods.ErrorMsg(ex.ToString());
             }
-        }
-        
+        }   
         private void tBoxSenderId_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             int _id;
@@ -209,7 +212,6 @@ namespace WpfApp1
                 HelpfulMethods.ErrorMsg("Customer has been deleted..");
             displayBOParcel(Int32.Parse(tBoxParcIdInput.Text));
         }
-
         private void tBoxReceiverId_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             int _id;
@@ -221,22 +223,6 @@ namespace WpfApp1
                 HelpfulMethods.ErrorMsg("Customer has been deleted..");
             displayBOParcel(Int32.Parse(tBoxParcIdInput.Text));
         }
-
-        private void cmbWeightCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void cmbPriority_SelectionChanged1(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void tBoxReceiverId_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
         private void tBoxDroneIdOutput_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             int droneId;
@@ -253,5 +239,7 @@ namespace WpfApp1
                 return;
             displayBOParcel(Int32.Parse(tBoxParcIdInput.Text));
         }
+        
+        //END OF WINDOW..
     }
 }

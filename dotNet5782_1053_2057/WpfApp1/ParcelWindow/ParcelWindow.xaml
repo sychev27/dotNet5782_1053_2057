@@ -26,9 +26,9 @@
 
         <TextBox x:Name ="tBoxParcIdInput" Grid.Column="1" Text="" TextWrapping="Wrap" Margin="5,5,5,5" Height="Auto" FontSize="18" Grid.ColumnSpan="2" />
         <TextBox x:Name ="tBoxSenderId" Grid.Column="1" Grid.Row="1" Text="" TextWrapping="Wrap" Margin="5,5,0,5" FontSize="18" MouseDoubleClick="tBoxSenderId_MouseDoubleClick" />
-        <TextBox x:Name ="tBoxReceiverId" Grid.Column="1" Grid.Row="2" TextWrapping="Wrap" Margin="5,5,0,5" FontSize="18" MouseDoubleClick="tBoxReceiverId_MouseDoubleClick" TextChanged="tBoxReceiverId_TextChanged" />
-        <ComboBox x:Name="cmbWeightCategory" Grid.Column="1" Grid.Row="3" SelectionChanged="cmbWeightCategory_SelectionChanged" Margin="5,5,5,5" FontSize="18" Grid.ColumnSpan="2"/>
-        <ComboBox x:Name="cmbPriority" Grid.Column="1" Grid.Row="4" SelectionChanged="cmbPriority_SelectionChanged1" Margin="5,5,5,5" FontSize="18" Grid.ColumnSpan="2"/>
+        <TextBox x:Name ="tBoxReceiverId" Grid.Column="1" Grid.Row="2" TextWrapping="Wrap" Margin="5,5,0,5" FontSize="18" MouseDoubleClick="tBoxReceiverId_MouseDoubleClick" />
+        <ComboBox x:Name="cmbWeightCategory" Grid.Column="1" Grid.Row="3"  Margin="5,5,5,5" FontSize="18" Grid.ColumnSpan="2"/>
+        <ComboBox x:Name="cmbPriority" Grid.Column="1" Grid.Row="4"  Margin="5,5,5,5" FontSize="18" Grid.ColumnSpan="2"/>
         <TextBox x:Name="tBoxTimeOfCreation" Grid.Column="1" Grid.Row="5" Text="" TextWrapping="Wrap" Margin="5,5,5,5" FontSize="18" Grid.ColumnSpan="2"/>
         <TextBox x:Name="tBoxTimeOfAssignment" Grid.Column="1" Grid.Row="6" Text="" TextWrapping="Wrap" Margin="5,5,5,8" FontSize="18" Grid.ColumnSpan="2"/>
         <TextBox x:Name="tBoxTimeOfCollection" Grid.Column="1" Grid.Row="8" Text="" TextWrapping="Wrap" Margin="5,2,5,5" FontSize="18" Grid.ColumnSpan="2"/>

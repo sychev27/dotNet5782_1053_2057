@@ -24,6 +24,7 @@ namespace BL
             void AddUser(string _username, string _password, int _id = -1);
 
             double GetChargeRate();
+            int GetNumParcelsWaitingAtCustomer(BO.BOCustomer cust);
             BO.BODrone GetBODrone(int id);
             BO.BOCustomer GetBOCustomer(int id);
             BO.BOParcel GetBOParcel(int id);
@@ -41,6 +42,7 @@ namespace BL
             BO.BOCustomerToList GetOneCustToList(int _id);
             IEnumerable<BO.BOParcelToList> GetParcelToList();
             IEnumerable<BO.BOStationToList> GetStationToList();
+            BO.BOStationToList GetOneStationToList(int stationId);
             IEnumerable<BO.BODrone> GetSpecificDroneListStatus(int num);
             IEnumerable<BO.BODrone> GetSpecificDroneListWeight(int num);
 
@@ -67,8 +69,8 @@ namespace BL
             void EraseParcel(int id);
 
             //SIMULATOR
-            void BeginSimulator(int droneId/*, Action<int> updatesToDo, Func<bool> stopSimulator*/);
-            void StopSimulator();
+            void BeginSimulatorForDrone(int droneId/*, Action<int> updatesToDo, Func<bool> stopSimulator*/);
+            void StopSimulatorForDrone(int _droneId);
 
             //end of interface
         }

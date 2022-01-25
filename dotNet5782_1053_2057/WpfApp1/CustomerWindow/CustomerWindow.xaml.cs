@@ -21,25 +21,26 @@ namespace WpfApp1
     {
         BL.BLApi.Ibl busiAccess;
         int thisCustomerId;
-        bool registerMode; //this is true if the window is opened by a user
-        
-        public CustomerWindow(BL.BLApi.Ibl _busiAccess, bool register = false) //To Add a Customer
+        bool userMode = false; //this is true if the window is opened by a user
+        bool registerMode = false; //this is true if the window is opened by a user to register
+
+        public CustomerWindow(BL.BLApi.Ibl _busiAccess, bool isRegistering = false) 
+            //To Add a Customer
         {
             InitializeComponent();
             busiAccess = _busiAccess;
             //edit buttons and text boxes for Update Window:
             HelpfulMethods.ChangeVisibilty(Visibility.Hidden, btnEraseCust, btnModifyCustomer);
-            lstParcelListSending.Visibility = Visibility.Hidden;
-            lstParcelListReceiving.Visibility = Visibility.Hidden;
+            lstParcelListSent.Visibility = Visibility.Hidden;
+            lstParcelListReceived.Visibility = Visibility.Hidden;
             hideCustomerLogInBtns();
 
-            if (register)
+            if (isRegistering)
             {
                 btnAddCustomer.Content = "Register";
                 registerMode = true;
             }
         }
-
         public CustomerWindow(BL.BLApi.Ibl _busiAccess, BL.BO.BOCustomer customer)
             //To Update a Customer (called from Customer List)
         {
@@ -53,27 +54,20 @@ namespace WpfApp1
             tBoxLongiInfo.IsReadOnly = true;
             tBoxLongiInfo.BorderBrush = Brushes.Transparent;
 
-
             btnAddCustomer.IsEnabled = false;
             btnAddCustomer.Visibility = Visibility.Hidden;
             hideCustomerLogInBtns();
 
             thisCustomerId = customer.Id;
             displayBOCustomer(customer.Id);
-
-            //btnEraseCust.IsEnabled = false;
         }
-
-
         public CustomerWindow(BL.BLApi.Ibl _busiAccess, int custId)  :
             this(_busiAccess, _busiAccess.GetBOCustomer(custId))
             //called from Customer Log-in
         {
             hideCustomerLogInBtns(true);
+            userMode = true;
         }
-
-
-
 
 
         private void displayBOCustomer(int _id)
@@ -84,13 +78,9 @@ namespace WpfApp1
             tBoxPhoneInput.Text = bocustomer.Phone;
             tBoxLongiInfo.Text = bocustomer.Location.Longitude.ToString();
             tBoxLatitInfo.Text = bocustomer.Location.Latitude.ToString();
-            lstParcelListSending.ItemsSource = bocustomer.ListOfParcSent; //_busiAccess.GetBOParcelAtCustomerList(bocustumer);
-            lstParcelListReceiving.ItemsSource = bocustomer.ListOfParcReceived;
-
-            //working on a function in BL..
-
+            lstParcelListSent.ItemsSource = bocustomer.ListOfParcSent; 
+            lstParcelListReceived.ItemsSource = bocustomer.ListOfParcReceived;
         }
-
         private void btnAddCustomer_Click(object sender, RoutedEventArgs e)
         {
             //reset text color
@@ -164,16 +154,14 @@ namespace WpfApp1
             else
                 return;
 
-            if(!registerMode) //if window opened from List...
+            if (!registerMode) //if window opened from List...
                 Close();
             else              // if window opened from LoginWindow
             {
                 new AddUserWindow(busiAccess, _id).Show();
                 Close();
             }
-
         }
-
         private void btnCancel1_Click(object sender, RoutedEventArgs e)
         {
             if (registerMode)
@@ -181,7 +169,6 @@ namespace WpfApp1
             Close();
 
         }
-
         private void btnModifyCustomer_Click(object sender, RoutedEventArgs e)
         {
             //reset text color
@@ -217,15 +204,15 @@ namespace WpfApp1
             {
                 busiAccess.ModifyCust(_id, _name, _phone);
                 MessageBox.Show("Customer Name and Phone Changed", "SUCCESS", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
-                if(!registerMode)
+                if (registerMode || userMode)
+                    return;
+                else
                      Close();
                 //if register mode - let customer continue in this window..
             }   
             else
                 return;
         }
-
-        
         private void btnEraseCust_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -239,13 +226,11 @@ namespace WpfApp1
                 HelpfulMethods.ErrorMsg(ex.ToString());
             }
         }
-
         private void btnSendParcel_Click(object sender, RoutedEventArgs e)
         {
-            //open new ParcelWindow(), send the Sender ID.... 
+            new ParcelWindow(busiAccess);
             displayBOCustomer(thisCustomerId);
         }
-
         private void hideCustomerLogInBtns(bool isCustLogin = false)
         {
             //if (true) show the buttons. else: hide them
@@ -253,26 +238,21 @@ namespace WpfApp1
             btnLogOut.Visibility = (!isCustLogin)? Visibility.Hidden : Visibility.Visible;
             btnSendParcel.IsEnabled = isCustLogin;
             btnSendParcel.Visibility = (!isCustLogin) ? Visibility.Hidden : Visibility.Visible;
-            btnAddParcel.IsEnabled = isCustLogin;
-            btnAddParcel.Visibility = (!isCustLogin) ? Visibility.Hidden : Visibility.Visible;
-
+           
             //(if isCustomer Login  -> hide these buttons!)
             btnCancel1.IsEnabled = !isCustLogin;
             btnCancel1.Visibility = (isCustLogin) ? Visibility.Hidden : Visibility.Visible;
             btnEraseCust.IsEnabled = !isCustLogin;
             btnEraseCust.Visibility = (isCustLogin) ? Visibility.Hidden : Visibility.Visible;
         }
-
         private void btnLogOut_Click(object sender, RoutedEventArgs e)
         {
             new LoginWindow(busiAccess).Show(); 
             Close();
-            
         }
-
         private void lstParcelListSending_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            BL.BO.BOParcelAtCustomer parcel = lstParcelListSending.SelectedItem as BL.BO.BOParcelAtCustomer;
+            BL.BO.BOParcelAtCustomer parcel = lstParcelListSent.SelectedItem as BL.BO.BOParcelAtCustomer;
             int id = parcel.Id;
             BL.BO.BOParcel parc = busiAccess.GetBOParcel(id);
             if (parc.Exists)
@@ -281,10 +261,9 @@ namespace WpfApp1
                 HelpfulMethods.ErrorMsg("Parcel Deleted!");
             displayBOCustomer(thisCustomerId);
         }
-
         private void lstParcelListReceiving_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            BL.BO.BOParcelAtCustomer parcel = lstParcelListReceiving.SelectedItem as BL.BO.BOParcelAtCustomer;
+            BL.BO.BOParcelAtCustomer parcel = lstParcelListReceived.SelectedItem as BL.BO.BOParcelAtCustomer;
             int id = parcel.Id;
             BL.BO.BOParcel parc = busiAccess.GetBOParcel(id);
             if (parc.Exists)
@@ -292,11 +271,6 @@ namespace WpfApp1
             else
                 HelpfulMethods.ErrorMsg("Parcel Deleted!");
             displayBOCustomer(thisCustomerId);
-        }
-
-        private void btnAddParcel_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Text;
 using System.Threading.Tasks;
 namespace BL
@@ -256,11 +257,12 @@ namespace BL
             public BO.BODrone GetBODrone(int _id) //return reference... 
                                                   //only returns if drone Exists
             {
+                
                 foreach (var item in listDrone)
                 {
                     if (_id == item.Id && item.Exists)
                         return item;
-                }
+                }   
                 //throw exception!!!
                 throw new EXDroneNotFound() ;
                 //return null;
@@ -499,6 +501,16 @@ namespace BL
                 }
                 return res;
             }
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            public BO.BOStationToList GetOneStationToList(int stationId)
+            {
+                foreach (var item in dataAccess.GetStations())
+                {
+                    if (item.Id == stationId)
+                        return createBOStationToList(item.Id);
+                }
+                throw new EXNotFoundPrintException("Station");
+            }
 
             [MethodImpl(MethodImplOptions.Synchronized)]
             public IEnumerable<BO.BOStation> GetStations()
@@ -624,6 +636,18 @@ namespace BL
                 } 
                 else // if drone not carrying parcel
                     return empty;
+            }
+            [MethodImpl(MethodImplOptions.Synchronized)]
+            public int GetNumParcelsWaitingAtCustomer(BO.BOCustomer cust)
+            {
+                int res = 0;
+                foreach (var item in cust.ListOfParcSent)
+                {
+                    if (item.ParcelStatus == BO.Enum.ParcelStatus.created
+                        || item.ParcelStatus == BO.Enum.ParcelStatus.assigned) //but not yet collected...
+                        ++res;
+                }
+                return res;
             }
             //end of class definition...
         }

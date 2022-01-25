@@ -20,10 +20,12 @@ namespace BL
     internal class SimulatorBL
     {
         readonly int DELAY_EACH_STEP = 500;   //miliseconds
-        readonly int DELAY_BTW_JOURNEYS = 2000;
+        readonly int DELAY_BTW_JOURNEYS = 1000;
 
         readonly double DRONESPEED = 5; //__ kilometers per second
-        int droneId;
+        public int DroneId; //<- this field is useful in the simulator,
+                            //and also functions as an ID for this individual Simulator
+                            // it is used by BL to find the correct Simulator 
         BL.BLApi.Ibl busiAccess;
 
         //for calculating battery
@@ -45,7 +47,7 @@ namespace BL
             //and the same simulator is used for each call
             busiAccess = _busiAccess;
             beginTimeForDistance = DateTime.Now;
-            droneId = _droneId;
+            DroneId = _droneId;
 
             //initialize BackGroundWorker for Simulator
             workerForBLSimulator.DoWork += worker_DoWork;
@@ -58,16 +60,16 @@ namespace BL
         {
             //begin simulator:
             simulatorOn = true;
-            BL.BO.BODrone bodrone = busiAccess.GetBODrone(droneId);
+            BL.BO.BODrone bodrone = busiAccess.GetBODrone(DroneId);
             resetCurrentTimeAndLocation(bodrone);
-            workerForBLSimulator.RunWorkerAsync();
+            workerForBLSimulator.RunWorkerAsync(); 
         }
 
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void StopSimulator()
         {
             workerForBLSimulator.CancelAsync();
-            stopDroneJourney(droneId);
+            stopDroneJourney(DroneId);
             simulatorOn = false;
         }
 
@@ -75,8 +77,8 @@ namespace BL
         { 
             while (simulatorOn)
             {
-                Thread.Sleep(DELAY_EACH_STEP); 
                 updateSimulator();
+                Thread.Sleep(DELAY_EACH_STEP); 
             }
         }
 
@@ -97,10 +99,10 @@ namespace BL
         /// </summaryOfUpdateSimulator>
         private void updateSimulator() //called every iteration
         {
-            BL.BO.BODrone bodrone = busiAccess.GetBODrone(droneId); //receives drone by reference...
+            BL.BO.BODrone bodrone = busiAccess.GetBODrone(DroneId); //receives drone by reference...
             BL.BO.BOLocation destination;
 
-            lock (busiAccess)
+            lock(busiAccess)
             {
                 switch (bodrone.DroneStatus)
                 {
@@ -108,7 +110,7 @@ namespace BL
                         {
                             try
                             {
-                                busiAccess.AssignParcel(droneId); //function does not change battery nor location
+                                busiAccess.AssignParcel(DroneId); //function does not change battery nor location
                                 resetCurrentTimeAndLocation(bodrone);
                             }
                             catch (BL.BLApi.EXNoAppropriateParcel)
@@ -118,7 +120,7 @@ namespace BL
                                     Thread.Sleep(DELAY_BTW_JOURNEYS);
                                     return;
                                 }
-                                busiAccess.ChargeDrone(droneId, true); //send drone to charge..
+                                busiAccess.ChargeDrone(DroneId, true); //send drone to charge..
                                 bodrone.DroneStatus = BO.Enum.DroneStatus.OnWayToCharge;
                                 resetCurrentTimeAndLocation(bodrone);
                             }
@@ -129,7 +131,7 @@ namespace BL
                             if (!arrivedAtDestination)//if on way to station
                             {
                                 destination = busiAccess.
-                                        GetBOStation(busiAccess.GetStationIdOfBODrone(droneId)).Location;
+                                        GetBOStation(busiAccess.GetStationIdOfBODrone(DroneId)).Location;
                                 moveDroneAlongJourney(bodrone, currentLocation, destination, calculateTimeDiff());
                             }
                             else  //if drone arrived at station 
@@ -150,7 +152,7 @@ namespace BL
                             {
                                 bodrone.Battery = 100;
                                 resetCurrentTimeAndLocation(bodrone);
-                                busiAccess.FreeDrone(droneId, DateTime.Now, true);
+                                busiAccess.FreeDrone(DroneId, DateTime.Now, true);
                                 Thread.Sleep(DELAY_BTW_JOURNEYS); //wait 3 seconds till we try to assign 
                             }
 
@@ -161,13 +163,13 @@ namespace BL
                             if (bodrone.ParcelInTransfer.Collected == false)
                             //IF ON WAY TO THE SENDER..
                             {
-                                if (!arrivedAtDestination)
+                                if (!arrivedAtDestination) 
                                     moveDroneAlongJourney(bodrone, currentLocation,
                                          busiAccess.GetBOCustomer(bodrone.ParcelInTransfer.Sender.Id).Location,
                                           calculateTimeDiff());
                                 else //if drone has arrived
                                 {
-                                    busiAccess.PickupParcel(droneId, true);
+                                    busiAccess.PickupParcel(DroneId, true);
                                     resetCurrentTimeAndLocation(bodrone);
                                 }
                             }
@@ -180,7 +182,7 @@ namespace BL
                                           calculateTimeDiff());
                                 else //if drone has arrived
                                 {
-                                    busiAccess.DeliverParcel(droneId, true);
+                                    busiAccess.DeliverParcel(DroneId, true);
                                     resetCurrentTimeAndLocation(bodrone);
                                 }
                             }
@@ -190,6 +192,7 @@ namespace BL
                         break;
                 }
             }
+            
 
         }
 
@@ -214,57 +217,75 @@ namespace BL
             BO.BOLocation destination, double secondsTraveled) //UPDATES DRONE'S BATTERY, LOCATION, 
             //AND CHANGES "arrivedAtDestination" flag
         {
-            if(source == destination) //if drone begin the next journey, but was already at the first stop
+            if (bodrone.Battery < 0)
+                throw new Exception(); //DELETE HERE
+
+
+            if (source.Longitude.Equals(destination.Longitude)
+                && source.Latitude.Equals(destination.Latitude)) //if drone begins the next journey, but was already at the first stop
                 //(for example - if the drone delivered a parcel at Reuven, and the next mission was to pick up a parcel from reuven)
             {
-                bodrone.Location = destination;
-                arrivedAtDestination = true;
-                return;
-            }          
-            
-            //(1) UPDATE LOCATION:
-            
-            //all distances are measured in km
-            //function calculated total time needed to travel entire distance,
-            double totalDistance = HelpfulMethodsBL.GetDistance(source, destination);
-            double totalSecNeededForJourney = totalDistance / DRONESPEED;
-            //then drone calculates how many points of Longitude/Latitude to move the drone,
-            //based on time actually traveled
-            double longitudeDiff = destination.Longitude - source.Longitude; //<-can be negative...
-            double latitudeDiff = destination.Latitude - source.Latitude;    //<-can be negative...
-            double longitudeProportion = longitudeDiff / totalSecNeededForJourney;
-            double latitudeProportion = latitudeDiff / totalSecNeededForJourney;
-
-            bodrone.Location.Longitude += secondsTraveled * longitudeProportion;
-            bodrone.Location.Latitude += secondsTraveled * latitudeProportion;
-
-
-            //(2) UPDATE BATTERY:
-            TimeSpan ts = DateTime.Now - beginTimeForBattery;
-            beginTimeForBattery = DateTime.Now;
-            double secondsInTravel = ts.TotalSeconds;
-            bodrone.Battery -= busiAccess.GetElectricityRate(bodrone) * secondsInTravel;
-
-            //(3) CHECK THAT ARRIVED AT DESTINATION
-            if ((longitudeDiff > 0                                     // if traveling in positive direction
-                && bodrone.Location.Longitude > destination.Longitude) //and we passed the location
-            ||
-                (longitudeDiff < 0                              //if traveling in negative direction
-               && bodrone.Location.Longitude < destination.Longitude)) //and we passed the location...
-            {
-                bodrone.Location = destination;
-                arrivedAtDestination = true;
+               lock(busiAccess)
+                {
+                    bodrone.Location = destination;
+                    arrivedAtDestination = true;
+                    return;
+                }
             }
-            //we only need to check either longitude or latitude, because they are in sync...
 
+            lock(busiAccess)
+            {
+                //(1) UPDATE LOCATION:
+
+                //all distances are measured in km
+                //function calculated total time needed to travel entire distance,
+                double totalDistance = HelpfulMethodsBL.GetDistance(source, destination);
+                double totalSecNeededForJourney = totalDistance / DRONESPEED;
+                //then drone calculates how many points of Longitude/Latitude to move the drone,
+                //based on time actually traveled
+                
+                double longitudeDiff = destination.Longitude - source.Longitude; //<-can be negative...
+                double latitudeDiff = destination.Latitude - source.Latitude;    //<-can be negative...
+                double longitudeProportion = longitudeDiff / totalSecNeededForJourney;
+                double latitudeProportion = latitudeDiff / totalSecNeededForJourney;
+                if (totalSecNeededForJourney == 0) //if drone did not travel, this prevents a NaN value...
+                {
+                    longitudeProportion = 0;
+                    latitudeProportion = 0;
+                }
+
+                bodrone.Location.Longitude += secondsTraveled * longitudeProportion;
+                bodrone.Location.Latitude += secondsTraveled * latitudeProportion;
+
+                //(2) UPDATE BATTERY:
+                TimeSpan ts = DateTime.Now - beginTimeForBattery;
+                beginTimeForBattery = DateTime.Now;
+                double secondsInTravel = ts.TotalSeconds;
+                bodrone.Battery -= busiAccess.GetElectricityRate(bodrone) * secondsInTravel;
+
+                //(3) CHECK THAT ARRIVED AT DESTINATION
+                if ((longitudeDiff > 0                                     // if traveling in positive direction
+                    && bodrone.Location.Longitude > destination.Longitude) //and we passed the location
+                ||
+                    (longitudeDiff < 0                              //if traveling in negative direction
+                   && bodrone.Location.Longitude < destination.Longitude)) //and we passed the location...
+                {
+                    bodrone.Location = destination;
+                    arrivedAtDestination = true;
+                }
+                //we only need to check either longitude or latitude, because they are in sync...
+            }
         }
         void moveDroneToDestination(BO.BODrone bodrone, BO.BOLocation destination
             ) //UPDATES DRONE'S LOCATION AND BATTERY
         {
-            double totalDistance = HelpfulMethodsBL.GetDistance(bodrone.Location, destination);
-            double totalSecondsNeededForJourney =  totalDistance / DRONESPEED;
-            bodrone.Battery -= totalSecondsNeededForJourney * busiAccess.GetElectricityRate(bodrone);
-            bodrone.Location = destination;
+            lock(busiAccess)
+            {
+                double totalDistance = HelpfulMethodsBL.GetDistance(bodrone.Location, destination);
+                double totalSecondsNeededForJourney = totalDistance / DRONESPEED;
+                bodrone.Battery -= totalSecondsNeededForJourney * busiAccess.GetElectricityRate(bodrone);
+                bodrone.Location = destination;
+            }
         }
         void stopDroneJourney(int droneId)
         {

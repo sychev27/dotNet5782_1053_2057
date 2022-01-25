@@ -32,7 +32,7 @@ namespace DalXml
             internal static double light = 0.2;
             internal static double mediuim = 0.3;
             internal static double heavy = 0.4;
-            internal static double chargeRate = .613; // per second 
+            internal static double chargeRate = .613; // per second  
             internal int parcelSerialNumber = 1;
         }
 
@@ -76,6 +76,9 @@ namespace DalXml
             const int LONGEND = 37;
             const int LATBEGIN = 31;
             const int LATEND = 33;
+
+            const int NUMPARCELS = 30;
+
 
             //INITIALIZE DRONE
 
@@ -143,7 +146,7 @@ namespace DalXml
             //INITIALIZE PARCELS
             List<DalXml.DO.Parcel> listParcel = new List<DalXml.DO.Parcel>();
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < NUMPARCELS; i++)
             {
                 DO.Parcel exampleP = new DO.Parcel();
                 exampleP.Id = thisConfig.parcelSerialNumber++;
@@ -168,12 +171,12 @@ namespace DalXml
             DalXml.DO.User userEmployee = new DalXml.DO.User();
             userEmployee.Id = -1; //employee
             userEmployee.Username = "boss";
-            userEmployee.Password = "boss";
+            userEmployee.Password = "bPassword";
             listUser.Add(userEmployee);
             DalXml.DO.User userReuven = new DalXml.DO.User();
             userReuven.Id = 1; //customer reuven
-            userReuven.Username = "ruv";
-            userReuven.Password = "ruv";
+            userReuven.Username = "Reuven613";
+            userReuven.Password = "rPassword";
             listUser.Add(userReuven);
             DALTools.XMLTools.SaveListToXMLSerializer<DalXml.DO.User>(listUser, usersPath);
             //END OF FUNCTION

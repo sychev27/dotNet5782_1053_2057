@@ -29,7 +29,7 @@ namespace WpfApp1
         /// -If a drone's Simulator is on, the DroneWindow will not close, but rather will be hidden
         /// -If the DroneListWindow is closed, all simulators are stopped, and the all DroneWindows are closed
         /// </summary>
-        List<DroneWindow> openDroneWindows = new List<DroneWindow>();
+        List<DroneWindow> listOpenDroneWindows = new List<DroneWindow>();
         bool allDroneSimulatorsOn = false;
         
         /// <summaryOfWatchSimulator>
@@ -39,18 +39,24 @@ namespace WpfApp1
         bool watchSimulatorOn = false;
         readonly BackgroundWorker workerToDisplayDroneList = new BackgroundWorker();
         readonly int DELAY_BTW_STEPS = 2000;  // ___ miliseconds
+        //"parent" - allows us to ensure no other windows open simoultaneously with DronelistWindow, 
+        //except for MapWindow (to watch Simulator)
+        MainWindow parent;
 
 
 
         //CTOR:
-        public DroneListWindow(BL.BLApi.Ibl busiAccess1)
+        public DroneListWindow(BL.BLApi.Ibl _busiAccess, MainWindow _parent)
         {
-            busiAccess = busiAccess1;
+            busiAccess = _busiAccess;
+            parent = _parent;
             InitializeComponent();
             //listDrone = getDronesAsObservable();
             RefreshList();
             StatusSelector1.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.DroneStatus));
             StatusSelector2.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.WeightCategories));
+
+            btnWatchSimulator.IsEnabled = false;
 
             //INITIALIZE BACKGROUNDWORKER FOR SIMULATOR
             workerToDisplayDroneList.DoWork += workerToDisplayDroneList_DoWork;
@@ -109,7 +115,7 @@ namespace WpfApp1
             }
             else //if all drones are already being simulated
             {
-                CloseAndStopSimulatorAllWindows();
+                CloseAndStopSimulatorAllDroneWindows();
                 btnSimulateAll.Content = "Simulate All Drones";
                 allDroneSimulatorsOn = false;
             }
@@ -118,40 +124,52 @@ namespace WpfApp1
         //HELPING FUNCTIONS
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            MessageBoxResult result =
-              MessageBox.Show( "Closing this window will close all drone windows, and stop all simulators. " +
-              "Do you want to close this window?" ,  
+            if(parent.IsClosing) //if User is closing the MainWindow, we prevent this MsgBox from popping up...
+            {
+                CloseAndStopSimulatorAllDroneWindows();
+                //no need to release parent's ptr to DroneListWindow
+                return; 
+            }
+            
+            if(allDroneSimulatorsOn)
+            {
+                MessageBoxResult result =
+             MessageBox.Show("Closing this window will close all drone windows, and stop all simulators. " +
+              "Do you want to close this window?",
               "Notice", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-            if (result == MessageBoxResult.No)
-            {
-                // If user doesn't want to close, cancel closure
-                e.Cancel = true;
+                if (result == MessageBoxResult.No)
+                {
+                    // If user doesn't want to close, cancel closure
+                    e.Cancel = true;
+                }
+                else //close the windows...
+                {
+                    CloseAndStopSimulatorAllDroneWindows();
+                    parent.ReleasePtrToDroneListWindow();
+                }
+                //DroneListWindow closes automatically, no need to clear list..
             }
-            else //close the windows...
-            {
-                CloseAndStopSimulatorAllWindows();
-            }
-            //DroneListWindow closes automatically, no need to clear list..
+
         }
-        private void CloseAndStopSimulatorAllWindows()
+        private void CloseAndStopSimulatorAllDroneWindows()
         {
-            for (int i = 0; i < openDroneWindows.Count; i++) //closes any open DroneWindows
+            for (int i = 0; i < listOpenDroneWindows.Count; i++) //closes any open DroneWindows
             {
                 //if the simulator is not on, this function won't do anything...
-                openDroneWindows[i].StopSimulator();
-                openDroneWindows[i].Close();
+                listOpenDroneWindows[i].StopSimulator();
+                listOpenDroneWindows[i].Close();
                 i--; // so that the iteration works properly...
             }
         }
         public void RemoveDroneWindow(int _droneId) //called by DroneWindow - to remove itself
         {
-            for (int i = 0; i < openDroneWindows.Count; i++)
+            for (int i = 0; i < listOpenDroneWindows.Count; i++)
             {
-                if (openDroneWindows[i].ThisDroneId == _droneId) 
+                if (listOpenDroneWindows[i].ThisDroneId == _droneId) 
                     //bec we are changing the collection, 
                     //we cannot use a "foreach" loop
                 {
-                    openDroneWindows.Remove(openDroneWindows[i]);
+                    listOpenDroneWindows.Remove(listOpenDroneWindows[i]);
                     return;
                 }
             }
@@ -177,11 +195,12 @@ namespace WpfApp1
         }
         private void openDroneWindow(BL.BO.BODrone drone, bool showDroneWindow = true)
         {
-            foreach (var item in openDroneWindows)
+            //CHECK IF WINDOW ALREADY OPEN
+            foreach (var item in listOpenDroneWindows)
             {
-                if (item.ThisDroneId == drone.Id)   //check if window already open
+                if (item.ThisDroneId == drone.Id)   
                 {
-                    if(showDroneWindow)
+                    if(showDroneWindow) //received as parameter - if caller wants to open, and show the window..
                     {
                         item.Show();
                         item.Focus(); //Window might not have been closed, or simulator is still on..
@@ -191,9 +210,9 @@ namespace WpfApp1
                     return;
                 }
             }
-            //if the window is not open
+            //IF THE WINDOW IS NOT OPEN
             DroneWindow newDroneWindow = new DroneWindow(busiAccess, drone, this);
-            openDroneWindows.Add(newDroneWindow);
+            listOpenDroneWindows.Add(newDroneWindow);
             if(showDroneWindow)
                 newDroneWindow.Show();
         }
@@ -201,17 +220,17 @@ namespace WpfApp1
         {
             foreach (var item in busiAccess.GetBODroneList(true))
             {
-                //create drone windoss
+                //create drone windows
                 if (item.Exists)
                 {
                     openDroneWindow(item, false);
                 }
             }
-            foreach (var item in openDroneWindows)
+            foreach (var item in listOpenDroneWindows)
             {
                 //hide window, and begin simulator
                 item.Hide();
-                item.BeginSimulator();
+                item.BeginSimulator(); //if simulator is already on, nothing happens
             }
         }
         private bool filterOutErased(object obj)
@@ -241,11 +260,12 @@ namespace WpfApp1
             }
         }
         private void workerToDisplayDroneList_DoWork(object sender, DoWorkEventArgs e)
+        //THREAD SLEEPS HERE
         {
             while(watchSimulatorOn)
             {
-                Thread.Sleep(DELAY_BTW_STEPS);
-                RefreshList();
+               Thread.Sleep(DELAY_BTW_STEPS);
+               RefreshList();
             }
         }
         private void beginWatchingSimulator()

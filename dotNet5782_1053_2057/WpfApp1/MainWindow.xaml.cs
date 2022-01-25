@@ -23,44 +23,101 @@ namespace WpfApp1
     public partial class MainWindow : Window
     {
 
-        BL.BLApi.Ibl busiAccess;// = BL.BLApi.FactoryBL.GetBL();
+        BL.BLApi.Ibl busiAccess;          // <-- allows us to access business logic layer..
+        MapWindow ptrMapWindow;
+        DroneListWindow ptrDroneListWindow;  // <-- used to prevent user from opening other windows while
+                                          // the droneList window is open
+        public bool IsClosing = false;         //<-- used to communicate to DroneListwWindow that this window is closing...
 
-
-        public MainWindow(BL.BLApi.Ibl _busiAccess)
+        public MainWindow(BL.BLApi.Ibl _busiAccess) //CTOR
         {
             busiAccess = _busiAccess;
             InitializeComponent();
         }
-
+        //BUTTONS:
         private void btnOpenDroneList_Click(object sender, RoutedEventArgs e)
         {
-            new DroneListWindow(busiAccess).ShowDialog();
+            if (ptrDroneListWindow != null) //if droneListWindow is already open...
+            {
+                ptrDroneListWindow.Show();
+                ptrDroneListWindow.Focus();
+                if (ptrDroneListWindow.WindowState == WindowState.Minimized)
+                    ptrDroneListWindow.WindowState = WindowState.Normal;
+            }
+            else
+            {
+                ptrDroneListWindow = new DroneListWindow(busiAccess, this);
+                ptrDroneListWindow.Show();
+            }
         }
-
         private void btnCustomerLists_Click(object sender, RoutedEventArgs e)
         {
-            new CustomerListWindow(busiAccess).ShowDialog();
+            if (ptrDroneListWindow != null)
+                HelpfulMethods.ErrorMsg("Cannot open this window while the drone list winow is open");
+            else if (ptrMapWindow != null && HelpfulMethods.IsWindowOpen(ptrMapWindow))
+                HelpfulMethods.ErrorMsg("Cannot open this window while the map window is open");
+            else
+                new CustomerListWindow(busiAccess).ShowDialog();
         }
-
+        private void btnParcelLists_Click(object sender, RoutedEventArgs e)
+        {
+            if (ptrDroneListWindow != null)
+                HelpfulMethods.ErrorMsg("Cannot open this window while the drone list winow is open");
+            else if (ptrMapWindow != null && HelpfulMethods.IsWindowOpen(ptrMapWindow))
+                HelpfulMethods.ErrorMsg("Cannot open this window while the map window is open");
+            else
+                new ParcelListWindow(busiAccess).ShowDialog();
+        }
+        private void btnStationLists_Click(object sender, RoutedEventArgs e)
+        {
+            if (ptrDroneListWindow != null)
+                HelpfulMethods.ErrorMsg("Cannot open this window while the drone list winow is open");
+            else if (ptrMapWindow != null && HelpfulMethods.IsWindowOpen(ptrMapWindow))
+                HelpfulMethods.ErrorMsg("Cannot open this window while the map window is open");
+            else
+                new StationListWindow(busiAccess).ShowDialog();
+        }
+        private void btnOpenMap_Click(object sender, RoutedEventArgs e)
+        {
+            if (HelpfulMethods.IsWindowOpen(ptrMapWindow)) //if mapWindow is already open...
+            {
+                ptrMapWindow.Show();
+                ptrMapWindow.Focus();
+                if (ptrMapWindow.WindowState == WindowState.Minimized)
+                    ptrMapWindow.WindowState = WindowState.Normal;
+            }
+            else
+            {
+                ptrMapWindow = new MapWindow(busiAccess);
+                ptrMapWindow.Show();
+            }
+        }
         private void btnLogOut_Click(object sender, RoutedEventArgs e)
         {
             new LoginWindow(busiAccess).Show();
             Close();
         }
-
-        private void btnParcelLists_Click(object sender, RoutedEventArgs e)
+        //HELPING FUNCTIONS:
+        public void ReleasePtrToDroneListWindow() //called by droneList window when it closes..
         {
-            new ParcelListWindow(busiAccess).ShowDialog();
+            ptrDroneListWindow = null;
         }
 
-        private void btnStationLists_Click(object sender, RoutedEventArgs e)
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            new StationListWindow(busiAccess).ShowDialog();
+            //ensure that window is not left open..
+            if (ptrDroneListWindow != null)
+            {
+                IsClosing = true;
+                ptrDroneListWindow.Close();
+                ptrDroneListWindow = null;
+            } 
+            if(HelpfulMethods.IsWindowOpen(ptrMapWindow))
+            {
+                ptrMapWindow.Close();
+                ptrMapWindow = null;
+            }    
         }
-
-        private void btnOpenMap_Click(object sender, RoutedEventArgs e)
-        {
-            new MapWindow(busiAccess).ShowDialog();
-        }
+        //END OF WINDOW
     }
 }

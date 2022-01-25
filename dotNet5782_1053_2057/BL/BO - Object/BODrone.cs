@@ -56,7 +56,6 @@ namespace BL
                     }
                 }
             }
-
             public override string ToString()
             {
                 string res = "";
