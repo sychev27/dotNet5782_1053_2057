@@ -54,6 +54,7 @@ namespace BL
             workerForBLSimulator.RunWorkerCompleted += worker_RunWorkerCompleted;
             workerForBLSimulator.WorkerSupportsCancellation = true;
         }
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void StartSimulator()
         {
@@ -63,6 +64,7 @@ namespace BL
             resetCurrentTimeAndLocation(bodrone);
             workerForBLSimulator.RunWorkerAsync(); 
         }
+
         [MethodImpl(MethodImplOptions.Synchronized)]
         public void StopSimulator()
         {
@@ -70,6 +72,7 @@ namespace BL
             stopDroneJourney(DroneId);
             simulatorOn = false;
         }
+
         private void worker_DoWork(object sender, DoWorkEventArgs e)
         { 
             while (simulatorOn)
@@ -78,6 +81,7 @@ namespace BL
                 Thread.Sleep(DELAY_EACH_STEP); 
             }
         }
+
         private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             workerForBLSimulator.Dispose();
@@ -191,6 +195,7 @@ namespace BL
             
 
         }
+
         void resetCurrentTimeAndLocation(BL.BO.BODrone bodrone) //THREAD SLEEPS HERE... 
         {
             //called everytime drone receives a new destination
@@ -201,6 +206,7 @@ namespace BL
             arrivedAtDestination = false;
             Thread.Sleep(DELAY_BTW_JOURNEYS);
         }
+
         double calculateTimeDiff() //calculates difference btw now, and last measured time
         {
             TimeSpan t = DateTime.Now - beginTimeForDistance;
