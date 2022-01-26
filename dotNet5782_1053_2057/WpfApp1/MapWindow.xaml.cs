@@ -110,13 +110,15 @@ namespace WpfApp1
             }
         }
 
-        //CTOR
+        //CTOR of MapWindow:
         public MapWindow(BL.BLApi.Ibl _busiAccess) 
         {
             InitializeComponent();
             busiAccess = _busiAccess;
             tBoxInfoWindow.Text = emptyTextForInfoWindow;
             refreshMap();
+
+            WindowState = WindowState.Maximized;
 
             worker.DoWork += worker_DoWork;
             worker.RunWorkerCompleted += worker_RunWorkerCompleted;
