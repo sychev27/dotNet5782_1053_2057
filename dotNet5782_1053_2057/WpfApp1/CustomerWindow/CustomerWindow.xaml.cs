@@ -24,15 +24,18 @@ namespace WpfApp1
         bool userMode = false; //this is true if the window is opened by a user
         bool registerMode = false; //this is true if the window is opened by a user to register
 
+        //3 CTORS:
         public CustomerWindow(BL.BLApi.Ibl _busiAccess, bool isRegistering = false) 
-            //To Add a Customer
+            //CTOR: To Add a Customer - called from MainWindow, and Customer Register
         {
             InitializeComponent();
             busiAccess = _busiAccess;
             //edit buttons and text boxes for Update Window:
             HelpfulMethods.ChangeVisibilty(Visibility.Hidden, btnEraseCust, btnModifyCustomer);
             lstParcelListSent.Visibility = Visibility.Hidden;
+            tBlock_sending.Visibility = Visibility.Hidden;
             lstParcelListReceived.Visibility = Visibility.Hidden;
+            tBlock_receiving.Visibility = Visibility.Visible;
             hideCustomerLogInBtns();
 
             if (isRegistering)
@@ -42,7 +45,7 @@ namespace WpfApp1
             }
         }
         public CustomerWindow(BL.BLApi.Ibl _busiAccess, BL.BO.BOCustomer customer)
-            //To Update a Customer (called from Customer List)
+            //CTOR: To Update a Customer (called from Customer List)
         {
             InitializeComponent();
             busiAccess = _busiAccess;
@@ -63,7 +66,7 @@ namespace WpfApp1
         }
         public CustomerWindow(BL.BLApi.Ibl _busiAccess, int custId)  :
             this(_busiAccess, _busiAccess.GetBOCustomer(custId))
-            //called from Customer Log-in
+            //CTOR: called from Customer Log-in
         {
             hideCustomerLogInBtns(true);
             userMode = true;
