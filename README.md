@@ -1,4 +1,4 @@
-#Imagine a World - Run by Drone Deliveries
+# Imagine a World - Run by Drone Deliveries
 >created by David Berger & Alexander Sychev, at the Lev Institute (Jerusalem College of Technology)
 
 ![image](https://user-images.githubusercontent.com/91850832/151113497-51e38999-ec63-45c5-bc7f-823057499d80.png)
@@ -11,7 +11,7 @@ There are four main objects held in The Data Library:
 - Customers, 
 - Parcels. 
 
-###Directions to view the project easily:
+### Directions to view the project easily:
 
 1 Click on “Default Login”
 2 Open the **Map Window**, and click “Start Simulator”. Watch the drones deliver the parcels. 
@@ -33,7 +33,7 @@ Enjoy!
 
 
 
-###A bit about the back code:
+### A bit about the back code:
 
 **Data Layer (DL)**  - safely stores the objects in an XML file. Protects the data with a Singleton design pattern (Lazy Instantiation) and very simple Factory class.
 
