@@ -110,7 +110,7 @@ namespace WpfApp1
             }
         }
 
-        //CTOR of MapWindow:
+        //CTOR of MapWindow: 
         public MapWindow(BL.BLApi.Ibl _busiAccess) 
         {
             InitializeComponent();
