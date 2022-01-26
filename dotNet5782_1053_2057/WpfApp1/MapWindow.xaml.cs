@@ -35,6 +35,7 @@ namespace WpfApp1
 
 
 
+
         List<TextBlock> listTextBlocks = new List<TextBlock>();
         List<Image> listImages = new List<Image>();
 
@@ -119,6 +120,7 @@ namespace WpfApp1
             refreshMap();
 
             WindowState = WindowState.Maximized;
+            chkboxTextMode.IsChecked = true;
 
             worker.DoWork += worker_DoWork;
             worker.RunWorkerCompleted += worker_RunWorkerCompleted;
