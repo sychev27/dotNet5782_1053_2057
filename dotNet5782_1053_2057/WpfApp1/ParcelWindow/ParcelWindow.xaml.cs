@@ -167,6 +167,10 @@ namespace WpfApp1
                     //if Parcels's Id already exists
                     HelpfulMethods.ErrorMsg(exception.ToString());
                 }
+                catch(BL.BLApi.EXCustomerNotFound ex)
+                {
+                    HelpfulMethods.ErrorMsg(ex.ToString());
+                }
             }
             else
                 return;
