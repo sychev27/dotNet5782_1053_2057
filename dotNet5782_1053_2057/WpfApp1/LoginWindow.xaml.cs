@@ -31,6 +31,9 @@ namespace WpfApp1
                 "For Customer:\n" +
                 "user: Reuven613\n" +
                 "password: rPassword";
+            btnOpenMain.Content = "Default Login\n" +
+                "(View as Employee\n" +
+                " without sign-in)";
         }
         public LoginWindow(BL.BLApi.Ibl _busiAccess) : this()
         {

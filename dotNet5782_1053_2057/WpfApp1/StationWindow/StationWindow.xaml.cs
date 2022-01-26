@@ -120,7 +120,6 @@ namespace WpfApp1
                 return;
 
         }
-
         private void displayStation(int _stationId)
         {
             BL.BO.BOStation st = busiAccess.GetBOStation(_stationId);
