@@ -35,7 +35,7 @@ namespace WpfApp1
             lstParcelListSent.Visibility = Visibility.Hidden;
             tBlock_sending.Visibility = Visibility.Hidden;
             lstParcelListReceived.Visibility = Visibility.Hidden;
-            tBlock_receiving.Visibility = Visibility.Visible;
+            tBlock_receiving.Visibility = Visibility.Hidden;
             hideCustomerLogInBtns();
 
             if (isRegistering)
