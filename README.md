@@ -1,5 +1,5 @@
 # Imagine a World - Run by Drone Deliveries
->created by David Berger & Alexander Sychev, at the Lev Institute (Jerusalem College of Technology)
+>created by David Berger & Alexandr Sychev, at the Lev Institute (Jerusalem College of Technology)
 
 ![image](https://user-images.githubusercontent.com/91850832/151113497-51e38999-ec63-45c5-bc7f-823057499d80.png)
 
