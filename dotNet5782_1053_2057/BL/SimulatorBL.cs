@@ -81,7 +81,6 @@ namespace BL
                 Thread.Sleep(DELAY_EACH_STEP); 
             }
         }
-
         private void worker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             workerForBLSimulator.Dispose();
@@ -195,7 +194,6 @@ namespace BL
             
 
         }
-
         void resetCurrentTimeAndLocation(BL.BO.BODrone bodrone) //THREAD SLEEPS HERE... 
         {
             //called everytime drone receives a new destination
@@ -206,7 +204,6 @@ namespace BL
             arrivedAtDestination = false;
             Thread.Sleep(DELAY_BTW_JOURNEYS);
         }
-
         double calculateTimeDiff() //calculates difference btw now, and last measured time
         {
             TimeSpan t = DateTime.Now - beginTimeForDistance;
@@ -313,9 +310,7 @@ namespace BL
                                 moveDroneToDestination(bodrone, destination);
                             }
                             //drone arrived at station 
-                            {
-                                bodrone.DroneStatus = BO.Enum.DroneStatus.Charging;
-                            }
+                            bodrone.DroneStatus = BO.Enum.DroneStatus.Charging;
                         }
                         break;
                     case BO.Enum.DroneStatus.Charging:
