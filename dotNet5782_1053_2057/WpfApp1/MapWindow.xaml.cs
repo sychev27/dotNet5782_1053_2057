@@ -30,9 +30,6 @@ namespace WpfApp1
         static String ImgStation = AppDomain.CurrentDomain.BaseDirectory.Split("WpfApp1")[0] + "WpfApp1\\Pictures\\station.jpg";
         static String ImgHouse = AppDomain.CurrentDomain.BaseDirectory.Split("WpfApp1")[0] + "WpfApp1\\Pictures\\house.png";
 
-
-
-
         List<TextBlock> listTextBlocks = new List<TextBlock>();
         List<Image> listImages = new List<Image>();
 
@@ -181,69 +178,69 @@ namespace WpfApp1
                     listImages.Add(createImage(new InfoBlock(item)));
             }
         }
-        private TextBlock createTextBlock(InfoBlock _InfoBlock) //Creates and sets TextBlock on Grid
+        private TextBlock createTextBlock(InfoBlock _infoBlock) //Creates and sets TextBlock on Grid
         {
             TextBlock newTextBlock = new TextBlock();
-            newTextBlock.Name = "tBlockR" + _InfoBlock.RowPlace.ToString() + "C" + _InfoBlock.ColumnPlace.ToString();
-            Grid.SetColumn(newTextBlock, _InfoBlock.ColumnPlace);
-            Grid.SetRow(newTextBlock, _InfoBlock.RowPlace);
+            newTextBlock.Name = "tBlockR" + _infoBlock.RowPlace.ToString() + "C" + _infoBlock.ColumnPlace.ToString();
+            Grid.SetColumn(newTextBlock, _infoBlock.ColumnPlace);
+            Grid.SetRow(newTextBlock, _infoBlock.RowPlace);
             newTextBlock.FontSize = 11;
             newTextBlock.FontWeight = FontWeights.Bold;
             newTextBlock.Foreground = new SolidColorBrush(textColor);
             newTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(700);
             
             newTextBlock.MouseLeftButtonDown += new MouseButtonEventHandler(
-                new EventHandler((sender, e) => openWindowOfInfoBlock(sender, e, _InfoBlock)));
+                new EventHandler((sender, e) => openWindowOfInfoBlock(sender, e, _infoBlock)));
             newTextBlock.MouseLeave += new MouseEventHandler(this.hideTextInInfoWindow);
-            switch (_InfoBlock.ThisObjectType)
+            switch (_infoBlock.ThisObjectType)
             {
                 case ObjectType.Station:
                     {
                         newTextBlock.Background = new SolidColorBrush(stationColor);
                         newTextBlock.MouseEnter += new MouseEventHandler(
-                            new EventHandler((sender, e) => displayStationInInfoWindow(sender, e, _InfoBlock)));
-                        newTextBlock.Text = _InfoBlock.numParcelsOrDronesCharging.ToString();
+                            new EventHandler((sender, e) => displayStationInInfoWindow(sender, e, _infoBlock)));
+                        newTextBlock.Text = _infoBlock.numParcelsOrDronesCharging.ToString();
                     }
                     break;
                 case ObjectType.Customer:
                     {
                         newTextBlock.Background = new SolidColorBrush(customerColor);
                         newTextBlock.MouseEnter += new MouseEventHandler(
-                            new EventHandler((sender, e) => displayCustomerInInfoWindow(sender, e, _InfoBlock)));
-                        newTextBlock.Text = _InfoBlock.numParcelsOrDronesCharging.ToString();
+                            new EventHandler((sender, e) => displayCustomerInInfoWindow(sender, e, _infoBlock)));
+                        newTextBlock.Text = _infoBlock.numParcelsOrDronesCharging.ToString();
                     }
                     break;
                 case ObjectType.Drone:
                     {
                         newTextBlock.Background = new SolidColorBrush(droneColor);
                         newTextBlock.MouseEnter += new MouseEventHandler(
-                            new EventHandler((sender, e) => displayDroneInInfoWindow(sender, e, _InfoBlock)));
-                        newTextBlock.Text = _InfoBlock.numParcelsOrDronesCharging.ToString();
+                            new EventHandler((sender, e) => displayDroneInInfoWindow(sender, e, _infoBlock)));
+                        newTextBlock.Text = _infoBlock.numParcelsOrDronesCharging.ToString();
                         newTextBlock.Margin = new Thickness(5, 0, 5, 0);
                     }
                     break;
                 default:
                     break;
             }
-            newTextBlock.Text += "\n" + _InfoBlock.name;
+            newTextBlock.Text += "\n" + _infoBlock.name;
             gridMap.Children.Add(newTextBlock);
             return newTextBlock;
         }
-        private Image createImage(InfoBlock _InfoBlock)
+        private Image createImage(InfoBlock _infoBlock)
         {
             Image newImage = new Image();
-            Grid.SetColumn(newImage, _InfoBlock.ColumnPlace);
-            Grid.SetRow(newImage, _InfoBlock.RowPlace);
+            Grid.SetColumn(newImage, _infoBlock.ColumnPlace);
+            Grid.SetRow(newImage, _infoBlock.RowPlace);
             ImageSource _imageSource;
-            switch(_InfoBlock.ThisObjectType)
+            switch(_infoBlock.ThisObjectType)
             {
                 case ObjectType.Drone:
                     {
-                        _imageSource = (_InfoBlock.numParcelsOrDronesCharging == 0) ?
+                        _imageSource = (_infoBlock.numParcelsOrDronesCharging == 0) ?
                                         new BitmapImage(new Uri(ImgDroneWithoutParcel))
                                         : new BitmapImage(new Uri(ImgDroneWithParcel));
                         newImage.MouseEnter += new MouseEventHandler(
-                            new EventHandler((sender, e) => displayDroneInInfoWindow(sender, e, _InfoBlock)));
+                            new EventHandler((sender, e) => displayDroneInInfoWindow(sender, e, _infoBlock)));
                         Grid.SetColumnSpan(newImage, IMAGESIZEforDrones);
                         Grid.SetRowSpan(newImage, IMAGESIZEforDrones);
                     }
@@ -252,7 +249,7 @@ namespace WpfApp1
                     {
                         _imageSource = new BitmapImage(new Uri(ImgStation));
                         newImage.MouseEnter += new MouseEventHandler(
-                            new EventHandler((sender, e) => displayStationInInfoWindow(sender, e, _InfoBlock)));
+                            new EventHandler((sender, e) => displayStationInInfoWindow(sender, e, _infoBlock)));
                         Grid.SetColumnSpan(newImage, IMAGESIZEforCustStations);
                         Grid.SetRowSpan(newImage, IMAGESIZEforCustStations);
                     }
@@ -261,7 +258,7 @@ namespace WpfApp1
                     {
                         _imageSource = new BitmapImage(new Uri(ImgHouse));
                         newImage.MouseEnter += new MouseEventHandler(
-                            new EventHandler((sender, e) => displayCustomerInInfoWindow(sender, e, _InfoBlock)));
+                            new EventHandler((sender, e) => displayCustomerInInfoWindow(sender, e, _infoBlock)));
                         Grid.SetColumnSpan(newImage, IMAGESIZEforCustStations);
                         Grid.SetRowSpan(newImage, IMAGESIZEforCustStations);
                     }
@@ -272,7 +269,7 @@ namespace WpfApp1
             }
             newImage.Source = _imageSource;
             newImage.MouseLeftButtonDown += new MouseButtonEventHandler(
-                new EventHandler((sender, e) => openWindowOfInfoBlock(sender, e, _InfoBlock)));
+                new EventHandler((sender, e) => openWindowOfInfoBlock(sender, e, _infoBlock)));
             newImage.MouseLeave += new MouseEventHandler(this.hideTextInInfoWindow);
             gridMap.Children.Add(newImage);
             return newImage;

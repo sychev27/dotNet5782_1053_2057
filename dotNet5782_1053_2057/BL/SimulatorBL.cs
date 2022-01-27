@@ -72,7 +72,6 @@ namespace BL
             stopDroneJourney(DroneId);
             simulatorOn = false;
         }
-
         private void worker_DoWork(object sender, DoWorkEventArgs e)
         { 
             while (simulatorOn)
@@ -210,11 +209,11 @@ namespace BL
             beginTimeForDistance = DateTime.Now;
             return t.TotalSeconds;
         }
-        void moveDroneAlongJourney(BL.BO.BODrone bodrone, BO.BOLocation source,
+        void moveDroneAlongJourney(BL.BO.BODrone boDrone, BO.BOLocation source,
             BO.BOLocation destination, double secondsTraveled) //UPDATES DRONE'S BATTERY, LOCATION, 
             //AND CHANGES "arrivedAtDestination" flag
         {
-            if (bodrone.Battery < 0)
+            if (boDrone.Battery < 0)
                 throw new Exception(); //DELETE HERE
 
 
@@ -224,7 +223,7 @@ namespace BL
             {
                lock(busiAccess)
                 {
-                    bodrone.Location = destination;
+                    boDrone.Location = destination;
                     arrivedAtDestination = true;
                     return;
                 }
@@ -251,23 +250,23 @@ namespace BL
                     latitudeProportion = 0;
                 }
 
-                bodrone.Location.Longitude += secondsTraveled * longitudeProportion;
-                bodrone.Location.Latitude += secondsTraveled * latitudeProportion;
+                boDrone.Location.Longitude += secondsTraveled * longitudeProportion;
+                boDrone.Location.Latitude += secondsTraveled * latitudeProportion;
 
                 //(2) UPDATE BATTERY:
                 TimeSpan ts = DateTime.Now - beginTimeForBattery;
                 beginTimeForBattery = DateTime.Now;
                 double secondsInTravel = ts.TotalSeconds;
-                bodrone.Battery -= busiAccess.GetElectricityRate(bodrone) * secondsInTravel;
+                boDrone.Battery -= busiAccess.GetElectricityRate(boDrone) * secondsInTravel;
 
                 //(3) CHECK THAT ARRIVED AT DESTINATION
                 if ((longitudeDiff > 0                                     // if traveling in positive direction
-                    && bodrone.Location.Longitude > destination.Longitude) //and we passed the location
+                    && boDrone.Location.Longitude > destination.Longitude) //and we passed the location
                 ||
                     (longitudeDiff < 0                              //if traveling in negative direction
-                   && bodrone.Location.Longitude < destination.Longitude)) //and we passed the location...
+                   && boDrone.Location.Longitude < destination.Longitude)) //and we passed the location...
                 {
-                    bodrone.Location = destination;
+                    boDrone.Location = destination;
                     arrivedAtDestination = true;
                 }
                 //we only need to check either longitude or latitude, because they are in sync...
