@@ -1,19 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Threading;
 using System.ComponentModel;
-using System.Drawing;
-using System.Windows.Shapes;
+
 
 namespace WpfApp1
 {
@@ -27,14 +21,14 @@ namespace WpfApp1
         //David's computer's file paths:
         //static String ImgDroneWithParcel = "C:\\Users\\dyyb1\\OneDrive\\Documentos\\AA windows project\\dotNet5782_1053_2057\\WpfApp1\\Pictures\\drone_with_parcel.jpg";
         //static String ImgDroneWithoutParcel = "C:\\Users\\dyyb1\\OneDrive\\Documentos\\AA windows project\\dotNet5782_1053_2057\\WpfApp1\\Pictures\\drone_without_parcel2.PNG";
-       // static String ImgStation = "C:\\Users\\dyyb1\\OneDrive\\Documentos\\AA windows project\\dotNet5782_1053_2057\\WpfApp1\\Pictures\\station.jpg";
-       // static String ImgHouse = "C:\\Users\\dyyb1\\OneDrive\\Documentos\\AA windows project\\dotNet5782_1053_2057\\WpfApp1\\Pictures\\house.png";
+        // static String ImgStation = "C:\\Users\\dyyb1\\OneDrive\\Documentos\\AA windows project\\dotNet5782_1053_2057\\WpfApp1\\Pictures\\station.jpg";
+        // static String ImgHouse = "C:\\Users\\dyyb1\\OneDrive\\Documentos\\AA windows project\\dotNet5782_1053_2057\\WpfApp1\\Pictures\\house.png";
 
         //Alex's computer's file paths:
-        static String ImgDroneWithParcel = "C:\\Users\\user\\Documents\\windows_project\\dotNet5782_1053_2057\\WpfApp1\\Pictures\\drone_with_parcel.jpg";
-        static String ImgDroneWithoutParcel = "C:\\Users\\user\\Documents\\windows_project\\dotNet5782_1053_2057\\WpfApp1\\Pictures\\drone_without_parcel2.PNG";
-        static String ImgStation = "C:\\Users\\user\\Documents\\windows_project\\dotNet5782_1053_2057\\WpfApp1\\Pictures\\station.jpg";
-        static String ImgHouse = "C:\\Users\\user\\Documents\\windows_project\\dotNet5782_1053_2057\\WpfApp1\\Pictures\\house.png";
+        static String ImgDroneWithParcel = AppDomain.CurrentDomain.BaseDirectory.Split("WpfApp1")[0] + "WpfApp1\\Pictures\\drone_with_parcel.jpg";
+        static String ImgDroneWithoutParcel = AppDomain.CurrentDomain.BaseDirectory.Split("WpfApp1")[0] +"WpfApp1\\Pictures\\drone_without_parcel2.PNG";
+        static String ImgStation = AppDomain.CurrentDomain.BaseDirectory.Split("WpfApp1")[0] + "WpfApp1\\Pictures\\station.jpg";
+        static String ImgHouse = AppDomain.CurrentDomain.BaseDirectory.Split("WpfApp1")[0] + "WpfApp1\\Pictures\\house.png";
 
 
 

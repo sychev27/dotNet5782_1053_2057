@@ -14,11 +14,24 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Pictures\drone_without_parcel2.PNG" />
     <None Remove="Pictures\drone_without_parcel2.PNG.~tmp" />
+    <None Remove="Pictures\drone_with_parcel.jpg" />
+    <None Remove="Pictures\house.png" />
+    <None Remove="Pictures\station.jpg" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\BL\BL.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Pictures\drone_without_parcel2.PNG" />
+    <Resource Include="Pictures\drone_with_parcel.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Pictures\house.png" />
+    <Resource Include="Pictures\station.jpg" />
   </ItemGroup>
 
 </Project>
