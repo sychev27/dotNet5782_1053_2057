@@ -94,7 +94,7 @@ namespace WpfApp1
             }
             else
             {
-                HelpfulMethods.ErrorMsg("Drone is deleted");
+                HelpfulFunctions.ErrorMsg("Drone is deleted");
             }
         }
         private void chkBoxGetErased_Checked(object sender, RoutedEventArgs e)

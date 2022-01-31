@@ -31,11 +31,13 @@ namespace WpfApp1
             InitializeComponent();
             busiAccess = _busiAccess;
             //edit buttons and text boxes for Update Window:
-            HelpfulMethods.ChangeVisibilty(Visibility.Hidden, btnEraseCust, btnModifyCustomer);
+            HelpfulFunctions.ChangeVisibilty(Visibility.Hidden, btnEraseCust, btnModifyCustomer);
             lstParcelListSent.Visibility = Visibility.Hidden;
             tBlock_sending.Visibility = Visibility.Hidden;
             lstParcelListReceived.Visibility = Visibility.Hidden;
             tBlock_receiving.Visibility = Visibility.Hidden;
+            tBlockLongitude.Text += busiAccess.GetLongitudeBegin().ToString() + " - " + busiAccess.GetLongitudeEnd().ToString();
+            tBlockLatitude.Text += busiAccess.GetLatitudeBegin().ToString() + " - " + busiAccess.GetLatitudeEnd().ToString();
             hideCustomerLogInBtns();
 
             if (isRegistering)
@@ -86,7 +88,7 @@ namespace WpfApp1
         private void btnAddCustomer_Click(object sender, RoutedEventArgs e)
         {
             //reset text color
-            HelpfulMethods.ChangeTextColor(Colors.Black, tBlock_chooseCustomerId, tBlock_chooseName,
+            HelpfulFunctions.ChangeTextColor(Colors.Black, tBlock_chooseCustomerId, tBlock_chooseName,
             tBlock_choosePhone, tBlockLongitude, tBlockLatitude);
             
             //(1) Receive Data
@@ -116,28 +118,26 @@ namespace WpfApp1
                 tBlock_chooseName.Foreground = new SolidColorBrush(Colors.Red);
                 validData = false;
             }
-
             //check phone
             if (tBoxPhoneInput.Text == null || !phoneSuccess || _phoneCheck <= 0)
             {
                 tBlock_choosePhone.Foreground = new SolidColorBrush(Colors.Red);
                 validData = false;
             }
-
             //check longitude
-            if (tBoxLongiInfo.Text == null || !longSuccess || _longitude < 35 || _longitude > 36)
+            if (tBoxLongiInfo.Text == null || !longSuccess || _longitude < busiAccess.GetLongitudeBegin() 
+                || _longitude > busiAccess.GetLongitudeEnd())
             {
                 tBlockLongitude.Foreground = new SolidColorBrush(Colors.Red);
                 validData = false;
             }
-
             //check latitude
-            if (tBoxLatitInfo.Text == null || !latSuccess || _latitude < 31 || _latitude > 32)
+            if (tBoxLatitInfo.Text == null || !latSuccess || _latitude < busiAccess.GetLatitudeBegin() 
+                || _latitude > busiAccess.GetLatitudeEnd())
             {
                 tBlockLatitude.Foreground = new SolidColorBrush(Colors.Red);
                 validData = false;
             }
-
             //(3) Add Customer..
             if (validData)
             {
@@ -151,6 +151,7 @@ namespace WpfApp1
                     //if Customer's Id already exists
                     MessageBox.Show(exception.printException(), "Error Message",
                         MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+                    return;
                 }
             }
             else
@@ -174,7 +175,7 @@ namespace WpfApp1
         private void btnModifyCustomer_Click(object sender, RoutedEventArgs e)
         {
             //reset text color
-            HelpfulMethods.ChangeTextColor(Colors.Black, tBlock_choosePhone, tBlock_chooseName);
+            HelpfulFunctions.ChangeTextColor(Colors.Black, tBlock_choosePhone, tBlock_chooseName);
 
             //(1) Receive Data
             int _id;
@@ -220,12 +221,12 @@ namespace WpfApp1
             try
             {
                 busiAccess.EraseCustomer(thisCustomerId);
-                HelpfulMethods.SuccessMsg("Customer Erased");
+                HelpfulFunctions.SuccessMsg("Customer Erased");
                 Close();
             }
             catch (BL.BLApi.EXCantDltCustWParcInDelivery ex)
             {
-                HelpfulMethods.ErrorMsg(ex.ToString());
+                HelpfulFunctions.ErrorMsg(ex.ToString());
             }
         }
         private void btnSendParcel_Click(object sender, RoutedEventArgs e)
@@ -260,7 +261,7 @@ namespace WpfApp1
             if (parc.Exists)
                 new ParcelWindow(busiAccess, parc).ShowDialog();
             else
-                HelpfulMethods.ErrorMsg("Parcel Deleted!");
+                HelpfulFunctions.ErrorMsg("Parcel Deleted!");
             displayBOCustomer(thisCustomerId);
         }
         private void lstParcelListReceiving_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -271,7 +272,7 @@ namespace WpfApp1
             if (parc.Exists)
                 new ParcelWindow(busiAccess, parc).ShowDialog();
             else
-                HelpfulMethods.ErrorMsg("Parcel Deleted!");
+                HelpfulFunctions.ErrorMsg("Parcel Deleted!");
             displayBOCustomer(thisCustomerId);
         }
 

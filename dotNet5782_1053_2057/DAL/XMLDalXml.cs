@@ -34,6 +34,14 @@ namespace DalXml
             internal static double heavy = 0.4;
             internal static double chargeRate = .613; // per second  
             internal int parcelSerialNumber = 1;
+
+            //coordinates for area of jerusalem (Long: 35-37, Lat: 31-33)
+            internal int LONGBEGIN = 35;
+            internal int LONGEND = 37;
+            internal int LATBEGIN = 31;
+            internal int LATEND = 33;
+
+            internal int NUM_PARCELS_TO_INITIALIZE = 30;
         }
 
         internal static Config thisConfig = new Config();
@@ -71,13 +79,7 @@ namespace DalXml
         public void Initialize()
         {
             Random r = new Random();
-            //coordinates for area of jerusalem (Long: 35-37, Lat: 31-33)
-            const int LONGBEGIN = 35;
-            const int LONGEND = 37;
-            const int LATBEGIN = 31;
-            const int LATEND = 33;
 
-            const int NUMPARCELS = 30;
 
 
             //INITIALIZE DRONE
@@ -106,8 +108,8 @@ namespace DalXml
                 exampleS.Id = i + 1;
                 exampleS.Name = r.Next(20, 100);
                 //coordinates for Jerusalem area..
-                exampleS.Longitude = r.Next(LONGBEGIN, LONGEND) + r.NextDouble();
-                exampleS.Latitude = r.Next(LATBEGIN, LATEND) + r.NextDouble();
+                exampleS.Longitude = r.Next(thisConfig.LONGBEGIN, thisConfig.LONGEND) + r.NextDouble();
+                exampleS.Latitude = r.Next(thisConfig.LATBEGIN, thisConfig.LATEND) + r.NextDouble();
                 exampleS.Longitude = Math.Round(exampleS.Longitude, 5);
                 exampleS.Latitude = Math.Round(exampleS.Latitude, 5);
                 exampleS.ChargeSlots = r.Next(7, 13);
@@ -131,8 +133,8 @@ namespace DalXml
             {
                 DalXml.DO.Customer exampleC = new DalXml.DO.Customer();
                 exampleC.Id = i + 1;
-                exampleC.Longitude = r.Next(LONGBEGIN, LONGEND) + r.NextDouble();
-                exampleC.Latitude = r.Next(LATBEGIN, LATEND) + r.NextDouble();
+                exampleC.Longitude = r.Next(thisConfig.LONGBEGIN, thisConfig.LONGEND) + r.NextDouble();
+                exampleC.Latitude = r.Next(thisConfig.LATBEGIN, thisConfig.LATEND) + r.NextDouble();
                 exampleC.Longitude = Math.Round(exampleC.Longitude,5);
                 exampleC.Latitude = Math.Round(exampleC.Latitude, 5);
                 exampleC.Name = customerNames[i];
@@ -146,7 +148,7 @@ namespace DalXml
             //INITIALIZE PARCELS
             List<DalXml.DO.Parcel> listParcel = new List<DalXml.DO.Parcel>();
 
-            for (int i = 0; i < NUMPARCELS; i++)
+            for (int i = 0; i < thisConfig.NUM_PARCELS_TO_INITIALIZE; i++)
             {
                 DO.Parcel exampleP = new DO.Parcel();
                 exampleP.Id = thisConfig.parcelSerialNumber++;
@@ -565,5 +567,23 @@ namespace DalXml
             }
             //if not found --> exception
         }
+        public double GetLongitudeBegin()
+        {
+            return thisConfig.LONGBEGIN;
+        }
+        public double GetLongitudeEnd()
+        {
+            return thisConfig.LONGEND;
+        }
+        public double GetLatitudeBegin()
+        {
+            return thisConfig.LATBEGIN;
+        }
+        public double GetLatitudeEnd()
+        {
+            return thisConfig.LATEND;
+        }
+
+        //end of class...
     }
 }

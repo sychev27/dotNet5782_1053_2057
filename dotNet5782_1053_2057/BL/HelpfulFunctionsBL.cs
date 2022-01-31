@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BL
 {
-    static public class HelpfulMethodsBL
+    static public class HelpfulFunctionsBL
     {
         static public double GetDistance(BO.BOLocation l1, BO.BOLocation l2)
         {

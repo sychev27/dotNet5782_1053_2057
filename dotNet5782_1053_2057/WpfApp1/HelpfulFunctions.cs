@@ -11,7 +11,7 @@ using System.Windows.Media;
 
 namespace WpfApp1
 {
-    static class HelpfulMethods
+    static class HelpfulFunctions
     {
         /// <summary>
         /// this class holds different WPF methods  which are very common

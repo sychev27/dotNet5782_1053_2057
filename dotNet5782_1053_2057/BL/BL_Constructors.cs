@@ -290,7 +290,7 @@ namespace BL
 
                     thisParc.PickupPoint = getLocationOfCustomer(origParcel.SenderId);
                     thisParc.DeliveryPoint = getLocationOfCustomer(origParcel.ReceiverId);
-                    thisParc.TransportDistance = HelpfulMethodsBL.GetDistance(thisParc.PickupPoint, thisParc.DeliveryPoint);
+                    thisParc.TransportDistance = HelpfulFunctionsBL.GetDistance(thisParc.PickupPoint, thisParc.DeliveryPoint);
                     return thisParc;
                 }
             }

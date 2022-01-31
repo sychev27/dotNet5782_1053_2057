@@ -18,34 +18,35 @@ namespace WpfApp1
     {
         BL.BLApi.Ibl busiAccess;
         enum ObjectType { Drone, Station, Customer}
-        //David's computer's file paths:
-        //static String ImgDroneWithParcel = "C:\\Users\\dyyb1\\OneDrive\\Documentos\\AA windows project\\dotNet5782_1053_2057\\WpfApp1\\Pictures\\drone_with_parcel.jpg";
-        //static String ImgDroneWithoutParcel = "C:\\Users\\dyyb1\\OneDrive\\Documentos\\AA windows project\\dotNet5782_1053_2057\\WpfApp1\\Pictures\\drone_without_parcel2.PNG";
-        // static String ImgStation = "C:\\Users\\dyyb1\\OneDrive\\Documentos\\AA windows project\\dotNet5782_1053_2057\\WpfApp1\\Pictures\\station.jpg";
-        // static String ImgHouse = "C:\\Users\\dyyb1\\OneDrive\\Documentos\\AA windows project\\dotNet5782_1053_2057\\WpfApp1\\Pictures\\house.png";
-
-        //Alex's computer's file paths:
-        static String ImgDroneWithParcel = AppDomain.CurrentDomain.BaseDirectory.Split("WpfApp1")[0] + "WpfApp1\\Pictures\\drone_with_parcel.jpg";
-        static String ImgDroneWithoutParcel = AppDomain.CurrentDomain.BaseDirectory.Split("WpfApp1")[0] +"WpfApp1\\Pictures\\drone_without_parcel2.PNG";
-        static String ImgStation = AppDomain.CurrentDomain.BaseDirectory.Split("WpfApp1")[0] + "WpfApp1\\Pictures\\station.jpg";
-        static String ImgHouse = AppDomain.CurrentDomain.BaseDirectory.Split("WpfApp1")[0] + "WpfApp1\\Pictures\\house.png";
+        //file paths for images:
+        readonly String ImgDroneWithParcel = AppDomain.CurrentDomain.BaseDirectory.Split("WpfApp1")[0] + "WpfApp1\\Pictures\\drone_with_parcel.jpg";
+        readonly String ImgDroneWithoutParcel = AppDomain.CurrentDomain.BaseDirectory.Split("WpfApp1")[0] +"WpfApp1\\Pictures\\drone_without_parcel2.PNG";
+        readonly String ImgStation = AppDomain.CurrentDomain.BaseDirectory.Split("WpfApp1")[0] + "WpfApp1\\Pictures\\station.jpg";
+        readonly String ImgHouse = AppDomain.CurrentDomain.BaseDirectory.Split("WpfApp1")[0] + "WpfApp1\\Pictures\\house.png";
 
         List<TextBlock> listTextBlocks = new List<TextBlock>();
         List<Image> listImages = new List<Image>();
 
-        readonly System.Windows.Media.Color customerColor = Colors.Blue;
-        readonly System.Windows.Media.Color stationColor = Colors.Green;
-        readonly System.Windows.Media.Color droneColor = Colors.Red;
-        readonly System.Windows.Media.Color textColor = Colors.Black;
+        readonly Color customerColor = Colors.Blue;
+        readonly Color stationColor = Colors.Green;
+        readonly Color droneColor = Colors.Red;
+        readonly Color textColor = Colors.Black;
         readonly int IMAGESIZEforDrones = 1; //gridspan and rowspan of image
-        readonly int IMAGESIZEforCustStations = 2; //gridspan and rowspan of image
+        readonly int IMAGESIZEforCustAndStations = 2; //gridspan and rowspan of image
         readonly string emptyTextForInfoWindow = "Hover the mouse over a square or image";
-
+        //for background map - created with drawMap()
+        public static double LongitudeBegin; 
+        public static double LatitudeBegin;
+        public const int MARGIN_FOR_MAP = 1; //for top and left margin of map
+        public readonly Color MapColor = Colors.LightGray;
+        public const int MAPGRIDSPAN = 20; // Map only works if square -- functionality must be added for different shapes, or sizes
+  
         //for simulator:
         readonly BackgroundWorker worker = new BackgroundWorker();
         bool simulatorOn = false;
         readonly string textForSimulatorBtnStart = "Turn On Simulator";
         readonly int DELAY_BTW_REFRESH = 500; // __ miliseconds
+        //InfoBlock Class:
         /// <summaryOfInfoBlock>
         /// Each block is synchronized with an id number, tagged with a type of object,
         /// and given appropriate Column and Row places
@@ -56,7 +57,7 @@ namespace WpfApp1
             /// number of squares available on map,  only set once...
             /// MUST BE A MULTIPLE OF 10...grid must be square..
             /// </summary>
-            public readonly int numGridSpots = 20; 
+            public readonly int numGridSpots = 20; // per line
            //CTORS: (3 in total)
             public InfoBlock(BL.BO.BOCustomer cust, int _numParcelsAtCustomer)
             {
@@ -84,7 +85,7 @@ namespace WpfApp1
                 RowPlace = getRowPlace(drone.Location);
                 numParcelsOrDronesCharging = (drone.ParcelInTransfer.Id == 0 || drone.ParcelInTransfer.Id == -1
                     || drone.ParcelInTransfer.Collected == false) ? //if drone has not yet picked up parcel...
-                    /*set to Zero*/ 0 : /*else set to 1*/  1;
+                    /*set to Zero*/ 0 : /*else set to Parcel's Id*/ drone.ParcelInTransfer.Id;
                 name = "Drone " + drone.Id.ToString();
             }
            //FIELDS:
@@ -97,11 +98,11 @@ namespace WpfApp1
             //METHODS:
             private int getColumnPlace(BL.BO.BOLocation loc)
             {
-                return (int)((Math.Round(loc.Longitude, 2) - 35) * 10);
+                return (int)((Math.Round(loc.Longitude, numGridSpots/10) - MapWindow.LongitudeBegin) * 10) + MARGIN_FOR_MAP;
             }
             private int getRowPlace(BL.BO.BOLocation loc)
             {
-                return (int)((Math.Round(loc.Latitude, 2) - 31) * 10);
+                return (int)((Math.Round(loc.Latitude, numGridSpots / 10) - MapWindow.LatitudeBegin) * 10) + MARGIN_FOR_MAP;
             }
         }
 
@@ -110,16 +111,27 @@ namespace WpfApp1
         {
             InitializeComponent();
             busiAccess = _busiAccess;
+            LongitudeBegin = busiAccess.GetLongitudeBegin();
+            LatitudeBegin = busiAccess.GetLatitudeBegin();
+            double longitudeRange = busiAccess.GetLongitudeEnd() - LongitudeBegin;
+            double latitudeRange = busiAccess.GetLatitudeEnd() - LatitudeBegin;
+            if ( longitudeRange != 2
+                || latitudeRange != 2)
+            {
+                HelpfulFunctions.ErrorMsg("Map only works if the Range for Longitude and Latitude are exactly 2");
+                Close();
+            }
             tBoxInfoWindow.Text = emptyTextForInfoWindow;
+            drawMapBackground();
             refreshMap();
-
             WindowState = WindowState.Maximized;
-            chkboxTextMode.IsChecked = true;
-
+            chkboxTextMode.IsChecked = true;        //default - with text boxes...
+            //for simulator: 
             worker.DoWork += worker_DoWork;
             worker.RunWorkerCompleted += worker_RunWorkerCompleted;
             worker.WorkerSupportsCancellation = true;
         }
+        
         //BUTTONS AND OTHER USER INTERFACE:
         private void btnReturnToMainMenu_Click(object sender, RoutedEventArgs e)
         {
@@ -137,7 +149,18 @@ namespace WpfApp1
         {
             refreshMap();
         }
+        
         //HELPING FUNCTIONS
+        private void drawMapBackground()
+        {
+            TextBlock mapBackgroundTBlock = new TextBlock();
+            Grid.SetColumn(mapBackgroundTBlock, MARGIN_FOR_MAP);
+            Grid.SetRow(mapBackgroundTBlock, MARGIN_FOR_MAP);
+            mapBackgroundTBlock.Background = new SolidColorBrush(MapColor);
+            Grid.SetColumnSpan(mapBackgroundTBlock, MAPGRIDSPAN + 1); //for image's which have bigger grid span
+            Grid.SetRowSpan(mapBackgroundTBlock, MAPGRIDSPAN + 1);
+            gridMap.Children.Add(mapBackgroundTBlock);
+        }
         private void fillMapWithTextBlocks() //drones are behind stations, in front of customers
         {
             foreach (var item in busiAccess.GetAllBOCustomers())
@@ -215,7 +238,8 @@ namespace WpfApp1
                         newTextBlock.Background = new SolidColorBrush(droneColor);
                         newTextBlock.MouseEnter += new MouseEventHandler(
                             new EventHandler((sender, e) => displayDroneInInfoWindow(sender, e, _infoBlock)));
-                        newTextBlock.Text = _infoBlock.numParcelsOrDronesCharging.ToString();
+                        newTextBlock.Text = (_infoBlock.numParcelsOrDronesCharging == 0)?
+                            "Empty" : "Parcel " + _infoBlock.numParcelsOrDronesCharging.ToString();
                         newTextBlock.Margin = new Thickness(5, 0, 5, 0);
                     }
                     break;
@@ -250,8 +274,8 @@ namespace WpfApp1
                         _imageSource = new BitmapImage(new Uri(ImgStation));
                         newImage.MouseEnter += new MouseEventHandler(
                             new EventHandler((sender, e) => displayStationInInfoWindow(sender, e, _infoBlock)));
-                        Grid.SetColumnSpan(newImage, IMAGESIZEforCustStations);
-                        Grid.SetRowSpan(newImage, IMAGESIZEforCustStations);
+                        Grid.SetColumnSpan(newImage, IMAGESIZEforCustAndStations);
+                        Grid.SetRowSpan(newImage, IMAGESIZEforCustAndStations);
                     }
                     break;
                 case ObjectType.Customer:
@@ -259,8 +283,8 @@ namespace WpfApp1
                         _imageSource = new BitmapImage(new Uri(ImgHouse));
                         newImage.MouseEnter += new MouseEventHandler(
                             new EventHandler((sender, e) => displayCustomerInInfoWindow(sender, e, _infoBlock)));
-                        Grid.SetColumnSpan(newImage, IMAGESIZEforCustStations);
-                        Grid.SetRowSpan(newImage, IMAGESIZEforCustStations);
+                        Grid.SetColumnSpan(newImage, IMAGESIZEforCustAndStations);
+                        Grid.SetRowSpan(newImage, IMAGESIZEforCustAndStations);
                     }
                     break;
                 default:
@@ -394,8 +418,9 @@ namespace WpfApp1
                     busiAccess.StopSimulatorForDrone(item.Id);
                 }
             }
-            HelpfulMethods.SuccessMsg("All Drone Simulators canceled");
+            HelpfulFunctions.SuccessMsg("All Drone Simulators canceled");
         }
+        //WINDOW:
         private void Window_Closing(object sender, CancelEventArgs e)
         {
             if(simulatorOn)

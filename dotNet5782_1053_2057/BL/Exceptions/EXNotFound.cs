@@ -59,6 +59,8 @@ namespace BL
         {
             public EXCustomerNotFound() : base("Customer") { }
         }
+        public class EXSenderNotFound : EXCustomerNotFound { }
+        public class EXReceiverNotFound : EXCustomerNotFound { }
         public class EXParcelNotFound : EXNotFoundPrintException
         {
             public EXParcelNotFound() : base("Parcel") { }

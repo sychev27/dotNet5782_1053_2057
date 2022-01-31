@@ -17,13 +17,6 @@ namespace DalXml
         DalXml.DO.Station GetStation(int _id);
         DalXml.DO.DroneCharge GetDroneCharge(int _droneId);
 
-        void AddCustomer(DalXml.DO.Customer custom);
-        void AddDrone(DalXml.DO.Drone drone);
-        void AddParcel(DalXml.DO.Parcel parcel);
-        void AddStation(DalXml.DO.Station st);
-        void AddDroneCharge(DalXml.DO.DroneCharge droneCharge);
-        void AddUser(DalXml.DO.User _user);
-
         IEnumerable<double> RequestElec();
         IEnumerable<DalXml.DO.Drone> GetDrones();
         IEnumerable<DalXml.DO.Parcel> GetParcels();
@@ -33,8 +26,21 @@ namespace DalXml
         IEnumerable<DalXml.DO.DroneCharge> GetDroneCharges();
         int GetIdFromUser(DalXml.DO.User _user);
         IEnumerable<DalXml.DO.User> GetUsers();
-        
+        double GetLongitudeBegin();
+        double GetLongitudeEnd();
+        double GetLatitudeBegin();
+        double GetLatitudeEnd();
 
+        //Add:
+        void AddCustomer(DalXml.DO.Customer custom);
+        void AddDrone(DalXml.DO.Drone drone);
+        void AddParcel(DalXml.DO.Parcel parcel);
+        void AddStation(DalXml.DO.Station st);
+        void AddDroneCharge(DalXml.DO.DroneCharge droneCharge);
+        void AddUser(DalXml.DO.User _user);
+
+
+        //Modify:
         public void ModifyDrone(int _id, string _model);
         public void ModifyCust(int _id, string _name, string _phone);
         public void ModifyStation(int _id, int _name, int _totalChargeSlots);
@@ -46,7 +52,6 @@ namespace DalXml
         void EraseCustomer(int custId);
         void EraseStation(int stationId);
         void EraseParcel(int parcelId);
-
 
         //Update:
         void AssignDroneToParcel(int droneId, int parcelId);

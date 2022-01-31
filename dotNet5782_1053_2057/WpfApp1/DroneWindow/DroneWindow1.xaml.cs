@@ -42,7 +42,7 @@ namespace WpfApp1
             cmbWeightChoice.ItemsSource = Enum.GetValues(typeof(BL.BO.Enum.WeightCategories));
 
             //(1) Disable and Hide irrelevant buttons
-            HelpfulMethods.ChangeVisibilty(Visibility.Hidden, btnModifyDroneModel, btnAssignDroneToParcel, btnFreeDroneFromCharge,
+            HelpfulFunctions.ChangeVisibilty(Visibility.Hidden, btnModifyDroneModel, btnAssignDroneToParcel, btnFreeDroneFromCharge,
                 btnPickupPkg, btnSendToCharge, btnDeliverPkg, btnEraseDrone, btnSimulator);
             
             //(2) Hide irrelevnat TextBlocks
@@ -79,7 +79,7 @@ namespace WpfApp1
             cmbWeightChoice.IsReadOnly = true;
             cmbWeightChoice.IsEnabled = false;
 
-            HelpfulMethods.ChangeVisibilty(Visibility.Hidden, 
+            HelpfulFunctions.ChangeVisibilty(Visibility.Hidden, 
                 btnModifyDroneModel, btnAssignDroneToParcel, btnFreeDroneFromCharge, btnAddDrone,
                btnPickupPkg, btnSendToCharge, btnDeliverPkg, btnEraseDrone, btnSimulator);
         }
@@ -93,7 +93,7 @@ namespace WpfApp1
                                      // from opening many windows of same drone... 
                                      //see comment at line __ of DroneListWindow.xaml.cs
             //ALLOW UPDATES:
-            HelpfulMethods.ChangeVisibilty(Visibility.Visible,
+            HelpfulFunctions.ChangeVisibilty(Visibility.Visible,
                btnModifyDroneModel, btnAssignDroneToParcel, btnFreeDroneFromCharge,
               btnPickupPkg, btnSendToCharge, btnDeliverPkg, btnEraseDrone, btnSimulator);
             //INITIALIZE BACKGROUNDWORKER FOR SIMULATOR
@@ -108,7 +108,7 @@ namespace WpfApp1
         private void btnAddDrone_Click(object sender, RoutedEventArgs e)
         {
             //reset text color
-            HelpfulMethods.ChangeTextColor(Colors.Black, tBlock_chooseDroneId, tBlock_chooseMaxWeight,
+            HelpfulFunctions.ChangeTextColor(Colors.Black, tBlock_chooseDroneId, tBlock_chooseMaxWeight,
                 tBlock_chooseModel, tBlock_chooseStation);
             
             //(1) Receive Data
@@ -188,7 +188,7 @@ namespace WpfApp1
             }
             catch (BL.BLApi.EXDroneUnavailableException ex)
             {
-                HelpfulMethods.ErrorMsg(ex.ToString());
+                HelpfulFunctions.ErrorMsg(ex.ToString());
             }
             displayBODrone(ThisDroneId);
         }
@@ -201,7 +201,7 @@ namespace WpfApp1
             }
             catch (BL.BLApi.EXMiscException ex) //if drone is not charging
             {
-                HelpfulMethods.ErrorMsg(ex.ToString());
+                HelpfulFunctions.ErrorMsg(ex.ToString());
             }
              displayBODrone(ThisDroneId);
         }
@@ -214,11 +214,11 @@ namespace WpfApp1
             }
             catch (BL.BLApi.EXDroneNotAssignedParcel ex)
             {
-                HelpfulMethods.ErrorMsg(ex.ToString());
+                HelpfulFunctions.ErrorMsg(ex.ToString());
             }
             catch (BL.BLApi.EXParcelAlreadyCollected ex)
             {
-                HelpfulMethods.ErrorMsg(ex.ToString());
+                HelpfulFunctions.ErrorMsg(ex.ToString());
             }
             displayBODrone(ThisDroneId);
         }
@@ -230,11 +230,11 @@ namespace WpfApp1
             }
             catch (BL.BLApi.EXNoAppropriateParcel ex)
             {
-                HelpfulMethods.ErrorMsg(ex.ToString());
+                HelpfulFunctions.ErrorMsg(ex.ToString());
             }
             catch (BL.BLApi.EXDroneUnavailableException ex)
             {
-                HelpfulMethods.ErrorMsg(ex.ToString());
+                HelpfulFunctions.ErrorMsg(ex.ToString());
             }
             displayBODrone(ThisDroneId);
         }
@@ -247,11 +247,11 @@ namespace WpfApp1
             }
             catch (BL.BLApi.EXDroneNotAssignedParcel ex)
             {
-                HelpfulMethods.ErrorMsg(ex.ToString());
+                HelpfulFunctions.ErrorMsg(ex.ToString());
             }
             catch (BL.BLApi.EXParcelNotCollected ex)
             {
-                HelpfulMethods.ErrorMsg(ex.ToString());
+                HelpfulFunctions.ErrorMsg(ex.ToString());
             }
             displayBODrone(ThisDroneId);
         }
@@ -273,7 +273,7 @@ namespace WpfApp1
             }
             catch (BL.BLApi.EXCantDltDroneWParc ex)
             {
-                HelpfulMethods.ErrorMsg(ex.ToString());
+                HelpfulFunctions.ErrorMsg(ex.ToString());
                 return;
             }
         }
@@ -300,7 +300,7 @@ namespace WpfApp1
             Thread newSimulatorThread = new Thread(beginSimulatorWrapperFunc);
             newSimulatorThread.Start();
             btnSimulator.Content = "End Simulator";
-            HelpfulMethods.ChangeVisibilty(Visibility.Hidden, btnFreeDroneFromCharge,
+            HelpfulFunctions.ChangeVisibilty(Visibility.Hidden, btnFreeDroneFromCharge,
                 btnSendToCharge, btnAssignDroneToParcel, btnPickupPkg,
                 btnDeliverPkg, btnEraseDrone);
         }
@@ -312,10 +312,10 @@ namespace WpfApp1
             simulatorOn = false;
             busiAccess.StopSimulatorForDrone(ThisDroneId);
             btnSimulator.Content = "Begin Simulator";
-            HelpfulMethods.ChangeVisibilty(Visibility.Visible, btnFreeDroneFromCharge,
+            HelpfulFunctions.ChangeVisibilty(Visibility.Visible, btnFreeDroneFromCharge,
                 btnSendToCharge, btnAssignDroneToParcel, btnPickupPkg,
                 btnDeliverPkg, btnEraseDrone);
-            HelpfulMethods.ChangeTextColor(Colors.Black, tBlockBatteryInfo); //if charging, this box was green
+            HelpfulFunctions.ChangeTextColor(Colors.Black, tBlockBatteryInfo); //if charging, this box was green
         }
 
         private void worker_DoWork(object sender, DoWorkEventArgs e)
@@ -378,9 +378,9 @@ namespace WpfApp1
                 if (simulatorOn)
                 {
                     if (bodrone.DroneStatus == BL.BO.Enum.DroneStatus.Charging)
-                        HelpfulMethods.ChangeTextColor(Colors.Green, tBlockBatteryInfo);
+                        HelpfulFunctions.ChangeTextColor(Colors.Green, tBlockBatteryInfo);
                     else
-                        HelpfulMethods.ChangeTextColor(Colors.Black, tBlockBatteryInfo);
+                        HelpfulFunctions.ChangeTextColor(Colors.Black, tBlockBatteryInfo);
                 }
                 if (parent != null)
                     parent.RefreshList();

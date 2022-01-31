@@ -37,13 +37,13 @@ namespace WpfApp1
                 GetDefaultView(DataContext);
             ParcelListView.ItemsSource = parcCollectionView;
 
+            if ((bool)chkboxSortSender.IsChecked)
+                parcCollectionView.GroupDescriptions.
+                                   Add(new PropertyGroupDescription(nameof(BL.BO.BOParcelToList.NameSender)));
             if ((bool)chkboxSortPriority.IsChecked)
                 parcCollectionView.GroupDescriptions.
                     Add(new PropertyGroupDescription(nameof(BL.BO.BOParcelToList.Priority)));
-            else if ((bool)chkboxSortSender.IsChecked)
-                parcCollectionView.GroupDescriptions.
-                                   Add(new PropertyGroupDescription(nameof(BL.BO.BOParcelToList.NameSender)));
-
+            
             if ((bool)!chkboxShowErased.IsChecked)
                 parcCollectionView.Filter = filterOutErased;
 
@@ -71,7 +71,7 @@ namespace WpfApp1
             }
             catch (BL.BLApi.EXParcelNotFound ex)
             {
-                HelpfulMethods.ErrorMsg(ex.ToString());
+                HelpfulFunctions.ErrorMsg(ex.ToString());
             }
             
             
@@ -90,8 +90,6 @@ namespace WpfApp1
         {
             refreshList();
         }
-
-
         private bool filterOutErased(object obj)
         {
             if (obj is BL.BO.BOParcelToList item)
@@ -117,39 +115,35 @@ namespace WpfApp1
 
         private void chkboxSortSender_Checked(object sender, RoutedEventArgs e)
         {
-            if (chkboxSortPriority.IsChecked == true)
-            {
-                clearGrouping(); chkboxSortPriority.IsChecked = false;
-            }
-            
-            //if ((bool)chkboxSortSender.IsChecked)
-                parcCollectionView.GroupDescriptions.
-                    Add(new PropertyGroupDescription(nameof(BL.BO.BOParcelToList.NameSender)));
-
-            //chkboxSortPriority.IsChecked = false;
+            //if (chkboxSortPriority.IsChecked == true)
+            //{
+            //    clearGrouping(); chkboxSortPriority.IsChecked = false;
+            //}
+            refreshList();    
         }
         private void chkboxSortSender_Unchecked(object sender, RoutedEventArgs e)
         {
-            clearGrouping();
+            refreshList();
         }
        
         private void chkboxByPriority_Checked(object sender, RoutedEventArgs e)
         {
-            if (chkboxSortSender.IsChecked == true)
-            {
-                clearGrouping(); chkboxSortSender.IsChecked = false;
-            }
+            refreshList();
+            //if (chkboxSortSender.IsChecked == true)
+            //{
+            //    clearGrouping(); chkboxSortSender.IsChecked = false;
+            //}
 
-            clearGrouping();
-            if ((bool)chkboxSortPriority.IsChecked)
-                parcCollectionView.GroupDescriptions.
-                    Add(new PropertyGroupDescription(nameof(BL.BO.BOParcelToList.Priority)));
+            //clearGrouping();
+            //if ((bool)chkboxSortPriority.IsChecked)
+            //    parcCollectionView.GroupDescriptions.
+            //        Add(new PropertyGroupDescription(nameof(BL.BO.BOParcelToList.Priority)));
 
            // chkboxSortSender.IsChecked = false;
         }
         private void chkboxByPriority_Unchecked(object sender, RoutedEventArgs e)
         {
-            clearGrouping();
+            refreshList();
         }
 
     }

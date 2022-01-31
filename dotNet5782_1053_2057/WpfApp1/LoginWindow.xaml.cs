@@ -48,7 +48,7 @@ namespace WpfApp1
 
         private void btnSignIn_Click(object sender, RoutedEventArgs e)
         {
-            HelpfulMethods.ChangeTextColor(Colors.Black, tBlockUsername, tBlockPassword);
+            HelpfulFunctions.ChangeTextColor(Colors.Black, tBlockUsername, tBlockPassword);
 
             string _username = tBoxUsernameInput.Text;
             string _password = tBoxPasswordInput.Text;
@@ -85,11 +85,11 @@ namespace WpfApp1
             }
             catch (BL.BLApi.EXUsernameNotFound ex)
             {
-                HelpfulMethods.ErrorMsg(ex.ToString());
+                HelpfulFunctions.ErrorMsg(ex.ToString());
             }
             catch (BL.BLApi.EXUserPasswordIncorrect ex)
             {
-                HelpfulMethods.ErrorMsg(ex.ToString());
+                HelpfulFunctions.ErrorMsg(ex.ToString());
             }
 
         }

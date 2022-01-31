@@ -43,6 +43,7 @@ namespace WpfApp1
             tBoxTimeOfCollection.Visibility = Visibility.Hidden;
             tBoxTimeOfCreation.Visibility = Visibility.Hidden;
             tBoxTimeOfDelivery.Visibility = Visibility.Hidden;
+            tBoxDroneIdOutput.Visibility = Visibility.Hidden;
 
             if (_userId != null) //make window appropriate for user
             {
@@ -109,8 +110,8 @@ namespace WpfApp1
         private void btnAddParcel_Click(object sender, RoutedEventArgs e)
         {
             //reset text color
-            HelpfulMethods.ChangeTextColor(Colors.Black, tBlock_chooseParcelId, tBlock_chooseSenderId,
-            tBlockWeightCategory, tBlockPriority);
+            HelpfulFunctions.ChangeTextColor(Colors.Black, tBlock_chooseParcelId, tBlock_chooseSenderId,
+            tBlock_chooseReceiverId, tBlockWeightCategory, tBlockPriority);
 
             //(1) Receive Data
             
@@ -162,15 +163,22 @@ namespace WpfApp1
                         MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
                     Close();
                 }
-                catch (BL.BLApi.EXCustomerAlreadyExists exception)
+                catch (BL.BLApi.EXParcelAlreadyExists exception)
                 {
                     //if Parcels's Id already exists
-                    HelpfulMethods.ErrorMsg(exception.ToString());
+                    HelpfulFunctions.ErrorMsg(exception.ToString());
                 }
-                catch(BL.BLApi.EXCustomerNotFound ex)
+                catch(BL.BLApi.EXSenderNotFound ex)
                 {
-                    HelpfulMethods.ErrorMsg(ex.ToString());
+                    HelpfulFunctions.ErrorMsg(ex.ToString());
+                    tBlock_chooseSenderId.Foreground = new SolidColorBrush(Colors.Red);
                 }
+                catch(BL.BLApi.EXReceiverNotFound ex)
+                {
+                    HelpfulFunctions.ErrorMsg(ex.ToString());
+                    tBlock_chooseReceiverId.Foreground = new SolidColorBrush(Colors.Red);
+                }
+                return;
             }
             else
                 return;
@@ -202,7 +210,7 @@ namespace WpfApp1
             }
             catch (BL.BLApi.EXCantDltParAlrdyAssgndToDrone ex)
             {
-                HelpfulMethods.ErrorMsg(ex.ToString());
+                HelpfulFunctions.ErrorMsg(ex.ToString());
             }
         }   
         private void tBoxSenderId_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -213,7 +221,7 @@ namespace WpfApp1
             if (customer.Exists)
                 new CustomerWindow(busiAccess, customer).ShowDialog();
             else
-                HelpfulMethods.ErrorMsg("Customer has been deleted..");
+                HelpfulFunctions.ErrorMsg("Customer has been deleted..");
             displayBOParcel(Int32.Parse(tBoxParcIdInput.Text));
         }
         private void tBoxReceiverId_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -224,7 +232,7 @@ namespace WpfApp1
             if (customer.Exists)
                 new CustomerWindow(busiAccess, customer).ShowDialog();
             else
-                HelpfulMethods.ErrorMsg("Customer has been deleted..");
+                HelpfulFunctions.ErrorMsg("Customer has been deleted..");
             displayBOParcel(Int32.Parse(tBoxParcIdInput.Text));
         }
         private void tBoxDroneIdOutput_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -237,7 +245,7 @@ namespace WpfApp1
                 if (bodrone.Exists)
                     new DroneWindow(busiAccess, bodrone).ShowDialog();
                 else
-                    HelpfulMethods.ErrorMsg("Drone has been deleted..");
+                    HelpfulFunctions.ErrorMsg("Drone has been deleted..");
             }
             else
                 return;

@@ -64,6 +64,22 @@ namespace BL
                              DalXml.DO.Priorities? _priority)// DateTime _requested, DateTime _scheduled)
             {
                 //DO NOT WRITE AN EXCEPTION FOR "ALREADY EXISTS!!"
+                try
+                {
+                    GetBOCustomer(_senderId);
+                }
+                catch (EXCustomerNotFound)
+                {
+                    throw new EXSenderNotFound(); //throw forward to PL
+                }
+                try
+                {
+                    GetBOCustomer(_targetId);
+                }
+                catch (EXCustomerNotFound)
+                {
+                     throw new EXReceiverNotFound();
+                }
                 DalXml.DO.Parcel dummy = new DalXml.DO.Parcel(_senderId, _targetId, _weight, _priority);
                 dataAccess.AddParcel(dummy);
             }

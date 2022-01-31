@@ -235,7 +235,7 @@ namespace BL
 
                 //all distances are measured in km
                 //function calculated total time needed to travel entire distance,
-                double totalDistance = HelpfulMethodsBL.GetDistance(source, destination);
+                double totalDistance = HelpfulFunctionsBL.GetDistance(source, destination);
                 double totalSecNeededForJourney = totalDistance / DRONESPEED;
                 //then drone calculates how many points of Longitude/Latitude to move the drone,
                 //based on time actually traveled
@@ -277,7 +277,7 @@ namespace BL
         {
             lock(busiAccess)
             {
-                double totalDistance = HelpfulMethodsBL.GetDistance(bodrone.Location, destination);
+                double totalDistance = HelpfulFunctionsBL.GetDistance(bodrone.Location, destination);
                 double totalSecondsNeededForJourney = totalDistance / DRONESPEED;
                 bodrone.Battery -= totalSecondsNeededForJourney * busiAccess.GetElectricityRate(bodrone);
                 bodrone.Location = destination;

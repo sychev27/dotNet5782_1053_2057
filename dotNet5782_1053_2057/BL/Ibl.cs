@@ -13,6 +13,7 @@ namespace BL
 
         public interface Ibl
         {
+            //ADD:
             void AddDrone(int _id, string _model, DalXml.DO.WeightCategories _maxWeight, int _stationId = 0);
             void AddCustomer(int _id, string _name, string _phone, double _longitude,
                     double _latitude);
@@ -23,6 +24,7 @@ namespace BL
             void AddStation(int _id, int _name, double _longitude, double _latitude, int _chargeSlots);
             void AddUser(string _username, string _password, int _id = -1);
 
+            //GETTERS:
             double GetChargeRate();
             int GetNumParcelsWaitingAtCustomer(BO.BOCustomer cust);
             BO.BODrone GetBODrone(int id);
@@ -45,6 +47,10 @@ namespace BL
             BO.BOStationToList GetOneStationToList(int stationId);
             IEnumerable<BO.BODrone> GetSpecificDroneListStatus(int num);
             IEnumerable<BO.BODrone> GetSpecificDroneListWeight(int num);
+            double GetLongitudeBegin();
+            double GetLongitudeEnd();
+            double GetLatitudeBegin();
+            double GetLatitudeEnd();
 
             //Modify:
             public void ModifyDrone(int _id, string _model);

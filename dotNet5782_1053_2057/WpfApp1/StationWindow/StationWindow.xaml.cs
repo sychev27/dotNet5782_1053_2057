@@ -29,9 +29,12 @@ namespace WpfApp1
             lstViewDronesCharging.Visibility = Visibility.Hidden;
             btnEraseStation.IsEnabled = false;
             btnEraseStation.Visibility = Visibility.Hidden;
-
-            HelpfulMethods.ChangeVisibilty(Visibility.Hidden, btnModifyName, btnModifyChargeSlots);
-            HelpfulMethods.ChangeVisibilty(Visibility.Hidden, tBlockDronesCharging);
+            tBlockLatitude.Text += busiAccess.GetLongitudeBegin().ToString() + " - " +
+                busiAccess.GetLongitudeEnd().ToString();
+            tBlockLatitude.Text += busiAccess.GetLatitudeBegin().ToString() + " - " +
+                busiAccess.GetLatitudeEnd().ToString();
+            HelpfulFunctions.ChangeVisibilty(Visibility.Hidden, btnModifyName, btnModifyChargeSlots);
+            HelpfulFunctions.ChangeVisibilty(Visibility.Hidden, tBlockDronesCharging);
             
 
         }
@@ -44,11 +47,10 @@ namespace WpfApp1
             btnAddStation.Visibility = Visibility.Hidden;
 
         }
-
         private void btnAddStation_Click(object sender, RoutedEventArgs e)
         {
             //reset text color
-            HelpfulMethods.ChangeTextColor(Colors.Black, tBlockId, tBlockChargeSlots, 
+            HelpfulFunctions.ChangeTextColor(Colors.Black, tBlockId, tBlockChargeSlots, 
                 tBlockLong, tBlockLatitude, tBlockName);
 
             //(1) Receive Data
@@ -84,18 +86,22 @@ namespace WpfApp1
                 tBlockName.Foreground = new SolidColorBrush(Colors.Red);
                 validData = false;
             }
-            
+            //check charge slots
             if (tBoxChargeSlotsInput.Text == null || !chargeSlotsSuccess || numChargeSlots <= 0)
             {
                 tBlockChargeSlots.Foreground = new SolidColorBrush(Colors.Red);
                 validData = false;
             }
-            if (tBoxLongInput.Text == null || !longSuccess || _longitude < 35 || _longitude > 36)
+            //check longitude
+            if (tBoxLongInput.Text == null || !longSuccess || _longitude < busiAccess.GetLongitudeBegin() 
+                || _longitude > busiAccess.GetLongitudeEnd())
             {
                 tBlockLong.Foreground = new SolidColorBrush(Colors.Red);
                 validData = false;
             }
-            if (tBoxLatInput.Text == null || !latSuccess || _latitude< 31 || _latitude > 32)
+            //check latitude
+            if (tBoxLatInput.Text == null || !latSuccess || _latitude< busiAccess.GetLongitudeBegin()
+                || _latitude > busiAccess.GetLongitudeEnd())
             {
                 tBlockLatitude.Foreground = new SolidColorBrush(Colors.Red);
                 validData = false;
@@ -112,7 +118,7 @@ namespace WpfApp1
                 }
                 catch (BL.BLApi.EXStationAlreadyExists exception)
                 {
-                    HelpfulMethods.ErrorMsg(exception.ToString());
+                    HelpfulFunctions.ErrorMsg(exception.ToString());
                 }
                
             }
@@ -184,14 +190,14 @@ namespace WpfApp1
                 bodrone = busiAccess.
                 GetBODrone((lstViewDronesCharging.SelectedItem as BL.BO.BODroneInCharge).Id);
             }
-            catch (BL.BLApi.EXDroneNotFound ex)
+            catch (BL.BLApi.EXDroneNotFound)
             {
                 return;
             }
             if (bodrone.Exists)
                 new DroneWindow(busiAccess, bodrone).ShowDialog();
             else
-                HelpfulMethods.ErrorMsg("Drone does not exist");
+                HelpfulFunctions.ErrorMsg("Drone does not exist");
             displayStation(Int32.Parse(tBoxIdInput.Text));
         }
 
@@ -200,12 +206,12 @@ namespace WpfApp1
             try
             {
                 busiAccess.EraseStation(Int32.Parse(tBoxIdInput.Text));
-                HelpfulMethods.SuccessMsg("Station Erased");
+                HelpfulFunctions.SuccessMsg("Station Erased");
                 Close();
             }
             catch (BL.BLApi.EXCantDltStationWDroneCharging ex)
             {
-                HelpfulMethods.ErrorMsg(ex.ToString());
+                HelpfulFunctions.ErrorMsg(ex.ToString());
             }
         }
 

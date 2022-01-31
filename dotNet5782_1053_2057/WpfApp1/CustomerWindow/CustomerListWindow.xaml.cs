@@ -73,6 +73,7 @@ namespace WpfApp1
         private void btnAddCustomer1_Click(object sender, RoutedEventArgs e)
         {
             new CustomerWindow(busiAccess).ShowDialog();
+            refreshList();
         }
 
         
@@ -84,7 +85,7 @@ namespace WpfApp1
                 return;
             if (customer.Exists == false)
             {
-                HelpfulMethods.ErrorMsg("Customer is deleted");
+                HelpfulFunctions.ErrorMsg("Customer is deleted");
                 return;
             }
             int id = customer.Id;
