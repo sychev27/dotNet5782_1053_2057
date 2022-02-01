@@ -39,7 +39,7 @@ namespace BL
                         }
 
                         BO.BOLocation checkThisStationLocation = new BO.BOLocation(st.Longitude, st.Latitude);
-                        if (HelpfulMethodsBL.GetDistance(sourceLocation, checkThisStationLocation) < HelpfulMethodsBL.GetDistance(sourceLocation, result))
+                        if (HelpfulFunctionsBL.GetDistance(sourceLocation, checkThisStationLocation) < HelpfulFunctionsBL.GetDistance(sourceLocation, result))
                         {
                             result.Latitude = checkThisStationLocation.Latitude;
                             result.Longitude = checkThisStationLocation.Longitude;
@@ -81,14 +81,14 @@ namespace BL
                 BO.BOLocation loc;
                 try
                 {
-                    loc =  new BO.BOLocation(dataAccess.GetStation(StationId).Longitude,
+                    loc = new BO.BOLocation(dataAccess.GetStation(StationId).Longitude,
                             dataAccess.GetStation(StationId).Latitude);
                 }
                 catch (DalXml.DO.EXItemNotFoundException)
                 {
-                    throw new EXNotFoundPrintException ("Station " +StationId.ToString());
+                    throw new EXNotFoundPrintException("Station " + StationId.ToString());
                 }
-                
+
                 return loc;
             }
 
@@ -116,8 +116,8 @@ namespace BL
 
             double battNededForDist(BO.BOLocation start, BO.BOLocation finish, BO.Enum.WeightCategories? weight = null)
             {
-               
-                double dist = HelpfulMethodsBL.GetDistance(start, finish);
+
+                double dist = HelpfulFunctionsBL.GetDistance(start, finish);
 
                 if (weight != null)
                 {
@@ -234,7 +234,7 @@ namespace BL
                                     BO.BOLocation thisParcLoc = new BO.BOLocation(getLocationOfCustomer(parcel.SenderId).Longitude,
                                         getLocationOfCustomer(parcel.SenderId).Latitude);
 
-                                    if (HelpfulMethodsBL.GetDistance(droneCopy.Location, thisParcLoc) < HelpfulMethodsBL.GetDistance(droneCopy.Location, closestLoc))
+                                    if (HelpfulFunctionsBL.GetDistance(droneCopy.Location, thisParcLoc) < HelpfulFunctionsBL.GetDistance(droneCopy.Location, closestLoc))
                                     {
                                         closestParcelId = parcel.Id;
                                         closestLoc = thisParcLoc;
@@ -257,14 +257,14 @@ namespace BL
             public BO.BODrone GetBODrone(int _id) //return reference... 
                                                   //only returns if drone Exists
             {
-                
+
                 foreach (var item in listDrone)
                 {
                     if (_id == item.Id && item.Exists)
                         return item;
-                }   
+                }
                 //throw exception!!!
-                throw new EXDroneNotFound() ;
+                throw new EXDroneNotFound();
                 //return null;
             }
 
@@ -276,11 +276,11 @@ namespace BL
                 {
                     if (_id == item.Id && item.Exists)
                     {
-                        return CreateBOCustomer(_id);          
+                        return CreateBOCustomer(_id);
                     }
                 }
                 //throw exception!!!
-                throw new EXNotFoundPrintException("Customer");
+                throw new EXCustomerNotFound();
             }
 
             [MethodImpl(MethodImplOptions.Synchronized)]
@@ -294,7 +294,7 @@ namespace BL
                 return res;
             }
 
-            [MethodImpl(MethodImplOptions.Synchronized)] 
+            [MethodImpl(MethodImplOptions.Synchronized)]
             public BO.BOCustomerToList GetOneCustToList(int _id)
             {
                 return createBOCustToList(_id);
@@ -470,7 +470,7 @@ namespace BL
             [MethodImpl(MethodImplOptions.Synchronized)]
             public IEnumerable<BO.BOCustomerToList> GetCustToList()
             {
-                List<BO.BOCustomerToList> res = 
+                List<BO.BOCustomerToList> res =
                     new List<BO.BOCustomerToList>();
                 foreach (var item in dataAccess.GetCustomers())
                 {
@@ -486,7 +486,7 @@ namespace BL
                 foreach (var item in dataAccess.GetParcels())
                 {
                     //if(item.Exists)
-                        res.Add(createBOParcToList(item.Id));
+                    res.Add(createBOParcToList(item.Id));
                 }
                 return res;
             }
@@ -633,7 +633,7 @@ namespace BL
                         case BO.Enum.WeightCategories.Heavy: return heavy;
                         default: return 0;
                     }
-                } 
+                }
                 else // if drone not carrying parcel
                     return empty;
             }
@@ -649,7 +649,23 @@ namespace BL
                 }
                 return res;
             }
-            //end of class definition...
+            public double GetLongitudeBegin()
+            {
+                return dataAccess.GetLongitudeBegin();
+            }
+            public double GetLongitudeEnd()
+            {
+                return dataAccess.GetLongitudeEnd();
+            }
+            public double GetLatitudeBegin()
+            {
+                return dataAccess.GetLatitudeBegin();
+            }
+            public double GetLatitudeEnd()
+            {
+                return dataAccess.GetLatitudeEnd();
+                //end of class definition...
+            }
         }
     }
 }

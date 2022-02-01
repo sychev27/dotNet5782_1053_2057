@@ -240,7 +240,7 @@ namespace WpfApp1
                             new EventHandler((sender, e) => displayDroneInInfoWindow(sender, e, _infoBlock)));
                         newTextBlock.Text = (_infoBlock.numParcelsOrDronesCharging == 0)?
                             "Empty" : "Parcel " + _infoBlock.numParcelsOrDronesCharging.ToString();
-                        newTextBlock.Margin = new Thickness(5, 0, 5, 0);
+                        newTextBlock.Margin = new Thickness(5, 0, 0, 0);
                     }
                     break;
                 default:
