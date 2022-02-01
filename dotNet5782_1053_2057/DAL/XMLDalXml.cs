@@ -181,6 +181,10 @@ namespace DalXml
             userReuven.Password = "rPassword";
             listUser.Add(userReuven);
             DALTools.XMLTools.SaveListToXMLSerializer<DalXml.DO.User>(listUser, usersPath);
+
+            //reset drone charge..
+            List<DO.DroneCharge> empty = new List<DO.DroneCharge>();
+            DALTools.XMLTools.SaveListToXMLSerializer<DalXml.DO.DroneCharge>(empty, droneChargesPath);
             //END OF FUNCTION
         }
 

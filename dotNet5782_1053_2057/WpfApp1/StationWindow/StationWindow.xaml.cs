@@ -184,6 +184,8 @@ namespace WpfApp1
         }
         private void lstViewDronesCharging_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            if (lstViewDronesCharging.SelectedItem == null)
+                return;
             BL.BO.BODrone bodrone;
             try
             {

@@ -529,7 +529,6 @@ namespace BL
             {
                 BO.BOStationToList newStationToList = new BO.BOStationToList();
                 DalXml.DO.Station origStation = dataAccess.GetStation(_id);
-
                 newStationToList.Id = origStation.Id;
                 newStationToList.NameStation = origStation.Name;
                 newStationToList.ChargeSlotsAvailable = freeSpots(origStation);
